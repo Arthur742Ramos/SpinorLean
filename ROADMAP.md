@@ -89,6 +89,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 ### 3.2 Half-Spin / Chiral Representations (even dimension)
 - [x] Use the ℤ/2-grading of Cl(V,Q) to decompose S = S⁺ ⊕ S⁻
 - [x] Define the chosen-model splitting `⋀W = ⋀^even W ⊕ ⋀^odd W`
+- [x] Identify the zero-form chiral pieces on the chosen `⋀W` model with `⋀^even W` and `⋀^odd W`
+- [x] Package the chosen-model positive/negative chiral halves and their restricted spin
+  representations through the hyperbolic/Witt presentation APIs
 - [x] Prove the split hyperbolic spin action on the chosen `⋀W` model preserves `⋀^even W` and `⋀^odd W`
 - [x] In positive split rank, prove the chosen even and odd halves have equal dimension
 - [ ] Identify these chosen even/odd summands with the ambient chiral modules `S⁺` and `S⁻`

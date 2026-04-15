@@ -6,6 +6,7 @@
   everywhere.
 -/
 
+import Spinor.Chiral
 import Spinor.HyperbolicAction
 
 namespace Spinor
@@ -157,6 +158,99 @@ noncomputable def oddSpinRepresentation (P : HyperbolicPresentation Q) :
     spinGroup Q →* Module.End K (P.oddSpinorModule) :=
   oddHyperbolicSpinRepresentation (K := K) (Q := Q) (W := P.W) P.iso
 
+section FiniteDimensional
+
+variable [FiniteDimensional K V]
+
+/-- The positive-chiral half of the chosen model, viewed through the zero-form chiral
+identification on `W`. -/
+noncomputable abbrev positiveChiralSpinorModule (P : HyperbolicPresentation Q) :=
+  positiveChiral (R := K) (M := P.W) (0 : QuadraticForm K P.W)
+
+/-- The negative-chiral half of the chosen model, viewed through the zero-form chiral
+identification on `W`. -/
+noncomputable abbrev negativeChiralSpinorModule (P : HyperbolicPresentation Q) :=
+  negativeChiral (R := K) (M := P.W) (0 : QuadraticForm K P.W)
+
+@[simp] theorem positiveChiralSpinorModule_eq_evenSpinorModule (P : HyperbolicPresentation Q) :
+    P.positiveChiralSpinorModule = P.evenSpinorModule := by
+  simpa [positiveChiralSpinorModule, evenSpinorModule] using
+    (positiveChiral_zero_eq_evenExteriorSubmodule (K := K) (W := P.W))
+
+@[simp] theorem negativeChiralSpinorModule_eq_oddSpinorModule (P : HyperbolicPresentation Q) :
+    P.negativeChiralSpinorModule = P.oddSpinorModule := by
+  simpa [negativeChiralSpinorModule, oddSpinorModule] using
+    (negativeChiral_zero_eq_oddExteriorSubmodule (K := K) (W := P.W))
+
+/-- The spin action induced by an explicit hyperbolic presentation preserves the positive-chiral
+half of the chosen model. -/
+theorem spinRepresentation_mem_positiveChiral (P : HyperbolicPresentation Q)
+    {g : spinGroup Q} {x : P.spinorModule} (hx : x ∈ P.positiveChiralSpinorModule) :
+    P.spinRepresentation g x ∈ P.positiveChiralSpinorModule := by
+  have hx' : x ∈ P.evenSpinorModule := by
+    simpa [positiveChiralSpinorModule_eq_evenSpinorModule (P := P)] using hx
+  have h := P.spinRepresentation_mem_even (g := g) (x := x) hx'
+  simpa [positiveChiralSpinorModule_eq_evenSpinorModule (P := P)] using h
+
+/-- The spin action induced by an explicit hyperbolic presentation preserves the negative-chiral
+half of the chosen model. -/
+theorem spinRepresentation_mem_negativeChiral (P : HyperbolicPresentation Q)
+    {g : spinGroup Q} {x : P.spinorModule} (hx : x ∈ P.negativeChiralSpinorModule) :
+    P.spinRepresentation g x ∈ P.negativeChiralSpinorModule := by
+  have hx' : x ∈ P.oddSpinorModule := by
+    simpa [negativeChiralSpinorModule_eq_oddSpinorModule (P := P)] using hx
+  have h := P.spinRepresentation_mem_odd (g := g) (x := x) hx'
+  simpa [negativeChiralSpinorModule_eq_oddSpinorModule (P := P)] using h
+
+/-- The spin representation restricted to the positive-chiral half of the presented chosen model. -/
+noncomputable def positiveChiralSpinRepresentation (P : HyperbolicPresentation Q) :
+    spinGroup Q →* Module.End K (P.positiveChiralSpinorModule) where
+  toFun g :=
+    LinearMap.restrict (P.spinRepresentation g)
+      (fun x hx => P.spinRepresentation_mem_positiveChiral (g := g) hx)
+  map_one' := by
+    ext x
+    simp [LinearMap.restrict_apply]
+  map_mul' g h := by
+    ext x
+    simp [LinearMap.restrict_apply]
+
+/-- The spin representation restricted to the negative-chiral half of the presented chosen model. -/
+noncomputable def negativeChiralSpinRepresentation (P : HyperbolicPresentation Q) :
+    spinGroup Q →* Module.End K (P.negativeChiralSpinorModule) where
+  toFun g :=
+    LinearMap.restrict (P.spinRepresentation g)
+      (fun x hx => P.spinRepresentation_mem_negativeChiral (g := g) hx)
+  map_one' := by
+    ext x
+    simp [LinearMap.restrict_apply]
+  map_mul' g h := by
+    ext x
+    simp [LinearMap.restrict_apply]
+
+/-- The corresponding `spinGroup` action on the positive-chiral half of the presented chosen
+model. -/
+noncomputable abbrev positiveChiralSpinMulAction (P : HyperbolicPresentation Q) :
+    MulAction (spinGroup Q) (P.positiveChiralSpinorModule) :=
+  MulAction.compHom (P.positiveChiralSpinorModule) (P.positiveChiralSpinRepresentation)
+
+@[simp] theorem positiveChiralSpinMulAction_smul (P : HyperbolicPresentation Q)
+    (g : spinGroup Q) (x : P.positiveChiralSpinorModule) :
+    letI := P.positiveChiralSpinMulAction
+    g • x = P.positiveChiralSpinRepresentation g x := rfl
+
+/-- The corresponding `spinGroup` action on the negative-chiral half of the presented chosen
+model. -/
+noncomputable abbrev negativeChiralSpinMulAction (P : HyperbolicPresentation Q) :
+    MulAction (spinGroup Q) (P.negativeChiralSpinorModule) :=
+  MulAction.compHom (P.negativeChiralSpinorModule) (P.negativeChiralSpinRepresentation)
+
+@[simp] theorem negativeChiralSpinMulAction_smul (P : HyperbolicPresentation Q)
+    (g : spinGroup Q) (x : P.negativeChiralSpinorModule) :
+    letI := P.negativeChiralSpinMulAction
+    g • x = P.negativeChiralSpinRepresentation g x := rfl
+
+end FiniteDimensional
 end InvertibleTwo
 
 section SplitConstructor
@@ -367,6 +461,24 @@ noncomputable def wittSpinRepresentation (Q : QuadraticForm K V)
     spinGroup Q →* Module.End K (WittExteriorModel (K := K) Q) :=
   HyperbolicPresentation.spinRepresentation (K := K) (Q := Q) (wittPresentation (K := K) Q e)
 
+/-- The positive-chiral half of the canonical Witt model. -/
+noncomputable abbrev positiveWittExterior (Q : QuadraticForm K V) :=
+  positiveChiral (R := K) (M := Q.wittSubspace) (0 : QuadraticForm K Q.wittSubspace)
+
+/-- The negative-chiral half of the canonical Witt model. -/
+noncomputable abbrev negativeWittExterior (Q : QuadraticForm K V) :=
+  negativeChiral (R := K) (M := Q.wittSubspace) (0 : QuadraticForm K Q.wittSubspace)
+
+@[simp] theorem positiveWittExterior_eq_evenWittExterior (Q : QuadraticForm K V) :
+    positiveWittExterior (K := K) Q = evenWittExterior (K := K) Q := by
+  simpa [positiveWittExterior, evenWittExterior] using
+    (positiveChiral_zero_eq_evenExteriorSubmodule (K := K) (W := Q.wittSubspace))
+
+@[simp] theorem negativeWittExterior_eq_oddWittExterior (Q : QuadraticForm K V) :
+    negativeWittExterior (K := K) Q = oddWittExterior (K := K) Q := by
+  simpa [negativeWittExterior, oddWittExterior] using
+    (negativeChiral_zero_eq_oddExteriorSubmodule (K := K) (W := Q.wittSubspace))
+
 /-- The `spinGroup` action on the canonical Witt model induced by an explicit Witt hyperbolic
 presentation. -/
 noncomputable abbrev wittSpinMulAction (Q : QuadraticForm K V)
@@ -431,6 +543,40 @@ noncomputable def oddWittSpinRepresentation (Q : QuadraticForm K V)
     (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
     spinGroup Q →* Module.End K (oddWittExterior (K := K) Q) :=
   HyperbolicPresentation.oddSpinRepresentation
+    (K := K) (Q := Q) (wittPresentation (K := K) Q e)
+
+/-- The transported Witt-model spin action preserves the positive-chiral half. -/
+theorem wittSpinRepresentation_mem_positiveChiral (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace))
+    {g : spinGroup Q} {x : WittExteriorModel (K := K) Q}
+    (hx : x ∈ positiveWittExterior (K := K) Q) :
+    wittSpinRepresentation (K := K) Q e g x ∈ positiveWittExterior (K := K) Q := by
+  exact HyperbolicPresentation.spinRepresentation_mem_positiveChiral
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e) (g := g) (x := x) hx
+
+/-- The transported Witt-model spin action preserves the negative-chiral half. -/
+theorem wittSpinRepresentation_mem_negativeChiral (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace))
+    {g : spinGroup Q} {x : WittExteriorModel (K := K) Q}
+    (hx : x ∈ negativeWittExterior (K := K) Q) :
+    wittSpinRepresentation (K := K) Q e g x ∈ negativeWittExterior (K := K) Q := by
+  exact HyperbolicPresentation.spinRepresentation_mem_negativeChiral
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e) (g := g) (x := x) hx
+
+/-- The spin representation on the positive-chiral half of the canonical Witt model induced by an
+explicit Witt hyperbolic presentation. -/
+noncomputable def positiveWittSpinRepresentation (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    spinGroup Q →* Module.End K (positiveWittExterior (K := K) Q) :=
+  HyperbolicPresentation.positiveChiralSpinRepresentation
+    (K := K) (Q := Q) (wittPresentation (K := K) Q e)
+
+/-- The spin representation on the negative-chiral half of the canonical Witt model induced by an
+explicit Witt hyperbolic presentation. -/
+noncomputable def negativeWittSpinRepresentation (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    spinGroup Q →* Module.End K (negativeWittExterior (K := K) Q) :=
+  HyperbolicPresentation.negativeChiralSpinRepresentation
     (K := K) (Q := Q) (wittPresentation (K := K) Q e)
 
 /-- In the split-rank case, the canonical Witt subspace now determines a hyperbolic presentation
@@ -563,6 +709,40 @@ noncomputable def oddSplitWittSpinRepresentation (Q : QuadraticForm K V) (hQ : Q
     (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
     spinGroup Q →* Module.End K (oddWittExterior (K := K) Q) :=
   HyperbolicPresentation.oddSpinRepresentation
+    (K := K) (Q := Q) (splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- The split-rank canonical Witt-model spin action preserves the positive-chiral half. -/
+theorem splitWittSpinRepresentation_mem_positiveChiral (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    {g : spinGroup Q} {x : WittExteriorModel (K := K) Q}
+    (hx : x ∈ positiveWittExterior (K := K) Q) :
+    splitWittSpinRepresentation (K := K) Q hQ hsplit g x ∈ positiveWittExterior (K := K) Q := by
+  exact HyperbolicPresentation.spinRepresentation_mem_positiveChiral
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+    (g := g) (x := x) hx
+
+/-- The split-rank canonical Witt-model spin action preserves the negative-chiral half. -/
+theorem splitWittSpinRepresentation_mem_negativeChiral (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    {g : spinGroup Q} {x : WittExteriorModel (K := K) Q}
+    (hx : x ∈ negativeWittExterior (K := K) Q) :
+    splitWittSpinRepresentation (K := K) Q hQ hsplit g x ∈ negativeWittExterior (K := K) Q := by
+  exact HyperbolicPresentation.spinRepresentation_mem_negativeChiral
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+    (g := g) (x := x) hx
+
+/-- The split-rank spin representation on the positive-chiral half of the canonical Witt model. -/
+noncomputable def positiveSplitWittSpinRepresentation (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    spinGroup Q →* Module.End K (positiveWittExterior (K := K) Q) :=
+  HyperbolicPresentation.positiveChiralSpinRepresentation
+    (K := K) (Q := Q) (splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- The split-rank spin representation on the negative-chiral half of the canonical Witt model. -/
+noncomputable def negativeSplitWittSpinRepresentation (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    spinGroup Q →* Module.End K (negativeWittExterior (K := K) Q) :=
+  HyperbolicPresentation.negativeChiralSpinRepresentation
     (K := K) (Q := Q) (splitWittPresentation (K := K) Q hQ hsplit)
 
 end InvertibleTwo

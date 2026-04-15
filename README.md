@@ -111,6 +111,11 @@ Implemented so far:
 - the induced `spinGroup` representation by restriction
 - a chiral decomposition `S = S⁺ ⊕ S⁻` transported from Clifford parity, with `spinGroup`
   preserving both summands and restricting to actions on each summand
+- on the zero-form chosen model `⋀W`, an identification of the abstract chiral pieces with the
+  explicit even/odd exterior summands `⋀^even W` and `⋀^odd W`
+- through `HyperbolicPresentation`, `wittPresentation`, and `splitWittPresentation`, a chosen-model
+  positive/negative chiral API on `⋀W` identified with those even/odd summands and carrying the
+  corresponding restricted spin representations
 
 Still open from the roadmap:
 
