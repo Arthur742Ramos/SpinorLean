@@ -189,9 +189,135 @@ noncomputable def ofIsCompl
 
 end SplitConstructor
 
+section WittFactorConstructor
+
+variable [FiniteDimensional K V]
+variable [Invertible (2 : K)]
+variable {W U : Submodule K V}
+
+/-- The orthogonal complement of the residual factor in a general Witt splitting carries a
+first-class hyperbolic presentation, so the existing chosen-model Clifford/spin APIs apply to that
+hyperbolic factor without rebuilding them from scratch. -/
+noncomputable def wittFactorOfIsCompl
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    HyperbolicPresentation
+      (QuadraticForm.orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U) where
+  W := QuadraticForm.orthogonalAmbientWittSubspaceOfIsCompl (K := K) Q W U
+  iso :=
+    let eW := QuadraticForm.orthogonalAmbientWittSubspaceEquivOfIsCompl (K := K) Q W U
+    (QuadraticForm.orthogonalAmbientWittResidualSplitIsometryEquivOfIsCompl
+      (K := K) (Q := Q) (W := W) (U := U) hQ hW hWU).trans
+      (QuadraticForm.dualProdIsometry (R := K) eW.symm)
+
+@[simp] theorem wittFactorOfIsCompl_W
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    (wittFactorOfIsCompl (K := K) (Q := Q) (W := W) (U := U) hQ hW hWU).W =
+      QuadraticForm.orthogonalAmbientWittSubspaceOfIsCompl (K := K) Q W U := rfl
+
+theorem wittFactorOfIsCompl_iso
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    (wittFactorOfIsCompl (K := K) (Q := Q) (W := W) (U := U) hQ hW hWU).iso =
+      let eW := QuadraticForm.orthogonalAmbientWittSubspaceEquivOfIsCompl (K := K) Q W U
+      (QuadraticForm.orthogonalAmbientWittResidualSplitIsometryEquivOfIsCompl
+        (K := K) (Q := Q) (W := W) (U := U) hQ hW hWU).trans
+        (QuadraticForm.dualProdIsometry (R := K) eW.symm) := rfl
+
+/-- The canonical hyperbolic factor attached to the Witt decomposition of a nondegenerate quadratic
+form. -/
+noncomputable def canonicalWittFactor (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
+    HyperbolicPresentation
+      (QuadraticForm.orthogonalAmbientWittResidualQuadraticFormOfIsCompl
+        (K := K) Q Q.wittSubspace Q.wittSubspaceComplement) :=
+  wittFactorOfIsCompl
+    (K := K) (Q := Q) (W := Q.wittSubspace) (U := Q.wittSubspaceComplement)
+    hQ Q.wittSubspace_isTotallyIsotropic Q.wittSubspaceComplement_isCompl
+
+@[simp] theorem canonicalWittFactor_W (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
+    (canonicalWittFactor (K := K) Q hQ).W =
+      QuadraticForm.orthogonalAmbientWittSubspaceOfIsCompl
+        (K := K) Q Q.wittSubspace Q.wittSubspaceComplement := rfl
+
+theorem canonicalWittFactor_iso (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
+    (canonicalWittFactor (K := K) Q hQ).iso =
+      let eW := QuadraticForm.orthogonalAmbientWittSubspaceEquivOfIsCompl
+        (K := K) Q Q.wittSubspace Q.wittSubspaceComplement
+      (QuadraticForm.orthogonalAmbientWittResidualSplitIsometryEquivOfIsCompl
+        (K := K) (Q := Q) (W := Q.wittSubspace) (U := Q.wittSubspaceComplement)
+        hQ Q.wittSubspace_isTotallyIsotropic Q.wittSubspaceComplement_isCompl).trans
+        (QuadraticForm.dualProdIsometry (R := K) eW.symm) := rfl
+
+end WittFactorConstructor
+
 end HyperbolicPresentation
 
-section WittPresentation
+/-- An explicit general Witt presentation `Q ≃ dualProd K W ⊕ Q₀`, recording both the hyperbolic
+Witt subspace and the ambient residual quadratic form. -/
+structure WittPresentation (Q : QuadraticForm K V) where
+  W : Submodule K V
+  residualSubspace : Submodule K V
+  iso : Q.IsometryEquiv ((QuadraticForm.dualProd K W).prod (Q.comp residualSubspace.subtype))
+
+namespace WittPresentation
+
+variable {Q : QuadraticForm K V}
+
+/-- The residual quadratic form carried by a Witt presentation. -/
+abbrev residualForm (P : WittPresentation Q) : QuadraticForm K P.residualSubspace :=
+  Q.comp P.residualSubspace.subtype
+
+section Constructors
+
+variable [FiniteDimensional K V]
+variable [Invertible (2 : K)]
+variable {W U : Submodule K V}
+
+/-- Chosen split data packages the general Witt decomposition as a first-class presentation object. -/
+noncomputable def ofIsCompl
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    WittPresentation Q where
+  W := W
+  residualSubspace := QuadraticForm.ambientWittResidualSubspaceOfIsCompl (K := K) Q W U
+  iso := QuadraticForm.wittIsometryEquivOfIsCompl (K := K) (Q := Q) (W := W) (U := U) hQ hW hWU
+
+@[simp] theorem ofIsCompl_W
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    (ofIsCompl (K := K) (Q := Q) (W := W) (U := U) hQ hW hWU).W = W := rfl
+
+@[simp] theorem ofIsCompl_residualSubspace
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    (ofIsCompl (K := K) (Q := Q) (W := W) (U := U) hQ hW hWU).residualSubspace =
+      QuadraticForm.ambientWittResidualSubspaceOfIsCompl (K := K) Q W U := rfl
+
+@[simp] theorem ofIsCompl_iso
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    (ofIsCompl (K := K) (Q := Q) (W := W) (U := U) hQ hW hWU).iso =
+      QuadraticForm.wittIsometryEquivOfIsCompl (K := K) (Q := Q) (W := W) (U := U) hQ hW hWU := rfl
+
+/-- The canonical Witt presentation attached to a nondegenerate quadratic form. -/
+noncomputable def canonical (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
+    WittPresentation Q :=
+  ofIsCompl
+    (K := K) (Q := Q) (W := Q.wittSubspace) (U := Q.wittSubspaceComplement)
+    hQ Q.wittSubspace_isTotallyIsotropic Q.wittSubspaceComplement_isCompl
+
+@[simp] theorem canonical_W (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
+    (canonical (K := K) Q hQ).W = Q.wittSubspace := rfl
+
+@[simp] theorem canonical_residualSubspace (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
+    (canonical (K := K) Q hQ).residualSubspace =
+      QuadraticForm.ambientWittResidualSubspaceOfIsCompl
+        (K := K) Q Q.wittSubspace Q.wittSubspaceComplement := rfl
+
+@[simp] theorem canonical_iso (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
+    (canonical (K := K) Q hQ).iso =
+      QuadraticForm.wittIsometryEquivOfIsCompl
+        (K := K) (Q := Q) (W := Q.wittSubspace) (U := Q.wittSubspaceComplement)
+        hQ Q.wittSubspace_isTotallyIsotropic Q.wittSubspaceComplement_isCompl := rfl
+
+end Constructors
+end WittPresentation
+
+section CanonicalWittPresentation
 
 variable [FiniteDimensional K V]
 variable {Q : QuadraticForm K V}
@@ -440,6 +566,6 @@ noncomputable def oddSplitWittSpinRepresentation (Q : QuadraticForm K V) (hQ : Q
     (K := K) (Q := Q) (splitWittPresentation (K := K) Q hQ hsplit)
 
 end InvertibleTwo
-end WittPresentation
+end CanonicalWittPresentation
 
 end Spinor

@@ -20,6 +20,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - [x] Package the underlying linear decomposition `V ≃ W ⊕ W* ⊕ V₀` from a chosen
     complement, with canonical `wittSubspace` specializations and residual-dimension formulas
   - [x] Upgrade that linear decomposition to the orthogonal / hyperbolic quadratic-form splitting
+  - [x] Package the resulting general quadratic Witt splitting as first-class presentation data and
+    expose its orthogonal hyperbolic factor through the existing chosen-model APIs
 - [x] Package the chosen-model transport once an explicit hyperbolic isometry `Q ≃ dualProd K W` is given
 - [x] Prove any explicit hyperbolic presentation `Q ≃ dualProd K W` satisfies `wittIndex Q = dim W`
 - [x] Package the maximal totally isotropic subspace determined by an explicit hyperbolic
@@ -61,7 +63,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - [x] In split rank, let the canonical Witt-subspace model choose a complement internally and
     build the transported action without an explicit isometry argument
   - [x] Specialize that transport canonically to the doubled form `Q ⊕ (-Q)` in the nondegenerate case
-  - [ ] Derive that isometry canonically from a full Witt decomposition `V ≃ W ⊕ W* ⊕ V₀`
+  - [x] Derive that isometry canonically from a full Witt decomposition `V ≃ W ⊕ W* ⊕ V₀`
   - For w ∈ W: action is exterior multiplication (w ∧ −)
   - For f ∈ W*: action is interior multiplication / contraction (ι_f)
   - Extend to all of Cl(V,Q) via universal property

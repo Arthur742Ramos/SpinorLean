@@ -26,7 +26,9 @@ linear-algebra level, `Spinor.WittDecomp` now also provides the general linear W
 `QuadraticForm.wittLinearDecomposition : V ≃ Q.wittSubspace × Q.wittSubspace* × V₀` together with
 the residual factor `QuadraticForm.wittResidualSubspace`, as well as the corresponding general
 quadratic-form splitting `QuadraticForm.wittIsometryEquiv :
-  Q ≃ dualProd K Q.wittSubspace ⊕ Q₀`.
+  Q ≃ dualProd K Q.wittSubspace ⊕ Q₀`. That general splitting is also packaged in
+`Spinor.WittPresentation`, with the hyperbolic factor exposed as
+`HyperbolicPresentation.canonicalWittFactor`.
 -/
 abbrev SpinorModule (_Q : QuadraticForm R M) := ExteriorAlgebra R M
 

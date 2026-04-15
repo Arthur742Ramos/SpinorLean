@@ -955,13 +955,12 @@ noncomputable def splitIsometryEquivOfIsCompl
 
 /-- A general Witt decomposition with chosen complement:
 `Q ≃ dualProd K W ⊕ Q₀`, where `Q₀` is the ambient residual quadratic form. -/
-noncomputable def wittIsometryEquivOfIsCompl
+noncomputable def orthogonalAmbientWittResidualSplitIsometryEquivOfIsCompl
     (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
-    Q.IsometryEquiv
-      ((QuadraticForm.dualProd K W).prod
-        (ambientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)) := by
-  let R0 := ambientWittResidualSubspaceOfIsCompl (K := K) Q W U
-  let S := LinearMap.BilinForm.orthogonal Q.associated R0
+    (orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U).IsometryEquiv
+      (QuadraticForm.dualProd K W) := by
+  let S := LinearMap.BilinForm.orthogonal Q.associated
+    (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U)
   let W0 := orthogonalAmbientWittSubspaceOfIsCompl (K := K) Q W U
   let eW : W0 ≃ₗ[K] W := orthogonalAmbientWittSubspaceEquivOfIsCompl (K := K) Q W U
   have hQ0 :
@@ -981,14 +980,21 @@ noncomputable def wittIsometryEquivOfIsCompl
     splitIsometryEquivOfIsCompl
       (Q := orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)
       (W := W0) (U := U0) hQ0 hW0 hsplit0 hU0
-  let eSplit :
-      (orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U).IsometryEquiv
-        (QuadraticForm.dualProd K W) :=
-    eSplit0.trans (QuadraticForm.dualProdIsometry (R := K) eW)
+  exact eSplit0.trans (QuadraticForm.dualProdIsometry (R := K) eW)
+
+/-- A general Witt decomposition with chosen complement:
+`Q ≃ dualProd K W ⊕ Q₀`, where `Q₀` is the ambient residual quadratic form. -/
+noncomputable def wittIsometryEquivOfIsCompl
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    Q.IsometryEquiv
+      ((QuadraticForm.dualProd K W).prod
+        (ambientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)) := by
   exact
     ((orthogonalAmbientWittResidualDecompositionOfIsCompl (Q := Q) hQ hW hWU).trans
       ((QuadraticMap.IsometryEquiv.refl
-          (ambientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)).prod eSplit)).trans
+          (ambientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)).prod
+        (orthogonalAmbientWittResidualSplitIsometryEquivOfIsCompl
+          (Q := Q) (W := W) (U := U) hQ hW hWU))).trans
       (QuadraticMap.IsometryEquiv.prodComm
         (ambientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)
         (QuadraticForm.dualProd K W))
