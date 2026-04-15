@@ -1,0 +1,128 @@
+# SpinorLean — Roadmap
+
+## Goal
+First-ever formalization of spinor representations from Clifford algebras in a proof assistant.
+Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
+
+---
+
+## Phase 1: Foundations (Week 1-2)
+
+### 1.1 Project Setup
+- [x] Lean 4 + Mathlib project via `lake init`
+- [ ] Verify Mathlib's `CliffordAlgebra`, `ExteriorAlgebra`, `SpinGroup` imports compile
+- [ ] Establish notation and convention file
+
+### 1.2 Quadratic Spaces & Isotropic Subspaces
+- [ ] Define totally isotropic subspaces of a quadratic module (V, Q)
+- [ ] Prove existence of maximal isotropic subspaces for finite-dimensional spaces over fields
+- [ ] Witt decomposition: V ≅ W ⊕ W* ⊕ V₀ (hyperbolic splitting)
+- [ ] Witt index and its basic properties
+
+### 1.3 Mathlib Inventory
+- [ ] Audit `Mathlib.LinearAlgebra.CliffordAlgebra.*` — catalog what's available
+- [ ] Audit `Mathlib.LinearAlgebra.ExteriorAlgebra.*` — same
+- [ ] Audit `Mathlib.LinearAlgebra.QuadraticForm.*` — isotropic subspace API
+- [ ] Document gaps that need filling
+
+---
+
+## Phase 2: The Spinor Module (Week 2-4)
+
+### 2.1 Exterior Algebra of Maximal Isotropic Subspace
+- [ ] Given W ≤ V maximal isotropic, construct ⋀W (exterior algebra on W)
+- [ ] Show dim(⋀W) = 2^n where n = dim(W) = Witt index
+
+### 2.2 Clifford Action on ⋀W
+- [ ] Define the left action of Cl(V, Q) on ⋀W
+  - For w ∈ W: action is exterior multiplication (w ∧ −)
+  - For f ∈ W*: action is interior multiplication / contraction (ι_f)
+  - Extend to all of Cl(V,Q) via universal property
+- [ ] Prove this action satisfies the Clifford relation: a(v) ∘ a(v) = Q(v) · id
+- [ ] Prove ⋀W is a faithful Cl(V,Q)-module (for non-degenerate Q)
+
+### 2.3 The Spinor Module
+- [ ] **Define `SpinorModule Q` := ⋀W as a `Module (CliffordAlgebra Q)`**
+- [ ] Prove irreducibility (for algebraically closed fields, even dimension)
+- [ ] Prove the dimension formula: dim(S) = 2^(n/2)
+
+---
+
+## Phase 3: Spin Group Action (Week 4-5)
+
+### 3.1 Restriction to Spin Group
+- [ ] Show `spinGroup Q` acts on `SpinorModule Q` by restriction of Clifford action
+- [ ] This gives the **spin representation**: `spinGroup Q →* (SpinorModule Q →ₗ SpinorModule Q)`
+- [ ] Prove this is a group homomorphism
+
+### 3.2 Half-Spin / Chiral Representations (even dimension)
+- [ ] Use the ℤ/2-grading of Cl(V,Q) to decompose S = S⁺ ⊕ S⁻
+- [ ] S⁺ = ⋀^even W, S⁻ = ⋀^odd W
+- [ ] Prove Spin(V,Q) preserves the decomposition (Weyl spinors)
+- [ ] Prove S⁺ and S⁻ are irreducible and inequivalent (for dim ≥ 4)
+
+---
+
+## Phase 4: Key Theorems (Week 5-7)
+
+### 4.1 Periodicity & Classification
+- [ ] Cl(n, ℂ) ≅ Mat(2^(n/2), ℂ) for n even
+- [ ] Cl(n, ℂ) ≅ Mat(2^((n-1)/2), ℂ) × Mat(2^((n-1)/2), ℂ) for n odd
+- [ ] Bott periodicity for real Clifford algebras (period 8)
+
+### 4.2 Low-Dimensional Examples
+- [ ] Spin(2) → U(1) (circle)
+- [ ] Spin(3) → SU(2) (Pauli matrices / quaternions)
+- [ ] Spin(4) → SU(2) × SU(2)
+- [ ] These connect spinors to familiar physics
+
+### 4.3 The Covering Map
+- [ ] Spin(V,Q) → SO(V,Q) is a double cover
+- [ ] Kernel is {1, -1}
+- [ ] The spin representation does NOT factor through SO
+
+---
+
+## Phase 5: Paper & Polish (Week 7-8)
+
+### 5.1 Paper Writing
+- [ ] Introduction: why spinors matter, why formalization is novel
+- [ ] Related work: lean-ga, Mathlib Clifford, what's missing
+- [ ] Formalization architecture
+- [ ] Key proof highlights (the hard parts)
+- [ ] Lessons learned & Mathlib gaps discovered
+- [ ] Future work: spinor bundles, Dirac operators
+
+### 5.2 Code Quality
+- [ ] Full `lake build` clean
+- [ ] Zero `sorry` / `admit` sweep
+- [ ] Mathlib-compatible style
+- [ ] Module documentation
+
+### 5.3 Submission
+- [ ] Target: CPP 2027 (deadline ~Sep 2026) or ITP 2027
+- [ ] Secondary: *Advances in Applied Clifford Algebras* (journal, no deadline)
+- [ ] Tertiary: *Journal of Automated Reasoning*
+
+---
+
+## Dependencies (from Mathlib)
+
+| What we need | Mathlib status | Notes |
+|---|---|---|
+| `CliffordAlgebra Q` | ✅ Complete | Universal property, lift, grading |
+| `ExteriorAlgebra R M` | ✅ Complete | As quotient of tensor algebra |
+| `spinGroup Q` | ✅ Basic | Group structure, conjugation action |
+| `pinGroup Q` | ✅ Basic | Same |
+| `QuadraticForm.Isotropic` | ⚠️ Partial | May need maximal isotropic API |
+| `QuadraticForm.WittDecomp` | ❌ Missing | Need to build this |
+| Interior product on ⋀V | ⚠️ Partial | `ExteriorAlgebra.ιMulti` exists, contraction unclear |
+| Clifford module structure | ❌ Missing | **This is the main contribution** |
+
+---
+
+## Non-Goals
+- Spinor bundles / differential geometry (Mathlib's manifold library too immature)
+- Dirac operators (requires spinor bundles)
+- Computational paths (this is standard Mathlib-style formalization)
+- Physics applications (pure algebra focus)
