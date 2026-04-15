@@ -10,55 +10,87 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 
 ### 1.1 Project Setup
 - [x] Lean 4 + Mathlib project via `lake init`
-- [ ] Verify Mathlib's `CliffordAlgebra`, `ExteriorAlgebra`, `SpinGroup` imports compile
-- [ ] Establish notation and convention file
+- [x] Verify Mathlib's `CliffordAlgebra`, `ExteriorAlgebra`, `SpinGroup` imports compile
+- [x] Establish notation and convention file
 
 ### 1.2 Quadratic Spaces & Isotropic Subspaces
-- [ ] Define totally isotropic subspaces of a quadratic module (V, Q)
-- [ ] Prove existence of maximal isotropic subspaces for finite-dimensional spaces over fields
+- [x] Define totally isotropic subspaces of a quadratic module (V, Q)
+- [x] Prove existence of maximal isotropic subspaces for finite-dimensional spaces over fields
 - [ ] Witt decomposition: V ≅ W ⊕ W* ⊕ V₀ (hyperbolic splitting)
-- [ ] Witt index and its basic properties
+  - [x] Package the underlying linear decomposition `V ≃ W ⊕ W* ⊕ V₀` from a chosen
+    complement, with canonical `wittSubspace` specializations and residual-dimension formulas
+  - [ ] Upgrade that linear decomposition to the orthogonal / hyperbolic quadratic-form splitting
+- [x] Package the chosen-model transport once an explicit hyperbolic isometry `Q ≃ dualProd K W` is given
+- [x] Prove any explicit hyperbolic presentation `Q ≃ dualProd K W` satisfies `wittIndex Q = dim W`
+- [x] Package the maximal totally isotropic subspace determined by an explicit hyperbolic
+  presentation `Q ≃ dualProd K W`
+- [x] From a half-dimensional totally isotropic subspace `W` plus a chosen complement `U`,
+  construct an explicit split isometry `Q ≃ dualProd K W`
+- [x] In the nondegenerate doubled case, package the canonical split presentation
+  `(Q.prod (-Q)) ≃ dualProd K Δ` using the diagonal isotropic subspace `Δ ≤ V × V`
+- [x] In the doubled canonical split case, prove the diagonal subspace `Δ` realizes the Witt index
+  and is maximal totally isotropic
+- [x] Witt index and its basic properties
 
 ### 1.3 Mathlib Inventory
-- [ ] Audit `Mathlib.LinearAlgebra.CliffordAlgebra.*` — catalog what's available
-- [ ] Audit `Mathlib.LinearAlgebra.ExteriorAlgebra.*` — same
-- [ ] Audit `Mathlib.LinearAlgebra.QuadraticForm.*` — isotropic subspace API
-- [ ] Document gaps that need filling
+- [x] Audit `Mathlib.LinearAlgebra.CliffordAlgebra.*` — catalog what's available
+- [x] Audit `Mathlib.LinearAlgebra.ExteriorAlgebra.*` — same
+- [x] Audit `Mathlib.LinearAlgebra.QuadraticForm.*` — isotropic subspace API
+- [x] Document gaps that need filling
 
 ---
 
 ## Phase 2: The Spinor Module (Week 2-4)
 
 ### 2.1 Exterior Algebra of Maximal Isotropic Subspace
-- [ ] Given W ≤ V maximal isotropic, construct ⋀W (exterior algebra on W)
-- [ ] Show dim(⋀W) = 2^n where n = dim(W) = Witt index
+- [x] Given W ≤ V maximal isotropic, construct ⋀W (exterior algebra on W)
+- [x] Show dim(⋀W) = 2^n where n = dim(W) = Witt index
 
 ### 2.2 Clifford Action on ⋀W
+- [x] Define the split hyperbolic action of `Cl(W* × W, dualProd)` on `⋀W`
+- [x] Restrict that split hyperbolic action to `spinGroup (dualProd)`
 - [ ] Define the left action of Cl(V, Q) on ⋀W
+  - [x] Transport the split action along an explicit hyperbolic isometry `Q ≃ dualProd K W`
+  - [x] Package explicit hyperbolic presentations `Q ≃ dualProd K W` as first-class chosen-model
+    spinor data
+  - [x] Expose those presented chosen models as actual `Module (CliffordAlgebra Q)` and
+    `MulAction (spinGroup Q)` structures, including the canonical doubled case
+  - [x] Package the chosen Witt-subspace case `Q ≃ dualProd K Q.wittSubspace` through the same
+    presentation API
+  - [x] Package the split-data case `(W,U)` through the same transport/presentation API
+  - [x] In split rank, let the canonical Witt-subspace model choose a complement internally and
+    build the transported action without an explicit isometry argument
+  - [x] Specialize that transport canonically to the doubled form `Q ⊕ (-Q)` in the nondegenerate case
+  - [ ] Derive that isometry canonically from a full Witt decomposition `V ≃ W ⊕ W* ⊕ V₀`
   - For w ∈ W: action is exterior multiplication (w ∧ −)
   - For f ∈ W*: action is interior multiplication / contraction (ι_f)
   - Extend to all of Cl(V,Q) via universal property
 - [ ] Prove this action satisfies the Clifford relation: a(v) ∘ a(v) = Q(v) · id
+  - [x] In the transported hyperbolic case, prove the vector relation on `⋀W`
 - [ ] Prove ⋀W is a faithful Cl(V,Q)-module (for non-degenerate Q)
 
 ### 2.3 The Spinor Module
 - [ ] **Define `SpinorModule Q` := ⋀W as a `Module (CliffordAlgebra Q)`**
 - [ ] Prove irreducibility (for algebraically closed fields, even dimension)
 - [ ] Prove the dimension formula: dim(S) = 2^(n/2)
+  - [x] In the explicit hyperbolic case `Q ≃ dualProd K W`, show `dim(⋀W) = 2 ^ (dim V / 2)`
 
 ---
 
 ## Phase 3: Spin Group Action (Week 4-5)
 
 ### 3.1 Restriction to Spin Group
-- [ ] Show `spinGroup Q` acts on `SpinorModule Q` by restriction of Clifford action
-- [ ] This gives the **spin representation**: `spinGroup Q →* (SpinorModule Q →ₗ SpinorModule Q)`
-- [ ] Prove this is a group homomorphism
+- [x] Show `spinGroup Q` acts on `SpinorModule Q` by restriction of Clifford action
+- [x] This gives the **spin representation**: `spinGroup Q →* (SpinorModule Q →ₗ SpinorModule Q)`
+- [x] Prove this is a group homomorphism
 
 ### 3.2 Half-Spin / Chiral Representations (even dimension)
-- [ ] Use the ℤ/2-grading of Cl(V,Q) to decompose S = S⁺ ⊕ S⁻
-- [ ] S⁺ = ⋀^even W, S⁻ = ⋀^odd W
-- [ ] Prove Spin(V,Q) preserves the decomposition (Weyl spinors)
+- [x] Use the ℤ/2-grading of Cl(V,Q) to decompose S = S⁺ ⊕ S⁻
+- [x] Define the chosen-model splitting `⋀W = ⋀^even W ⊕ ⋀^odd W`
+- [x] Prove the split hyperbolic spin action on the chosen `⋀W` model preserves `⋀^even W` and `⋀^odd W`
+- [x] In positive split rank, prove the chosen even and odd halves have equal dimension
+- [ ] Identify these chosen even/odd summands with the ambient chiral modules `S⁺` and `S⁻`
+- [x] Prove Spin(V,Q) preserves the decomposition (Weyl spinors)
 - [ ] Prove S⁺ and S⁻ are irreducible and inequivalent (for dim ≥ 4)
 
 ---
@@ -94,8 +126,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [ ] Future work: spinor bundles, Dirac operators
 
 ### 5.2 Code Quality
-- [ ] Full `lake build` clean
-- [ ] Zero `sorry` / `admit` sweep
+- [x] Full `lake build` clean
+- [x] Zero `sorry` / `admit` sweep
 - [ ] Mathlib-compatible style
 - [ ] Module documentation
 

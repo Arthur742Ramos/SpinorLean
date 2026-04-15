@@ -12,18 +12,21 @@ This project fills that gap.
 
 ```
 SpinorLean/
+├── Spinor.lean
 ├── Spinor/
-│   ├── Basic.lean          -- Core spinor module definition
-│   ├── Isotropic.lean      -- Maximal isotropic subspaces
-│   ├── WittDecomp.lean     -- Witt decomposition V ≅ W ⊕ W* ⊕ V₀
-│   ├── CliffordAction.lean -- Cl(V,Q) acts on ⋀W
-│   ├── SpinRep.lean        -- Spin group representation
-│   ├── Chiral.lean         -- Half-spin representations S⁺, S⁻
-│   ├── Periodicity.lean    -- Clifford algebra classification
-│   └── Examples/
-│       ├── Spin2.lean      -- Spin(2) → U(1)
-│       ├── Spin3.lean      -- Spin(3) → SU(2)
-│       └── Spin4.lean      -- Spin(4) → SU(2) × SU(2)
+│   ├── Mathlib.lean        -- Shared Mathlib imports
+│   ├── Notation.lean       -- Project conventions and abbreviations
+│   ├── Inventory.lean      -- Mathlib audit and documented gaps
+│   ├── Isotropic.lean      -- Totally isotropic subspaces
+│   ├── WittDecomp.lean     -- Witt index and maximal isotropic existence
+│   ├── Basic.lean          -- Exterior-model spinor module alias
+│   ├── ExteriorModel.lean  -- Chosen `⋀W` models, dimensions, wedge/contraction operators
+│   ├── HyperbolicAction.lean -- Transport of the chosen model along explicit split isometries
+│   ├── Presentation.lean   -- First-class explicit hyperbolic presentations and their chosen models
+│   ├── ProdNeg.lean        -- Canonical split presentation and chosen model for `Q ⊕ (-Q)`
+│   ├── CliffordAction.lean -- Transported Clifford action on the exterior model
+│   ├── SpinRep.lean        -- Restriction of the action to `spinGroup`
+│   └── Chiral.lean         -- Transported chiral decomposition and spin invariance
 ├── ROADMAP.md
 ├── AGENTS.md
 └── lakefile.lean
@@ -43,4 +46,72 @@ lake build
 
 ## Status
 
-🚧 Under construction. See [ROADMAP.md](ROADMAP.md) for progress.
+Implemented so far:
+
+- shared Mathlib/notation layer for Clifford, exterior, and quadratic-form work
+- totally isotropic subspaces and maximal totally isotropic existence over finite-dimensional fields
+- Witt index as the maximal dimension of a totally isotropic subspace
+- a canonical maximal-isotropic exterior model `⋀W` with dimension `2 ^ wittIndex`
+- the explicit parity splitting `⋀W = ⋀^even W ⊕ ⋀^odd W` for the chosen exterior model
+- wedge and contraction operators on the chosen `⋀W` model
+- exterior multiplication and contraction flip the chosen even/odd summands
+- the split generator action of `W* × W` on `⋀W`, satisfying the hyperbolic Clifford relation
+- even split Clifford elements preserve each chosen parity summand, and the restricted split
+  spin-group action acts on both halves
+- any explicit hyperbolic isometry `Q ≃ dualProd K W` now transports the chosen `⋀W` model to an
+  ambient `Cl(V,Q)` action and restricted `spinGroup Q` action
+- any explicit hyperbolic presentation `Q ≃ dualProd K W` now also computes the Witt index:
+  `wittIndex Q = dim(W)`, via a general bound showing every totally isotropic subspace of
+  `dualProd K W` has dimension at most `dim(W)`
+- the same explicit hyperbolic presentation also transports the standard split factor `0 × W`
+  to a maximal totally isotropic subspace of the ambient quadratic space
+- explicit hyperbolic presentations are now packaged as first-class data, carrying their chosen
+  `⋀W` spinor model, transported Clifford/spin actions, actual `Module` / `MulAction`
+  structures, even/odd halves, Witt-index theorem, and transported maximal isotropic subspace
+- a half-dimensional totally isotropic subspace together with a chosen complement now also yields
+  such a first-class presentation directly, via
+  `QuadraticForm.splitIsometryEquivOfIsCompl` and `HyperbolicPresentation.ofIsCompl`
+- more generally, any totally isotropic subspace with a chosen complement now yields a linear
+  Witt decomposition `V ≃ W ⊕ W* ⊕ V₀` via
+  `QuadraticForm.wittLinearDecompositionOfIsCompl`, together with the residual factor
+  `QuadraticForm.wittResidualSubspaceOfIsCompl`; for the canonical chosen Witt subspace, these are
+  exposed as `QuadraticForm.wittLinearDecomposition` and `QuadraticForm.wittResidualSubspace`
+- when the split isometry is given specifically as `Q ≃ dualProd K Q.wittSubspace`, the canonical
+  Witt model now uses that same first-class presentation API and inherits the corresponding
+  Clifford/spin module and action structures directly
+- in the split-rank Witt-subspace case, the canonical Witt model can now choose a complement
+  internally and build its transported Clifford/spin actions directly via `splitWittPresentation`
+  and `splitWittSpinRepresentation`
+- for nondegenerate finite-dimensional `Q`, the doubled form `Q ⊕ (-Q)` now has a canonical split
+  presentation via Mathlib's `QuadraticForm.toDualProd`, upgraded here to an isometry equivalence
+  and anchored on the diagonal isotropic subspace of `V × V`
+- in that doubled case, the diagonal subspace now realizes the full Witt index and is proved
+  maximal totally isotropic
+- the doubled canonical split presentation is also exposed as a reusable
+  `HyperbolicPresentation (Q ⊕ (-Q))`
+- this yields a canonical chosen-model Clifford action, canonical module and spin-group action
+  structures, spin representation, and even/odd half-spin spaces for `Q ⊕ (-Q)`, with
+  dimensions `2 ^ dim(V)` and `2 ^ (dim(V) - 1)` in positive rank
+- in that explicit hyperbolic case, the chosen Witt model now satisfies the expected dimension
+  formula `dim = 2 ^ (dim V / 2)`
+- for positive Witt index, the chosen even and odd halves of `⋀W` are linearly equivalent and each
+  has dimension `2 ^ (dim W - 1)`; hence in the explicit hyperbolic case they have the expected
+  half-spin size `2 ^ (dim V / 2 - 1)`
+- the induced Clifford action of `Cl(W* × W, dualProd)` on `⋀W` and its restricted split spin-group
+  action
+- a faithful exterior-model Clifford action obtained from `CliffordAlgebra.equivExterior`
+- the induced `spinGroup` representation by restriction
+- a chiral decomposition `S = S⁺ ⊕ S⁻` transported from Clifford parity, with `spinGroup`
+  preserving both summands and restricting to actions on each summand
+
+Still open from the roadmap:
+
+- upgrading the new linear Witt decomposition `V ≃ W ⊕ W* ⊕ V₀` to a canonical orthogonal /
+  hyperbolic quadratic-form splitting, so the chosen-model ambient action can be instantiated
+  without separately choosing a complement in the general case
+- the final identification of the ambient chiral pieces `S⁺` and `S⁻` with the chosen-model
+  submodules `⋀^even W` and `⋀^odd W`
+- periodicity, low-dimensional identifications, irreducibility results, and the double-cover theorems
+- paper-writing and final research-polish tasks
+
+The library currently has a clean `lake build` and zero `sorry` / `admit`.
