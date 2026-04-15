@@ -76,6 +76,9 @@ Implemented so far:
   `QuadraticForm.wittLinearDecompositionOfIsCompl`, together with the residual factor
   `QuadraticForm.wittResidualSubspaceOfIsCompl`; for the canonical chosen Witt subspace, these are
   exposed as `QuadraticForm.wittLinearDecomposition` and `QuadraticForm.wittResidualSubspace`
+- that same general chosen-complement setup now also yields the genuine quadratic-form splitting
+  `Q ≃ dualProd K W ⊕ Q₀` via `QuadraticForm.wittIsometryEquivOfIsCompl`; for the canonical chosen
+  Witt subspace, this is exposed as `QuadraticForm.wittIsometryEquiv`
 - when the split isometry is given specifically as `Q ≃ dualProd K Q.wittSubspace`, the canonical
   Witt model now uses that same first-class presentation API and inherits the corresponding
   Clifford/spin module and action structures directly
@@ -106,11 +109,10 @@ Implemented so far:
 
 Still open from the roadmap:
 
-- upgrading the new linear Witt decomposition `V ≃ W ⊕ W* ⊕ V₀` to a canonical orthogonal /
-  hyperbolic quadratic-form splitting, so the chosen-model ambient action can be instantiated
-  without separately choosing a complement in the general case
 - the final identification of the ambient chiral pieces `S⁺` and `S⁻` with the chosen-model
   submodules `⋀^even W` and `⋀^odd W`
+- packaging the new general canonical Witt splitting `QuadraticForm.wittIsometryEquiv` through the
+  higher-level chosen-model presentation and action APIs, not just the lower-level decomposition file
 - periodicity, low-dimensional identifications, irreducibility results, and the double-cover theorems
 - paper-writing and final research-polish tasks
 

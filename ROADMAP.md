@@ -16,10 +16,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 ### 1.2 Quadratic Spaces & Isotropic Subspaces
 - [x] Define totally isotropic subspaces of a quadratic module (V, Q)
 - [x] Prove existence of maximal isotropic subspaces for finite-dimensional spaces over fields
-- [ ] Witt decomposition: V ≅ W ⊕ W* ⊕ V₀ (hyperbolic splitting)
+- [x] Witt decomposition: V ≅ W ⊕ W* ⊕ V₀ (hyperbolic splitting)
   - [x] Package the underlying linear decomposition `V ≃ W ⊕ W* ⊕ V₀` from a chosen
     complement, with canonical `wittSubspace` specializations and residual-dimension formulas
-  - [ ] Upgrade that linear decomposition to the orthogonal / hyperbolic quadratic-form splitting
+  - [x] Upgrade that linear decomposition to the orthogonal / hyperbolic quadratic-form splitting
 - [x] Package the chosen-model transport once an explicit hyperbolic isometry `Q ≃ dualProd K W` is given
 - [x] Prove any explicit hyperbolic presentation `Q ≃ dualProd K W` satisfies `wittIndex Q = dim W`
 - [x] Package the maximal totally isotropic subspace determined by an explicit hyperbolic

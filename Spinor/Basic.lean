@@ -24,7 +24,9 @@ to an explicit Witt presentation `Q ≃ dualProd K Q.wittSubspace`; in split ran
 Witt model can also choose its complement internally via `splitWittPresentation`. At the lower
 linear-algebra level, `Spinor.WittDecomp` now also provides the general linear Witt decomposition
 `QuadraticForm.wittLinearDecomposition : V ≃ Q.wittSubspace × Q.wittSubspace* × V₀` together with
-the residual factor `QuadraticForm.wittResidualSubspace`.
+the residual factor `QuadraticForm.wittResidualSubspace`, as well as the corresponding general
+quadratic-form splitting `QuadraticForm.wittIsometryEquiv :
+  Q ≃ dualProd K Q.wittSubspace ⊕ Q₀`.
 -/
 abbrev SpinorModule (_Q : QuadraticForm R M) := ExteriorAlgebra R M
 

@@ -374,6 +374,389 @@ noncomputable def wittLinearDecompositionOfIsCompl
           (LinearEquiv.prodComm K R C).trans <|
             LinearEquiv.prodCongr eC (LinearEquiv.refl K R)
 
+/-- The residual factor, now viewed as an ambient subspace of `V` rather than a subspace of the
+chosen complement `U`. -/
+def ambientWittResidualSubspaceOfIsCompl (Q : QuadraticForm K V) (W U : Submodule K V) :
+    Submodule K V :=
+  LinearMap.range
+    (U.subtype.comp (wittResidualSubspaceOfIsCompl (K := K) Q W U).subtype)
+
+/-- The residual subtype is linearly equivalent to its ambient image in `V`. -/
+noncomputable def ambientWittResidualSubspaceEquivOfIsCompl (Q : QuadraticForm K V)
+    (W U : Submodule K V) :
+    wittResidualSubspaceOfIsCompl (K := K) Q W U ≃ₗ[K]
+      ambientWittResidualSubspaceOfIsCompl (K := K) Q W U :=
+  LinearEquiv.ofInjective
+    (U.subtype.comp (wittResidualSubspaceOfIsCompl (K := K) Q W U).subtype) <| by
+      intro x y hxy
+      apply Subtype.ext
+      apply Subtype.ext
+      exact hxy
+
+/-- The ambient residual factor has the same dimension as the residual subtype. -/
+theorem finrank_ambientWittResidualSubspaceOfIsCompl (Q : QuadraticForm K V) (W U : Submodule K V) :
+    Module.finrank K (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U) =
+      Module.finrank K (wittResidualSubspaceOfIsCompl (K := K) Q W U) := by
+  simpa using
+    (LinearEquiv.finrank_eq
+      (ambientWittResidualSubspaceEquivOfIsCompl (K := K) Q W U)).symm
+
+/-- The ambient residual factor is orthogonal to `W` for the associated bilinear form. -/
+theorem ambientWittResidualSubspaceOfIsCompl_le_orthogonal
+    (Q : QuadraticForm K V) (W U : Submodule K V) :
+    ambientWittResidualSubspaceOfIsCompl (K := K) Q W U ≤
+      LinearMap.BilinForm.orthogonal Q.associated W := by
+  intro x hx w hw
+  rcases hx with ⟨r, rfl⟩
+  have hr0a := congrArg (fun d : Module.Dual K W => d ⟨w, hw⟩) r.property
+  have hr0 :
+      Q.associated
+        ((((U.subtype.comp
+            (wittResidualSubspaceOfIsCompl (K := K) Q W U).subtype) r : V))) w = 0 := by
+    simpa only [associatedComplementToDual, LinearMap.comp_apply] using hr0a
+  rw [LinearMap.BilinForm.isOrtho_def]
+  calc
+    Q.associated w
+        (((U.subtype.comp (wittResidualSubspaceOfIsCompl (K := K) Q W U).subtype) r : V))
+        =
+          Q.associated
+            (((U.subtype.comp (wittResidualSubspaceOfIsCompl (K := K) Q W U).subtype) r : V)) w := by
+              exact QuadraticMap.associated_isSymm (S := K) (Q := Q) _ _
+    _ = 0 := hr0
+
+/-- Hence `W` is orthogonal to the ambient residual factor as well. -/
+theorem le_orthogonal_ambientWittResidualSubspaceOfIsCompl
+    (Q : QuadraticForm K V) (W U : Submodule K V) :
+    W ≤ LinearMap.BilinForm.orthogonal Q.associated
+      (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U) := by
+  intro w hw x hx
+  have hx0 :=
+    ambientWittResidualSubspaceOfIsCompl_le_orthogonal (K := K) Q W U hx w hw
+  exact ((Q.associated_isSymm (S := K)).ortho_comm).2 hx0
+
+/-- The quadratic form on the residual subtype. -/
+def wittResidualQuadraticFormOfIsCompl (Q : QuadraticForm K V) (W U : Submodule K V) :
+    QuadraticForm K (wittResidualSubspaceOfIsCompl (K := K) Q W U) :=
+  Q.comp (U.subtype.comp (wittResidualSubspaceOfIsCompl (K := K) Q W U).subtype)
+
+/-- The quadratic form on the ambient residual subspace. -/
+def ambientWittResidualQuadraticFormOfIsCompl (Q : QuadraticForm K V) (W U : Submodule K V) :
+    QuadraticForm K (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U) :=
+  Q.comp (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U).subtype
+
+/-- The residual quadratic form is nondegenerate. -/
+theorem wittResidualQuadraticFormOfIsCompl_nondegenerate
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    (wittResidualQuadraticFormOfIsCompl (K := K) Q W U).Nondegenerate := by
+  let α := associatedComplementToDual (K := K) Q W U
+  let R := wittResidualSubspaceOfIsCompl (K := K) Q W U
+  let QR := wittResidualQuadraticFormOfIsCompl (K := K) Q W U
+  have hαsurj : Function.Surjective α :=
+    associatedComplementToDual_surjective (Q := Q) hQ hW hWU
+  obtain ⟨σ, hσ⟩ := α.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hαsurj)
+  have hAssoc : (QuadraticMap.associated QR).Nondegenerate := by
+    rw [LinearMap.IsRefl.nondegenerate_iff_separatingLeft
+      ((QR.associated_isSymm (S := K)).isRefl)]
+    intro r hr
+    let μ : U →ₗ[K] K := (Q.associated ((((r : R) : U) : V))).comp U.subtype
+    let ν : Module.Dual K (Module.Dual K W) := μ.comp σ
+    let w : W := (Module.evalEquiv K W).symm ν
+    have hnondeg : Q.associated.Nondegenerate :=
+      (QuadraticMap.nondegenerate_associated_iff (Q := Q)).mpr hQ
+    have hμR : ∀ s : R, μ s = 0 := by
+      intro s
+      simpa [μ, QR, QuadraticMap.associated_comp] using hr s
+    have hνcomp : ν.comp α = μ := by
+      ext u
+      have hker : α (σ (α u) - u) = 0 := by
+        rw [map_sub]
+        change (α.comp σ) (α u) - α u = 0
+        simp [hσ]
+      have hsub : μ (σ (α u) - u) = 0 := hμR ⟨σ (α u) - u, hker⟩
+      have hEq : μ (σ (α u)) = μ u := by
+        exact sub_eq_zero.mp <| by simpa [LinearMap.map_sub] using hsub
+      simpa [ν] using hEq
+    have hμU : ∀ u : U, μ u = Q.associated (u : V) (w : V) := by
+      intro u
+      calc
+        μ u = ν (α u) := by
+          simpa [LinearMap.comp_apply] using congrArg (fun f : U →ₗ[K] K => f u) hνcomp.symm
+        _ = α u w := by
+          simpa [w] using (apply_evalEquiv_symm_apply K W (α u) ν)
+        _ = Q.associated (u : V) (w : V) := by
+          rfl
+    have hrw : ((((r : R) : U) : V) - (w : V)) = 0 := by
+      exact hnondeg.1 ((((r : R) : U) : V) - (w : V)) <| by
+        intro x
+        have hx_top : x ∈ W ⊔ U := by
+          simpa [hWU.sup_eq_top]
+        rcases Submodule.mem_sup.mp hx_top with ⟨y, hy, u, hu, rfl⟩
+        have hyr : Q.associated (y : V) ((((r : R) : U) : V)) = 0 := by
+          exact ambientWittResidualSubspaceOfIsCompl_le_orthogonal (K := K) Q W U
+            (show ((((r : R) : U) : V) ∈
+                ambientWittResidualSubspaceOfIsCompl (K := K) Q W U) from
+              ⟨r, rfl⟩)
+            y hy
+        have hy0r : Q.associated ((((r : R) : U) : V)) (y : V) = 0 := by
+          rw [QuadraticMap.associated_isSymm (S := K) (Q := Q) (((r : R) : U) : V) (y : V)]
+          exact hyr
+        have hy0w : Q.associated (w : V) (y : V) = 0 := by
+          exact (QuadraticMap.associated_isOrtho (Q := Q)).2 <| hW.isOrtho w ⟨y, hy⟩
+        have hu0 : Q.associated ((((r : R) : U) : V) - (w : V)) (u : V) = 0 := by
+          calc
+            Q.associated ((((r : R) : U) : V) - (w : V)) (u : V)
+                = Q.associated ((((r : R) : U) : V)) (u : V) -
+                    Q.associated (w : V) (u : V) := by
+                      simpa [sub_eq_add_neg] using
+                        (Q.associated.sub_left ((((r : R) : U) : V)) (w : V) (u : V))
+            _ = 0 := by
+              have hru : Q.associated ((((r : R) : U) : V)) (u : V) =
+                  Q.associated (w : V) (u : V) := by
+                calc
+                  Q.associated ((((r : R) : U) : V)) (u : V) = μ ⟨u, hu⟩ := by
+                    rfl
+                  _ = Q.associated (u : V) (w : V) := hμU ⟨u, hu⟩
+                  _ = Q.associated (w : V) (u : V) := by
+                    rw [QuadraticMap.associated_isSymm (S := K) (Q := Q) (u : V) (w : V)]
+              rw [hru]
+              exact sub_self _
+        have hyu0 : Q.associated ((((r : R) : U) : V) - (w : V)) (y : V) = 0 := by
+          calc
+            Q.associated ((((r : R) : U) : V) - (w : V)) (y : V)
+                = Q.associated ((((r : R) : U) : V)) (y : V) -
+                    Q.associated (w : V) (y : V) := by
+                      simpa [sub_eq_add_neg] using
+                        (Q.associated.sub_left ((((r : R) : U) : V)) (w : V) (y : V))
+            _ = 0 := by
+              rw [hy0r, hy0w]
+              simp
+        change Q.associated ((((r : R) : U) : V) - (w : V)) ((y : V) + (u : V)) = 0
+        calc
+          Q.associated ((((r : R) : U) : V) - (w : V)) ((y : V) + (u : V))
+              = Q.associated ((((r : R) : U) : V) - (w : V)) (y : V) +
+                  Q.associated ((((r : R) : U) : V) - (w : V)) (u : V) := by
+                    simpa using
+                      (Q.associated ((((r : R) : U) : V) - (w : V))).map_add (y : V) (u : V)
+          _ = 0 := by
+            rw [hyu0, hu0]
+            simp
+    have hrW : ((((r : R) : U) : V)) ∈ W := by
+      rw [sub_eq_zero] at hrw
+      exact hrw ▸ w.property
+    have hrBot : ((((r : R) : U) : V)) = 0 := by
+      have hmem : ((((r : R) : U) : V)) ∈ W ⊓ U := ⟨hrW, ((r : R) : U).property⟩
+      have : ((((r : R) : U) : V)) ∈ (⊥ : Submodule K V) := by
+        simpa [hWU.disjoint.eq_bot] using hmem
+      simpa using this
+    exact Subtype.ext <| Subtype.ext hrBot
+  exact (QuadraticMap.nondegenerate_associated_iff (Q := QR)).mp hAssoc
+
+/-- The quadratic form on the orthogonal complement of the ambient residual factor. -/
+def orthogonalAmbientWittResidualQuadraticFormOfIsCompl (Q : QuadraticForm K V)
+    (W U : Submodule K V) : QuadraticForm K
+      (LinearMap.BilinForm.orthogonal Q.associated
+        (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U)) :=
+  Q.comp (LinearMap.BilinForm.orthogonal Q.associated
+    (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U)).subtype
+
+/-- The ambient residual factor is complemented by its orthogonal complement. -/
+theorem ambientWittResidualSubspaceOfIsCompl_isCompl_orthogonal
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    IsCompl (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U)
+      (LinearMap.BilinForm.orthogonal Q.associated
+        (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U)) := by
+  let R0 := ambientWittResidualSubspaceOfIsCompl (K := K) Q W U
+  have hdisj : Disjoint R0 (LinearMap.BilinForm.orthogonal Q.associated R0) := by
+    rw [disjoint_iff]
+    rw [eq_bot_iff]
+    intro x hx
+    have hxR : x ∈ R0 := hx.1
+    have hxO : x ∈ LinearMap.BilinForm.orthogonal Q.associated R0 := hx.2
+    rcases hxR with ⟨r, rfl⟩
+    have hr :
+        ∀ s : wittResidualSubspaceOfIsCompl (K := K) Q W U,
+          (QuadraticMap.associated
+              (wittResidualQuadraticFormOfIsCompl (K := K) Q W U)) r s = 0 := by
+      intro s
+      have hs : (((U.subtype.comp
+          (wittResidualSubspaceOfIsCompl (K := K) Q W U).subtype) s : V) ∈ R0) := by
+        exact ⟨s, rfl⟩
+      have hs0 := hxO _ hs
+      let rv : V := ((((r : wittResidualSubspaceOfIsCompl (K := K) Q W U) : U) : V))
+      let sv : V := ((((s : wittResidualSubspaceOfIsCompl (K := K) Q W U) : U) : V))
+      have hs0' :
+          Q.associated rv sv = 0 := by
+        have hs0'' : Q.associated.IsOrtho rv sv :=
+          ((Q.associated_isSymm (S := K)).ortho_comm).2 hs0
+        exact hs0''
+      simpa [rv, sv, wittResidualQuadraticFormOfIsCompl, QuadraticMap.associated_comp] using hs0'
+    have hAssoc :
+        (QuadraticMap.associated
+            (wittResidualQuadraticFormOfIsCompl (K := K) Q W U)).Nondegenerate :=
+      (QuadraticMap.nondegenerate_associated_iff
+        (Q := wittResidualQuadraticFormOfIsCompl (K := K) Q W U)).mpr <|
+          wittResidualQuadraticFormOfIsCompl_nondegenerate (Q := Q) hQ hW hWU
+    have hr0 : r = 0 := hAssoc.1 r hr
+    rw [hr0]
+    simp
+  exact (LinearMap.BilinForm.isCompl_orthogonal_iff_disjoint
+    (B := Q.associated) (W := R0) ((Q.associated_isSymm (S := K)).isRefl)).2 <| by
+      simpa [R0] using hdisj
+
+/-- Orthogonally split off the ambient residual factor from `Q`. -/
+noncomputable def orthogonalAmbientWittResidualDecompositionOfIsCompl
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    Q.IsometryEquiv
+      ((ambientWittResidualQuadraticFormOfIsCompl (K := K) Q W U).prod
+        (orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)) where
+  toLinearEquiv :=
+    (Submodule.prodEquivOfIsCompl
+      (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U)
+      (LinearMap.BilinForm.orthogonal Q.associated
+        (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U))
+      (ambientWittResidualSubspaceOfIsCompl_isCompl_orthogonal
+        (Q := Q) hQ hW hWU)).symm
+  map_app' x := by
+    let R0 := ambientWittResidualSubspaceOfIsCompl (K := K) Q W U
+    let Rperp := LinearMap.BilinForm.orthogonal Q.associated R0
+    let e := Submodule.prodEquivOfIsCompl R0 Rperp
+      (ambientWittResidualSubspaceOfIsCompl_isCompl_orthogonal (Q := Q) hQ hW hWU)
+    let xo := e.symm x
+    rcases hxo : xo with ⟨r, o⟩
+    have hx : x = (r : V) + o := by
+      have happly := e.apply_symm_apply x
+      change (xo.1 : V) + xo.2 = x at happly
+      rw [hxo] at happly
+      simpa using happly.symm
+    have hroB : Q.associated.IsOrtho (r : V) o := by
+      change Q.associated (r : V) o = 0
+      have ho := o.property (r : V) r.property
+      exact ho
+    have hroQ : Q.IsOrtho (r : V) o :=
+      (QuadraticMap.associated_isOrtho (Q := Q)).1 hroB
+    have hePair : e.symm ((r : V) + o) = (r, o) := by
+      rw [← hx]
+      simpa [xo] using hxo
+    rw [hx]
+    change
+      (ambientWittResidualQuadraticFormOfIsCompl (K := K) Q W U).prod
+          (orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)
+          (e.symm ((r : V) + o)) =
+        Q ((r : V) + o)
+    rw [hePair]
+    rw [(QuadraticMap.isOrtho_def).mp hroQ]
+    simp [ambientWittResidualQuadraticFormOfIsCompl,
+      orthogonalAmbientWittResidualQuadraticFormOfIsCompl, QuadraticMap.prod]
+
+/-- The orthogonal complement of the ambient residual factor has dimension `2 * dim W`. -/
+theorem finrank_orthogonalAmbientWittResidualOrthogonalOfIsCompl
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    Module.finrank K
+      (LinearMap.BilinForm.orthogonal Q.associated
+        (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U)) =
+      2 * Module.finrank K W := by
+  let R0 := ambientWittResidualSubspaceOfIsCompl (K := K) Q W U
+  let S := LinearMap.BilinForm.orthogonal Q.associated R0
+  have horth :
+      Module.finrank K V = Module.finrank K R0 + Module.finrank K S := by
+    simpa [R0, S, Module.finrank_prod] using
+      (LinearEquiv.finrank_eq
+        (orthogonalAmbientWittResidualDecompositionOfIsCompl
+          (Q := Q) hQ hW hWU).toLinearEquiv)
+  have hlin :
+      Module.finrank K V =
+        2 * Module.finrank K W +
+          Module.finrank K (wittResidualSubspaceOfIsCompl (K := K) Q W U) := by
+    have hdual : Module.finrank K (Module.Dual K W) = Module.finrank K W := by
+      simpa using (Subspace.dual_finrank_eq (K := K) (V := W))
+    calc
+      Module.finrank K V
+          = Module.finrank K W + Module.finrank K (Module.Dual K W) +
+              Module.finrank K (wittResidualSubspaceOfIsCompl (K := K) Q W U) := by
+                simpa [Module.finrank_prod, add_assoc] using
+                  (LinearEquiv.finrank_eq
+                    (wittLinearDecompositionOfIsCompl (Q := Q) hQ hW hWU))
+      _ = 2 * Module.finrank K W +
+            Module.finrank K (wittResidualSubspaceOfIsCompl (K := K) Q W U) := by
+              rw [hdual]
+              omega
+  have hlin' :
+      Module.finrank K V = 2 * Module.finrank K W + Module.finrank K R0 := by
+    rw [finrank_ambientWittResidualSubspaceOfIsCompl (K := K) Q W U]
+    exact hlin
+  have hEq :
+      Module.finrank K R0 + Module.finrank K S =
+        2 * Module.finrank K W + Module.finrank K R0 := by
+    calc
+      Module.finrank K R0 + Module.finrank K S = Module.finrank K V := horth.symm
+      _ = 2 * Module.finrank K W + Module.finrank K R0 := hlin'
+  have hEq' :
+      Module.finrank K S + Module.finrank K R0 =
+        2 * Module.finrank K W + Module.finrank K R0 := by
+    simpa [add_comm, add_left_comm, add_assoc] using hEq
+  exact Nat.add_right_cancel hEq'
+
+/-- `W`, viewed as a subspace of the orthogonal complement of the ambient residual factor. -/
+def orthogonalAmbientWittSubspaceOfIsCompl (Q : QuadraticForm K V) (W U : Submodule K V) :
+    Submodule K
+      (LinearMap.BilinForm.orthogonal Q.associated
+        (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U)) :=
+  W.comap
+    (LinearMap.BilinForm.orthogonal Q.associated
+      (ambientWittResidualSubspaceOfIsCompl (K := K) Q W U)).subtype
+
+/-- The lifted copy of `W` inside the orthogonal complement is linearly equivalent to `W`. -/
+noncomputable def orthogonalAmbientWittSubspaceEquivOfIsCompl
+    (Q : QuadraticForm K V) (W U : Submodule K V) :
+    orthogonalAmbientWittSubspaceOfIsCompl (K := K) Q W U ≃ₗ[K] W :=
+  Submodule.comapSubtypeEquivOfLe
+    (le_orthogonal_ambientWittResidualSubspaceOfIsCompl (K := K) Q W U)
+
+/-- Hence the lifted copy of `W` has the same dimension as `W`. -/
+theorem finrank_orthogonalAmbientWittSubspaceOfIsCompl
+    (Q : QuadraticForm K V) (W U : Submodule K V) :
+    Module.finrank K (orthogonalAmbientWittSubspaceOfIsCompl (K := K) Q W U) =
+      Module.finrank K W := by
+  simpa using
+    (LinearEquiv.finrank_eq
+      (orthogonalAmbientWittSubspaceEquivOfIsCompl (K := K) Q W U))
+
+/-- The lifted copy of `W` remains totally isotropic for the orthogonal-complement factor. -/
+theorem orthogonalAmbientWittSubspaceOfIsCompl_isTotallyIsotropic
+    (hW : Q.IsTotallyIsotropic W) :
+    (orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U).IsTotallyIsotropic
+      (orthogonalAmbientWittSubspaceOfIsCompl (K := K) Q W U) := by
+  intro x
+  change Q (x : V) = 0
+  exact hW ⟨x, x.property⟩
+
+/-- The orthogonal-complement factor is nondegenerate. -/
+theorem orthogonalAmbientWittResidualQuadraticFormOfIsCompl_nondegenerate
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    (orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U).Nondegenerate := by
+  let R0 := ambientWittResidualSubspaceOfIsCompl (K := K) Q W U
+  let S := LinearMap.BilinForm.orthogonal Q.associated R0
+  have hQassoc : Q.associated.Nondegenerate :=
+    (QuadraticMap.nondegenerate_associated_iff (Q := Q)).mpr hQ
+  have hS :
+      IsCompl S (LinearMap.BilinForm.orthogonal Q.associated S) := by
+    simpa [R0, S,
+      LinearMap.BilinForm.orthogonal_orthogonal hQassoc
+        ((Q.associated_isSymm (S := K)).isRefl) R0] using
+      (ambientWittResidualSubspaceOfIsCompl_isCompl_orthogonal
+        (Q := Q) hQ hW hWU).symm
+  have hAssoc :
+      (LinearMap.BilinForm.restrict Q.associated S).Nondegenerate :=
+    (LinearMap.BilinForm.restrict_nondegenerate_iff_isCompl_orthogonal
+      (B := Q.associated) ((Q.associated_isSymm (S := K)).isRefl)).2 hS
+  have hAssoc' :
+      (QuadraticMap.associated
+        (orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)).Nondegenerate := by
+    simpa [S, orthogonalAmbientWittResidualQuadraticFormOfIsCompl, QuadraticMap.associated_comp]
+      using hAssoc
+  exact (QuadraticMap.nondegenerate_associated_iff
+    (Q := orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)).mp hAssoc'
+
 /-- The associated self-pairing on a chosen complement. -/
 def associatedComplementSelf (Q : QuadraticForm K V) (U : Submodule K V) :
     U →ₗ[K] Module.Dual K U :=
@@ -570,6 +953,46 @@ noncomputable def splitIsometryEquivOfIsCompl
     ((splitIsometryEquivOfIsCompl (Q := Q) hQ hW hsplit hWU).apply_symm_apply (0, w)).trans
       (splitIsometryEquivOfIsCompl_apply_subtype (Q := Q) hQ hW hsplit hWU w).symm
 
+/-- A general Witt decomposition with chosen complement:
+`Q ≃ dualProd K W ⊕ Q₀`, where `Q₀` is the ambient residual quadratic form. -/
+noncomputable def wittIsometryEquivOfIsCompl
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W) (hWU : IsCompl W U) :
+    Q.IsometryEquiv
+      ((QuadraticForm.dualProd K W).prod
+        (ambientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)) := by
+  let R0 := ambientWittResidualSubspaceOfIsCompl (K := K) Q W U
+  let S := LinearMap.BilinForm.orthogonal Q.associated R0
+  let W0 := orthogonalAmbientWittSubspaceOfIsCompl (K := K) Q W U
+  let eW : W0 ≃ₗ[K] W := orthogonalAmbientWittSubspaceEquivOfIsCompl (K := K) Q W U
+  have hQ0 :
+      (orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U).Nondegenerate :=
+    orthogonalAmbientWittResidualQuadraticFormOfIsCompl_nondegenerate (Q := Q) hQ hW hWU
+  have hW0 :
+      (orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U).IsTotallyIsotropic W0 :=
+    orthogonalAmbientWittSubspaceOfIsCompl_isTotallyIsotropic (Q := Q) (W := W) (U := U) hW
+  have hsplit0 : Module.finrank K S = 2 * Module.finrank K W0 := by
+    rw [finrank_orthogonalAmbientWittSubspaceOfIsCompl (K := K) Q W U]
+    exact finrank_orthogonalAmbientWittResidualOrthogonalOfIsCompl (Q := Q) hQ hW hWU
+  let U0 : Submodule K S := Classical.choose (Submodule.exists_isCompl W0)
+  have hU0 : IsCompl W0 U0 := Classical.choose_spec (Submodule.exists_isCompl W0)
+  let eSplit0 :
+      (orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U).IsometryEquiv
+        (QuadraticForm.dualProd K W0) :=
+    splitIsometryEquivOfIsCompl
+      (Q := orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)
+      (W := W0) (U := U0) hQ0 hW0 hsplit0 hU0
+  let eSplit :
+      (orthogonalAmbientWittResidualQuadraticFormOfIsCompl (K := K) Q W U).IsometryEquiv
+        (QuadraticForm.dualProd K W) :=
+    eSplit0.trans (QuadraticForm.dualProdIsometry (R := K) eW)
+  exact
+    ((orthogonalAmbientWittResidualDecompositionOfIsCompl (Q := Q) hQ hW hWU).trans
+      ((QuadraticMap.IsometryEquiv.refl
+          (ambientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)).prod eSplit)).trans
+      (QuadraticMap.IsometryEquiv.prodComm
+        (ambientWittResidualQuadraticFormOfIsCompl (K := K) Q W U)
+        (QuadraticForm.dualProd K W))
+
 /-- A chosen complement of the canonical Witt subspace. -/
 noncomputable def wittSubspaceComplement (Q : QuadraticForm K V) : Submodule K V :=
   Classical.choose Q.wittSubspace.exists_isCompl
@@ -597,6 +1020,17 @@ theorem finrank_wittResidualSubspace (Q : QuadraticForm K V) (hQ : Q.Nondegenera
 noncomputable def wittLinearDecomposition (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
     V ≃ₗ[K] Q.wittSubspace × Module.Dual K Q.wittSubspace × Q.wittResidualSubspace :=
   wittLinearDecompositionOfIsCompl (K := K) (Q := Q) (W := Q.wittSubspace)
+    (U := Q.wittSubspaceComplement) hQ Q.wittSubspace_isTotallyIsotropic
+    Q.wittSubspaceComplement_isCompl
+
+/-- The canonical Witt subspace determines a general Witt decomposition
+`Q ≃ dualProd K Q.wittSubspace ⊕ Q₀`. -/
+noncomputable def wittIsometryEquiv (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
+    Q.IsometryEquiv
+      ((QuadraticForm.dualProd K Q.wittSubspace).prod
+        (ambientWittResidualQuadraticFormOfIsCompl (K := K) Q
+          Q.wittSubspace Q.wittSubspaceComplement)) :=
+  wittIsometryEquivOfIsCompl (K := K) (Q := Q) (W := Q.wittSubspace)
     (U := Q.wittSubspaceComplement) hQ Q.wittSubspace_isTotallyIsotropic
     Q.wittSubspaceComplement_isCompl
 
