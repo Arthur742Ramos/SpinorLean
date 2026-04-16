@@ -17,42 +17,40 @@ variable {V : Type uV} [AddCommGroup V] [Module K V]
 
 section GradingTransport
 
-variable {Q : QuadraticForm K V} {W : Submodule K V}
+variable {V₂ : Type*} [AddCommGroup V₂] [Module K V₂]
+variable {Q₁ : QuadraticForm K V} {Q₂ : QuadraticForm K V₂}
 
-/-- An isometric map to the split hyperbolic model preserves the even Clifford grading. -/
+/-- An isometric map preserves the even Clifford grading. -/
 theorem cliffordMap_mem_evenOdd_zero
-    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W))
-    {a : CliffordAlgebra Q} (ha : a ∈ CliffordAlgebra.evenOdd Q 0) :
-    CliffordAlgebra.map e.toIsometry a ∈
-      CliffordAlgebra.evenOdd (QuadraticForm.dualProd K W) 0 := by
-  refine CliffordAlgebra.even_induction (Q := Q) ?_ ?_ ?_ a ha
+    (e : Q₁.IsometryEquiv Q₂)
+    {a : CliffordAlgebra Q₁} (ha : a ∈ CliffordAlgebra.evenOdd Q₁ 0) :
+    CliffordAlgebra.map e.toIsometry a ∈ CliffordAlgebra.evenOdd Q₂ 0 := by
+  refine CliffordAlgebra.even_induction (Q := Q₁) ?_ ?_ ?_ a ha
   · intro r
-    simpa using
-      (SetLike.algebraMap_mem_graded (CliffordAlgebra.evenOdd (QuadraticForm.dualProd K W)) r)
+    simpa using (SetLike.algebraMap_mem_graded (CliffordAlgebra.evenOdd Q₂) r)
   · intro x y hx hy ihx ihy
     simpa [map_add] using Submodule.add_mem _ ihx ihy
   · intro m₁ m₂ x hx ih
     simpa [map_mul, CliffordAlgebra.map_apply_ι, mul_assoc] using
       SetLike.mul_mem_graded
-        (CliffordAlgebra.ι_mul_ι_mem_evenOdd_zero (Q := QuadraticForm.dualProd K W) (e m₁) (e m₂))
+        (CliffordAlgebra.ι_mul_ι_mem_evenOdd_zero (Q := Q₂) (e m₁) (e m₂))
         ih
 
-/-- An isometric map to the split hyperbolic model preserves the odd Clifford grading. -/
+/-- An isometric map preserves the odd Clifford grading. -/
 theorem cliffordMap_mem_evenOdd_one
-    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W))
-    {a : CliffordAlgebra Q} (ha : a ∈ CliffordAlgebra.evenOdd Q 1) :
-    CliffordAlgebra.map e.toIsometry a ∈
-      CliffordAlgebra.evenOdd (QuadraticForm.dualProd K W) 1 := by
-  refine CliffordAlgebra.odd_induction (Q := Q) ?_ ?_ ?_ a ha
+    (e : Q₁.IsometryEquiv Q₂)
+    {a : CliffordAlgebra Q₁} (ha : a ∈ CliffordAlgebra.evenOdd Q₁ 1) :
+    CliffordAlgebra.map e.toIsometry a ∈ CliffordAlgebra.evenOdd Q₂ 1 := by
+  refine CliffordAlgebra.odd_induction (Q := Q₁) ?_ ?_ ?_ a ha
   · intro v
     simpa [CliffordAlgebra.map_apply_ι] using
-      (CliffordAlgebra.ι_mem_evenOdd_one (Q := QuadraticForm.dualProd K W) (e v))
+      (CliffordAlgebra.ι_mem_evenOdd_one (Q := Q₂) (e v))
   · intro x y hx hy ihx ihy
     simpa [map_add] using Submodule.add_mem _ ihx ihy
   · intro m₁ m₂ x hx ih
     simpa [map_mul, CliffordAlgebra.map_apply_ι, mul_assoc] using
       SetLike.mul_mem_graded
-        (CliffordAlgebra.ι_mul_ι_mem_evenOdd_zero (Q := QuadraticForm.dualProd K W) (e m₁) (e m₂))
+        (CliffordAlgebra.ι_mul_ι_mem_evenOdd_zero (Q := Q₂) (e m₁) (e m₂))
         ih
 
 end GradingTransport
@@ -195,6 +193,143 @@ theorem hyperbolicCliffordAction_isSimpleModule [FiniteDimensional K V]
     (LinearMap.isSimpleModule_iff_of_bijective (σ := σ) (l := l)
       (by simpa [l] using Function.bijective_id)).2 inferInstance
 
+/-- Transport the even Clifford algebra along an explicit hyperbolic isometry. -/
+noncomputable def evenCliffordMap (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    CliffordAlgebra.even Q →ₐ[K] CliffordAlgebra.even (QuadraticForm.dualProd K W) where
+  toFun a := ⟨CliffordAlgebra.map e.toIsometry a.1,
+    cliffordMap_mem_evenOdd_zero (K := K) e a.2⟩
+  map_zero' := by
+    ext
+    simp
+  map_add' := by
+    intro a b
+    ext
+    simp [map_add]
+  map_one' := by
+    ext
+    simp
+  map_mul' := by
+    intro a b
+    ext
+    simp [map_mul]
+  commutes' := by
+    intro r
+    ext
+    simp
+
+/-- The transported even Clifford map is surjective. -/
+theorem evenCliffordMap_surjective (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    Function.Surjective (evenCliffordMap (K := K) (Q := Q) (W := W) e) := by
+  intro a
+  refine ⟨⟨CliffordAlgebra.map e.symm.toIsometry a.1,
+      cliffordMap_mem_evenOdd_zero (K := K) e.symm a.2⟩, ?_⟩
+  ext
+  have hright :
+      e.toIsometry.comp e.symm.toIsometry =
+        QuadraticMap.Isometry.id (QuadraticForm.dualProd K W) := by
+    ext v <;> simp [QuadraticMap.Isometry.comp_apply, e.apply_symm_apply]
+  have hmap :
+      CliffordAlgebra.map e.toIsometry (CliffordAlgebra.map e.symm.toIsometry a.1) =
+        CliffordAlgebra.map (e.toIsometry.comp e.symm.toIsometry) a.1 := by
+    change
+      ((CliffordAlgebra.map e.toIsometry).comp (CliffordAlgebra.map e.symm.toIsometry)) a.1 =
+        CliffordAlgebra.map (e.toIsometry.comp e.symm.toIsometry) a.1
+    exact congrArg (fun φ => φ a.1) (CliffordAlgebra.map_comp_map (f := e.toIsometry)
+      (g := e.symm.toIsometry))
+  change
+    CliffordAlgebra.map e.toIsometry (CliffordAlgebra.map e.symm.toIsometry a.1) = a.1
+  rw [hmap, hright, CliffordAlgebra.map_id]
+  rfl
+
+/-- The even Clifford action induced by an explicit hyperbolic presentation on the chosen even half. -/
+noncomputable def evenHyperbolicCliffordAction (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (evenExteriorSubmodule (K := K) W) :=
+  (evenSplitCliffordAction (K := K) W).comp (evenCliffordMap (K := K) (Q := Q) (W := W) e)
+
+/-- The even Clifford action induced by an explicit hyperbolic presentation on the chosen odd half. -/
+noncomputable def oddHyperbolicCliffordAction (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (oddExteriorSubmodule (K := K) W) :=
+  (oddSplitCliffordAction (K := K) W).comp (evenCliffordMap (K := K) (Q := Q) (W := W) e)
+
+/-- The chosen even half of `⋀W` as a module over the even Clifford algebra of `Q`. -/
+noncomputable abbrev evenHyperbolicCliffordModule (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    Module (CliffordAlgebra.even Q) (evenExteriorSubmodule (K := K) W) :=
+  Module.compHom (evenExteriorSubmodule (K := K) W)
+    (evenHyperbolicCliffordAction (K := K) (Q := Q) (W := W) e).toRingHom
+
+/-- The chosen odd half of `⋀W` as a module over the even Clifford algebra of `Q`. -/
+noncomputable abbrev oddHyperbolicCliffordModule (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    Module (CliffordAlgebra.even Q) (oddExteriorSubmodule (K := K) W) :=
+  Module.compHom (oddExteriorSubmodule (K := K) W)
+    (oddHyperbolicCliffordAction (K := K) (Q := Q) (W := W) e).toRingHom
+
+@[simp]
+theorem evenHyperbolicClifford_smul_def (e : Q.IsometryEquiv (QuadraticForm.dualProd K W))
+    (a : CliffordAlgebra.even Q) (x : evenExteriorSubmodule (K := K) W) :
+    letI := evenHyperbolicCliffordModule (K := K) (Q := Q) (W := W) e
+    a • x = evenHyperbolicCliffordAction (K := K) (Q := Q) (W := W) e a x := rfl
+
+@[simp]
+theorem oddHyperbolicClifford_smul_def (e : Q.IsometryEquiv (QuadraticForm.dualProd K W))
+    (a : CliffordAlgebra.even Q) (x : oddExteriorSubmodule (K := K) W) :
+    letI := oddHyperbolicCliffordModule (K := K) (Q := Q) (W := W) e
+    a • x = oddHyperbolicCliffordAction (K := K) (Q := Q) (W := W) e a x := rfl
+
+/-- The chosen even half attached to an explicit hyperbolic presentation is simple under the even
+Clifford action. -/
+theorem evenHyperbolicCliffordAction_isSimpleModule [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    letI := evenHyperbolicCliffordModule (K := K) (Q := Q) (W := W) e
+    IsSimpleModule (CliffordAlgebra.even Q) (evenExteriorSubmodule (K := K) W) := by
+  letI := evenSplitCliffordModule (K := K) W
+  letI := evenHyperbolicCliffordModule (K := K) (Q := Q) (W := W) e
+  let σ : CliffordAlgebra.even Q →+* CliffordAlgebra.even (QuadraticForm.dualProd K W) :=
+    (evenCliffordMap (K := K) (Q := Q) (W := W) e).toRingHom
+  letI : RingHomSurjective σ := ⟨evenCliffordMap_surjective (K := K) (Q := Q) (W := W) e⟩
+  let l :
+      evenExteriorSubmodule (K := K) W →ₛₗ[σ]
+        evenExteriorSubmodule (K := K) W :=
+    { toFun := id
+      map_add' := by
+        intro x y
+        rfl
+      map_smul' := by
+        intro a x
+        simpa [σ, evenHyperbolicClifford_smul_def, evenHyperbolicCliffordAction,
+          evenSplitClifford_smul_def] }
+  exact
+    (LinearMap.isSimpleModule_iff_of_bijective (σ := σ) (l := l)
+      (by simpa [l] using Function.bijective_id)).2
+      (evenSplitCliffordAction_isSimpleModule (K := K) (W := W))
+
+/-- For positive split rank, the chosen odd half attached to an explicit hyperbolic presentation is
+simple under the even Clifford action. -/
+theorem oddHyperbolicCliffordAction_isSimpleModule [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W))
+    (hW : 0 < Module.finrank K W) :
+    letI := oddHyperbolicCliffordModule (K := K) (Q := Q) (W := W) e
+    IsSimpleModule (CliffordAlgebra.even Q) (oddExteriorSubmodule (K := K) W) := by
+  letI := oddSplitCliffordModule (K := K) W
+  letI := oddHyperbolicCliffordModule (K := K) (Q := Q) (W := W) e
+  let σ : CliffordAlgebra.even Q →+* CliffordAlgebra.even (QuadraticForm.dualProd K W) :=
+    (evenCliffordMap (K := K) (Q := Q) (W := W) e).toRingHom
+  letI : RingHomSurjective σ := ⟨evenCliffordMap_surjective (K := K) (Q := Q) (W := W) e⟩
+  let l :
+      oddExteriorSubmodule (K := K) W →ₛₗ[σ]
+        oddExteriorSubmodule (K := K) W :=
+    { toFun := id
+      map_add' := by
+        intro x y
+        rfl
+      map_smul' := by
+        intro a x
+        simpa [σ, oddHyperbolicClifford_smul_def, oddHyperbolicCliffordAction,
+          oddSplitClifford_smul_def] }
+  exact
+    (LinearMap.isSimpleModule_iff_of_bijective (σ := σ) (l := l)
+      (by simpa [l] using Function.bijective_id)).2
+      (oddSplitCliffordAction_isSimpleModule (K := K) (W := W) hW)
+
 /-- Restrict the transported hyperbolic Clifford action on `⋀W` to the spin group of `Q`. -/
 def hyperbolicSpinRepresentation (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
     spinGroup Q →* Module.End K (IsotropicExteriorModel (K := K) W) :=
@@ -222,7 +357,7 @@ theorem hyperbolicSpinRepresentation_mem_evenExteriorSubmodule
   simpa [hyperbolicSpinRepresentation, hyperbolicCliffordAction] using
     splitCliffordAction_mem_evenExteriorSubmodule (K := K) (W := W)
       (a := CliffordAlgebra.map e.toIsometry (g : CliffordAlgebra Q))
-      (cliffordMap_mem_evenOdd_zero (K := K) (W := W) e (spinGroup.mem_even g.property)) hx
+      (cliffordMap_mem_evenOdd_zero (K := K) e (spinGroup.mem_even g.property)) hx
 
 /-- The transported hyperbolic spin action preserves the chosen odd summand. -/
 theorem hyperbolicSpinRepresentation_mem_oddExteriorSubmodule
@@ -233,7 +368,7 @@ theorem hyperbolicSpinRepresentation_mem_oddExteriorSubmodule
   simpa [hyperbolicSpinRepresentation, hyperbolicCliffordAction] using
     splitCliffordAction_mem_oddExteriorSubmodule (K := K) (W := W)
       (a := CliffordAlgebra.map e.toIsometry (g : CliffordAlgebra Q))
-      (cliffordMap_mem_evenOdd_zero (K := K) (W := W) e (spinGroup.mem_even g.property)) hx
+      (cliffordMap_mem_evenOdd_zero (K := K) e (spinGroup.mem_even g.property)) hx
 
 /-- The transported hyperbolic spin representation restricted to the chosen even summand. -/
 noncomputable def evenHyperbolicSpinRepresentation

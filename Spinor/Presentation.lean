@@ -146,6 +146,57 @@ theorem cliffordModule_isSimple [FiniteDimensional K V] (P : HyperbolicPresentat
     IsSimpleModule (CliffordAlgebra Q) P.spinorModule := by
   exact hyperbolicCliffordAction_isSimpleModule (K := K) (Q := Q) (W := P.W) P.iso
 
+/-- The even Clifford action on the chosen even half attached to an explicit hyperbolic
+presentation. -/
+noncomputable def evenCliffordAction (P : HyperbolicPresentation Q) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (P.evenSpinorModule) :=
+  evenHyperbolicCliffordAction (K := K) (Q := Q) (W := P.W) P.iso
+
+/-- The even Clifford action on the chosen odd half attached to an explicit hyperbolic
+presentation. -/
+noncomputable def oddCliffordAction (P : HyperbolicPresentation Q) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (P.oddSpinorModule) :=
+  oddHyperbolicCliffordAction (K := K) (Q := Q) (W := P.W) P.iso
+
+/-- The even Clifford module structure on the chosen even half attached to an explicit hyperbolic
+presentation. -/
+noncomputable abbrev evenCliffordModule (P : HyperbolicPresentation Q) :
+    Module (CliffordAlgebra.even Q) (P.evenSpinorModule) :=
+  evenHyperbolicCliffordModule (K := K) (Q := Q) (W := P.W) P.iso
+
+/-- The even Clifford module structure on the chosen odd half attached to an explicit hyperbolic
+presentation. -/
+noncomputable abbrev oddCliffordModule (P : HyperbolicPresentation Q) :
+    Module (CliffordAlgebra.even Q) (P.oddSpinorModule) :=
+  oddHyperbolicCliffordModule (K := K) (Q := Q) (W := P.W) P.iso
+
+@[simp] theorem evenCliffordModule_smul (P : HyperbolicPresentation Q)
+    (a : CliffordAlgebra.even Q) (x : P.evenSpinorModule) :
+    letI := P.evenCliffordModule
+    a • x = P.evenCliffordAction a x := rfl
+
+@[simp] theorem oddCliffordModule_smul (P : HyperbolicPresentation Q)
+    (a : CliffordAlgebra.even Q) (x : P.oddSpinorModule) :
+    letI := P.oddCliffordModule
+    a • x = P.oddCliffordAction a x := rfl
+
+/-- The chosen even half attached to an explicit hyperbolic presentation is simple under the even
+Clifford action. -/
+theorem evenCliffordModule_isSimple [FiniteDimensional K V] (P : HyperbolicPresentation Q) :
+    letI := P.evenCliffordModule
+    IsSimpleModule (CliffordAlgebra.even Q) P.evenSpinorModule := by
+  exact evenHyperbolicCliffordAction_isSimpleModule
+    (K := K) (Q := Q) (W := P.W) P.iso
+
+/-- For positive split rank, the chosen odd half attached to an explicit hyperbolic presentation is
+simple under the even Clifford action. -/
+theorem oddCliffordModule_isSimple [FiniteDimensional K V] (P : HyperbolicPresentation Q)
+    (hW : 0 < Module.finrank K P.W) :
+    letI := P.oddCliffordModule
+    IsSimpleModule (CliffordAlgebra.even Q) P.oddSpinorModule := by
+  exact oddHyperbolicCliffordAction_isSimpleModule
+    (K := K) (Q := Q) (W := P.W) P.iso hW
+
 /-- The spin action induced by an explicit hyperbolic presentation preserves the even half. -/
 theorem spinRepresentation_mem_even (P : HyperbolicPresentation Q)
     {g : spinGroup Q} {x : P.spinorModule} (hx : x ∈ P.evenSpinorModule) :
@@ -538,6 +589,64 @@ theorem wittCliffordModule_isSimple (Q : QuadraticForm K V)
   exact HyperbolicPresentation.cliffordModule_isSimple
     (K := K) (Q := Q) (P := wittPresentation (K := K) Q e)
 
+/-- The transported even Clifford action on the even half of the canonical Witt model. -/
+noncomputable def evenWittCliffordAction (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (evenWittExterior (K := K) Q) :=
+  HyperbolicPresentation.evenCliffordAction
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e)
+
+/-- The transported even Clifford action on the odd half of the canonical Witt model. -/
+noncomputable def oddWittCliffordAction (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (oddWittExterior (K := K) Q) :=
+  HyperbolicPresentation.oddCliffordAction
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e)
+
+/-- The even Clifford module structure on the even half of the canonical Witt model. -/
+noncomputable abbrev evenWittCliffordModule (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    Module (CliffordAlgebra.even Q) (evenWittExterior (K := K) Q) :=
+  HyperbolicPresentation.evenCliffordModule
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e)
+
+/-- The even Clifford module structure on the odd half of the canonical Witt model. -/
+noncomputable abbrev oddWittCliffordModule (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    Module (CliffordAlgebra.even Q) (oddWittExterior (K := K) Q) :=
+  HyperbolicPresentation.oddCliffordModule
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e)
+
+@[simp] theorem evenWittCliffordModule_smul (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace))
+    (a : CliffordAlgebra.even Q) (x : evenWittExterior (K := K) Q) :
+    letI := evenWittCliffordModule (K := K) Q e
+    a • x = evenWittCliffordAction (K := K) Q e a x := rfl
+
+@[simp] theorem oddWittCliffordModule_smul (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace))
+    (a : CliffordAlgebra.even Q) (x : oddWittExterior (K := K) Q) :
+    letI := oddWittCliffordModule (K := K) Q e
+    a • x = oddWittCliffordAction (K := K) Q e a x := rfl
+
+/-- The even half of the canonical Witt model is simple under the even Clifford action. -/
+theorem evenWittCliffordModule_isSimple (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    letI := evenWittCliffordModule (K := K) Q e
+    IsSimpleModule (CliffordAlgebra.even Q) (evenWittExterior (K := K) Q) := by
+  exact HyperbolicPresentation.evenCliffordModule_isSimple
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e)
+
+/-- For positive Witt index, the odd half of the canonical Witt model is simple under the even
+Clifford action. -/
+theorem oddWittCliffordModule_isSimple (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace))
+    (hW : 0 < Module.finrank K Q.wittSubspace) :
+    letI := oddWittCliffordModule (K := K) Q e
+    IsSimpleModule (CliffordAlgebra.even Q) (oddWittExterior (K := K) Q) := by
+  exact HyperbolicPresentation.oddCliffordModule_isSimple
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e) hW
+
 /-- The transported Witt-model spin action preserves the even half. -/
 theorem wittSpinRepresentation_mem_even (Q : QuadraticForm K V)
     (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace))
@@ -720,6 +829,65 @@ theorem splitWittCliffordModule_isSimple (Q : QuadraticForm K V) (hQ : Q.Nondege
     IsSimpleModule (CliffordAlgebra Q) (WittExteriorModel (K := K) Q) := by
   exact HyperbolicPresentation.cliffordModule_isSimple
     (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- The split-rank even Clifford action on the even half of the canonical Witt model. -/
+noncomputable def evenSplitWittCliffordAction (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (evenWittExterior (K := K) Q) :=
+  HyperbolicPresentation.evenCliffordAction
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- The split-rank even Clifford action on the odd half of the canonical Witt model. -/
+noncomputable def oddSplitWittCliffordAction (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (oddWittExterior (K := K) Q) :=
+  HyperbolicPresentation.oddCliffordAction
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- The split-rank even Clifford module structure on the even half of the canonical Witt model. -/
+noncomputable abbrev evenSplitWittCliffordModule (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    Module (CliffordAlgebra.even Q) (evenWittExterior (K := K) Q) :=
+  HyperbolicPresentation.evenCliffordModule
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- The split-rank even Clifford module structure on the odd half of the canonical Witt model. -/
+noncomputable abbrev oddSplitWittCliffordModule (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    Module (CliffordAlgebra.even Q) (oddWittExterior (K := K) Q) :=
+  HyperbolicPresentation.oddCliffordModule
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+
+@[simp] theorem evenSplitWittCliffordModule_smul (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (a : CliffordAlgebra.even Q) (x : evenWittExterior (K := K) Q) :
+    letI := evenSplitWittCliffordModule (K := K) Q hQ hsplit
+    a • x = evenSplitWittCliffordAction (K := K) Q hQ hsplit a x := rfl
+
+@[simp] theorem oddSplitWittCliffordModule_smul (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (a : CliffordAlgebra.even Q) (x : oddWittExterior (K := K) Q) :
+    letI := oddSplitWittCliffordModule (K := K) Q hQ hsplit
+    a • x = oddSplitWittCliffordAction (K := K) Q hQ hsplit a x := rfl
+
+/-- The split-rank even half of the canonical Witt model is simple under the even Clifford
+action. -/
+theorem evenSplitWittCliffordModule_isSimple (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    letI := evenSplitWittCliffordModule (K := K) Q hQ hsplit
+    IsSimpleModule (CliffordAlgebra.even Q) (evenWittExterior (K := K) Q) := by
+  exact HyperbolicPresentation.evenCliffordModule_isSimple
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- In split rank, the odd half of the canonical Witt model is simple under the even Clifford
+action. -/
+theorem oddSplitWittCliffordModule_isSimple (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (hW : 0 < Module.finrank K Q.wittSubspace) :
+    letI := oddSplitWittCliffordModule (K := K) Q hQ hsplit
+    IsSimpleModule (CliffordAlgebra.even Q) (oddWittExterior (K := K) Q) := by
+  exact HyperbolicPresentation.oddCliffordModule_isSimple
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit) hW
 
 /-- The split-rank canonical Witt-model spin action preserves the even half. -/
 theorem splitWittSpinRepresentation_mem_even (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)

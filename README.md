@@ -122,13 +122,16 @@ Implemented so far:
   now proved faithful in the explicit hyperbolic, Witt, and split-Witt settings
 - in the split model, the full Clifford module `⋀W` is now simple, and that simplicity is
   transported to the explicit hyperbolic, Witt, and split-Witt chosen-model presentations
+- in the split model, the chosen even half `⋀^even W` is simple under the even Clifford algebra,
+  and in positive split rank the same is true for `⋀^odd W`; this half-spin simplicity is also
+  transported to the explicit hyperbolic, Witt, and split-Witt chosen-model presentations
 
 Still open from the roadmap:
 
 - the final identification of the ambient chiral pieces `S⁺` and `S⁻` with the chosen-model
   submodules `⋀^even W` and `⋀^odd W`
-- periodicity, low-dimensional identifications, chiral irreducibility/inequivalence results, and the
-  double-cover theorems
+- chiral inequivalence and the ambient/global `S⁺` / `S⁻` irreducibility statements, periodicity,
+  low-dimensional identifications, and the double-cover theorems
 - paper-writing and final research-polish tasks
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

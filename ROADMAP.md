@@ -103,6 +103,11 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [ ] Identify these chosen even/odd summands with the ambient chiral modules `S⁺` and `S⁻`
 - [x] Prove Spin(V,Q) preserves the decomposition (Weyl spinors)
 - [ ] Prove S⁺ and S⁻ are irreducible and inequivalent (for dim ≥ 4)
+  - [x] In the split model, prove `⋀^even W` is simple under the even Clifford algebra and, in
+    positive split rank, prove the same for `⋀^odd W`
+  - [x] Transport that half-spin simplicity to the explicit hyperbolic, Witt, and split-Witt
+    presentation APIs
+  - [ ] Prove the remaining inequivalence statement and the ambient/global `S⁺` / `S⁻` version
 
 ---
 
