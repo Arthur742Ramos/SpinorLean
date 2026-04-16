@@ -26,7 +26,13 @@ SpinorLean/
 │   ├── ProdNeg.lean        -- Canonical split presentation and chosen model for `Q ⊕ (-Q)`
 │   ├── CliffordAction.lean -- Transported Clifford action on the exterior model
 │   ├── SpinRep.lean        -- Restriction of the action to `spinGroup`
-│   └── Chiral.lean         -- Transported chiral decomposition and spin invariance
+│   ├── Chiral.lean         -- Transported chiral decomposition and spin invariance
+│   ├── OrthogonalAction.lean -- Ambient spin-vector action and isometry homomorphism
+│   ├── ComplexClassification.lean -- Periodicity: complex even/odd matrix models
+│   ├── RealClassification.lean -- Periodicity: split `(n,n)` real matrix models + low-signature entries
+│   ├── LowDimensional.lean -- Explicit low-dim Clifford models + Spin(2) ≃ U(1)
+│   └── OddClassification.lean -- Classification pieces over the odd split form
+├── paper/                  -- Paper scaffolding (main.tex, refs.bib, README.md)
 ├── ROADMAP.md
 ├── AGENTS.md
 └── lakefile.lean
@@ -184,13 +190,39 @@ Implemented so far:
   together with the full homomorphism
   `spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q`
 
+- the ambient chiral identification is now closed: the canonical chosen-model positive and
+  negative half-spin modules are, by construction, the ambient `positiveChiral` /
+  `negativeChiral` submodules of the zero-form regular spinor module on `Q.wittSubspace`; see
+  `Spinor.Presentation.positiveHalfSpinorModule_eq_ambient_positiveChiral`,
+  `Spinor.Presentation.negativeHalfSpinorModule_eq_ambient_negativeChiral`, and the
+  packaged bundle `Spinor.Presentation.splitSpinor_chiral_correspondence`, which chains through
+  the `evenWittExterior` / `oddWittExterior` identifications to give the full
+  `S⁺ = ⋀^even W`, `S⁻ = ⋀^odd W` roadmap statement (Phase 3.2)
+- `Spinor.Presentation` exposes the canonical split-rank capstones
+  `splitSpinorModule_finrank`, `positiveHalfSpinorModule_finrank`,
+  `negativeHalfSpinorModule_finrank` (dimension formula, Phase 2.3),
+  `splitSpinorCliffordAction_sq_apply` (top-level Clifford relation, Phase 2.2), and
+  `splitSpinorCliffordAction_injective` (top-level faithfulness, Phase 2.2)
+- `Spinor.RealClassification` now also records the canonical low-signature entries
+  `cl_0_1_equivComplex : Cl(0,1) ≃ₐ[ℝ] ℂ` and
+  `cl_0_2_equivQuaternion : Cl(0,2) ≃ₐ[ℝ] ℍ[ℝ, -1, -1]`, starting the negative-definite
+  row of the Bott periodicity table (Phase 4.1)
+- `paper/` now contains a first pass of paper scaffolding (`main.tex`, `refs.bib`,
+  `README.md`) grounded in the current repository state, with target venues recorded for
+  CPP 2027 / ITP 2027 / *Advances in Applied Clifford Algebras* (Phase 5.1)
+
 Still open from the roadmap:
 
-- the final identification of the ambient chiral pieces `S⁺` and `S⁻` with the chosen-model
-  submodules `⋀^even W` and `⋀^odd W`
-- periodicity beyond the new split real foundation, the remaining low-dimensional group
-  identifications (`Spin(3)` / `Spin(4)`), and the actual double-cover / surjectivity theorem
-  beyond the now-packaged split-rank kernel and non-factorization results
-- paper-writing and final research-polish tasks
+- periodicity beyond the new split real foundation and canonical negative-signature entries
+  (the full Bott period-8 table is still in progress)
+- the remaining low-dimensional group identifications (`Spin(3) → SU(2)`,
+  `Spin(4) → SU(2) × SU(2)`); algebraic scaffolding for the `Spin(4)` case is now in
+  `Spinor.LowDimensional` via `realCl04Form` and
+  `realEvenCl04EquivCl03 : Cl⁺(0,4) ≃ₐ[ℝ] Cl(0,3)`, leaving the classical
+  `Cl(0,3) ≃ ℍ × ℍ` step as the remaining gap
+- the fully general double-cover / surjectivity and non-factorization theorems beyond the
+  packaged split-rank kernel and non-factorization results
+- the full paper draft (proof walkthroughs, evaluation, lessons-learned) beyond the
+  initial scaffolding, and final research-polish tasks
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.
