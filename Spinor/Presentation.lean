@@ -8,6 +8,7 @@
 
 import Spinor.Chiral
 import Spinor.HyperbolicAction
+import Mathlib.LinearAlgebra.Matrix.ToLin
 
 namespace Spinor
 
@@ -139,6 +140,24 @@ model `⋀W`. -/
 theorem cliffordAction_injective [FiniteDimensional K V] (P : HyperbolicPresentation Q) :
     Function.Injective P.cliffordAction := by
   exact hyperbolicCliffordAction_injective (K := K) (Q := Q) (W := P.W) P.iso
+
+/-- The Clifford algebra of an explicit hyperbolic presentation is identified with the full
+endomorphism algebra of the chosen model `⋀W`. -/
+noncomputable def cliffordEquivEnd [FiniteDimensional K V] (P : HyperbolicPresentation Q) :
+    CliffordAlgebra Q ≃ₐ[K] Module.End K P.spinorModule :=
+  hyperbolicCliffordEquivEnd (K := K) (Q := Q) (W := P.W) P.iso
+
+@[simp] theorem cliffordEquivEnd_apply [FiniteDimensional K V] (P : HyperbolicPresentation Q)
+    (a : CliffordAlgebra Q) :
+    P.cliffordEquivEnd a = P.cliffordAction a := rfl
+
+/-- Matrix form of the hyperbolic chosen-model Clifford equivalence. -/
+noncomputable def cliffordEquivMatrix [FiniteDimensional K V] (P : HyperbolicPresentation Q) :
+    CliffordAlgebra Q ≃ₐ[K]
+      Matrix (Fin (Module.finrank K P.spinorModule)) (Fin (Module.finrank K P.spinorModule)) K :=
+  let b := Module.finBasis K P.W
+  letI : FiniteDimensional K P.spinorModule := b.ExteriorAlgebra.finiteDimensional_of_finite
+  P.cliffordEquivEnd.trans (LinearMap.toMatrixAlgEquiv (Module.finBasis K P.spinorModule))
 
 /-- The chosen-model Clifford module attached to an explicit hyperbolic presentation is simple. -/
 theorem cliffordModule_isSimple [FiniteDimensional K V] (P : HyperbolicPresentation Q) :
@@ -591,6 +610,12 @@ theorem wittCliffordAction_injective (Q : QuadraticForm K V)
   exact HyperbolicPresentation.cliffordAction_injective
     (K := K) (Q := Q) (P := wittPresentation (K := K) Q e)
 
+/-- Endomorphism-algebra form of the Witt-model Clifford equivalence. -/
+noncomputable def wittCliffordEquivEnd [FiniteDimensional K V] (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    CliffordAlgebra Q ≃ₐ[K] Module.End K (WittExteriorModel (K := K) Q) :=
+  (wittPresentation (K := K) Q e).cliffordEquivEnd
+
 /-- The transported Clifford module on the canonical Witt model is simple. -/
 theorem wittCliffordModule_isSimple (Q : QuadraticForm K V)
     (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
@@ -842,6 +867,12 @@ theorem splitWittCliffordAction_injective (Q : QuadraticForm K V) (hQ : Q.Nondeg
     Function.Injective (splitWittCliffordAction (K := K) Q hQ hsplit) := by
   exact HyperbolicPresentation.cliffordAction_injective
     (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- Endomorphism-algebra form of the split-rank Witt-model Clifford equivalence. -/
+noncomputable def splitWittCliffordEquivEnd [FiniteDimensional K V] (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    CliffordAlgebra Q ≃ₐ[K] Module.End K (WittExteriorModel (K := K) Q) :=
+  (splitWittPresentation (K := K) Q hQ hsplit).cliffordEquivEnd
 
 /-- The split-rank canonical Witt-model Clifford module is simple. -/
 theorem splitWittCliffordModule_isSimple (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)

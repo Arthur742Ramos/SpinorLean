@@ -120,6 +120,9 @@ Implemented so far:
   corresponding restricted spin representations
 - through those same presentation APIs, the transported chosen-model Clifford action on `⋀W` is
   now proved faithful in the explicit hyperbolic, Witt, and split-Witt settings
+- in the explicit hyperbolic case, that chosen-model Clifford action is now packaged as an algebra
+  equivalence `Cl(Q) ≃ End(⋀W)` and hence as a concrete matrix-algebra model; the same
+  endomorphism-algebra equivalence is exposed through the Witt and split-Witt presentation APIs
 - in the split model, the full Clifford module `⋀W` is now simple, and that simplicity is
   transported to the explicit hyperbolic, Witt, and split-Witt chosen-model presentations
 - in the split model, the chosen even half `⋀^even W` is simple under the even Clifford algebra,

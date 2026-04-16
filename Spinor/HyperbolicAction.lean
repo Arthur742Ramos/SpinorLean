@@ -169,6 +169,22 @@ theorem hyperbolicCliffordAction_surjective [FiniteDimensional K V]
   rw [hmap, hright, CliffordAlgebra.map_id]
   simpa using ha
 
+/-- In the finite-dimensional hyperbolic case, the transported chosen-model Clifford action is an
+algebra equivalence onto the full endomorphism algebra of `⋀W`. -/
+noncomputable def hyperbolicCliffordEquivEnd [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    CliffordAlgebra Q ≃ₐ[K] Module.End K (IsotropicExteriorModel (K := K) W) :=
+  AlgEquiv.ofBijective (hyperbolicCliffordAction (K := K) (Q := Q) (W := W) e)
+    ⟨hyperbolicCliffordAction_injective (K := K) (Q := Q) (W := W) e,
+      hyperbolicCliffordAction_surjective (K := K) (Q := Q) (W := W) e⟩
+
+@[simp]
+theorem hyperbolicCliffordEquivEnd_apply [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) (a : CliffordAlgebra Q) :
+    hyperbolicCliffordEquivEnd (K := K) (Q := Q) (W := W) e a =
+      hyperbolicCliffordAction (K := K) (Q := Q) (W := W) e a :=
+  rfl
+
 /-- The transported chosen-model Clifford module attached to an explicit hyperbolic presentation is
 simple. -/
 theorem hyperbolicCliffordAction_isSimpleModule [FiniteDimensional K V]
