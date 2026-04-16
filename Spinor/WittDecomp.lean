@@ -10,6 +10,39 @@
 
 import Spinor.Isotropic
 
+/-!
+# Witt decomposition and Witt index
+
+Finite-dimensional Witt-index bookkeeping built on top of `Spinor.Isotropic`. This file
+constructs the Witt index as the maximal dimension of a totally isotropic subspace, proves
+the existence of a maximal totally isotropic subspace attaining it, and packages the linear
+and quadratic-form Witt decompositions `V ≃ W ⊕ W* ⊕ V₀` and `Q ≃ dualProd K W ⊕ Q₀` from a
+chosen isotropic subspace and complement.
+
+Together with the canonical `wittSubspace` alias, this is the linear-algebra backbone used
+by `Spinor.ExteriorModel`, `Spinor.HyperbolicAction`, and the presentation layer in
+`Spinor.Presentation`.
+
+## Main declarations
+
+* `QuadraticForm.isotropicFinranks`, `QuadraticForm.wittIndex` — the set of dimensions of
+  totally isotropic subspaces and its maximum.
+* `QuadraticForm.exists_isTotallyIsotropic_finrank_eq_wittIndex`,
+  `QuadraticForm.exists_maximalTotallyIsotropic` — realization of the Witt index by a
+  totally isotropic (resp. maximal totally isotropic) subspace.
+* `QuadraticForm.wittIndex_le_finrank`, `QuadraticForm.finrank_le_wittIndex`,
+  `QuadraticForm.isMaximalTotallyIsotropic_of_finrank_eq_wittIndex` — basic dimension
+  bounds and the dimension characterization of maximality.
+* `QuadraticForm.wittSubspace` — a canonical chosen maximal totally isotropic subspace,
+  together with `wittSubspace_isTotallyIsotropic`, `finrank_wittSubspace`, and
+  `wittSubspace_isMaximalTotallyIsotropic`.
+* `QuadraticForm.wittLinearDecompositionOfIsCompl`, `QuadraticForm.wittResidualSubspace`,
+  `QuadraticForm.wittIsometryEquivOfIsCompl`, `QuadraticForm.wittIsometryEquiv` — the linear
+  Witt decomposition `V ≃ W ⊕ W* ⊕ V₀`, its residual factor, and the corresponding
+  quadratic-form splitting `Q ≃ dualProd K W ⊕ Q₀`, together with the canonical chosen-Witt
+  specializations.
+-/
+
 namespace QuadraticForm
 
 open Classical

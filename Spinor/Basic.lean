@@ -4,6 +4,21 @@
 
 import Spinor.WittDecomp
 
+/-!
+# Core spinor-module definition
+
+Top-level spinor-module alias used by the ambient exterior-algebra model. The current
+implementation takes `SpinorModule Q` to be `ExteriorAlgebra R M` transported along
+`CliffordAlgebra.equivExterior`, which yields a faithful Clifford action out of the box.
+The more refined chosen-subspace `⋀W` model lives in `Spinor.ExteriorModel` and is packaged
+through the presentation API in `Spinor.Presentation`.
+
+## Main declarations
+
+* `Spinor.SpinorModule` — the ambient `ExteriorAlgebra R M` viewed as a `CliffordAlgebra Q`
+  module via `Spinor.CliffordAction`.
+-/
+
 namespace Spinor
 
 universe uR uM
@@ -28,7 +43,9 @@ the residual factor `QuadraticForm.wittResidualSubspace`, as well as the corresp
 quadratic-form splitting `QuadraticForm.wittIsometryEquiv :
   Q ≃ dualProd K Q.wittSubspace ⊕ Q₀`. That general splitting is also packaged in
 `Spinor.WittPresentation`, with the hyperbolic factor exposed as
-`HyperbolicPresentation.canonicalWittFactor`.
+`HyperbolicPresentation.canonicalWittFactor`. Accordingly, the parity pieces in `Spinor.Chiral`
+belong to this ambient regular model, while the actual chosen-model half-spin modules live in
+`Spinor.Presentation`.
 -/
 abbrev SpinorModule (_Q : QuadraticForm R M) := ExteriorAlgebra R M
 

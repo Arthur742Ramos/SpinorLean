@@ -8,6 +8,42 @@
 
 import Spinor.Presentation
 
+/-!
+# Canonical split presentation of `Q ⊕ (-Q)`
+
+Canonical split/hyperbolic presentation of the doubled form `Q ⊕ (-Q)` for nondegenerate
+finite-dimensional `Q`. The forward map `QuadraticForm.toDualProd` from Mathlib is upgraded
+to an isometry equivalence, and the chosen `⋀W` model is anchored on the diagonal isotropic
+subspace `Δ ≤ V × V`.
+
+This yields a canonical `HyperbolicPresentation (Q ⊕ (-Q))` and hence canonical Clifford /
+spin / even / odd / matrix-algebra data for the doubled form, used downstream in
+`Spinor.ComplexClassification` and `Spinor.OddClassification`.
+
+## Main declarations
+
+* `QuadraticForm.toDualProd_injective`, `QuadraticForm.toDualProdEquiv` — upgrade
+  `toDualProd` to an isometry equivalence in the nondegenerate case.
+* `QuadraticForm.diagLinearMap`, `QuadraticForm.diagSubmodule`,
+  `QuadraticForm.diagLinearEquiv`, `QuadraticForm.finrank_diagSubmodule`,
+  `QuadraticForm.diagSubmodule_isTotallyIsotropic`,
+  `QuadraticForm.diagSubmodule_isMaximalTotallyIsotropic` — the diagonal subspace of `V × V`
+  as a maximal totally isotropic subspace for `Q ⊕ (-Q)`.
+* `Spinor.prodNegSplitIsometry`, `Spinor.prodNegPresentation` — the canonical isometry
+  `(Q.prod (-Q)) ≃ dualProd K Δ` and its first-class `HyperbolicPresentation` packaging.
+* `Spinor.prodNegSpinorModule`, `Spinor.evenProdNegSpinorModule`,
+  `Spinor.oddProdNegSpinorModule`, `Spinor.finrank_prodNegSpinorModule`,
+  `Spinor.finrank_evenProdNegSpinorModule` — the chosen `⋀Δ` model and its chosen parity
+  halves, together with their dimensions.
+* `Spinor.prodNegCliffordAction`, `Spinor.prodNegCliffordModule`,
+  `Spinor.prodNegSpinRepresentation`, `Spinor.prodNegMulAction` — the canonical Clifford
+  and spin-group actions on the chosen model.
+* `Spinor.prodNegCliffordEquivEnd`, `Spinor.prodNegCliffordEquivMatrix`,
+  `Spinor.evenProdNegCliffordEquivProdEnd` — endomorphism / matrix / product-endomorphism
+  equivalences for the full and even Clifford algebras.
+* `Spinor.wittIndex_prodNeg` — `wittIndex (Q.prod (-Q)) = dim V`.
+-/
+
 namespace QuadraticForm
 
 universe uK uV

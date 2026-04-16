@@ -1,9 +1,46 @@
 /-
-  Chiral decomposition for the exterior-model spinor module.
+  Chiral decomposition for the exterior-model regular spinor module.
+
+  These parity pieces live on `SpinorModule Q := ExteriorAlgebra R M`. For the canonical chosen
+  half-spin modules carried by the Witt/split-Witt `⋀W` model, see `Spinor.Presentation`.
 -/
 
 import Spinor.ExteriorModel
 import Spinor.SpinRep
+
+/-!
+# Ambient chiral decomposition of the exterior spinor module
+
+Chiral/parity decomposition `S = S⁺ ⊕ S⁻` of the ambient exterior-model spinor module
+`SpinorModule Q`, transported from the `ZMod 2`-grading on `CliffordAlgebra Q` via
+`CliffordAlgebra.equivExterior`. Under the zero-form identification these ambient pieces
+agree with the chosen even/odd exterior submodules `⋀^even W` and `⋀^odd W`.
+
+The `spinGroup Q` action preserves both chiral summands, giving the ambient positive and
+negative half-spin representations. The canonical chosen-model half-spin modules live on the
+`HyperbolicPresentation`/`WittPresentation` API in `Spinor.Presentation`.
+
+## Main declarations
+
+* `Spinor.chiralSubmodule Q i` — the parity-`i` submodule of the exterior-model spinor
+  module, with `Spinor.positiveChiral` and `Spinor.negativeChiral` the `i = 0, 1` aliases.
+* `Spinor.chiralSubmodule_isCompl`, `Spinor.positiveChiral_sup_negativeChiral`,
+  `Spinor.positiveChiral_inf_negativeChiral` — the chiral splitting as complementary
+  submodules.
+* `Spinor.zero_evenOdd_zero_eq_evenExteriorSubmodule`,
+  `Spinor.zero_evenOdd_one_eq_oddExteriorSubmodule`,
+  `Spinor.positiveChiral_zero_eq_evenExteriorSubmodule`,
+  `Spinor.negativeChiral_zero_eq_oddExteriorSubmodule` — identification of the ambient
+  chiral pieces with the chosen exterior parity submodules on the zero-form model.
+* `Spinor.cliffordAction_mem_chiralSubmodule`,
+  `Spinor.spinRepresentation_mem_chiralSubmodule`,
+  `Spinor.spinRepresentation_mem_positiveChiral`,
+  `Spinor.spinRepresentation_mem_negativeChiral` — Clifford even elements and `spinGroup Q`
+  preserve each chiral summand.
+* `Spinor.spinRepresentationOnChiral`, `Spinor.positiveSpinRepresentation`,
+  `Spinor.negativeSpinRepresentation` — the restricted `spinGroup Q` representations on each
+  chiral summand.
+-/
 
 namespace Spinor
 
@@ -20,11 +57,11 @@ The `i`-chiral piece of the exterior-model spinor module, transported from the
 def chiralSubmodule (i : ZMod 2) : Submodule R (SpinorModule (R := R) (M := M) Q) :=
   Submodule.comap (CliffordAlgebra.equivExterior Q).symm.toLinearMap (CliffordAlgebra.evenOdd Q i)
 
-/-- Positive-chirality spinors. -/
+/-- Positive-chirality parity piece of the exterior-model regular spinor module. -/
 abbrev positiveChiral : Submodule R (SpinorModule (R := R) (M := M) Q) :=
   chiralSubmodule (R := R) (M := M) Q 0
 
-/-- Negative-chirality spinors. -/
+/-- Negative-chirality parity piece of the exterior-model regular spinor module. -/
 abbrev negativeChiral : Submodule R (SpinorModule (R := R) (M := M) Q) :=
   chiralSubmodule (R := R) (M := M) Q 1
 

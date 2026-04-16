@@ -7,6 +7,37 @@ import Mathlib.Algebra.Algebra.Prod
 import Mathlib.LinearAlgebra.Prod
 import Mathlib.LinearAlgebra.Projection
 
+/-!
+# Exterior-model spinor modules on a chosen subspace
+
+Exterior-algebra spinor models attached to a chosen subspace `W ≤ V`, together with the
+basic wedge and contraction operators and the chosen even/odd parity splitting
+`⋀W = ⋀^even W ⊕ ⋀^odd W`.
+
+When `W` is totally isotropic, wedge squares to zero on `⋀W`, giving the hyperbolic half of
+the split Clifford relation; contraction against a dual vector squares to zero in all cases.
+The parity submodules are classical complements exchanged by wedge and contraction. These
+pieces are then consumed by `Spinor.HyperbolicAction` to transport a Clifford action along an
+explicit isometry `Q ≃ dualProd K W`, and by `Spinor.Presentation` to package the resulting
+chosen-model spinor data.
+
+## Main declarations
+
+* `ExteriorAlgebra.finrank_eq_two_pow` — `dim(⋀M) = 2 ^ dim M` for finite-dimensional `M`.
+* `Spinor.finrank_spinorModule` — `dim(SpinorModule Q) = 2 ^ dim V` on the ambient exterior
+  model from `Spinor.Basic`.
+* `Spinor.IsotropicExteriorModel W` — the chosen exterior algebra `⋀W`.
+* `Spinor.wedgeAction W`, `Spinor.contractionAction W` — exterior multiplication by `w ∈ W`
+  and contraction by `d ∈ W*` on `⋀W`, together with the basic relations
+  `wedgeAction_sq_apply_of_totallyIsotropic` and `contractionAction_sq_apply`.
+* `Spinor.evenExteriorSubmodule W`, `Spinor.oddExteriorSubmodule W` and
+  `Spinor.evenExteriorSubmodule_isCompl` — the chosen parity splitting of `⋀W` as
+  complementary submodules.
+* `Spinor.wedgeAction_mem_oddExteriorSubmodule`,
+  `Spinor.wedgeAction_mem_evenExteriorSubmodule` — wedge flips parity; dual statements hold
+  for `contractionAction`.
+-/
+
 namespace ExteriorAlgebra
 
 open Classical

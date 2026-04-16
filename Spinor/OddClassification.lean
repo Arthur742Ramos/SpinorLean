@@ -9,6 +9,33 @@
 import Spinor.ProdNeg
 import Mathlib.LinearAlgebra.CliffordAlgebra.EvenEquiv
 
+/-!
+# Odd split Clifford classification
+
+Classification of the standard odd split form `H(M) ⊕ ⟨1⟩` as a product of two matrix
+algebras by combining `CliffordAlgebra.equivEven` with the even-Clifford product-endomorphism
+classification from `Spinor.Presentation` and `Spinor.ProdNeg`.
+
+More precisely, the one-up hyperbolic form whose even Clifford algebra is `H(M) ⊕ ⟨1⟩` is
+identified via Mathlib's `CliffordAlgebra.equivEven` with the `Q ⊕ (-Q)` classification, and
+the resulting product-endomorphism equivalence is upgraded to a concrete product-of-matrices
+model.
+
+## Main declarations
+
+* `QuadraticMap.IsometryEquiv.prodAssoc` — associativity of `QuadraticForm.prod` as an
+  isometry.
+* `Spinor.oddSplitForm M` — the quadratic form `H(M) ⊕ ⟨1⟩` on `(Module.Dual K M × M) × K`.
+* `Spinor.oddSplitOneUpIsometry` — the isometry identifying `oddSplitForm M` with the even
+  Clifford domain of a one-up hyperbolic form.
+* `Spinor.oddSplitEvenCliffordMap`, `Spinor.oddSplitEvenCliffordMap_surjective`,
+  `Spinor.oddSplitEvenCliffordMap_injective` — the transported Clifford map and its
+  bijectivity.
+* `Spinor.oddSplitOneUpEvenEquivProdEnd`, `Spinor.oddSplitCliffordEquivProdEnd`,
+  `Spinor.oddSplitCliffordEquivProdMatrix` — the product-endomorphism and product-of-matrices
+  equivalences classifying `CliffordAlgebra (oddSplitForm M)`.
+-/
+
 namespace Spinor
 
 universe uK uM

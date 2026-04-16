@@ -4,6 +4,32 @@
 
 import Spinor.Notation
 
+/-!
+# Totally isotropic subspaces
+
+Basic API for totally isotropic subspaces of a quadratic module `(M, Q)`. A submodule `W ≤ M`
+is totally isotropic if `Q` vanishes on every vector of `W`; maximality is expressed
+order-theoretically as the inability to enlarge `W` while staying isotropic.
+
+These definitions underpin the Witt-index bookkeeping in `Spinor.WittDecomp` and the
+chosen-subspace spinor models in `Spinor.ExteriorModel`.
+
+## Main declarations
+
+* `QuadraticForm.IsTotallyIsotropic` — the predicate `Q x = 0` for all `x : W`.
+* `QuadraticForm.isTotallyIsotropic_bot` — the zero subspace is totally isotropic.
+* `QuadraticForm.IsTotallyIsotropic.mono` — totally isotropic is preserved under inclusion.
+* `QuadraticForm.isTotallyIsotropic_iff_restrict_eq_zero` — restriction is zero iff totally
+  isotropic.
+* `QuadraticForm.IsTotallyIsotropic.isOrtho` — vectors in a totally isotropic subspace are
+  mutually `QuadraticMap.IsOrtho`.
+* `QuadraticForm.IsTotallyIsotropic.map` — transport along a `QuadraticForm.IsometryEquiv`.
+* `QuadraticForm.IsMaximalTotallyIsotropic` — totally isotropic and not strictly contained in
+  any totally isotropic subspace.
+* `QuadraticForm.IsMaximalTotallyIsotropic.map` — maximal totally isotropic is preserved by
+  isometries.
+-/
+
 namespace QuadraticForm
 
 universe uR uM

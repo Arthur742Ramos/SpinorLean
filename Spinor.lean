@@ -14,6 +14,8 @@ import Spinor.Basic
 import Spinor.ExteriorModel
 import Spinor.HyperbolicAction
 import Spinor.ComplexClassification
+import Spinor.LowDimensional
+import Spinor.RealClassification
 import Spinor.Presentation
 import Spinor.OddClassification
 import Spinor.ProdNeg

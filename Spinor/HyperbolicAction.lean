@@ -8,6 +8,47 @@
 
 import Spinor.ExteriorModel
 
+/-!
+# Transport of the chosen `⋀W` model along an explicit hyperbolic isometry
+
+Given an explicit hyperbolic isometry `e : Q ≃ dualProd K W`, this file transports the split
+`W* × W` action on `⋀W` to an ambient `CliffordAlgebra Q`-action, restricts it to the
+`spinGroup Q`, and packages the even/odd parity pieces. It is the split/hyperbolic transport
+layer sitting between the raw `W* × W` model of `Spinor.ExteriorModel` and the first-class
+`HyperbolicPresentation` API in `Spinor.Presentation`.
+
+In the finite-dimensional split setting the transported Clifford action is faithful and
+surjective; the resulting equivalence `CliffordAlgebra Q ≃ End(⋀W)` is packaged as
+`hyperbolicCliffordEquivEnd`, and the chosen `⋀W` model is simple as a `CliffordAlgebra Q`
+module. The even Clifford algebra is correspondingly packaged as
+`CliffordAlgebra.even Q ≃ End(⋀^even W) × End(⋀^odd W)` via `evenHyperbolicCliffordEquivProdEnd`,
+with both halves simple modules over the even Clifford algebra and (in positive split rank)
+inequivalent.
+
+## Main declarations
+
+* `Spinor.cliffordMap_mem_evenOdd_zero`, `Spinor.cliffordMap_mem_evenOdd_one`,
+  `Spinor.evenCliffordEquivOfIsometry` — Clifford-algebra transport along a quadratic-form
+  isometry preserves the even/odd grading.
+* `Spinor.hyperbolicCliffordAction`, `Spinor.hyperbolicModule`,
+  `Spinor.hyperbolicCliffordAction_ι_sq`, `Spinor.hyperbolicCliffordAction_sq_apply` — the
+  transported Clifford action and its vector relation.
+* `Spinor.hyperbolicCliffordAction_injective`, `Spinor.hyperbolicCliffordAction_surjective`,
+  `Spinor.hyperbolicCliffordEquivEnd` — faithfulness and the endomorphism-algebra packaging.
+* `Spinor.hyperbolicCliffordAction_isSimpleModule` — the transported `⋀W` is simple.
+* `Spinor.evenCliffordMap`, `Spinor.evenHyperbolicCliffordAction`,
+  `Spinor.oddHyperbolicCliffordAction`, `Spinor.evenHyperbolicCliffordActionProd`,
+  `Spinor.evenHyperbolicCliffordEquivProdEnd` — the even Clifford algebra and its product
+  action on the chosen parity halves.
+* `Spinor.evenHyperbolicCliffordAction_isSimpleModule`,
+  `Spinor.oddHyperbolicCliffordAction_isSimpleModule`,
+  `Spinor.not_nonempty_evenOddHyperbolicCliffordLinearEquiv` — half-spin simplicity and
+  inequivalence.
+* `Spinor.hyperbolicSpinRepresentation`, `Spinor.hyperbolicMulAction`,
+  `Spinor.evenHyperbolicSpinRepresentation` — the restricted `spinGroup Q` representation on
+  `⋀W` and on each chosen parity half.
+-/
+
 namespace Spinor
 
 universe uK uV
@@ -52,6 +93,57 @@ theorem cliffordMap_mem_evenOdd_one
       SetLike.mul_mem_graded
         (CliffordAlgebra.ι_mul_ι_mem_evenOdd_zero (Q := Q₂) (e m₁) (e m₂))
         ih
+
+/-- Transport the even Clifford algebra along an isometry of quadratic forms. -/
+noncomputable def evenCliffordEquivOfIsometry
+    (e : Q₁.IsometryEquiv Q₂) :
+    CliffordAlgebra.even Q₁ ≃ₐ[K] CliffordAlgebra.even Q₂ where
+  toFun a := ⟨CliffordAlgebra.map e.toIsometry a.1, cliffordMap_mem_evenOdd_zero e a.2⟩
+  invFun a := ⟨CliffordAlgebra.map e.symm.toIsometry a.1, cliffordMap_mem_evenOdd_zero e.symm a.2⟩
+  left_inv a := by
+    ext
+    have hleft : e.symm.toIsometry.comp e.toIsometry = QuadraticMap.Isometry.id Q₁ := by
+      ext v
+      simp [QuadraticMap.Isometry.comp_apply, e.symm_apply_apply]
+    have hmap :
+        CliffordAlgebra.map e.symm.toIsometry (CliffordAlgebra.map e.toIsometry a.1) =
+          CliffordAlgebra.map (e.symm.toIsometry.comp e.toIsometry) a.1 := by
+      change
+        ((CliffordAlgebra.map e.symm.toIsometry).comp (CliffordAlgebra.map e.toIsometry)) a.1 =
+          CliffordAlgebra.map (e.symm.toIsometry.comp e.toIsometry) a.1
+      exact congrArg (fun φ => φ a.1)
+        (CliffordAlgebra.map_comp_map (f := e.symm.toIsometry) (g := e.toIsometry))
+    change CliffordAlgebra.map e.symm.toIsometry (CliffordAlgebra.map e.toIsometry a.1) = a.1
+    rw [hmap, hleft, CliffordAlgebra.map_id]
+    rfl
+  right_inv a := by
+    ext
+    have hright : e.toIsometry.comp e.symm.toIsometry = QuadraticMap.Isometry.id Q₂ := by
+      ext v
+      simp [QuadraticMap.Isometry.comp_apply, e.apply_symm_apply]
+    have hmap :
+        CliffordAlgebra.map e.toIsometry (CliffordAlgebra.map e.symm.toIsometry a.1) =
+          CliffordAlgebra.map (e.toIsometry.comp e.symm.toIsometry) a.1 := by
+      change
+        ((CliffordAlgebra.map e.toIsometry).comp (CliffordAlgebra.map e.symm.toIsometry)) a.1 =
+          CliffordAlgebra.map (e.toIsometry.comp e.symm.toIsometry) a.1
+      exact congrArg (fun φ => φ a.1)
+        (CliffordAlgebra.map_comp_map (f := e.toIsometry) (g := e.symm.toIsometry))
+    change CliffordAlgebra.map e.toIsometry (CliffordAlgebra.map e.symm.toIsometry a.1) = a.1
+    rw [hmap, hright, CliffordAlgebra.map_id]
+    rfl
+  map_mul' := by
+    intro a b
+    ext
+    simp [map_mul]
+  map_add' := by
+    intro a b
+    ext
+    simp [map_add]
+  commutes' := by
+    intro r
+    ext
+    simp
 
 end GradingTransport
 
@@ -184,6 +276,34 @@ theorem hyperbolicCliffordEquivEnd_apply [FiniteDimensional K V]
     hyperbolicCliffordEquivEnd (K := K) (Q := Q) (W := W) e a =
       hyperbolicCliffordAction (K := K) (Q := Q) (W := W) e a :=
   rfl
+
+/-- In the finite-dimensional hyperbolic case, any Clifford element commuting with all Clifford
+elements is scalar. -/
+theorem hyperbolicClifford_eq_algebraMap_of_commute [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W))
+    (a : CliffordAlgebra Q) (hcomm : ∀ b : CliffordAlgebra Q, Commute a b) :
+    ∃ r : K, a = algebraMap K (CliffordAlgebra Q) r := by
+  let f : Module.End K (IsotropicExteriorModel (K := K) W) :=
+    hyperbolicCliffordAction (K := K) (Q := Q) (W := W) e a
+  have hfcenter : f ∈ Set.center (Module.End K (IsotropicExteriorModel (K := K) W)) := by
+    rw [Semigroup.mem_center_iff]
+    intro g
+    obtain ⟨b, hb⟩ := hyperbolicCliffordAction_surjective (K := K) (Q := Q) (W := W) e g
+    simpa [f, hb] using
+      (congrArg (hyperbolicCliffordAction (K := K) (Q := Q) (W := W) e) (hcomm b).eq).symm
+  rcases (Module.End.mem_center_iff.mp hfcenter) with ⟨r, hr, hfscalar⟩
+  refine ⟨r, ?_⟩
+  apply hyperbolicCliffordAction_injective (K := K) (Q := Q) (W := W) e
+  calc
+    hyperbolicCliffordAction (K := K) (Q := Q) (W := W) e a = f := rfl
+    _ = Module.End.smulLeft r hr := hfscalar
+    _ = algebraMap K (Module.End K (IsotropicExteriorModel (K := K) W)) r := by
+          ext x
+          simp [Module.End.smulLeft_eq, Algebra.smul_def]
+    _ = hyperbolicCliffordAction (K := K) (Q := Q) (W := W) e
+          (algebraMap K (CliffordAlgebra Q) r) := by
+          symm
+          exact (hyperbolicCliffordAction (K := K) (Q := Q) (W := W) e).commutes r
 
 /-- The transported chosen-model Clifford module attached to an explicit hyperbolic presentation is
 simple. -/

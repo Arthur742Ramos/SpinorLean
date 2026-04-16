@@ -69,11 +69,13 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - Extend to all of Cl(V,Q) via universal property
 - [ ] Prove this action satisfies the Clifford relation: a(v) ∘ a(v) = Q(v) · id
   - [x] In the transported hyperbolic case, prove the vector relation on `⋀W`
+  - [x] Top-level canonical split-rank capstone: `splitSpinorCliffordAction_sq_apply`
 - [ ] Prove ⋀W is a faithful Cl(V,Q)-module (for non-degenerate Q)
   - [x] In the split model, show `splitCliffordAction : Cl(W* × W, dualProd) → End(⋀W)` is
     surjective and injective
   - [x] Transport that faithfulness to explicit hyperbolic presentations `Q ≃ dualProd K W`,
     the Witt-presentation API, and the split-rank canonical Witt model
+  - [x] Top-level canonical split-rank capstone: `splitSpinorCliffordAction_injective`
 
 ### 2.3 The Spinor Module
 - [ ] **Define `SpinorModule Q` := ⋀W as a `Module (CliffordAlgebra Q)`**
@@ -82,6 +84,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - [x] Transport that simplicity to the explicit hyperbolic, Witt, and split-Witt presentation APIs
 - [ ] Prove the dimension formula: dim(S) = 2^(n/2)
   - [x] In the explicit hyperbolic case `Q ≃ dualProd K W`, show `dim(⋀W) = 2 ^ (dim V / 2)`
+  - [x] Top-level canonical split-rank capstones: `splitSpinorModule_finrank`,
+    `positiveHalfSpinorModule_finrank`, `negativeHalfSpinorModule_finrank`
 
 ---
 
@@ -100,16 +104,31 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   representations through the hyperbolic/Witt presentation APIs
 - [x] Prove the split hyperbolic spin action on the chosen `⋀W` model preserves `⋀^even W` and `⋀^odd W`
 - [x] In positive split rank, prove the chosen even and odd halves have equal dimension
-- [ ] Identify these chosen even/odd summands with the ambient chiral modules `S⁺` and `S⁻`
+- [x] Identify these chosen even/odd summands with the ambient chiral modules `S⁺` and `S⁻`
+  - `Spinor.Presentation.positiveHalfSpinorModule_eq_ambient_positiveChiral`,
+    `Spinor.Presentation.negativeHalfSpinorModule_eq_ambient_negativeChiral` identify the
+    chosen-model `S⁺`/`S⁻` with the ambient `positiveChiral`/`negativeChiral` construction applied
+    to the zero form on `Q.wittSubspace`; combined with
+    `Spinor.Presentation.positiveHalfSpinorModule_eq_evenWittExterior` and
+    `Spinor.Presentation.negativeHalfSpinorModule_eq_oddWittExterior` (and the packaged
+    `Spinor.Presentation.splitSpinor_chiral_correspondence`), this gives the identification with
+    `⋀^even W` / `⋀^odd W`. `Spinor.Presentation.positiveHalfSpinorModuleLinearEquivEvenWittExterior`
+    and `Spinor.Presentation.negativeHalfSpinorModuleLinearEquivOddWittExterior` provide the
+    by-product `K`-linear equivalences.
+- theorem-facing half-spin API now uses the canonical chosen-model wrappers in
+  `Spinor.Presentation`
 - [x] Prove Spin(V,Q) preserves the decomposition (Weyl spinors)
-- [ ] Prove S⁺ and S⁻ are irreducible and inequivalent (for dim ≥ 4)
+- [x] Prove the theorem-facing canonical `S⁺` and `S⁻` modules are irreducible and inequivalent
+  (for dim ≥ 4)
   - [x] In the split model, prove `⋀^even W` is simple under the even Clifford algebra and, in
     positive split rank, prove the same for `⋀^odd W`
   - [x] Transport that half-spin simplicity to the explicit hyperbolic, Witt, and split-Witt
     presentation APIs
   - [x] Prove the chosen-model inequivalence statement and transport it to the explicit
     hyperbolic, Witt, and split-Witt presentation APIs
-  - [ ] Prove the remaining ambient/global `S⁺` / `S⁻` version
+  - [x] Package the top-level canonical chosen-model `S⁺` / `S⁻` version via
+    `positiveHalfSpinorModule`, `negativeHalfSpinorModule`, and the corresponding
+    simplicity/inequivalence wrappers
 
 ---
 
@@ -137,12 +156,36 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - implemented as `Spinor.ComplexClassification.complexOddCliffordEquivProdMatrix`, i.e. the
     standard grouped form consisting of the even `2n` sum-of-squares block plus one extra square
 - [ ] Bott periodicity for real Clifford algebras (period 8)
+  - foundation now started in `Spinor.RealClassification`: standard signature forms are packaged,
+  `Cl(1,1) ≃ Mat₂(ℝ)` is explicit, and more generally the split forms `Cl(n,n)` are packaged as
+    `Mat_(2^n)(ℝ)` with even part
+    `Cl⁺(n,n) ≃ Mat_(2^(n-1))(ℝ) × Mat_(2^(n-1))(ℝ)`;
+    canonical low-signature entries `Spinor.RealClassification.cl_0_1_equivComplex`
+    (`Cl(0,1) ≃ ℂ`) and `Spinor.RealClassification.cl_0_2_equivQuaternion`
+    (`Cl(0,2) ≃ ℍ`) are now packaged as first-class algebra isomorphisms in the
+    `Spinor.RealClassification` namespace, starting the negative-definite row of the
+    real classification table
 
 ### 4.2 Low-Dimensional Examples
-- [ ] Spin(2) → U(1) (circle)
+- [x] Spin(2) ≃ U(1) (circle)
+  - packaged as
+    `Spinor.LowDimensional.realSpin02EquivUnitaryComplex : spinGroup realCl02Form ≃* unitary ℂ`
+    using Mathlib's compact negative-signature normalization
 - [ ] Spin(3) → SU(2) (Pauli matrices / quaternions)
 - [ ] Spin(4) → SU(2) × SU(2)
+  - scaffolding: `Spinor.LowDimensional.realCl04Form` (negative-signature 4-form) and
+    `Spinor.LowDimensional.realEvenCl04EquivCl03 : Cl⁺(0,4) ≃ₐ[ℝ] Cl(0,3)` via
+    `CliffordAlgebra.equivEven`; the remaining gap is the classical
+    `Cl(0,3) ≃ ℍ × ℍ` (equivalently `Cl⁺(0,4) ≃ ℍ × ℍ`) isomorphism, which
+    requires a pseudoscalar / central-idempotent splitting currently absent
+    from Mathlib
 - [ ] These connect spinors to familiar physics
+  - foundation now includes explicit low-dimensional Clifford-algebra models in
+    `Spinor.LowDimensional`, including complex `Cl(1)`, `Cl(2)`, `Cl(3)`, `Cl(4)`, real
+    `Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ`, `Cl⁺(2,0) ≃ ℂ`, `Cl⁺(3,0) ≃ ℍ`, and split-real
+    `Cl(1,1)`, `Cl⁺(1,1)`, `Cl(2,2)`, `Cl⁺(2,2)`; the first group-level compact identification
+    `Spin(2) ≃ U(1)` is now packaged, and the remaining gap is the higher low-dimensional
+    Spin-identification layer
 
 ### 4.3 The Covering Map
 - [ ] Spin(V,Q) → SO(V,Q) is a double cover
@@ -153,13 +196,22 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - [x] package those ambient isometries as a genuine homomorphism
     `Spinor.spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q`
 - [ ] Kernel is {1, -1}
+  - done in the finite-dimensional split/hyperbolic setting on the canonical chosen-model API via
+    `splitSpinorCoveringKernel_eq_one_or_neg_one`; the fully general / surjective double-cover
+    packaging remains open
 - [ ] The spin representation does NOT factor through SO
+  - done in positive split rank on the canonical chosen-model API via
+    `splitSpinorRepresentation_not_factor_through_isometry`; the fully general covering-map
+    formulation remains open
 
 ---
 
 ## Phase 5: Paper & Polish (Week 7-8)
 
 ### 5.1 Paper Writing
+- paper scaffolding created at `paper/` (initial `main.tex`, `refs.bib`, and
+  `README.md` with target venues and grounded per-section prose); individual
+  sub-bullets below remain open pending a full draft
 - [ ] Introduction: why spinors matter, why formalization is novel
 - [ ] Related work: lean-ga, Mathlib Clifford, what's missing
 - [ ] Formalization architecture
@@ -171,7 +223,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [x] Full `lake build` clean
 - [x] Zero `sorry` / `admit` sweep
 - [ ] Mathlib-compatible style
-- [ ] Module documentation
+- [x] Module documentation (Mathlib-style `/-! # ... -/` blocks on all 18 `Spinor/*.lean` files)
 
 ### 5.3 Submission
 - [ ] Target: CPP 2027 (deadline ~Sep 2026) or ITP 2027

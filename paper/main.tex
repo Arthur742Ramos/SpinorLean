@@ -1,0 +1,447 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Packages -------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+\usepackage{xspace}
+
+% --- Theorem environments -------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% --- Project-specific macros ----------------------------------------------
+\newcommand{\Cl}{\mathrm{Cl}}
+\newcommand{\Spin}{\mathrm{Spin}}
+\newcommand{\Pin}{\mathrm{Pin}}
+\newcommand{\SO}{\mathrm{SO}}
+\newcommand{\End}{\mathrm{End}}
+\newcommand{\Mat}{\mathrm{Mat}}
+\newcommand{\dualProd}{\mathrm{dualProd}}
+\newcommand{\wedgeW}{\bigwedge W}
+\newcommand{\wedgeEven}{\bigwedge^{\mathrm{even}} W}
+\newcommand{\wedgeOdd}{\bigwedge^{\mathrm{odd}} W}
+\newcommand{\SpinorLean}{\textsc{SpinorLean}\xspace}
+\newcommand{\Lean}{Lean~4\xspace}
+\newcommand{\Mathlib}{\textsc{Mathlib}\xspace}
+\newcommand{\code}[1]{\texttt{#1}}
+
+% --- Metadata -------------------------------------------------------------
+\title{Formalizing Spinor Representations from Clifford Algebras in
+       \Lean\ and \Mathlib}
+\author{%
+  Author One\\\small Affiliation One\\\small \texttt{author.one@example.org}
+  \and
+  Author Two\\\small Affiliation Two\\\small \texttt{author.two@example.org}
+}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+% --- Abstract -------------------------------------------------------------
+\begin{abstract}
+We present \SpinorLean, the first formalization of spinor representations
+from Clifford algebras in a proof assistant. Building on \Mathlib's existing
+\code{CliffordAlgebra}, \code{ExteriorAlgebra}, and \code{spinGroup}
+libraries, we construct the spinor module as the exterior algebra
+$\wedgeW$ of a maximal totally isotropic subspace $W \le V$, equipped with
+its natural $\Cl(V,Q)$-action via wedge and contraction. The formalization
+is organized around a hyperbolic-presentation pattern: an explicit isometry
+$Q \simeq \dualProd_K W$ is packaged as first-class data that transports the
+chosen $\wedgeW$ model, its Clifford action, its $\Spin(Q)$-action, its
+parity splitting, and its simplicity and non-factorization results from the
+concrete split model to arbitrary quadratic forms that admit such a
+presentation. The resulting library includes faithful Clifford actions,
+half-spin (Weyl) simplicity and inequivalence, the algebra equivalences
+$\Cl(Q) \simeq \End(\wedgeW)$ and $\Cl^+(Q) \simeq
+\End(\wedgeEven) \times \End(\wedgeOdd)$, matrix models over $\mathbb{C}$
+and split real signatures (including $\Cl(n,n) \simeq \Mat_{2^n}(\mathbb{R})$),
+explicit low-dimensional identifications, and the compact identification
+$\Spin(2) \simeq U(1)$. The library builds cleanly with zero
+\code{sorry}/\code{admit}.
+\end{abstract}
+
+% --- 1. Introduction -----------------------------------------------------
+\section{Introduction}
+\label{sec:intro}
+
+Spinors sit at the centre of twentieth-century mathematics and physics.
+Algebraically, they are the ``square roots of geometry'': the irreducible
+modules over a Clifford algebra $\Cl(V,Q)$ on which the spin group
+$\Spin(V,Q)$ acts. Through Atiyah--Bott--Shapiro, they power real
+$K$-theory and Bott periodicity; through Dirac operators, they describe
+fermionic matter fields; through twistors and pure spinors, they appear
+throughout modern geometry. Any foundational library of geometry in a proof
+assistant eventually needs them.
+
+Despite this, no proof assistant has previously formalized the spinor
+representation in the precise sense: a $\Cl(V,Q)$-module $S$ carrying, by
+restriction, a representation of $\Spin(V,Q)$, with dimension $2^{n/2}$
+and the expected simplicity and chirality properties. \Mathlib~\cite{Mathlib}
+already contains substantial Clifford-algebra infrastructure --
+\code{CliffordAlgebra}, \code{ExteriorAlgebra}, \code{spinGroup},
+\code{pinGroup}, and (via Wieser~\cite{Wieser2022Clifford}) their universal
+properties and gradings -- but the Clifford \emph{module} that connects
+$\Cl(V,Q)$ and $\Spin(V,Q)$ to linear algebra was missing. The earlier
+\code{lean-ga} library~\cite{LeanGA} concentrated on computational geometric
+algebra in \Lean~3 and did not reach the representation-theoretic
+content.
+
+\SpinorLean fills this gap. Given a quadratic space $(V,Q)$ over a field
+$K$ of characteristic not two, we construct the exterior model
+$\wedgeW$ attached to a maximal totally isotropic subspace $W \le V$,
+equip it with a $\Cl(V,Q)$-action, restrict to a
+$\Spin(V,Q)$-representation, split off the chiral (Weyl) halves, and prove
+the corresponding simplicity, faithfulness, inequivalence, and
+matrix-classification theorems. In finite-dimensional split rank the
+representation has dimension $2^{n/2}$ and the even and odd halves each
+have dimension $2^{n/2-1}$. All results are machine-checked in \Lean,
+with a clean \code{lake build} and zero \code{sorry}/\code{admit}.
+
+The main conceptual contribution is architectural rather than
+mathematical: we isolate the \emph{hyperbolic presentation}
+$Q \simeq \dualProd_K W$ as the primitive piece of data and thread a
+chosen $\wedgeW$ model through it. This keeps every theorem concrete
+enough to prove on the split model and generic enough to apply to any
+quadratic form admitting such a presentation.
+
+% --- 2. Related Work -----------------------------------------------------
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Mathlib.} The Clifford-algebra infrastructure we build on is
+extensive. \Mathlib provides \code{CliffordAlgebra Q} with its universal
+property, the exterior-algebra equivalence
+\code{CliffordAlgebra.equivExterior} in characteristic not two, the even
+subalgebra and $\mathbb{Z}/2$-grading via \code{evenOdd}, and the groups
+\code{spinGroup Q} and \code{pinGroup Q} together with their conjugation
+actions. Wieser's work on the Clifford algebra
+design~\cite{Wieser2022Clifford} underlies much of this API. What was
+missing -- and what \SpinorLean adds -- is the Clifford \emph{module}
+structure: a concrete $\Cl(V,Q)$-module realizing the spinor
+representation, together with its simplicity, half-spin decomposition,
+and matrix-algebra classifications.
+
+\paragraph{lean-ga.} The \code{lean-ga} project~\cite{LeanGA}, developed
+largely in \Lean~3, explored geometric algebra with a strong emphasis on
+computational and basis-level constructions. It predates much of the
+current \Mathlib Clifford stack and does not target spinor modules or
+their representation theory; our work is complementary, focusing on the
+algebraic representation-theoretic side in \Lean~4 over the modern
+\Mathlib API.
+
+\paragraph{Mathematics background.} Our development follows the classical
+presentations of Lawson--Michelsohn~\cite{LawsonMichelsohn1989},
+Chevalley~\cite{Chevalley1996}, Atiyah--Bott--Shapiro~\cite{AtiyahBottShapiro1964},
+and Lounesto~\cite{Lounesto2001}, with the low-dimensional octonionic
+and quaternionic incidences drawn from Baez~\cite{Baez2002}. The
+hyperbolic-presentation pattern can be seen as a proof-engineering
+refinement of the standard ``choose a maximal isotropic and an exterior
+model'' construction in those references.
+
+% --- 3. Formalization Architecture ---------------------------------------
+\section{Formalization Architecture}
+\label{sec:arch}
+
+\paragraph{File layout.} The library is organized into a small number of
+\code{Spinor/\ldots} files, each with a single responsibility: Mathlib
+imports and notation; isotropic subspaces and Witt decomposition
+(\code{Isotropic.lean}, \code{WittDecomp.lean}); the chosen exterior model
+and its wedge/contraction operators (\code{ExteriorModel.lean}); the
+concrete split Clifford and spin actions (\code{HyperbolicAction.lean}); the
+first-class presentation API (\code{Presentation.lean}); the transport of
+all Clifford/spin structure onto the chosen exterior model
+(\code{CliffordAction.lean}, \code{SpinRep.lean}, \code{Chiral.lean}); the
+orthogonal/covering-map layer (\code{OrthogonalAction.lean}); and the
+doubled form (\code{ProdNeg.lean}). Classification results live in
+\code{ComplexClassification.lean}, \code{RealClassification.lean}, and
+\code{LowDimensional.lean}.
+
+\paragraph{The hyperbolic-presentation pattern.} The central organizing
+idea is to isolate the data
+\[
+  Q \simeq \dualProd_K W
+  \qquad (W \text{ a maximal totally isotropic subspace})
+\]
+as a \Lean{} structure,
+\code{HyperbolicPresentation Q}, carrying a subspace $W$ and an isometry
+equivalence to the standard hyperbolic form \code{dualProd K W}. This
+structure is promoted to a first-class object: it carries a chosen
+$\wedgeW$ model (\code{spinorModule}), chosen even and odd halves
+(\code{evenSpinorModule}, \code{oddSpinorModule}), the transported maximal
+totally isotropic subspace, the Witt-index theorem
+(\code{wittIndex\_eq\_finrank}), the transported
+\code{Cl(Q) \ensuremath{\to} End(\ensuremath{\wedgeW})} action, and the
+restricted \code{spinGroup Q} action as actual \Lean{} \code{Module} and
+\code{MulAction} instances. Theorems about the ambient $(V,Q)$ are then
+proved \emph{on} this presentation and reused whenever one is available.
+
+\paragraph{Four transport layers.} Concretely, the chosen $\wedgeW$ model
+is threaded through four layers that sit above each other:
+\begin{enumerate}
+  \item \textbf{The split model.} All hard work happens over
+        $\Cl(W^* \times W, \dualProd)$ acting on $\wedgeW$ by wedge on
+        the $W$ factor and interior product by the $W^*$ factor
+        (\code{HyperbolicAction.lean}). The Clifford relation is verified
+        directly; the resulting map is proved to be an algebra equivalence
+        $\Cl(W^* \times W, \dualProd) \simeq \End(\wedgeW)$ by explicit
+        basis projectors.
+  \item \textbf{Explicit hyperbolic presentations
+        $Q \simeq \dualProd_K W$.} Any such presentation transports the
+        split action to $\Cl(V,Q) \to \End(\wedgeW)$ and to the restricted
+        $\Spin(V,Q)$-representation, together with parity, Witt-index,
+        simplicity, faithfulness, and non-factorization statements
+        (\code{Presentation.lean}, \code{CliffordAction.lean},
+        \code{SpinRep.lean}, \code{Chiral.lean}).
+  \item \textbf{The Witt presentation API.} The genuine Witt decomposition
+        $V \simeq W \oplus W^* \oplus V_0$, obtained from a totally
+        isotropic subspace plus a chosen complement, yields both a linear
+        decomposition and a quadratic splitting
+        $Q \simeq \dualProd_K W \oplus Q_0$ (\code{wittIsometryEquiv}).
+        Its hyperbolic factor is exposed as
+        \code{HyperbolicPresentation.canonicalWittFactor} and feeds back
+        into layer~2.
+  \item \textbf{The split-rank canonical model.} When $V_0$ vanishes
+        (split rank), the canonical Witt subspace
+        \code{Q.wittSubspace} chooses its complement internally, yielding
+        \code{splitWittPresentation} and \code{splitSpinorModule}, together
+        with the top-level capstone theorems (dimensions, simplicity,
+        faithfulness, and non-factorization) that require no explicit
+        isometry argument.
+\end{enumerate}
+A fifth specialized layer handles the nondegenerate doubled case
+$(Q \oplus -Q)$ through the canonical diagonal isotropic subspace, via
+\Mathlib's \code{QuadraticForm.toDualProd}, upgraded here to an
+isometry equivalence and packaged as a reusable
+\code{HyperbolicPresentation}.
+
+\paragraph{Threading the chosen model.} The effect of this architecture is
+that every theorem is proved once on the concrete $\wedgeW$ model, then
+lifted verbatim through the presentation APIs. For example, full-module
+simplicity is proved in \code{HyperbolicAction} for the split model and
+then surfaces on \code{HyperbolicPresentation}, \code{WittPresentation},
+and the top-level split-rank aliases with no additional mathematical work
+-- only bookkeeping via the transported isomorphisms.
+
+% --- 4. Main Results -----------------------------------------------------
+\section{Main Results}
+\label{sec:results}
+
+The following catalog summarises the capstone theorems present in the
+current library.
+
+\paragraph{Foundations.}
+\begin{itemize}
+  \item Totally isotropic subspaces, existence of maximal totally
+        isotropic subspaces over finite-dimensional spaces over fields,
+        and \code{wittIndex} as the maximal dimension of such a subspace.
+  \item The general linear Witt decomposition
+        $V \simeq W \oplus W^* \oplus V_0$ from a chosen complement
+        (\code{wittLinearDecompositionOfIsCompl}) and the corresponding
+        quadratic splitting \code{wittIsometryEquivOfIsCompl}.
+\end{itemize}
+
+\paragraph{The chosen exterior model.}
+\begin{itemize}
+  \item $\dim(\wedgeW) = 2^{\,\mathrm{wittIndex}\,Q}$ and, under an
+        explicit hyperbolic presentation,
+        $\dim(\wedgeW) = 2^{\,\dim V / 2}$.
+  \item Parity splitting $\wedgeW = \wedgeEven \oplus \wedgeOdd$, with
+        explicit wedge and contraction operators that flip parity; in
+        positive split rank, each half has dimension $2^{\dim V/2 - 1}$.
+\end{itemize}
+
+\paragraph{Clifford and spin actions.}
+\begin{itemize}
+  \item Split hyperbolic action $\Cl(W^* \times W, \dualProd) \to
+        \End(\wedgeW)$ satisfying the Clifford relation.
+  \item Transport to $\Cl(V,Q) \to \End(\wedgeW)$ along any explicit
+        hyperbolic presentation, and its restriction to
+        \code{spinGroup Q} as a genuine \code{MulAction}.
+  \item Faithful Clifford action on the chosen model in the explicit
+        hyperbolic, Witt, and split-Witt settings, packaged as an algebra
+        equivalence $\Cl(Q) \simeq \End(\wedgeW)$.
+\end{itemize}
+
+\paragraph{Chirality / half-spin.}
+\begin{itemize}
+  \item Chosen-model chiral decomposition with \code{spinGroup} preserving
+        each half, and identification of the zero-form chiral pieces with
+        the exterior even/odd summands.
+  \item $\Cl^+(Q) \simeq \End(\wedgeEven) \times \End(\wedgeOdd)$ through
+        the presentation APIs; in positive split rank, the concrete
+        product-of-matrices form of size $2^{\dim V/2 - 1}$.
+\end{itemize}
+
+\paragraph{Simplicity, faithfulness, and covering-map statements.}
+\begin{itemize}
+  \item The full chosen Clifford module $\wedgeW$ is simple in the split
+        model; this is transported to the hyperbolic, Witt, and
+        split-Witt presentations.
+  \item Each chosen half $\wedgeEven$, $\wedgeOdd$ is simple under the
+        even Clifford algebra (positive split rank for the odd half),
+        and the two halves are inequivalent as modules over $\Cl^+$.
+  \item The ambient vector action
+        \code{spinLinearRepresentation} preserves $Q$; each spin element
+        is packaged as a genuine \code{Q.IsometryEquiv Q}, and the whole
+        map is a homomorphism
+        \code{spinIsometryRepresentation :\,spinGroup\,Q \ensuremath{\to^{*}}
+        Q.IsometryEquiv\,Q}.
+  \item On the split-rank chosen-model API, the ambient
+        spin-to-isometry kernel is proved to be exactly
+        $\{\pm 1\}$, and the spin representation is proved not to
+        factor through the ambient isometry representation whenever
+        $Q$ represents $-1$ and $-1 \neq 1$.
+\end{itemize}
+
+\paragraph{Classification.}
+\begin{itemize}
+  \item Over $\mathbb{C}$: $\Cl(2n,\mathbb{C}) \simeq
+        \Mat_{2^n}(\mathbb{C})$ and
+        $\Cl(2n{+}1,\mathbb{C}) \simeq
+        \Mat_{2^n}(\mathbb{C}) \times \Mat_{2^n}(\mathbb{C})$ on the
+        standard sum-of-squares forms.
+  \item Over $\mathbb{R}$ (split signature):
+        $\Cl(n,n) \simeq \Mat_{2^n}(\mathbb{R})$ and
+        $\Cl^+(n,n) \simeq \Mat_{2^{n-1}}(\mathbb{R}) \times
+        \Mat_{2^{n-1}}(\mathbb{R})$.
+  \item Explicit low-dimensional identifications, including
+        $\Cl(1,\mathbb{C})$, $\Cl(2,\mathbb{C})$, $\Cl(3,\mathbb{C})$,
+        $\Cl(4,\mathbb{C})$, $\Cl(0,1) \simeq \mathbb{C}$,
+        $\Cl(0,2) \simeq \mathbb{H}$, $\Cl^+(2,0) \simeq \mathbb{C}$,
+        $\Cl^+(3,0) \simeq \mathbb{H}$, $\Cl(1,1) \simeq
+        \Mat_2(\mathbb{R})$, and $\Cl^+(2,2) \simeq \Mat_2(\mathbb{R})
+        \times \Mat_2(\mathbb{R})$.
+  \item The compact group identification
+        $\Spin(2) \simeq U(1)$, packaged as
+        \code{realSpin02EquivUnitaryComplex}.
+\end{itemize}
+
+% --- 5. Key Proof Highlights ---------------------------------------------
+\section{Key Proof Highlights}
+\label{sec:highlights}
+
+\paragraph{Simplicity of $\wedgeEven$ under $\Cl^+$.}
+Half-spin simplicity is the technical heart of the development. In the
+split model $\Cl(W^* \times W, \dualProd)$ acting on $\wedgeW$ by
+wedge and contraction, we exhibit explicit basis projectors witnessing
+that every non-zero element of $\wedgeEven$ can be mapped to any other
+by an element of the even Clifford algebra. The argument proceeds via the
+basis-indexed decomposition of $\wedgeW$, pairing wedge-by-$W$ with
+interior-by-$W^*$ to produce matrix units acting on the even subspace. In
+positive split rank the same argument yields simplicity of $\wedgeOdd$.
+This split-model statement is then transported through the
+\code{HyperbolicPresentation}, \code{WittPresentation}, and
+\code{splitWittPresentation} layers with no additional work.
+
+\paragraph{Equivalence $\Cl(Q) \simeq \End(\wedgeW)$.}
+Surjectivity and injectivity of
+\code{splitCliffordAction :
+  Cl(W^* \times W, dualProd) \ensuremath{\to} End(\ensuremath{\wedgeW})}
+are the counterpart of simplicity from the algebra side. Surjectivity is
+proved by writing an arbitrary endomorphism as a linear combination of
+matrix units built from the same wedge/contraction projectors; injectivity
+follows because the split action is faithful on a spanning set. Combining
+with the transport along any hyperbolic presentation yields the algebra
+equivalence $\Cl(Q) \simeq \End(\wedgeW)$ and, in split rank, the
+concrete $\Cl(Q) \simeq \Mat_{2^{\dim V/2}}(K)$ realization through
+\code{splitWittCliffordEquivMatrix}. The same machinery, applied to
+$\Cl^+$, yields
+$\Cl^+(Q) \simeq \End(\wedgeEven) \times \End(\wedgeOdd)$.
+
+\paragraph{Split-rank covering-map fragments.}
+The covering map $\Spin(V,Q) \to \SO(V,Q)$ is not yet formalized in full
+generality, but its key algebraic ingredients are. We show that every
+element of the kernel of the spin-to-isometry representation acts
+trivially on the whole Clifford algebra by conjugation, hence commutes
+with every Clifford element. Over domains this forces the scalar part of
+the kernel to be $\pm 1$, and in the finite-dimensional hyperbolic setting
+the chosen-model algebra equivalence $\Cl(Q) \simeq \End(\wedgeW)$
+forces every kernel element to be scalar. Combining the two yields, on
+the canonical split-rank API, the exact kernel
+$\{\pm 1\}$ via
+\code{splitSpinorCoveringKernel\_eq\_one\_or\_neg\_one} and the
+non-factorization result
+\code{splitSpinorRepresentation\_not\_factor\_through\_isometry}
+whenever $Q$ represents $-1$ and $-1 \neq 1$.
+
+% --- 6. Lessons Learned --------------------------------------------------
+\section{Lessons Learned}
+\label{sec:lessons}
+
+\paragraph{Gaps found in \Mathlib.} The inventory in
+\code{Spinor/Inventory.lean} records three concrete gaps that \SpinorLean
+had to bridge. First, \code{QuadraticForm.WittDecomp} was effectively
+absent: the existence of maximal totally isotropic subspaces over
+finite-dimensional vector spaces, the Witt index as the maximal such
+dimension, and the linear/quadratic Witt decomposition $V \simeq W \oplus
+W^* \oplus V_0$ had to be built from primitive pieces and are now exposed
+as \code{wittLinearDecompositionOfIsCompl} and \code{wittIsometryEquivOfIsCompl}.
+Second, interior products on the exterior algebra were only partially
+present: \code{ExteriorAlgebra.\ensuremath{\iota}Multi} existed, but a
+clean contraction operator $\iota_f : \wedgeW \to \wedgeW$
+dual to wedge multiplication, with the relations used in the Clifford
+action, had to be developed in \code{ExteriorModel.lean}. Third, and most
+importantly, the Clifford \emph{module} structure -- the spinor
+representation itself -- was entirely missing; this is the main technical
+contribution of the library.
+
+\paragraph{Design choices.} The hyperbolic-presentation pattern emerged
+from two failed drafts in which the chosen model was threaded either too
+concretely (forcing every consumer to carry a subspace and isometry by
+hand) or too abstractly (losing access to the explicit basis projectors
+needed for simplicity proofs). Packaging the isometry and its chosen
+model as a single \Lean{} structure, and duplicating exactly the API
+needed at each transport layer, gave us both reusable theorems and
+manageable proof obligations. A recurring theme was the benefit of
+proving each hard statement once on the split model and letting the
+transport layer handle the rest -- the four-layer stack has paid back
+that investment many times over.
+
+% --- 7. Future Work ------------------------------------------------------
+\section{Future Work}
+\label{sec:future}
+
+Within the scope of the current library, several natural extensions
+remain. First, the general \emph{covering map} $\Spin(V,Q) \to \SO(V,Q)$
+is not yet formalized in full generality: the kernel $\{\pm 1\}$ is
+established on the canonical split-rank API, but a fully ambient
+surjectivity statement remains open. Second, \emph{Bott periodicity}
+for real Clifford algebras (period 8) is still only foundational: the
+split signature $\Cl(n,n)$ classification is in place, but the genuinely
+eight-fold periodicity phenomenon has not been formalized. Third, the
+remaining \emph{low-dimensional spin identifications}
+$\Spin(3)$, $\Spin(4)$, $\Spin(5)$, and $\Spin(6)$ -- connecting spinors
+to quaternions, pairs of quaternions, and symplectic/unitary groups --
+would round out the explicit catalog beyond the already-packaged
+$\Spin(2) \simeq U(1)$.
+
+Beyond the current algebraic scope, the \code{ROADMAP.md} non-goals
+section lists \emph{spinor bundles}, \emph{Dirac operators}, and the
+associated differential-geometric content as out of scope for the
+present paper, awaiting a more mature \Mathlib manifold and connection
+theory. Computational paths, basis-level geometric-algebra calculations,
+and direct physics applications are similarly left for follow-up work.
+We view the current development as the algebraic substrate that makes
+those future directions approachable, not as their replacement.
+
+% --- Bibliography --------------------------------------------------------
+\bibliographystyle{alpha}
+\bibliography{refs}
+
+\end{document}

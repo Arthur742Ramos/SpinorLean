@@ -4,6 +4,26 @@
 
 import Spinor.Basic
 
+/-!
+# Ambient Clifford action on the exterior spinor module
+
+Transport of the left regular action of `CliffordAlgebra Q` on itself to the ambient
+exterior-algebra spinor module `SpinorModule Q := ExteriorAlgebra R M`, via the Mathlib
+linear equivalence `CliffordAlgebra.equivExterior`. This gives `SpinorModule Q` its
+first-class `Module (CliffordAlgebra Q)` structure and a faithful vector relation; the
+`spinGroup Q` action is then derived by restriction in `Spinor.SpinRep`.
+
+## Main declarations
+
+* `Spinor.cliffordAction Q` — the transported algebra homomorphism
+  `CliffordAlgebra Q →ₐ[R] Module.End R (SpinorModule Q)`.
+* `Spinor.cliffordAction_ι_sq` — the Clifford vector relation `ι(m) · ι(m) = Q m`.
+* `Spinor.cliffordAction_injective` — faithfulness in characteristic not two (via
+  `Invertible (2 : R)`).
+* The `Module (CliffordAlgebra Q) (SpinorModule Q)` instance and the
+  `Spinor.clifford_smul_def` unfolding lemma.
+-/
+
 namespace Spinor
 
 universe uR uM

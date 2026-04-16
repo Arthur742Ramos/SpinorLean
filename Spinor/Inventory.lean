@@ -19,6 +19,20 @@
 
 import Spinor.Notation
 
+/-!
+# Mathlib inventory for SpinorLean
+
+Documentation-only module recording the Mathlib APIs this project builds on and the gaps it
+sets out to fill. The `Spinor` namespace here is intentionally empty; see the file header
+comment above for the current inventory.
+
+The main gaps targeted elsewhere in this library are an API for totally isotropic subspaces
+(`Spinor.Isotropic`), Witt-index bookkeeping (`Spinor.WittDecomp`), and a project-level
+spinor-module construction with its Clifford and spin-group actions
+(`Spinor.Basic`, `Spinor.ExteriorModel`, `Spinor.CliffordAction`, `Spinor.SpinRep`,
+`Spinor.Presentation`).
+-/
+
 namespace Spinor
 
 end Spinor

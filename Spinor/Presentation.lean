@@ -8,7 +8,50 @@
 
 import Spinor.Chiral
 import Spinor.HyperbolicAction
+import Spinor.OrthogonalAction
+import Mathlib.LinearAlgebra.Dual.Lemmas
 import Mathlib.LinearAlgebra.Matrix.ToLin
+
+/-!
+# First-class hyperbolic, Witt, and split-Witt presentations
+
+First-class packaging of explicit hyperbolic presentations `Q ≃ dualProd K W` together with
+the induced chosen `⋀W` spinor model, Clifford and spin-group actions, even/odd halves, and
+matrix-algebra models. Presentations built from split data `(W, U)` or from a chosen Witt
+subspace are also exposed here, as are the canonical split-rank constructions that choose a
+complement internally.
+
+Every downstream chosen-model Clifford / spin result in the library flows through this
+layer: for any `P : HyperbolicPresentation Q`, this file provides a canonical
+`Module (CliffordAlgebra Q) P.spinorModule`, a matching `MulAction (spinGroup Q)`, the
+identifications of the chiral pieces with `⋀^even W` / `⋀^odd W`, the Witt-index theorem
+`wittIndex Q = dim W`, and the canonical endomorphism and matrix-algebra equivalences
+`CliffordAlgebra Q ≃ End(⋀W)` and `CliffordAlgebra Q ≃ Mat_(2^dim W)(K)`.
+
+## Main declarations
+
+* `Spinor.HyperbolicPresentation` — the structure packaging `W ≤ V` and `Q ≃ dualProd K W`.
+* `HyperbolicPresentation.spinorModule`, `.evenSpinorModule`, `.oddSpinorModule` — the chosen
+  `⋀W` model and its chosen parity halves.
+* `HyperbolicPresentation.isotropicSubmodule`,
+  `HyperbolicPresentation.isotropicSubmodule_isMaximalTotallyIsotropic`,
+  `HyperbolicPresentation.wittIndex_eq_finrank` — the transported maximal isotropic subspace
+  and the Witt-index theorem.
+* `HyperbolicPresentation.cliffordAction`, `HyperbolicPresentation.cliffordModule`,
+  `HyperbolicPresentation.spinRepresentation`, `HyperbolicPresentation.spinMulAction` — the
+  canonical Clifford and spin-group actions on the chosen model.
+* `HyperbolicPresentation.cliffordAction_injective`,
+  `HyperbolicPresentation.cliffordEquivEnd`,
+  `HyperbolicPresentation.cliffordEquivMatrix` — faithfulness and the endomorphism /
+  matrix-algebra packaging of `CliffordAlgebra Q`.
+* `HyperbolicPresentation.spinRepresentation_injective`,
+  `HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_pos_finrank` —
+  faithfulness of the spin representation and the non-factorization theorem.
+* `splitSpinorModule`, `positiveHalfSpinorModule`, `negativeHalfSpinorModule` and their
+  associated action / simplicity / inequivalence aliases — the top-level split-rank
+  canonical chosen-model API built from `HyperbolicPresentation` together with
+  `Spinor.WittPresentation` and `Spinor.splitWittPresentation`.
+-/
 
 namespace Spinor
 
@@ -150,6 +193,151 @@ noncomputable def cliffordEquivEnd [FiniteDimensional K V] (P : HyperbolicPresen
 @[simp] theorem cliffordEquivEnd_apply [FiniteDimensional K V] (P : HyperbolicPresentation Q)
     (a : CliffordAlgebra Q) :
     P.cliffordEquivEnd a = P.cliffordAction a := rfl
+
+/-- For any finite-dimensional hyperbolic presentation, the kernel of the ambient spin-to-isometry
+map is exactly the scalar elements `±1`. -/
+theorem spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one [FiniteDimensional K V]
+    (P : HyperbolicPresentation Q) (x : spinGroup Q) :
+    spinIsometryRepresentation (Q := Q) x = 1 ↔
+      (x : CliffordAlgebra Q) = 1 ∨ (x : CliffordAlgebra Q) = -1 := by
+  refine spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one_of_kernel_scalars
+    (Q := Q) ?_ x
+  intro y hy
+  exact hyperbolicClifford_eq_algebraMap_of_commute (K := K) (Q := Q) (W := P.W) P.iso
+    (a := (y : CliffordAlgebra Q))
+    (hcomm := commute_of_spinIsometryRepresentation_eq_one (Q := Q) y hy)
+
+/-- Evaluating the presented spin representation is just the presented Clifford action. -/
+@[simp] theorem spinRepresentation_apply (P : HyperbolicPresentation Q) (x : spinGroup Q) :
+    P.spinRepresentation x = P.cliffordAction x := rfl
+
+/-- The presented spin representation is faithful in finite-dimensional hyperbolic rank. -/
+theorem spinRepresentation_injective [FiniteDimensional K V] (P : HyperbolicPresentation Q) :
+    Function.Injective P.spinRepresentation := by
+  intro x y hxy
+  apply Subtype.ext
+  apply P.cliffordAction_injective
+  simpa [spinRepresentation_apply] using hxy
+
+/-- A scalar spin element acts by the matching scalar in any presented chosen model. -/
+theorem spinRepresentation_eq_algebraMap_of_coe_eq_algebraMap (P : HyperbolicPresentation Q)
+    (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r) :
+    P.spinRepresentation x = algebraMap K (Module.End K P.spinorModule) r := by
+  rw [spinRepresentation_apply, hx]
+  exact P.cliffordAction.commutes r
+
+/-- Pointwise form of `spinRepresentation_eq_algebraMap_of_coe_eq_algebraMap` for a presented
+chosen model. -/
+theorem spinRepresentation_apply_of_coe_eq_algebraMap (P : HyperbolicPresentation Q)
+    (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r)
+    (v : P.spinorModule) :
+    P.spinRepresentation x v = r • v := by
+  simpa [Algebra.smul_def] using
+    congrArg (fun f : Module.End K P.spinorModule => f v)
+      (spinRepresentation_eq_algebraMap_of_coe_eq_algebraMap (K := K) (Q := Q) P x r hx)
+
+@[simp] theorem spinRepresentation_eq_one_iff [FiniteDimensional K V]
+    (P : HyperbolicPresentation Q) (x : spinGroup Q) :
+    P.spinRepresentation x = 1 ↔ x = 1 := by
+  constructor
+  · intro hx
+    exact P.spinRepresentation_injective (by simpa using hx)
+  · intro hx
+    rw [hx]
+    simp
+
+/-- A nontrivial scalar spin element acts nontrivially in any finite-dimensional presented chosen
+model. -/
+theorem spinRepresentation_ne_one_of_coe_eq_algebraMap_of_ne_one [FiniteDimensional K V]
+    (P : HyperbolicPresentation Q) (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r) (hr : r ≠ 1) :
+    P.spinRepresentation x ≠ 1 := by
+  intro hspin
+  have hx1 : x = 1 := (spinRepresentation_eq_one_iff (K := K) (Q := Q) P x).mp hspin
+  apply hr
+  apply cliffordAlgebraMap_injective (Q := Q)
+  calc
+    algebraMap K (CliffordAlgebra Q) r = (x : CliffordAlgebra Q) := hx.symm
+    _ = ((1 : spinGroup Q) : CliffordAlgebra Q) := by
+      exact congrArg (fun y : spinGroup Q => (y : CliffordAlgebra Q)) hx1
+    _ = algebraMap K (CliffordAlgebra Q) 1 := rfl
+
+/-- Any kernel witness with nontrivial action on a presented chosen model obstructs factorization of
+that presented spin representation through the ambient isometry representation. -/
+theorem spinRepresentation_not_factor_through_isometry_of_kernel_witness
+    (P : HyperbolicPresentation Q) (x : spinGroup Q)
+    (hker : spinIsometryRepresentation (Q := Q) x = 1) (hspin : P.spinRepresentation x ≠ 1) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K P.spinorModule,
+        P.spinRepresentation = ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  intro hfactor
+  rcases hfactor with ⟨ρ, hρ⟩
+  have hρx :
+      P.spinRepresentation x = ρ (spinIsometryRepresentation (Q := Q) x) := by
+    simpa using congrArg
+      (fun f : spinGroup Q →* Module.End K P.spinorModule => f x) hρ
+  apply hspin
+  calc
+    P.spinRepresentation x = ρ (spinIsometryRepresentation (Q := Q) x) := hρx
+    _ = ρ 1 := by rw [hker]
+    _ = 1 := map_one ρ
+
+/-- A nontrivial scalar spin element obstructs factorization of the presented chosen-model spin
+representation through the ambient isometry representation. -/
+theorem spinRepresentation_not_factor_through_isometry_of_coe_eq_algebraMap_of_ne_one
+    [FiniteDimensional K V]
+    (P : HyperbolicPresentation Q) (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r) (hr : r ≠ 1) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K P.spinorModule,
+        P.spinRepresentation = ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  apply spinRepresentation_not_factor_through_isometry_of_kernel_witness (K := K) (Q := Q) P x
+  · exact spinIsometryRepresentation_eq_one_of_coe_eq_algebraMap (Q := Q) x r hx
+  · exact spinRepresentation_ne_one_of_coe_eq_algebraMap_of_ne_one (K := K) (Q := Q) P x r hx hr
+
+/-- Positive hyperbolic rank forces the quadratic form to represent `-1`. -/
+theorem exists_quadratic_eq_neg_one [FiniteDimensional K V]
+    (P : HyperbolicPresentation Q) (hW : 0 < Module.finrank K P.W) :
+    ∃ v : V, Q v = -1 := by
+  haveI : Nontrivial P.W := Module.nontrivial_of_finrank_pos hW
+  obtain ⟨w, hw⟩ := exists_ne (0 : P.W)
+  obtain ⟨f, hf⟩ := Module.Projective.exists_dual_eq_one K hw
+  refine ⟨P.iso.symm (-f, w), ?_⟩
+  calc
+    Q (P.iso.symm (-f, w)) = QuadraticForm.dualProd K P.W (-f, w) := P.iso.symm.map_app (-f, w)
+    _ = (-1 : K) := by
+      simp [QuadraticForm.dualProd, hf]
+
+/-- If the quadratic form represents `-1`, then the presented chosen-model spin representation does
+not factor through the ambient isometry representation. -/
+theorem spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one
+    [FiniteDimensional K V] (P : HyperbolicPresentation Q) (hQ : ∃ v : V, Q v = -1) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K P.spinorModule,
+        P.spinRepresentation = ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  have hneq : (-1 : K) ≠ 1 := by
+    intro h
+    have h' : (0 : K) = 1 + 1 := by
+      simpa using congrArg (fun t : K => t + 1) h
+    have h2 : (2 : K) = 0 := by
+      simpa [one_add_one_eq_two] using h'.symm
+    exact two_ne_zero h2
+  rcases hQ with ⟨v, hv⟩
+  let x : spinGroup Q := ⟨-1, neg_one_mem_spinGroup_of_quadratic_eq_neg_one (Q := Q) v hv⟩
+  apply spinRepresentation_not_factor_through_isometry_of_coe_eq_algebraMap_of_ne_one
+    (K := K) (Q := Q) P x (-1)
+  · change (-1 : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) (-1)
+    simp
+  · exact hneq
+
+/-- Positive hyperbolic rank obstructs factoring the presented chosen-model spin representation
+through the ambient isometry representation. -/
+theorem spinRepresentation_not_factor_through_isometry_of_pos_finrank [FiniteDimensional K V]
+    (P : HyperbolicPresentation Q) (hW : 0 < Module.finrank K P.W) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K P.spinorModule,
+        P.spinRepresentation = ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  apply spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one
+    (K := K) (Q := Q) P
+  exact P.exists_quadratic_eq_neg_one hW
 
 /-- Matrix form of the hyperbolic chosen-model Clifford equivalence. -/
 noncomputable def cliffordEquivMatrix [FiniteDimensional K V] (P : HyperbolicPresentation Q) :
@@ -318,6 +506,124 @@ noncomputable abbrev negativeChiralSpinorModule (P : HyperbolicPresentation Q) :
     P.negativeChiralSpinorModule = P.oddSpinorModule := by
   simpa [negativeChiralSpinorModule, oddSpinorModule] using
     (negativeChiral_zero_eq_oddExteriorSubmodule (K := K) (W := P.W))
+
+/-- The underlying `K`-linear identification between the positive-chiral half and the even chosen
+half of the presented model. -/
+noncomputable def positiveChiralLinearEquivEven (P : HyperbolicPresentation Q) :
+    P.positiveChiralSpinorModule ≃ₗ[K] P.evenSpinorModule :=
+  LinearEquiv.ofEq P.positiveChiralSpinorModule P.evenSpinorModule
+    (positiveChiralSpinorModule_eq_evenSpinorModule (P := P))
+
+/-- The underlying `K`-linear identification between the negative-chiral half and the odd chosen
+half of the presented model. -/
+noncomputable def negativeChiralLinearEquivOdd (P : HyperbolicPresentation Q) :
+    P.negativeChiralSpinorModule ≃ₗ[K] P.oddSpinorModule :=
+  LinearEquiv.ofEq P.negativeChiralSpinorModule P.oddSpinorModule
+    (negativeChiralSpinorModule_eq_oddSpinorModule (P := P))
+
+/-- The even Clifford action on the positive-chiral half of the presented chosen model. -/
+noncomputable def positiveChiralCliffordAction (P : HyperbolicPresentation Q) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (P.positiveChiralSpinorModule) :=
+  (LinearEquiv.conjAlgEquiv K (P.positiveChiralLinearEquivEven).symm).toAlgHom.comp
+    P.evenCliffordAction
+
+/-- The even Clifford action on the negative-chiral half of the presented chosen model. -/
+noncomputable def negativeChiralCliffordAction (P : HyperbolicPresentation Q) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (P.negativeChiralSpinorModule) :=
+  (LinearEquiv.conjAlgEquiv K (P.negativeChiralLinearEquivOdd).symm).toAlgHom.comp
+    P.oddCliffordAction
+
+/-- The even Clifford module structure on the positive-chiral half of the presented chosen model. -/
+noncomputable abbrev positiveChiralCliffordModule (P : HyperbolicPresentation Q) :
+    Module (CliffordAlgebra.even Q) (P.positiveChiralSpinorModule) :=
+  Module.compHom (P.positiveChiralSpinorModule) (P.positiveChiralCliffordAction.toRingHom)
+
+/-- The even Clifford module structure on the negative-chiral half of the presented chosen model. -/
+noncomputable abbrev negativeChiralCliffordModule (P : HyperbolicPresentation Q) :
+    Module (CliffordAlgebra.even Q) (P.negativeChiralSpinorModule) :=
+  Module.compHom (P.negativeChiralSpinorModule) (P.negativeChiralCliffordAction.toRingHom)
+
+@[simp] theorem positiveChiralCliffordModule_smul (P : HyperbolicPresentation Q)
+    (a : CliffordAlgebra.even Q) (x : P.positiveChiralSpinorModule) :
+    letI := P.positiveChiralCliffordModule
+    a • x = P.positiveChiralCliffordAction a x := rfl
+
+@[simp] theorem negativeChiralCliffordModule_smul (P : HyperbolicPresentation Q)
+    (a : CliffordAlgebra.even Q) (x : P.negativeChiralSpinorModule) :
+    letI := P.negativeChiralCliffordModule
+    a • x = P.negativeChiralCliffordAction a x := rfl
+
+/-- The positive-chiral/even identification as a linear equivalence of even-Clifford modules. -/
+noncomputable def positiveChiralCliffordLinearEquivEven (P : HyperbolicPresentation Q) :
+    letI := P.positiveChiralCliffordModule
+    letI := P.evenCliffordModule
+    P.positiveChiralSpinorModule ≃ₗ[CliffordAlgebra.even Q] P.evenSpinorModule := by
+  letI := P.positiveChiralCliffordModule
+  letI := P.evenCliffordModule
+  refine
+    { toFun := P.positiveChiralLinearEquivEven
+      invFun := (P.positiveChiralLinearEquivEven).symm
+      left_inv := (P.positiveChiralLinearEquivEven).left_inv
+      right_inv := (P.positiveChiralLinearEquivEven).right_inv
+      map_add' := (P.positiveChiralLinearEquivEven).map_add
+      map_smul' := ?_ }
+  intro a x
+  rw [positiveChiralCliffordModule_smul, evenCliffordModule_smul]
+  simp [positiveChiralCliffordAction, LinearEquiv.conjAlgEquiv_apply]
+
+/-- The negative-chiral/odd identification as a linear equivalence of even-Clifford modules. -/
+noncomputable def negativeChiralCliffordLinearEquivOdd (P : HyperbolicPresentation Q) :
+    letI := P.negativeChiralCliffordModule
+    letI := P.oddCliffordModule
+    P.negativeChiralSpinorModule ≃ₗ[CliffordAlgebra.even Q] P.oddSpinorModule := by
+  letI := P.negativeChiralCliffordModule
+  letI := P.oddCliffordModule
+  refine
+    { toFun := P.negativeChiralLinearEquivOdd
+      invFun := (P.negativeChiralLinearEquivOdd).symm
+      left_inv := (P.negativeChiralLinearEquivOdd).left_inv
+      right_inv := (P.negativeChiralLinearEquivOdd).right_inv
+      map_add' := (P.negativeChiralLinearEquivOdd).map_add
+      map_smul' := ?_ }
+  intro a x
+  rw [negativeChiralCliffordModule_smul, oddCliffordModule_smul]
+  simp [negativeChiralCliffordAction, LinearEquiv.conjAlgEquiv_apply]
+
+/-- The positive-chiral half of the presented chosen model is simple under the even Clifford
+action. -/
+theorem positiveChiralCliffordModule_isSimple (P : HyperbolicPresentation Q) :
+    letI := P.positiveChiralCliffordModule
+    IsSimpleModule (CliffordAlgebra.even Q) P.positiveChiralSpinorModule := by
+  letI := P.positiveChiralCliffordModule
+  letI := P.evenCliffordModule
+  haveI : IsSimpleModule (CliffordAlgebra.even Q) P.evenSpinorModule :=
+    P.evenCliffordModule_isSimple
+  exact IsSimpleModule.congr (P.positiveChiralCliffordLinearEquivEven)
+
+/-- For positive split rank, the negative-chiral half of the presented chosen model is simple under
+the even Clifford action. -/
+theorem negativeChiralCliffordModule_isSimple (P : HyperbolicPresentation Q)
+    (hW : 0 < Module.finrank K P.W) :
+    letI := P.negativeChiralCliffordModule
+    IsSimpleModule (CliffordAlgebra.even Q) P.negativeChiralSpinorModule := by
+  letI := P.negativeChiralCliffordModule
+  letI := P.oddCliffordModule
+  haveI : IsSimpleModule (CliffordAlgebra.even Q) P.oddSpinorModule :=
+    P.oddCliffordModule_isSimple hW
+  exact IsSimpleModule.congr (P.negativeChiralCliffordLinearEquivOdd)
+
+/-- The positive- and negative-chiral halves of the presented chosen model are inequivalent as
+modules over the even Clifford algebra. -/
+theorem not_nonempty_positiveNegativeChiralCliffordLinearEquiv (P : HyperbolicPresentation Q) :
+    letI := P.positiveChiralCliffordModule
+    letI := P.negativeChiralCliffordModule
+    ¬ Nonempty
+      (P.positiveChiralSpinorModule ≃ₗ[CliffordAlgebra.even Q] P.negativeChiralSpinorModule) := by
+  intro h
+  refine P.not_nonempty_evenOddCliffordLinearEquiv ?_
+  rcases h with ⟨e⟩
+  exact ⟨((P.positiveChiralCliffordLinearEquivEven).symm.trans e).trans
+    (P.negativeChiralCliffordLinearEquivOdd)⟩
 
 /-- The spin action induced by an explicit hyperbolic presentation preserves the positive-chiral
 half of the chosen model. -/
@@ -616,6 +922,52 @@ noncomputable abbrev negativeWittExterior (Q : QuadraticForm K V) :=
   simpa [negativeWittExterior, oddWittExterior] using
     (negativeChiral_zero_eq_oddExteriorSubmodule (K := K) (W := Q.wittSubspace))
 
+/-- The even Clifford action on the positive-chiral half of the canonical Witt model. -/
+noncomputable def positiveWittCliffordAction (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (positiveWittExterior (K := K) Q) :=
+  HyperbolicPresentation.positiveChiralCliffordAction
+    (K := K) (Q := Q) (wittPresentation (K := K) Q e)
+
+/-- The even Clifford action on the negative-chiral half of the canonical Witt model. -/
+noncomputable def negativeWittCliffordAction (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (negativeWittExterior (K := K) Q) :=
+  HyperbolicPresentation.negativeChiralCliffordAction
+    (K := K) (Q := Q) (wittPresentation (K := K) Q e)
+
+/-- The even Clifford module structure on the positive-chiral half of the canonical Witt model. -/
+noncomputable abbrev positiveWittCliffordModule (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    Module (CliffordAlgebra.even Q) (positiveWittExterior (K := K) Q) :=
+  HyperbolicPresentation.positiveChiralCliffordModule
+    (K := K) (Q := Q) (wittPresentation (K := K) Q e)
+
+/-- The even Clifford module structure on the negative-chiral half of the canonical Witt model. -/
+noncomputable abbrev negativeWittCliffordModule (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    Module (CliffordAlgebra.even Q) (negativeWittExterior (K := K) Q) :=
+  HyperbolicPresentation.negativeChiralCliffordModule
+    (K := K) (Q := Q) (wittPresentation (K := K) Q e)
+
+@[simp] theorem positiveWittCliffordModule_smul (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace))
+    (a : CliffordAlgebra.even Q) (x : positiveWittExterior (K := K) Q) :
+    letI := positiveWittCliffordModule (K := K) Q e
+    a • x = positiveWittCliffordAction (K := K) Q e a x := by
+  simpa [positiveWittCliffordModule, positiveWittCliffordAction] using
+    (HyperbolicPresentation.positiveChiralCliffordModule_smul
+      (K := K) (Q := Q) (P := wittPresentation (K := K) Q e) (a := a) (x := x))
+
+@[simp] theorem negativeWittCliffordModule_smul (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace))
+    (a : CliffordAlgebra.even Q) (x : negativeWittExterior (K := K) Q) :
+    letI := negativeWittCliffordModule (K := K) Q e
+    a • x = negativeWittCliffordAction (K := K) Q e a x := by
+  simpa [negativeWittCliffordModule, negativeWittCliffordAction] using
+    (HyperbolicPresentation.negativeChiralCliffordModule_smul
+      (K := K) (Q := Q) (P := wittPresentation (K := K) Q e) (a := a) (x := x))
+
 /-- The `spinGroup` action on the canonical Witt model induced by an explicit Witt hyperbolic
 presentation. -/
 noncomputable abbrev wittSpinMulAction (Q : QuadraticForm K V)
@@ -780,6 +1132,36 @@ theorem not_nonempty_evenOddWittCliffordLinearEquiv (Q : QuadraticForm K V)
     ¬ Nonempty
       (evenWittExterior (K := K) Q ≃ₗ[CliffordAlgebra.even Q] oddWittExterior (K := K) Q) := by
   exact HyperbolicPresentation.not_nonempty_evenOddCliffordLinearEquiv
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e)
+
+/-- The positive-chiral half of the canonical Witt model is simple under the even Clifford
+action. -/
+theorem positiveWittCliffordModule_isSimple (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    letI := positiveWittCliffordModule (K := K) Q e
+    IsSimpleModule (CliffordAlgebra.even Q) (positiveWittExterior (K := K) Q) := by
+  exact HyperbolicPresentation.positiveChiralCliffordModule_isSimple
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e)
+
+/-- For positive Witt index, the negative-chiral half of the canonical Witt model is simple under
+the even Clifford action. -/
+theorem negativeWittCliffordModule_isSimple (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace))
+    (hW : 0 < Module.finrank K Q.wittSubspace) :
+    letI := negativeWittCliffordModule (K := K) Q e
+    IsSimpleModule (CliffordAlgebra.even Q) (negativeWittExterior (K := K) Q) := by
+  exact HyperbolicPresentation.negativeChiralCliffordModule_isSimple
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e) hW
+
+/-- The positive- and negative-chiral halves of the canonical Witt model are inequivalent under
+the even Clifford action. -/
+theorem not_nonempty_positiveNegativeWittCliffordLinearEquiv (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    letI := positiveWittCliffordModule (K := K) Q e
+    letI := negativeWittCliffordModule (K := K) Q e
+    ¬ Nonempty
+      (positiveWittExterior (K := K) Q ≃ₗ[CliffordAlgebra.even Q] negativeWittExterior (K := K) Q) := by
+  exact HyperbolicPresentation.not_nonempty_positiveNegativeChiralCliffordLinearEquiv
     (K := K) (Q := Q) (P := wittPresentation (K := K) Q e)
 
 /-- The transported Witt-model spin action preserves the even half. -/
@@ -1022,6 +1404,54 @@ noncomputable abbrev oddSplitWittCliffordModule (Q : QuadraticForm K V) (hQ : Q.
     letI := oddSplitWittCliffordModule (K := K) Q hQ hsplit
     a • x = oddSplitWittCliffordAction (K := K) Q hQ hsplit a x := rfl
 
+/-- The split-rank even Clifford action on the positive-chiral half of the canonical Witt model. -/
+noncomputable def positiveSplitWittCliffordAction (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (positiveWittExterior (K := K) Q) :=
+  HyperbolicPresentation.positiveChiralCliffordAction
+    (K := K) (Q := Q) (splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- The split-rank even Clifford action on the negative-chiral half of the canonical Witt model. -/
+noncomputable def negativeSplitWittCliffordAction (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (negativeWittExterior (K := K) Q) :=
+  HyperbolicPresentation.negativeChiralCliffordAction
+    (K := K) (Q := Q) (splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- The split-rank even Clifford module structure on the positive-chiral half of the canonical Witt
+model. -/
+noncomputable abbrev positiveSplitWittCliffordModule (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    Module (CliffordAlgebra.even Q) (positiveWittExterior (K := K) Q) :=
+  HyperbolicPresentation.positiveChiralCliffordModule
+    (K := K) (Q := Q) (splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- The split-rank even Clifford module structure on the negative-chiral half of the canonical Witt
+model. -/
+noncomputable abbrev negativeSplitWittCliffordModule (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    Module (CliffordAlgebra.even Q) (negativeWittExterior (K := K) Q) :=
+  HyperbolicPresentation.negativeChiralCliffordModule
+    (K := K) (Q := Q) (splitWittPresentation (K := K) Q hQ hsplit)
+
+@[simp] theorem positiveSplitWittCliffordModule_smul (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (a : CliffordAlgebra.even Q) (x : positiveWittExterior (K := K) Q) :
+    letI := positiveSplitWittCliffordModule (K := K) Q hQ hsplit
+    a • x = positiveSplitWittCliffordAction (K := K) Q hQ hsplit a x := by
+  simpa [positiveSplitWittCliffordModule, positiveSplitWittCliffordAction] using
+    (HyperbolicPresentation.positiveChiralCliffordModule_smul
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit) (a := a) (x := x))
+
+@[simp] theorem negativeSplitWittCliffordModule_smul (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (a : CliffordAlgebra.even Q) (x : negativeWittExterior (K := K) Q) :
+    letI := negativeSplitWittCliffordModule (K := K) Q hQ hsplit
+    a • x = negativeSplitWittCliffordAction (K := K) Q hQ hsplit a x := by
+  simpa [negativeSplitWittCliffordModule, negativeSplitWittCliffordAction] using
+    (HyperbolicPresentation.negativeChiralCliffordModule_smul
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit) (a := a) (x := x))
+
 /-- Product-endomorphism form of the even Clifford algebra on the canonical Witt model in split
 rank. -/
 noncomputable def evenSplitWittCliffordEquivProdEnd [FiniteDimensional K V]
@@ -1073,6 +1503,36 @@ theorem not_nonempty_evenOddSplitWittCliffordLinearEquiv (Q : QuadraticForm K V)
     ¬ Nonempty
       (evenWittExterior (K := K) Q ≃ₗ[CliffordAlgebra.even Q] oddWittExterior (K := K) Q) := by
   exact HyperbolicPresentation.not_nonempty_evenOddCliffordLinearEquiv
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- The split-rank positive-chiral half of the canonical Witt model is simple under the even
+Clifford action. -/
+theorem positiveSplitWittCliffordModule_isSimple (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    letI := positiveSplitWittCliffordModule (K := K) Q hQ hsplit
+    IsSimpleModule (CliffordAlgebra.even Q) (positiveWittExterior (K := K) Q) := by
+  exact HyperbolicPresentation.positiveChiralCliffordModule_isSimple
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- In split rank, the negative-chiral half of the canonical Witt model is simple under the even
+Clifford action. -/
+theorem negativeSplitWittCliffordModule_isSimple (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (hW : 0 < Module.finrank K Q.wittSubspace) :
+    letI := negativeSplitWittCliffordModule (K := K) Q hQ hsplit
+    IsSimpleModule (CliffordAlgebra.even Q) (negativeWittExterior (K := K) Q) := by
+  exact HyperbolicPresentation.negativeChiralCliffordModule_isSimple
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit) hW
+
+/-- In split rank, the positive- and negative-chiral halves of the canonical Witt model are
+inequivalent under the even Clifford action. -/
+theorem not_nonempty_positiveNegativeSplitWittCliffordLinearEquiv (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    letI := positiveSplitWittCliffordModule (K := K) Q hQ hsplit
+    letI := negativeSplitWittCliffordModule (K := K) Q hQ hsplit
+    ¬ Nonempty
+      (positiveWittExterior (K := K) Q ≃ₗ[CliffordAlgebra.even Q] negativeWittExterior (K := K) Q) := by
+  exact HyperbolicPresentation.not_nonempty_positiveNegativeChiralCliffordLinearEquiv
     (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
 
 /-- The split-rank canonical Witt-model spin action preserves the even half. -/
@@ -1140,6 +1600,311 @@ noncomputable def negativeSplitWittSpinRepresentation (Q : QuadraticForm K V)
     spinGroup Q →* Module.End K (negativeWittExterior (K := K) Q) :=
   HyperbolicPresentation.negativeChiralSpinRepresentation
     (K := K) (Q := Q) (splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- The canonical chosen `⋀W` spinor module obtained from the Witt subspace of `Q`. -/
+abbrev splitSpinorModule (Q : QuadraticForm K V) :=
+  WittExteriorModel (K := K) Q
+
+/-- The canonical positive half-spin module in the split-rank chosen model. -/
+noncomputable abbrev positiveHalfSpinorModule (Q : QuadraticForm K V) :=
+  positiveWittExterior (K := K) Q
+
+/-- The canonical negative half-spin module in the split-rank chosen model. -/
+noncomputable abbrev negativeHalfSpinorModule (Q : QuadraticForm K V) :=
+  negativeWittExterior (K := K) Q
+
+/-- The canonical chosen-model Clifford action in split rank. -/
+noncomputable def splitSpinorCliffordAction (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    CliffordAlgebra Q →ₐ[K] Module.End K (splitSpinorModule (K := K) Q) :=
+  splitWittCliffordAction (K := K) Q hQ hsplit
+
+/-- The canonical chosen-model Clifford module in split rank. -/
+noncomputable abbrev splitSpinorCliffordModule (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    Module (CliffordAlgebra Q) (splitSpinorModule (K := K) Q) :=
+  splitWittCliffordModule (K := K) Q hQ hsplit
+
+/-- The even Clifford action on the canonical positive half-spin module. -/
+noncomputable def positiveHalfSpinorCliffordAction (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (positiveHalfSpinorModule (K := K) Q) :=
+  positiveSplitWittCliffordAction (K := K) Q hQ hsplit
+
+/-- The even Clifford action on the canonical negative half-spin module. -/
+noncomputable def negativeHalfSpinorCliffordAction (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    CliffordAlgebra.even Q →ₐ[K] Module.End K (negativeHalfSpinorModule (K := K) Q) :=
+  negativeSplitWittCliffordAction (K := K) Q hQ hsplit
+
+/-- The even Clifford module structure on the canonical positive half-spin module. -/
+noncomputable abbrev positiveHalfSpinorCliffordModule (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    Module (CliffordAlgebra.even Q) (positiveHalfSpinorModule (K := K) Q) :=
+  positiveSplitWittCliffordModule (K := K) Q hQ hsplit
+
+/-- The even Clifford module structure on the canonical negative half-spin module. -/
+noncomputable abbrev negativeHalfSpinorCliffordModule (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    Module (CliffordAlgebra.even Q) (negativeHalfSpinorModule (K := K) Q) :=
+  negativeSplitWittCliffordModule (K := K) Q hQ hsplit
+
+@[simp] theorem splitSpinorCliffordModule_smul (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (a : CliffordAlgebra Q) (x : splitSpinorModule (K := K) Q) :
+    letI := splitSpinorCliffordModule (K := K) Q hQ hsplit
+    a • x = splitSpinorCliffordAction (K := K) Q hQ hsplit a x := by
+  simpa [splitSpinorCliffordModule, splitSpinorCliffordAction, splitSpinorModule] using
+    (splitWittCliffordModule_smul (K := K) Q hQ hsplit (a := a) (x := x))
+
+@[simp] theorem positiveHalfSpinorCliffordModule_smul (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (a : CliffordAlgebra.even Q) (x : positiveHalfSpinorModule (K := K) Q) :
+    letI := positiveHalfSpinorCliffordModule (K := K) Q hQ hsplit
+    a • x = positiveHalfSpinorCliffordAction (K := K) Q hQ hsplit a x := by
+  simpa [positiveHalfSpinorCliffordModule, positiveHalfSpinorCliffordAction,
+    positiveHalfSpinorModule] using
+    (positiveSplitWittCliffordModule_smul (K := K) Q hQ hsplit (a := a) (x := x))
+
+@[simp] theorem negativeHalfSpinorCliffordModule_smul (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (a : CliffordAlgebra.even Q) (x : negativeHalfSpinorModule (K := K) Q) :
+    letI := negativeHalfSpinorCliffordModule (K := K) Q hQ hsplit
+    a • x = negativeHalfSpinorCliffordAction (K := K) Q hQ hsplit a x := by
+  simpa [negativeHalfSpinorCliffordModule, negativeHalfSpinorCliffordAction,
+    negativeHalfSpinorModule] using
+    (negativeSplitWittCliffordModule_smul (K := K) Q hQ hsplit (a := a) (x := x))
+
+/-- The split-rank spin representation on the canonical chosen model. -/
+noncomputable def splitSpinorRepresentation (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    spinGroup Q →* Module.End K (splitSpinorModule (K := K) Q) :=
+  splitWittSpinRepresentation (K := K) Q hQ hsplit
+
+/-- The split-rank spin representation on the canonical positive half-spin module. -/
+noncomputable def positiveHalfSpinRepresentation (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    spinGroup Q →* Module.End K (positiveHalfSpinorModule (K := K) Q) :=
+  positiveSplitWittSpinRepresentation (K := K) Q hQ hsplit
+
+/-- The split-rank spin representation on the canonical negative half-spin module. -/
+noncomputable def negativeHalfSpinRepresentation (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    spinGroup Q →* Module.End K (negativeHalfSpinorModule (K := K) Q) :=
+  negativeSplitWittSpinRepresentation (K := K) Q hQ hsplit
+
+/-- In split rank, the ambient spin-to-isometry kernel is exactly the scalar elements `±1`, stated
+on the canonical chosen-model API. -/
+theorem splitSpinorCoveringKernel_eq_one_or_neg_one (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex) (x : spinGroup Q) :
+    spinIsometryRepresentation (Q := Q) x = 1 ↔
+      (x : CliffordAlgebra Q) = 1 ∨ (x : CliffordAlgebra Q) = -1 := by
+  simpa using
+    (HyperbolicPresentation.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit) x)
+
+/-- In positive split rank, the canonical chosen-model spin representation does not factor through
+the ambient isometry representation. -/
+theorem splitSpinorRepresentation_not_factor_through_isometry (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (hW : 0 < Q.wittIndex) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K (splitSpinorModule (K := K) Q),
+        splitSpinorRepresentation (K := K) Q hQ hsplit =
+          ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  have hW' : 0 < Module.finrank K (splitWittPresentation (K := K) Q hQ hsplit).W := by
+    change 0 < Module.finrank K Q.wittSubspace
+    rwa [Q.finrank_wittSubspace]
+  simpa [splitSpinorRepresentation, splitSpinorModule] using
+    (HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_pos_finrank
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+      hW')
+
+/-- The canonical chosen spinor module is simple in split rank. -/
+theorem splitSpinorModule_isSimple (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    letI := splitSpinorCliffordModule (K := K) Q hQ hsplit
+    IsSimpleModule (CliffordAlgebra Q) (splitSpinorModule (K := K) Q) := by
+  simpa [splitSpinorCliffordModule, splitSpinorModule] using
+    (splitWittCliffordModule_isSimple (K := K) Q hQ hsplit)
+
+/-- The canonical positive half-spin module is simple under the even Clifford algebra in split
+rank. -/
+theorem positiveHalfSpinorModule_isSimple (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    letI := positiveHalfSpinorCliffordModule (K := K) Q hQ hsplit
+    IsSimpleModule (CliffordAlgebra.even Q) (positiveHalfSpinorModule (K := K) Q) := by
+  simpa [positiveHalfSpinorCliffordModule, positiveHalfSpinorModule] using
+    (positiveSplitWittCliffordModule_isSimple (K := K) Q hQ hsplit)
+
+/-- In positive split rank, the canonical negative half-spin module is simple under the even
+Clifford algebra. -/
+theorem negativeHalfSpinorModule_isSimple (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (hW : 0 < Module.finrank K Q.wittSubspace) :
+    letI := negativeHalfSpinorCliffordModule (K := K) Q hQ hsplit
+    IsSimpleModule (CliffordAlgebra.even Q) (negativeHalfSpinorModule (K := K) Q) := by
+  simpa [negativeHalfSpinorCliffordModule, negativeHalfSpinorModule] using
+    (negativeSplitWittCliffordModule_isSimple (K := K) Q hQ hsplit hW)
+
+/-- In split rank, the canonical positive and negative half-spin modules are inequivalent as
+modules over the even Clifford algebra. -/
+theorem not_nonempty_positiveNegativeHalfSpinorCliffordLinearEquiv
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    letI := positiveHalfSpinorCliffordModule (K := K) Q hQ hsplit
+    letI := negativeHalfSpinorCliffordModule (K := K) Q hQ hsplit
+    ¬ Nonempty
+      (positiveHalfSpinorModule (K := K) Q ≃ₗ[CliffordAlgebra.even Q]
+        negativeHalfSpinorModule (K := K) Q) := by
+  simpa [positiveHalfSpinorCliffordModule, negativeHalfSpinorCliffordModule,
+    positiveHalfSpinorModule, negativeHalfSpinorModule] using
+    (not_nonempty_positiveNegativeSplitWittCliffordLinearEquiv (K := K) Q hQ hsplit)
+
+/-- The split-rank spin action preserves the canonical positive half-spin module. -/
+theorem splitSpinorRepresentation_mem_positiveHalfSpinor (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    {g : spinGroup Q} {x : splitSpinorModule (K := K) Q}
+    (hx : x ∈ positiveHalfSpinorModule (K := K) Q) :
+    splitSpinorRepresentation (K := K) Q hQ hsplit g x ∈ positiveHalfSpinorModule (K := K) Q := by
+  simpa [splitSpinorRepresentation, splitSpinorModule, positiveHalfSpinorModule] using
+    (splitWittSpinRepresentation_mem_positiveChiral (K := K) Q hQ hsplit hx)
+
+/-- The split-rank spin action preserves the canonical negative half-spin module. -/
+theorem splitSpinorRepresentation_mem_negativeHalfSpinor (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    {g : spinGroup Q} {x : splitSpinorModule (K := K) Q}
+    (hx : x ∈ negativeHalfSpinorModule (K := K) Q) :
+    splitSpinorRepresentation (K := K) Q hQ hsplit g x ∈ negativeHalfSpinorModule (K := K) Q := by
+  simpa [splitSpinorRepresentation, splitSpinorModule, negativeHalfSpinorModule] using
+    (splitWittSpinRepresentation_mem_negativeChiral (K := K) Q hQ hsplit hx)
+
+/-- Top-level dimension formula for the canonical chosen spinor module in split rank. -/
+theorem splitSpinorModule_finrank (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    Module.finrank K (splitSpinorModule (K := K) Q) = 2 ^ (Module.finrank K V / 2) := by
+  simpa [splitSpinorModule] using
+    finrank_wittExteriorModel_of_hyperbolic (K := K) Q
+      (QuadraticForm.splitWittIsometryEquiv (K := K) Q hQ hsplit)
+
+/-- Top-level dimension formula for the canonical positive half-spin module in positive split
+rank. -/
+theorem positiveHalfSpinorModule_finrank (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) (hW : 0 < Q.wittIndex) :
+    Module.finrank K (positiveHalfSpinorModule (K := K) Q) =
+      2 ^ (Module.finrank K V / 2 - 1) := by
+  rw [show (positiveHalfSpinorModule (K := K) Q) = evenWittExterior (K := K) Q from
+    positiveWittExterior_eq_evenWittExterior Q]
+  exact finrank_evenWittExterior_of_hyperbolic (K := K) Q hW
+    (QuadraticForm.splitWittIsometryEquiv (K := K) Q hQ hsplit)
+
+/-- Top-level dimension formula for the canonical negative half-spin module in positive split
+rank. -/
+theorem negativeHalfSpinorModule_finrank (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) (hW : 0 < Q.wittIndex) :
+    Module.finrank K (negativeHalfSpinorModule (K := K) Q) =
+      2 ^ (Module.finrank K V / 2 - 1) := by
+  rw [show (negativeHalfSpinorModule (K := K) Q) = oddWittExterior (K := K) Q from
+    negativeWittExterior_eq_oddWittExterior Q]
+  exact finrank_oddWittExterior_of_hyperbolic (K := K) Q hW
+    (QuadraticForm.splitWittIsometryEquiv (K := K) Q hQ hsplit)
+
+/-- Top-level Clifford relation on vectors for the canonical chosen-model Clifford action in
+split rank. -/
+@[simp] theorem splitSpinorCliffordAction_sq_apply (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (v : V) (x : splitSpinorModule (K := K) Q) :
+    splitSpinorCliffordAction (K := K) Q hQ hsplit (CliffordAlgebra.ι Q v)
+        (splitSpinorCliffordAction (K := K) Q hQ hsplit (CliffordAlgebra.ι Q v) x) =
+      Q v • x := by
+  simpa [splitSpinorCliffordAction, splitSpinorModule] using
+    splitWittCliffordAction_sq_apply (K := K) Q hQ hsplit v x
+
+/-- Top-level faithfulness of the canonical chosen-model Clifford action in split rank. -/
+theorem splitSpinorCliffordAction_injective (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    Function.Injective (splitSpinorCliffordAction (K := K) Q hQ hsplit) := by
+  simpa [splitSpinorCliffordAction] using
+    splitWittCliffordAction_injective (K := K) Q hQ hsplit
+
+/-!
+### Identification of the chosen-model half-spin pieces with the ambient chiral submodules
+
+The ambient Z/2-grading on `CliffordAlgebra Q` induces, via `CliffordAlgebra.equivExterior`, the
+ambient chiral submodules `positiveChiral`, `negativeChiral` on any exterior-model spinor module
+`SpinorModule (R := R) (M := M) Q := ExteriorAlgebra R M`. The canonical chosen-model half-spin
+modules `positiveHalfSpinorModule Q`, `negativeHalfSpinorModule Q` are, by construction, exactly
+those ambient chiral pieces applied to the spinor module of the zero quadratic form on
+`Q.wittSubspace` — i.e. to the zero-form regular spinor module on the chosen Witt subspace
+`ExteriorAlgebra K Q.wittSubspace`.
+
+Combined with `positiveChiral_zero_eq_evenExteriorSubmodule` /
+`negativeChiral_zero_eq_oddExteriorSubmodule`, this gives the full roadmap-level identification
+`S⁺ = ⋀^even W`, `S⁻ = ⋀^odd W`. Note that the ambient `SpinorModule Q = ExteriorAlgebra K V` and
+the chosen-model `splitSpinorModule Q = ExteriorAlgebra K Q.wittSubspace` differ in dimension
+(`2 ^ dim V` versus `2 ^ (dim V / 2)`), so there is no linear equivalence between them; instead,
+the chosen `S⁺`/`S⁻` are the ambient chiral construction transported onto the `(Q.wittSubspace, 0)`
+regular spinor data. -/
+
+/-- The canonical chosen-model positive half-spin module `S⁺ = positiveHalfSpinorModule Q` is,
+definitionally, the ambient `positiveChiral` submodule of the zero-form exterior-algebra spinor
+module on `Q.wittSubspace`. This is the split-rank identification of the chosen even summand with
+the ambient chiral module `S⁺` (see `ROADMAP.md` §3.2). -/
+theorem positiveHalfSpinorModule_eq_ambient_positiveChiral (Q : QuadraticForm K V) :
+    positiveHalfSpinorModule (K := K) Q =
+      positiveChiral (R := K) (M := Q.wittSubspace) (0 : QuadraticForm K Q.wittSubspace) :=
+  rfl
+
+/-- The canonical chosen-model negative half-spin module `S⁻ = negativeHalfSpinorModule Q` is,
+definitionally, the ambient `negativeChiral` submodule of the zero-form exterior-algebra spinor
+module on `Q.wittSubspace`. This is the split-rank identification of the chosen odd summand with
+the ambient chiral module `S⁻` (see `ROADMAP.md` §3.2). -/
+theorem negativeHalfSpinorModule_eq_ambient_negativeChiral (Q : QuadraticForm K V) :
+    negativeHalfSpinorModule (K := K) Q =
+      negativeChiral (R := K) (M := Q.wittSubspace) (0 : QuadraticForm K Q.wittSubspace) :=
+  rfl
+
+/-- Chained identification: the canonical chosen-model positive half-spin module coincides with the
+explicit even-degree exterior summand `⋀^even W`, obtained by routing the ambient `positiveChiral`
+identification through the zero-form equivalence `positiveChiral_zero_eq_evenExteriorSubmodule`. -/
+theorem positiveHalfSpinorModule_eq_evenWittExterior (Q : QuadraticForm K V) :
+    positiveHalfSpinorModule (K := K) Q = evenWittExterior (K := K) Q :=
+  positiveWittExterior_eq_evenWittExterior Q
+
+/-- Chained identification: the canonical chosen-model negative half-spin module coincides with the
+explicit odd-degree exterior summand `⋀^odd W`, obtained by routing the ambient `negativeChiral`
+identification through the zero-form equivalence `negativeChiral_zero_eq_oddExteriorSubmodule`. -/
+theorem negativeHalfSpinorModule_eq_oddWittExterior (Q : QuadraticForm K V) :
+    negativeHalfSpinorModule (K := K) Q = oddWittExterior (K := K) Q :=
+  negativeWittExterior_eq_oddWittExterior Q
+
+/-- Underlying `K`-linear identification between the canonical chosen-model positive half-spin
+module (viewed as the ambient `positiveChiral` piece of the zero-form spinor module on
+`Q.wittSubspace`) and the explicit even-degree exterior summand `⋀^even W`. -/
+noncomputable def positiveHalfSpinorModuleLinearEquivEvenWittExterior (Q : QuadraticForm K V) :
+    positiveHalfSpinorModule (K := K) Q ≃ₗ[K] evenWittExterior (K := K) Q :=
+  LinearEquiv.ofEq _ _ (positiveHalfSpinorModule_eq_evenWittExterior (K := K) Q)
+
+/-- Underlying `K`-linear identification between the canonical chosen-model negative half-spin
+module (viewed as the ambient `negativeChiral` piece of the zero-form spinor module on
+`Q.wittSubspace`) and the explicit odd-degree exterior summand `⋀^odd W`. -/
+noncomputable def negativeHalfSpinorModuleLinearEquivOddWittExterior (Q : QuadraticForm K V) :
+    negativeHalfSpinorModule (K := K) Q ≃ₗ[K] oddWittExterior (K := K) Q :=
+  LinearEquiv.ofEq _ _ (negativeHalfSpinorModule_eq_oddWittExterior (K := K) Q)
+
+/-- Packaged bridge theorem closing ROADMAP §3.2 line 107: in split rank, the canonical chosen
+even/odd summands `⋀^even W` / `⋀^odd W` coincide with the ambient chiral submodules `S⁺` / `S⁻`
+of the zero-form regular spinor module `ExteriorAlgebra K Q.wittSubspace = splitSpinorModule Q`. -/
+theorem splitSpinor_chiral_correspondence (Q : QuadraticForm K V) :
+    positiveHalfSpinorModule (K := K) Q =
+        positiveChiral (R := K) (M := Q.wittSubspace) (0 : QuadraticForm K Q.wittSubspace) ∧
+      negativeHalfSpinorModule (K := K) Q =
+        negativeChiral (R := K) (M := Q.wittSubspace) (0 : QuadraticForm K Q.wittSubspace) ∧
+      positiveHalfSpinorModule (K := K) Q = evenWittExterior (K := K) Q ∧
+      negativeHalfSpinorModule (K := K) Q = oddWittExterior (K := K) Q :=
+  ⟨positiveHalfSpinorModule_eq_ambient_positiveChiral (K := K) Q,
+    negativeHalfSpinorModule_eq_ambient_negativeChiral (K := K) Q,
+    positiveHalfSpinorModule_eq_evenWittExterior (K := K) Q,
+    negativeHalfSpinorModule_eq_oddWittExterior (K := K) Q⟩
 
 end InvertibleTwo
 end CanonicalWittPresentation

@@ -109,6 +109,18 @@ Implemented so far:
   action
 - a faithful exterior-model Clifford action obtained from `CliffordAlgebra.equivExterior`
 - the induced `spinGroup` representation by restriction
+- scalar spin elements are now proved to act trivially on the ambient vector/isometry
+  representations and as the matching scalar endomorphisms on the ambient spinor module, yielding a
+  reusable non-factorization criterion for the covering-map story whenever a nontrivial scalar spin
+  element is available; in particular, if `Q` represents `-1` and `-1 ≠ 1`, the spin
+  representation provably cannot factor through the ambient isometry representation, and this is now
+  packaged on the canonical chosen-model API as a positive split-rank non-factorization theorem
+- any kernel element is now proved to act trivially on the whole Clifford algebra by conjugation,
+  hence to commute with every Clifford element
+- over domains, the scalar part of the kernel is exactly `±1`, and in the finite-dimensional
+  hyperbolic/split setting the chosen-model equivalence `Cl(Q) ≃ End(⋀W)` now forces every kernel
+  element to be scalar; hence on the canonical split-rank chosen-model API the ambient
+  spin-to-isometry kernel is proved to be exactly `{1, -1}`
 - a chiral decomposition `S = S⁺ ⊕ S⁻` transported from Clifford parity, with `spinGroup`
   preserving both summands and restricting to actions on each summand
 - on the zero-form chosen model `⋀W`, an identification of the abstract chiral pieces with the
@@ -116,8 +128,13 @@ Implemented so far:
 - in the split model, `splitCliffordAction : Cl(W* × W, dualProd) → End(⋀W)` is now proved
   surjective and injective by explicit basis projectors / matrix units
 - through `HyperbolicPresentation`, `wittPresentation`, and `splitWittPresentation`, a chosen-model
-  positive/negative chiral API on `⋀W` identified with those even/odd summands and carrying the
-  corresponding restricted spin representations
+  positive/negative chiral API on `⋀W` identified with those even/odd summands, carrying the
+  corresponding even-Clifford and restricted spin representations, and inheriting the transported
+  simplicity / inequivalence statements under those positive/negative names
+- in split rank, that canonical Witt-model half-spin surface is also exposed directly through the
+  top-level aliases `splitSpinorModule`, `positiveHalfSpinorModule`, and `negativeHalfSpinorModule`,
+  together with their canonical Clifford / spin actions and the corresponding simplicity /
+  inequivalence results
 - through those same presentation APIs, the transported chosen-model Clifford action on `⋀W` is
   now proved faithful in the explicit hyperbolic, Witt, and split-Witt settings
 - in the explicit hyperbolic case, that chosen-model Clifford action is now packaged as an algebra
@@ -144,6 +161,22 @@ Implemented so far:
 - over `ℂ`, the corresponding odd-dimensional grouped sum-of-squares form is now packaged as
   `Cl(2n+1, ℂ) ≃ Mat_(2^n)(ℂ) × Mat_(2^n)(ℂ)` in
   `Spinor.ComplexClassification.complexOddCliffordEquivProdMatrix`
+- `Spinor.LowDimensional` now records explicit low-dimensional specializations of those algebraic
+  models, including `Cl(1, ℂ) ≃ ℂ × ℂ`, `Cl(2, ℂ) ≃ Mat₂(ℂ)`, `Cl(3, ℂ) ≃ Mat₂(ℂ) × Mat₂(ℂ)`,
+  `Cl(4, ℂ) ≃ Mat₄(ℂ)`, `Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ`, `Cl⁺(2,0) ≃ ℂ`,
+  `Cl⁺(3,0) ≃ ℍ`, `Cl(1,1) ≃ Mat₂(ℝ)`, `Cl⁺(1,1) ≃ ℝ × ℝ`, `Cl(2,2) ≃ Mat₄(ℝ)`, and
+  `Cl⁺(2,2) ≃ Mat₂(ℝ) × Mat₂(ℝ)`
+- `Spinor.LowDimensional` now also packages the first compact low-dimensional group
+  identification:
+  `realSpin02EquivUnitaryComplex : spinGroup realCl02Form ≃* unitary ℂ`,
+  i.e. `Spin(2) ≃ U(1)` in Mathlib's negative-signature convention
+- over `ℝ`, the standard split-signature form `(n,n)` is now packaged as
+  `Cl(n,n) ≃ Mat_(2^n)(ℝ)` in `Spinor.RealClassification.realSplitCliffordEquivMatrix`,
+  with the first explicit base case `Cl(1,1) ≃ Mat₂(ℝ)` recorded as
+  `Spinor.RealClassification.realClifford_1_1_equivMatrix2`
+- over `ℝ`, the corresponding even split Clifford algebra is now packaged as
+  `Cl⁺(n,n) ≃ Mat_(2^(n-1))(ℝ) × Mat_(2^(n-1))(ℝ)` in
+  `Spinor.RealClassification.realSplitEvenCliffordEquivProdMatrix`
 - `Spinor.OrthogonalAction` now packages the ambient vector action
   `spinLinearRepresentation : spinGroup Q → (M ≃ₗ[R] M)` obtained from conjugation on the Clifford
   copy `ι(Q)(M)`, proves this action preserves `Q` via `spinVector_preserves_quadratic`, and
@@ -155,9 +188,9 @@ Still open from the roadmap:
 
 - the final identification of the ambient chiral pieces `S⁺` and `S⁻` with the chosen-model
   submodules `⋀^even W` and `⋀^odd W`
-- the ambient/global `S⁺` / `S⁻` irreducibility and inequivalence statements, periodicity,
-  low-dimensional identifications, and the actual double-cover / kernel theorems beyond the new
-  ambient `spinGroup`-to-isometry action
+- periodicity beyond the new split real foundation, the remaining low-dimensional group
+  identifications (`Spin(3)` / `Spin(4)`), and the actual double-cover / surjectivity theorem
+  beyond the now-packaged split-rank kernel and non-factorization results
 - paper-writing and final research-polish tasks
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.
