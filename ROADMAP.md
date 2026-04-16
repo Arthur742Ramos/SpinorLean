@@ -120,6 +120,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   Clifford action as an algebra equivalence `Cl(Q) ≃ End(⋀W)` and hence as a matrix-algebra model
 - [x] Expose the corresponding endomorphism-algebra equivalence through the Witt and split-Witt
   presentation APIs
+- [x] In split rank, package the canonical Witt-model Clifford algebra as a full matrix algebra of
+  size `2^(dim V / 2)`
 - [ ] Cl(n, ℂ) ≅ Mat(2^(n/2), ℂ) for n even
 - [ ] Cl(n, ℂ) ≅ Mat(2^((n-1)/2), ℂ) × Mat(2^((n-1)/2), ℂ) for n odd
 - [ ] Bott periodicity for real Clifford algebras (period 8)

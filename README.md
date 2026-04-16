@@ -123,6 +123,8 @@ Implemented so far:
 - in the explicit hyperbolic case, that chosen-model Clifford action is now packaged as an algebra
   equivalence `Cl(Q) ≃ End(⋀W)` and hence as a concrete matrix-algebra model; the same
   endomorphism-algebra equivalence is exposed through the Witt and split-Witt presentation APIs
+- in split rank, the canonical Witt-model Clifford algebra is now packaged as a full matrix algebra
+  `Cl(Q) ≃ Mat_(2^(dim V / 2))(K)` through `splitWittCliffordEquivMatrix`
 - in the split model, the full Clifford module `⋀W` is now simple, and that simplicity is
   transported to the explicit hyperbolic, Witt, and split-Witt chosen-model presentations
 - in the split model, the chosen even half `⋀^even W` is simple under the even Clifford algebra,

@@ -159,6 +159,15 @@ noncomputable def cliffordEquivMatrix [FiniteDimensional K V] (P : HyperbolicPre
   letI : FiniteDimensional K P.spinorModule := b.ExteriorAlgebra.finiteDimensional_of_finite
   P.cliffordEquivEnd.trans (LinearMap.toMatrixAlgEquiv (Module.finBasis K P.spinorModule))
 
+/-- Matrix form of the hyperbolic chosen-model Clifford equivalence with an explicit target size. -/
+noncomputable def cliffordEquivMatrixOfFinrankEq [FiniteDimensional K V] (P : HyperbolicPresentation Q)
+    {n : ℕ} (hn : Module.finrank K P.spinorModule = n) :
+    CliffordAlgebra Q ≃ₐ[K] Matrix (Fin n) (Fin n) K :=
+  let bW := Module.finBasis K P.W
+  letI : FiniteDimensional K P.spinorModule := bW.ExteriorAlgebra.finiteDimensional_of_finite
+  let b : Module.Basis (Fin n) K P.spinorModule := Module.finBasisOfFinrankEq K P.spinorModule hn
+  P.cliffordEquivEnd.trans (LinearMap.toMatrixAlgEquiv b)
+
 /-- The chosen-model Clifford module attached to an explicit hyperbolic presentation is simple. -/
 theorem cliffordModule_isSimple [FiniteDimensional K V] (P : HyperbolicPresentation Q) :
     letI := P.cliffordModule
@@ -616,6 +625,15 @@ noncomputable def wittCliffordEquivEnd [FiniteDimensional K V] (Q : QuadraticFor
     CliffordAlgebra Q ≃ₐ[K] Module.End K (WittExteriorModel (K := K) Q) :=
   (wittPresentation (K := K) Q e).cliffordEquivEnd
 
+/-- Matrix-algebra form of the Witt-model Clifford equivalence. -/
+noncomputable def wittCliffordEquivMatrix [FiniteDimensional K V] (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    CliffordAlgebra Q ≃ₐ[K]
+      Matrix (Fin (2 ^ (Module.finrank K V / 2))) (Fin (2 ^ (Module.finrank K V / 2))) K :=
+  let hdim : Module.finrank K (WittExteriorModel (K := K) Q) = 2 ^ (Module.finrank K V / 2) :=
+    finrank_wittExteriorModel_of_hyperbolic (K := K) Q e
+  (wittPresentation (K := K) Q e).cliffordEquivMatrixOfFinrankEq hdim
+
 /-- The transported Clifford module on the canonical Witt model is simple. -/
 theorem wittCliffordModule_isSimple (Q : QuadraticForm K V)
     (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
@@ -873,6 +891,17 @@ noncomputable def splitWittCliffordEquivEnd [FiniteDimensional K V] (Q : Quadrat
     (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
     CliffordAlgebra Q ≃ₐ[K] Module.End K (WittExteriorModel (K := K) Q) :=
   (splitWittPresentation (K := K) Q hQ hsplit).cliffordEquivEnd
+
+/-- In split rank, the canonical Witt-model Clifford algebra is a full matrix algebra of size
+`2^(dim V / 2)`. -/
+noncomputable def splitWittCliffordEquivMatrix [FiniteDimensional K V] (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    CliffordAlgebra Q ≃ₐ[K]
+      Matrix (Fin (2 ^ (Module.finrank K V / 2))) (Fin (2 ^ (Module.finrank K V / 2))) K :=
+  let hdim : Module.finrank K (WittExteriorModel (K := K) Q) = 2 ^ (Module.finrank K V / 2) :=
+    finrank_wittExteriorModel_of_hyperbolic (K := K) Q
+      (QuadraticForm.splitWittIsometryEquiv (K := K) Q hQ hsplit)
+  (splitWittPresentation (K := K) Q hQ hsplit).cliffordEquivMatrixOfFinrankEq hdim
 
 /-- The split-rank canonical Witt-model Clifford module is simple. -/
 theorem splitWittCliffordModule_isSimple (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
