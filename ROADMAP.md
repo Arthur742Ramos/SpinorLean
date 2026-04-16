@@ -146,6 +146,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 
 ### 4.3 The Covering Map
 - [ ] Spin(V,Q) → SO(V,Q) is a double cover
+  - [x] package the ambient vector action
+    `Spinor.spinLinearRepresentation : spinGroup Q → (V ≃ₗ[R] V)` by conjugation on
+    `CliffordAlgebra.ι Q`, and prove each spin element preserves `Q` via
+    `Spinor.spinVector_preserves_quadratic` / `Spinor.spinIsometryEquiv`
 - [ ] Kernel is {1, -1}
 - [ ] The spin representation does NOT factor through SO
 

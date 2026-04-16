@@ -144,13 +144,18 @@ Implemented so far:
 - over `ℂ`, the corresponding odd-dimensional grouped sum-of-squares form is now packaged as
   `Cl(2n+1, ℂ) ≃ Mat_(2^n)(ℂ) × Mat_(2^n)(ℂ)` in
   `Spinor.ComplexClassification.complexOddCliffordEquivProdMatrix`
+- `Spinor.OrthogonalAction` now packages the ambient vector action
+  `spinLinearRepresentation : spinGroup Q → (M ≃ₗ[R] M)` obtained from conjugation on the Clifford
+  copy `ι(Q)(M)`, proves this action preserves `Q` via `spinVector_preserves_quadratic`, and
+  packages each spin element as an ambient isometry `spinIsometryEquiv : Q.IsometryEquiv Q`
 
 Still open from the roadmap:
 
 - the final identification of the ambient chiral pieces `S⁺` and `S⁻` with the chosen-model
   submodules `⋀^even W` and `⋀^odd W`
 - the ambient/global `S⁺` / `S⁻` irreducibility and inequivalence statements, periodicity,
-  low-dimensional identifications, and the double-cover theorems
+  low-dimensional identifications, and the actual double-cover / kernel theorems beyond the new
+  ambient `spinGroup`-to-isometry action
 - paper-writing and final research-polish tasks
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.
