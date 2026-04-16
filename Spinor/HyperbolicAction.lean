@@ -257,6 +257,35 @@ theorem evenCliffordMap_surjective (e : Q.IsometryEquiv (QuadraticForm.dualProd 
   rw [hmap, hright, CliffordAlgebra.map_id]
   rfl
 
+/-- The transported even Clifford map is injective. -/
+theorem evenCliffordMap_injective (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    Function.Injective (evenCliffordMap (K := K) (Q := Q) (W := W) e) := by
+  intro a b h
+  apply Subtype.ext
+  have hval :
+      CliffordAlgebra.map e.toIsometry a.1 = CliffordAlgebra.map e.toIsometry b.1 :=
+    congrArg Subtype.val h
+  have hback := congrArg (CliffordAlgebra.map e.symm.toIsometry) hval
+  have hleft :
+      e.symm.toIsometry.comp e.toIsometry = QuadraticMap.Isometry.id Q := by
+    ext v <;> simp [QuadraticMap.Isometry.comp_apply, e.symm_apply_apply]
+  have hmapa :
+      CliffordAlgebra.map e.symm.toIsometry (CliffordAlgebra.map e.toIsometry a.1) =
+        CliffordAlgebra.map (e.symm.toIsometry.comp e.toIsometry) a.1 := by
+    change ((CliffordAlgebra.map e.symm.toIsometry).comp (CliffordAlgebra.map e.toIsometry)) a.1 =
+      CliffordAlgebra.map (e.symm.toIsometry.comp e.toIsometry) a.1
+    exact congrArg (fun φ => φ a.1)
+      (CliffordAlgebra.map_comp_map (f := e.symm.toIsometry) (g := e.toIsometry))
+  have hmapb :
+      CliffordAlgebra.map e.symm.toIsometry (CliffordAlgebra.map e.toIsometry b.1) =
+        CliffordAlgebra.map (e.symm.toIsometry.comp e.toIsometry) b.1 := by
+    change ((CliffordAlgebra.map e.symm.toIsometry).comp (CliffordAlgebra.map e.toIsometry)) b.1 =
+      CliffordAlgebra.map (e.symm.toIsometry.comp e.toIsometry) b.1
+    exact congrArg (fun φ => φ b.1)
+      (CliffordAlgebra.map_comp_map (f := e.symm.toIsometry) (g := e.toIsometry))
+  rw [hmapa, hmapb, hleft, CliffordAlgebra.map_id] at hback
+  exact hback
+
 /-- The even Clifford action induced by an explicit hyperbolic presentation on the chosen even half. -/
 noncomputable def evenHyperbolicCliffordAction (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
     CliffordAlgebra.even Q →ₐ[K] Module.End K (evenExteriorSubmodule (K := K) W) :=
@@ -279,6 +308,16 @@ noncomputable abbrev oddHyperbolicCliffordModule (e : Q.IsometryEquiv (Quadratic
   Module.compHom (oddExteriorSubmodule (K := K) W)
     (oddHyperbolicCliffordAction (K := K) (Q := Q) (W := W) e).toRingHom
 
+/-- The simultaneous even Clifford action induced by an explicit hyperbolic presentation on the two
+chosen half-spin modules. -/
+noncomputable def evenHyperbolicCliffordActionProd
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    CliffordAlgebra.even Q →ₐ[K]
+      Module.End K (evenExteriorSubmodule (K := K) W) ×
+        Module.End K (oddExteriorSubmodule (K := K) W) :=
+  (evenHyperbolicCliffordAction (K := K) (Q := Q) (W := W) e).prod
+    (oddHyperbolicCliffordAction (K := K) (Q := Q) (W := W) e)
+
 @[simp]
 theorem evenHyperbolicClifford_smul_def (e : Q.IsometryEquiv (QuadraticForm.dualProd K W))
     (a : CliffordAlgebra.even Q) (x : evenExteriorSubmodule (K := K) W) :
@@ -290,6 +329,54 @@ theorem oddHyperbolicClifford_smul_def (e : Q.IsometryEquiv (QuadraticForm.dualP
     (a : CliffordAlgebra.even Q) (x : oddExteriorSubmodule (K := K) W) :
     letI := oddHyperbolicCliffordModule (K := K) (Q := Q) (W := W) e
     a • x = oddHyperbolicCliffordAction (K := K) (Q := Q) (W := W) e a x := rfl
+
+/-- The simultaneous even Clifford action on the two chosen half-spin modules is surjective in the
+explicit hyperbolic setting. -/
+theorem evenHyperbolicCliffordActionProd_surjective [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    Function.Surjective (evenHyperbolicCliffordActionProd (K := K) (Q := Q) (W := W) e) := by
+  intro f
+  obtain ⟨aSplit, haSplit⟩ := evenSplitCliffordActionProd_surjective (K := K) (W := W) f
+  obtain ⟨a, ha⟩ := evenCliffordMap_surjective (K := K) (Q := Q) (W := W) e aSplit
+  have hEven : evenSplitCliffordAction (K := K) W aSplit = f.1 := congrArg Prod.fst haSplit
+  have hOdd : oddSplitCliffordAction (K := K) W aSplit = f.2 := congrArg Prod.snd haSplit
+  refine ⟨a, Prod.ext ?_ ?_⟩
+  · ext x
+    simpa [evenHyperbolicCliffordActionProd, evenHyperbolicCliffordAction, ha] using
+      congrArg (fun g : Module.End K (evenExteriorSubmodule (K := K) W) => g x) hEven
+  · ext x
+    simpa [evenHyperbolicCliffordActionProd, oddHyperbolicCliffordAction, ha] using
+      congrArg (fun g : Module.End K (oddExteriorSubmodule (K := K) W) => g x) hOdd
+
+/-- The simultaneous even Clifford action on the two chosen half-spin modules is faithful in the
+explicit hyperbolic setting. -/
+theorem evenHyperbolicCliffordActionProd_injective [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    Function.Injective (evenHyperbolicCliffordActionProd (K := K) (Q := Q) (W := W) e) := by
+  intro a b h
+  apply evenCliffordMap_injective (K := K) (Q := Q) (W := W) e
+  apply evenSplitCliffordActionProd_injective (K := K) (W := W)
+  refine Prod.ext ?_ ?_
+  · simpa [evenHyperbolicCliffordAction] using congrArg Prod.fst h
+  · simpa [oddHyperbolicCliffordAction] using congrArg Prod.snd h
+
+/-- In the finite-dimensional hyperbolic case, the even Clifford algebra is identified with the
+product of the endomorphism algebras of the two chosen half-spin modules. -/
+noncomputable def evenHyperbolicCliffordEquivProdEnd [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    CliffordAlgebra.even Q ≃ₐ[K]
+      Module.End K (evenExteriorSubmodule (K := K) W) ×
+        Module.End K (oddExteriorSubmodule (K := K) W) :=
+  AlgEquiv.ofBijective (evenHyperbolicCliffordActionProd (K := K) (Q := Q) (W := W) e)
+    ⟨evenHyperbolicCliffordActionProd_injective (K := K) (Q := Q) (W := W) e,
+      evenHyperbolicCliffordActionProd_surjective (K := K) (Q := Q) (W := W) e⟩
+
+@[simp]
+theorem evenHyperbolicCliffordEquivProdEnd_apply [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) (a : CliffordAlgebra.even Q) :
+    evenHyperbolicCliffordEquivProdEnd (K := K) (Q := Q) (W := W) e a =
+      evenHyperbolicCliffordActionProd (K := K) (Q := Q) (W := W) e a :=
+  rfl
 
 /-- The chosen even half attached to an explicit hyperbolic presentation is simple under the even
 Clifford action. -/

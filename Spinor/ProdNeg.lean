@@ -162,6 +162,26 @@ noncomputable def prodNegCliffordAction (Q : QuadraticForm K V) (hQ : Q.Nondegen
     (K := K) (Q := ((Q.prod <| -Q) : QuadraticForm K (V × V)))
     (prodNegPresentation (K := K) (V := V) Q hQ)
 
+/-- The canonical doubled chosen-model Clifford equivalence
+`Cl(Q ⊕ (-Q)) ≃ End(⋀ diag(V))`. -/
+noncomputable def prodNegCliffordEquivEnd [FiniteDimensional K V]
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
+    CliffordAlgebra (Q.prod <| -Q) ≃ₐ[K]
+      Module.End K (prodNegSpinorModule (K := K) (V := V)) :=
+  HyperbolicPresentation.cliffordEquivEnd
+    (K := K) (Q := ((Q.prod <| -Q) : QuadraticForm K (V × V)))
+    (prodNegPresentation (K := K) (V := V) Q hQ)
+
+/-- Matrix form of the canonical doubled chosen-model Clifford equivalence. -/
+noncomputable def prodNegCliffordEquivMatrix [FiniteDimensional K V]
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
+    CliffordAlgebra (Q.prod <| -Q) ≃ₐ[K]
+      Matrix (Fin (2 ^ Module.finrank K V)) (Fin (2 ^ Module.finrank K V)) K :=
+  HyperbolicPresentation.cliffordEquivMatrixOfFinrankEq
+    (K := K) (Q := ((Q.prod <| -Q) : QuadraticForm K (V × V)))
+    (P := prodNegPresentation (K := K) (V := V) Q hQ)
+    (finrank_prodNegSpinorModule (K := K) (V := V))
+
 /-- The canonical module structure on the doubled chosen model. -/
 noncomputable abbrev prodNegCliffordModule (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
     Module (CliffordAlgebra (Q.prod <| -Q)) (prodNegSpinorModule (K := K) (V := V)) :=
@@ -232,6 +252,17 @@ theorem prodNegSpinRepresentation_mem_odd (Q : QuadraticForm K V) (hQ : Q.Nondeg
     (K := K) (Q := ((Q.prod <| -Q) : QuadraticForm K (V × V)))
     (P := prodNegPresentation (K := K) (V := V) Q hQ) hx
 
+/-- The even Clifford algebra of `Q ⊕ (-Q)` is identified with the product of the
+endomorphism algebras of the canonical doubled half-spin modules. -/
+noncomputable def evenProdNegCliffordEquivProdEnd [FiniteDimensional K V]
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
+    CliffordAlgebra.even (Q.prod <| -Q) ≃ₐ[K]
+      Module.End K (evenProdNegSpinorModule (K := K) (V := V)) ×
+        Module.End K (oddProdNegSpinorModule (K := K) (V := V)) :=
+  HyperbolicPresentation.evenCliffordEquivProdEnd
+    (K := K) (Q := ((Q.prod <| -Q) : QuadraticForm K (V × V)))
+    (prodNegPresentation (K := K) (V := V) Q hQ)
+
 /-- The doubled form `Q ⊕ (-Q)` has Witt index `dim(V)`. -/
 theorem wittIndex_prodNeg (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) :
     QuadraticForm.wittIndex (((Q.prod <| -Q) : QuadraticForm K (V × V))) = Module.finrank K V := by
@@ -266,6 +297,30 @@ theorem finrank_oddProdNegSpinorModule (hV : 0 < Module.finrank K V) :
     simpa [finrank_diagSubmodule (K := K) (V := V)] using hV
   simpa [oddProdNegSpinorModule, finrank_diagSubmodule (K := K) (V := V)] using
     finrank_oddExterior (K := K) (diagSubmodule (K := K) (V := V)) hdiag
+
+/-- Matrix-product form of the even Clifford classification for `Q ⊕ (-Q)`. -/
+noncomputable def evenProdNegCliffordEquivProdMatrix [FiniteDimensional K V]
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate) (hV : 0 < Module.finrank K V) :
+    CliffordAlgebra.even (Q.prod <| -Q) ≃ₐ[K]
+      Matrix (Fin (2 ^ (Module.finrank K V - 1)))
+          (Fin (2 ^ (Module.finrank K V - 1))) K ×
+        Matrix (Fin (2 ^ (Module.finrank K V - 1)))
+          (Fin (2 ^ (Module.finrank K V - 1))) K := by
+  let bDiag := Module.finBasis K (diagSubmodule (K := K) (V := V))
+  letI : FiniteDimensional K (prodNegSpinorModule (K := K) (V := V)) :=
+    bDiag.ExteriorAlgebra.finiteDimensional_of_finite
+  let hEven := finrank_evenProdNegSpinorModule (K := K) (V := V) hV
+  let hOdd := finrank_oddProdNegSpinorModule (K := K) (V := V) hV
+  let bEven :
+      Module.Basis (Fin (2 ^ (Module.finrank K V - 1))) K
+        (evenProdNegSpinorModule (K := K) (V := V)) :=
+    Module.finBasisOfFinrankEq K (evenProdNegSpinorModule (K := K) (V := V)) hEven
+  let bOdd :
+      Module.Basis (Fin (2 ^ (Module.finrank K V - 1))) K
+        (oddProdNegSpinorModule (K := K) (V := V)) :=
+    Module.finBasisOfFinrankEq K (oddProdNegSpinorModule (K := K) (V := V)) hOdd
+  exact (evenProdNegCliffordEquivProdEnd (K := K) (V := V) Q hQ).trans
+    (AlgEquiv.prodCongr (LinearMap.toMatrixAlgEquiv bEven) (LinearMap.toMatrixAlgEquiv bOdd))
 
 end ProdNegTransport
 

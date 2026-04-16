@@ -14,6 +14,7 @@ import Spinor.Basic
 import Spinor.ExteriorModel
 import Spinor.HyperbolicAction
 import Spinor.Presentation
+import Spinor.OddClassification
 import Spinor.ProdNeg
 import Spinor.CliffordAction
 import Spinor.SpinRep

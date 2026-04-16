@@ -3,6 +3,8 @@
 -/
 
 import Spinor.Basic
+import Mathlib.Algebra.Algebra.Prod
+import Mathlib.LinearAlgebra.Prod
 import Mathlib.LinearAlgebra.Projection
 
 namespace ExteriorAlgebra
@@ -1624,6 +1626,235 @@ theorem not_nonempty_evenOddSplitCliffordLinearEquiv (W : Submodule K V) :
   exact hone_ne hone_eq_zero
 
 end SplitHalfInequivalence
+
+section SplitEvenProductClassification
+
+variable [FiniteDimensional K V]
+
+/-- The simultaneous even split Clifford action on the two chosen half-spin modules. -/
+noncomputable def evenSplitCliffordActionProd (W : Submodule K V) :
+    CliffordAlgebra.even (QuadraticForm.dualProd K W) →ₐ[K]
+      Module.End K (evenExteriorSubmodule (K := K) W) ×
+        Module.End K (oddExteriorSubmodule (K := K) W) :=
+  (evenSplitCliffordAction (K := K) W).prod (oddSplitCliffordAction (K := K) W)
+
+/-- A pair of endomorphisms of the chosen half-spin modules acts block-diagonally on
+`⋀W = ⋀^even W ⊕ ⋀^odd W`. -/
+noncomputable def splitHalfSpinBlockDiagonal (W : Submodule K V) :
+    Module.End K (evenExteriorSubmodule (K := K) W) ×
+      Module.End K (oddExteriorSubmodule (K := K) W) →ₐ[K]
+        Module.End K (IsotropicExteriorModel (K := K) W) :=
+  let e :
+      (evenExteriorSubmodule (K := K) W × oddExteriorSubmodule (K := K) W) ≃ₗ[K]
+        IsotropicExteriorModel (K := K) W :=
+    Submodule.prodEquivOfIsCompl _ _ (evenExteriorSubmodule_isCompl (K := K) (W := W))
+  (e.conjAlgEquiv K).toAlgHom.comp
+    (LinearMap.prodMapAlgHom K (evenExteriorSubmodule (K := K) W)
+      (oddExteriorSubmodule (K := K) W))
+
+@[simp] theorem splitHalfSpinBlockDiagonal_apply_even (W : Submodule K V)
+    (f : Module.End K (evenExteriorSubmodule (K := K) W) ×
+      Module.End K (oddExteriorSubmodule (K := K) W))
+    (x : evenExteriorSubmodule (K := K) W) :
+    splitHalfSpinBlockDiagonal (K := K) W f x = f.1 x := by
+  let e :
+      (evenExteriorSubmodule (K := K) W × oddExteriorSubmodule (K := K) W) ≃ₗ[K]
+        IsotropicExteriorModel (K := K) W :=
+    Submodule.prodEquivOfIsCompl _ _ (evenExteriorSubmodule_isCompl (K := K) (W := W))
+  simp [splitHalfSpinBlockDiagonal, e, LinearEquiv.conjAlgEquiv_apply]
+
+@[simp] theorem splitHalfSpinBlockDiagonal_apply_odd (W : Submodule K V)
+    (f : Module.End K (evenExteriorSubmodule (K := K) W) ×
+      Module.End K (oddExteriorSubmodule (K := K) W))
+    (x : oddExteriorSubmodule (K := K) W) :
+    splitHalfSpinBlockDiagonal (K := K) W f x = f.2 x := by
+  let e :
+      (evenExteriorSubmodule (K := K) W × oddExteriorSubmodule (K := K) W) ≃ₗ[K]
+        IsotropicExteriorModel (K := K) W :=
+    Submodule.prodEquivOfIsCompl _ _ (evenExteriorSubmodule_isCompl (K := K) (W := W))
+  simp [splitHalfSpinBlockDiagonal, e, LinearEquiv.conjAlgEquiv_apply]
+
+/-- Every pair of endomorphisms of the chosen half-spin modules comes from an even split Clifford
+element. -/
+theorem evenSplitCliffordActionProd_surjective (W : Submodule K V) :
+    Function.Surjective (evenSplitCliffordActionProd (K := K) W) := by
+  classical
+  let b := Module.finBasis K W
+  intro f
+  let p := splitHalfSpinBlockDiagonal (K := K) W f
+  obtain ⟨a, ha⟩ := splitCliffordAction_surjective (K := K) (W := W) b p
+  obtain ⟨aEven, aOdd, haDecomp, _⟩ := Submodule.existsUnique_add_of_isCompl
+    (CliffordAlgebra.evenOdd_isCompl (Q := QuadraticForm.dualProd K W)) a
+  refine ⟨aEven, Prod.ext ?_ ?_⟩
+  · ext x
+    have hEven :
+        splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x ∈
+          evenExteriorSubmodule (K := K) W :=
+      splitCliffordAction_mem_evenExteriorSubmodule (K := K) (W := W) aEven.2 x.2
+    have hOdd :
+        splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x ∈
+          oddExteriorSubmodule (K := K) W :=
+      splitCliffordAction_mem_oddExteriorSubmodule_of_odd (K := K) (W := W) aOdd.2 x.2
+    have hsum :
+        splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x +
+            splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x =
+          f.1 x := by
+      calc
+        splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x +
+            splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x =
+          splitCliffordAction (K := K) W
+            ((aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) +
+              (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W))) x := by
+              symm
+              simpa using congrArg
+                (fun g : Module.End K (IsotropicExteriorModel (K := K) W) => g x)
+                ((splitCliffordAction (K := K) W).map_add
+                  (aEven : CliffordAlgebra (QuadraticForm.dualProd K W))
+                  (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)))
+        _ = splitCliffordAction (K := K) W a x := by
+              simpa using congrArg (fun z : CliffordAlgebra (QuadraticForm.dualProd K W) =>
+                splitCliffordAction (K := K) W z x) haDecomp
+        _ = p x := by
+              simpa [p] using
+                congrArg (fun g : Module.End K (IsotropicExteriorModel (K := K) W) => g x) ha
+        _ = f.1 x := splitHalfSpinBlockDiagonal_apply_even (K := K) (W := W) f x
+    obtain ⟨u, v, _huv, huniq⟩ := Submodule.existsUnique_add_of_isCompl
+      (evenExteriorSubmodule_isCompl (K := K) (W := W)) (f.1 x : IsotropicExteriorModel (K := K) W)
+    have huv0' : f.1 x = u ∧ (0 : oddExteriorSubmodule (K := K) W) = v := by
+      simpa using huniq (f.1 x) 0 (by simp)
+    have huv0 : u = f.1 x ∧ v = 0 := ⟨huv0'.1.symm, huv0'.2.symm⟩
+    have huvs :
+        (⟨splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x,
+            hEven⟩ : evenExteriorSubmodule (K := K) W) = u ∧
+          (⟨splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x,
+            hOdd⟩ : oddExteriorSubmodule (K := K) W) = v := by
+      exact huniq
+        ⟨splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x,
+          hEven⟩
+        ⟨splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x,
+          hOdd⟩
+        hsum
+    exact congrArg Subtype.val (huvs.1.trans huv0.1)
+  · ext x
+    have hOdd :
+        splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x ∈
+          oddExteriorSubmodule (K := K) W :=
+      splitCliffordAction_mem_oddExteriorSubmodule (K := K) (W := W) aEven.2 x.2
+    have hEven :
+        splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x ∈
+          evenExteriorSubmodule (K := K) W :=
+      splitCliffordAction_mem_evenExteriorSubmodule_of_odd (K := K) (W := W) aOdd.2 x.2
+    have hsum :
+        splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x +
+            splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x =
+          f.2 x := by
+      calc
+        splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x +
+            splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x =
+          splitCliffordAction (K := K) W
+            ((aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) +
+              (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W))) x := by
+              symm
+              rw [show
+                splitCliffordAction (K := K) W
+                    ((aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) +
+                      (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W))) x =
+                  splitCliffordAction (K := K) W
+                    (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x +
+                    splitCliffordAction (K := K) W
+                      (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x by
+                    simpa using congrArg
+                      (fun g : Module.End K (IsotropicExteriorModel (K := K) W) => g x)
+                      ((splitCliffordAction (K := K) W).map_add
+                        (aEven : CliffordAlgebra (QuadraticForm.dualProd K W))
+                        (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)))]
+              abel
+        _ = splitCliffordAction (K := K) W a x := by
+              simpa using congrArg (fun z : CliffordAlgebra (QuadraticForm.dualProd K W) =>
+                splitCliffordAction (K := K) W z x) haDecomp
+        _ = p x := by
+              simpa [p] using
+                congrArg (fun g : Module.End K (IsotropicExteriorModel (K := K) W) => g x) ha
+        _ = f.2 x := splitHalfSpinBlockDiagonal_apply_odd (K := K) (W := W) f x
+    obtain ⟨u, v, _huv, huniq⟩ := Submodule.existsUnique_add_of_isCompl
+      (evenExteriorSubmodule_isCompl (K := K) (W := W)) (f.2 x : IsotropicExteriorModel (K := K) W)
+    have huv0' : (0 : evenExteriorSubmodule (K := K) W) = u ∧ f.2 x = v := by
+      simpa using huniq 0 (f.2 x) (by simp)
+    have huv0 : u = 0 ∧ v = f.2 x := ⟨huv0'.1.symm, huv0'.2.symm⟩
+    have huvs :
+        (⟨splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x,
+            hEven⟩ : evenExteriorSubmodule (K := K) W) = u ∧
+          (⟨splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x,
+            hOdd⟩ : oddExteriorSubmodule (K := K) W) = v := by
+      exact huniq
+        ⟨splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x,
+          hEven⟩
+        ⟨splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x,
+          hOdd⟩
+        hsum
+    exact congrArg Subtype.val (huvs.2.trans huv0.2)
+
+/-- The simultaneous even split Clifford action on the two chosen half-spin modules is faithful. -/
+theorem evenSplitCliffordActionProd_injective (W : Submodule K V) :
+    Function.Injective (evenSplitCliffordActionProd (K := K) W) := by
+  classical
+  let b := Module.finBasis K W
+  intro a b' hab
+  apply Subtype.ext
+  have hEven :
+      evenSplitCliffordAction (K := K) W a = evenSplitCliffordAction (K := K) W b' :=
+    congrArg Prod.fst hab
+  have hOdd :
+      oddSplitCliffordAction (K := K) W a = oddSplitCliffordAction (K := K) W b' :=
+    congrArg Prod.snd hab
+  apply (splitCliffordAction_injective (K := K) (W := W) b)
+  apply LinearMap.ext
+  intro y
+  obtain ⟨u, v, huv, _⟩ := Submodule.existsUnique_add_of_isCompl
+    (evenExteriorSubmodule_isCompl (K := K) (W := W)) y
+  have hu :
+      splitCliffordAction (K := K) W (a : CliffordAlgebra (QuadraticForm.dualProd K W)) u =
+        splitCliffordAction (K := K) W (b' : CliffordAlgebra (QuadraticForm.dualProd K W)) u := by
+    exact congrArg Subtype.val (congrArg (fun g => g u) hEven)
+  have hv :
+      splitCliffordAction (K := K) W (a : CliffordAlgebra (QuadraticForm.dualProd K W)) v =
+        splitCliffordAction (K := K) W (b' : CliffordAlgebra (QuadraticForm.dualProd K W)) v := by
+    exact congrArg Subtype.val (congrArg (fun g => g v) hOdd)
+  calc
+    splitCliffordAction (K := K) W (a : CliffordAlgebra (QuadraticForm.dualProd K W)) y =
+      splitCliffordAction (K := K) W (a : CliffordAlgebra (QuadraticForm.dualProd K W)) (u + v) := by
+        rw [← huv]
+    _ =
+      splitCliffordAction (K := K) W (a : CliffordAlgebra (QuadraticForm.dualProd K W)) u +
+        splitCliffordAction (K := K) W (a : CliffordAlgebra (QuadraticForm.dualProd K W)) v := by
+          simp
+    _ =
+      splitCliffordAction (K := K) W (b' : CliffordAlgebra (QuadraticForm.dualProd K W)) u +
+        splitCliffordAction (K := K) W (b' : CliffordAlgebra (QuadraticForm.dualProd K W)) v := by
+          rw [hu, hv]
+    _ =
+      splitCliffordAction (K := K) W (b' : CliffordAlgebra (QuadraticForm.dualProd K W)) (u + v) := by
+          simp
+    _ = splitCliffordAction (K := K) W (b' : CliffordAlgebra (QuadraticForm.dualProd K W)) y := by
+          rw [huv]
+
+/-- In the finite-dimensional split case, the even Clifford algebra is identified with the product
+of the endomorphism algebras of the two chosen half-spin modules. -/
+noncomputable def evenSplitCliffordEquivProdEnd (W : Submodule K V) :
+    CliffordAlgebra.even (QuadraticForm.dualProd K W) ≃ₐ[K]
+      Module.End K (evenExteriorSubmodule (K := K) W) ×
+        Module.End K (oddExteriorSubmodule (K := K) W) :=
+  AlgEquiv.ofBijective (evenSplitCliffordActionProd (K := K) W)
+    ⟨evenSplitCliffordActionProd_injective (K := K) (W := W),
+      evenSplitCliffordActionProd_surjective (K := K) (W := W)⟩
+
+@[simp] theorem evenSplitCliffordEquivProdEnd_apply (W : Submodule K V)
+    (a : CliffordAlgebra.even (QuadraticForm.dualProd K W)) :
+    evenSplitCliffordEquivProdEnd (K := K) W a =
+      evenSplitCliffordActionProd (K := K) W a :=
+  rfl
+
+end SplitEvenProductClassification
 
 /--
 Restrict the split Clifford action from `Cl(W* × W, dualProd)` to the corresponding spin group.

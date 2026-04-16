@@ -122,6 +122,14 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   presentation APIs
 - [x] In split rank, package the canonical Witt-model Clifford algebra as a full matrix algebra of
   size `2^(dim V / 2)`
+- [x] For any explicit hyperbolic presentation `Q ≃ dualProd K W`, package the even Clifford
+  algebra as `Cl⁺(Q) ≃ End(⋀^even W) × End(⋀^odd W)`
+- [x] Expose the corresponding even-Clifford product-endomorphism equivalence through the Witt and
+  split-Witt presentation APIs
+- [x] In split rank and positive Witt index, package the canonical even Clifford algebra as
+  `Mat_(2^(dim V / 2 - 1))(K) × Mat_(2^(dim V / 2 - 1))(K)`
+- [x] Package the standard odd split form `H(W) ⊕ ⟨1⟩` as
+  `Mat_(2^dim W)(K) × Mat_(2^dim W)(K)` via `CliffordAlgebra.equivEven`
 - [ ] Cl(n, ℂ) ≅ Mat(2^(n/2), ℂ) for n even
 - [ ] Cl(n, ℂ) ≅ Mat(2^((n-1)/2), ℂ) × Mat(2^((n-1)/2), ℂ) for n odd
 - [ ] Bott periodicity for real Clifford algebras (period 8)

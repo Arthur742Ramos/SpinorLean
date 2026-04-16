@@ -133,6 +133,12 @@ Implemented so far:
 - the chosen even and odd halves are now also proved inequivalent as modules over the even
   Clifford algebra in the split model, and that inequivalence is transported to the explicit
   hyperbolic, Witt, and split-Witt chosen-model presentations
+- the even Clifford algebra itself is now packaged on those chosen half-spin modules as
+  `Cl⁺(Q) ≃ End(⋀^even W) × End(⋀^odd W)` in the explicit hyperbolic case, with Witt and
+  split-Witt wrappers and, in positive split rank, a concrete product-of-matrices form of size
+  `2^(dim V / 2 - 1)` on each factor
+- via `CliffordAlgebra.equivEven`, the standard odd split form `H(W) ⊕ ⟨1⟩` is now also packaged as
+  `Cl(H(W) ⊕ ⟨1⟩) ≃ Mat_(2^dim W)(K) × Mat_(2^dim W)(K)`
 
 Still open from the roadmap:
 

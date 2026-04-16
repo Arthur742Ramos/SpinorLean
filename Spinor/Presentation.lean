@@ -208,6 +208,42 @@ noncomputable abbrev oddCliffordModule (P : HyperbolicPresentation Q) :
     letI := P.oddCliffordModule
     a • x = P.oddCliffordAction a x := rfl
 
+/-- The even Clifford algebra of an explicit hyperbolic presentation is identified with the product
+of the endomorphism algebras of the two chosen half-spin modules. -/
+noncomputable def evenCliffordEquivProdEnd [FiniteDimensional K V] (P : HyperbolicPresentation Q) :
+    CliffordAlgebra.even Q ≃ₐ[K]
+      Module.End K P.evenSpinorModule × Module.End K P.oddSpinorModule :=
+  evenHyperbolicCliffordEquivProdEnd (K := K) (Q := Q) (W := P.W) P.iso
+
+@[simp] theorem evenCliffordEquivProdEnd_apply [FiniteDimensional K V] (P : HyperbolicPresentation Q)
+    (a : CliffordAlgebra.even Q) :
+    P.evenCliffordEquivProdEnd a = (P.evenCliffordAction a, P.oddCliffordAction a) :=
+  rfl
+
+/-- Matrix-product form of the even Clifford algebra of an explicit hyperbolic presentation, using
+the two chosen half-spin modules. -/
+noncomputable def evenCliffordEquivProdMatrix [FiniteDimensional K V] (P : HyperbolicPresentation Q)
+    (hW : 0 < Module.finrank K P.W) :
+    CliffordAlgebra.even Q ≃ₐ[K]
+      Matrix (Fin (2 ^ (Module.finrank K P.W - 1)))
+          (Fin (2 ^ (Module.finrank K P.W - 1))) K ×
+        Matrix (Fin (2 ^ (Module.finrank K P.W - 1)))
+          (Fin (2 ^ (Module.finrank K P.W - 1))) K := by
+  let bW := Module.finBasis K P.W
+  letI : FiniteDimensional K P.spinorModule := bW.ExteriorAlgebra.finiteDimensional_of_finite
+  let hEven : Module.finrank K P.evenSpinorModule = 2 ^ (Module.finrank K P.W - 1) :=
+    finrank_evenSpinorModule (K := K) (Q := Q) P hW
+  let hOdd : Module.finrank K P.oddSpinorModule = 2 ^ (Module.finrank K P.W - 1) :=
+    finrank_oddSpinorModule (K := K) (Q := Q) P hW
+  let bEven :
+      Module.Basis (Fin (2 ^ (Module.finrank K P.W - 1))) K P.evenSpinorModule :=
+    Module.finBasisOfFinrankEq K P.evenSpinorModule hEven
+  let bOdd :
+      Module.Basis (Fin (2 ^ (Module.finrank K P.W - 1))) K P.oddSpinorModule :=
+    Module.finBasisOfFinrankEq K P.oddSpinorModule hOdd
+  exact P.evenCliffordEquivProdEnd.trans
+    (AlgEquiv.prodCongr (LinearMap.toMatrixAlgEquiv bEven) (LinearMap.toMatrixAlgEquiv bOdd))
+
 /-- The chosen even half attached to an explicit hyperbolic presentation is simple under the even
 Clifford action. -/
 theorem evenCliffordModule_isSimple [FiniteDimensional K V] (P : HyperbolicPresentation Q) :
@@ -682,6 +718,41 @@ noncomputable abbrev oddWittCliffordModule (Q : QuadraticForm K V)
     letI := oddWittCliffordModule (K := K) Q e
     a • x = oddWittCliffordAction (K := K) Q e a x := rfl
 
+/-- Product-endomorphism form of the even Clifford algebra on the canonical Witt model. -/
+noncomputable def evenWittCliffordEquivProdEnd [FiniteDimensional K V] (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    CliffordAlgebra.even Q ≃ₐ[K]
+      Module.End K (evenWittExterior (K := K) Q) ×
+        Module.End K (oddWittExterior (K := K) Q) :=
+  (wittPresentation (K := K) Q e).evenCliffordEquivProdEnd
+
+/-- Matrix-product form of the even Clifford algebra on the canonical Witt model in the hyperbolic
+case. -/
+noncomputable def evenWittCliffordEquivProdMatrix [FiniteDimensional K V] (Q : QuadraticForm K V)
+    (hQ : 0 < Q.wittIndex) (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    CliffordAlgebra.even Q ≃ₐ[K]
+      Matrix (Fin (2 ^ (Module.finrank K V / 2 - 1)))
+          (Fin (2 ^ (Module.finrank K V / 2 - 1))) K ×
+        Matrix (Fin (2 ^ (Module.finrank K V / 2 - 1)))
+          (Fin (2 ^ (Module.finrank K V / 2 - 1))) K := by
+  let bW := Module.finBasis K Q.wittSubspace
+  letI : FiniteDimensional K (WittExteriorModel (K := K) Q) :=
+    bW.ExteriorAlgebra.finiteDimensional_of_finite
+  let hEven : Module.finrank K (evenWittExterior (K := K) Q) =
+      2 ^ (Module.finrank K V / 2 - 1) :=
+    finrank_evenWittExterior_of_hyperbolic (K := K) Q hQ e
+  let hOdd : Module.finrank K (oddWittExterior (K := K) Q) =
+      2 ^ (Module.finrank K V / 2 - 1) :=
+    finrank_oddWittExterior_of_hyperbolic (K := K) Q hQ e
+  let bEven :
+      Module.Basis (Fin (2 ^ (Module.finrank K V / 2 - 1))) K (evenWittExterior (K := K) Q) :=
+    Module.finBasisOfFinrankEq K (evenWittExterior (K := K) Q) hEven
+  let bOdd :
+      Module.Basis (Fin (2 ^ (Module.finrank K V / 2 - 1))) K (oddWittExterior (K := K) Q) :=
+    Module.finBasisOfFinrankEq K (oddWittExterior (K := K) Q) hOdd
+  exact (evenWittCliffordEquivProdEnd (K := K) Q e).trans
+    (AlgEquiv.prodCongr (LinearMap.toMatrixAlgEquiv bEven) (LinearMap.toMatrixAlgEquiv bOdd))
+
 /-- The even half of the canonical Witt model is simple under the even Clifford action. -/
 theorem evenWittCliffordModule_isSimple (Q : QuadraticForm K V)
     (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
@@ -950,6 +1021,29 @@ noncomputable abbrev oddSplitWittCliffordModule (Q : QuadraticForm K V) (hQ : Q.
     (a : CliffordAlgebra.even Q) (x : oddWittExterior (K := K) Q) :
     letI := oddSplitWittCliffordModule (K := K) Q hQ hsplit
     a • x = oddSplitWittCliffordAction (K := K) Q hQ hsplit a x := rfl
+
+/-- Product-endomorphism form of the even Clifford algebra on the canonical Witt model in split
+rank. -/
+noncomputable def evenSplitWittCliffordEquivProdEnd [FiniteDimensional K V]
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    CliffordAlgebra.even Q ≃ₐ[K]
+      Module.End K (evenWittExterior (K := K) Q) ×
+        Module.End K (oddWittExterior (K := K) Q) :=
+  evenWittCliffordEquivProdEnd (K := K) Q
+    (QuadraticForm.splitWittIsometryEquiv (K := K) Q hQ hsplit)
+
+/-- Matrix-product form of the even Clifford algebra on the canonical Witt model in split rank. -/
+noncomputable def evenSplitWittCliffordEquivProdMatrix [FiniteDimensional K V]
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) (hW : 0 < Q.wittIndex) :
+    CliffordAlgebra.even Q ≃ₐ[K]
+      Matrix (Fin (2 ^ (Module.finrank K V / 2 - 1)))
+          (Fin (2 ^ (Module.finrank K V / 2 - 1))) K ×
+        Matrix (Fin (2 ^ (Module.finrank K V / 2 - 1)))
+          (Fin (2 ^ (Module.finrank K V / 2 - 1))) K :=
+  evenWittCliffordEquivProdMatrix (K := K) Q hW
+    (QuadraticForm.splitWittIsometryEquiv (K := K) Q hQ hsplit)
 
 /-- The split-rank even half of the canonical Witt model is simple under the even Clifford
 action. -/
