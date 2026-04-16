@@ -148,6 +148,8 @@ Implemented so far:
   `spinLinearRepresentation : spinGroup Q → (M ≃ₗ[R] M)` obtained from conjugation on the Clifford
   copy `ι(Q)(M)`, proves this action preserves `Q` via `spinVector_preserves_quadratic`, and
   packages each spin element as an ambient isometry `spinIsometryEquiv : Q.IsometryEquiv Q`
+  together with the full homomorphism
+  `spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q`
 
 Still open from the roadmap:
 

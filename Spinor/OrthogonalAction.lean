@@ -4,6 +4,55 @@
 
 import Spinor.SpinRep
 
+namespace QuadraticMap
+namespace IsometryEquiv
+
+variable {R M N : Type*}
+variable [CommSemiring R]
+variable [AddCommMonoid M] [AddCommMonoid N]
+variable [Module R M] [Module R N]
+
+@[ext]
+theorem ext {Q₁ : QuadraticMap R M N} {Q₂ : QuadraticMap R M N} {f g : Q₁.IsometryEquiv Q₂}
+    (h : ∀ x, f x = g x) : f = g :=
+  DFunLike.ext _ _ h
+
+instance instGroup (Q : QuadraticMap R M N) : Group (Q.IsometryEquiv Q) where
+  mul f g := g.trans f
+  one := refl Q
+  inv f := f.symm
+  mul_assoc _ _ _ := by apply DFunLike.ext; intro x; rfl
+  mul_one _ := by apply DFunLike.ext; intro x; rfl
+  one_mul _ := by apply DFunLike.ext; intro x; rfl
+  inv_mul_cancel f := by apply DFunLike.ext; intro x; exact f.symm_apply_apply x
+
+lemma one_eq_refl (Q : QuadraticMap R M N) : (1 : Q.IsometryEquiv Q) = refl Q := rfl
+lemma mul_eq_trans {Q : QuadraticMap R M N} (f g : Q.IsometryEquiv Q) : f * g = g.trans f := rfl
+
+@[simp]
+lemma coe_one (Q : QuadraticMap R M N) : ⇑(1 : Q.IsometryEquiv Q) = id := rfl
+
+@[simp]
+lemma coe_inv {Q : QuadraticMap R M N} (f : Q.IsometryEquiv Q) : ⇑f⁻¹ = ⇑f.symm := rfl
+
+@[simp]
+lemma one_apply (Q : QuadraticMap R M N) (x : M) : (1 : Q.IsometryEquiv Q) x = x := rfl
+
+@[simp]
+lemma mul_apply {Q : QuadraticMap R M N} (f g : Q.IsometryEquiv Q) (x : M) :
+    (f * g) x = f (g x) := rfl
+
+@[simp]
+lemma toLinearEquiv_one (Q : QuadraticMap R M N) :
+    ((1 : Q.IsometryEquiv Q) : M ≃ₗ[R] M) = LinearEquiv.refl R M := rfl
+
+@[simp]
+lemma toLinearEquiv_mul {Q : QuadraticMap R M N} (f g : Q.IsometryEquiv Q) :
+    ((f * g : Q.IsometryEquiv Q) : M ≃ₗ[R] M) = (f : M ≃ₗ[R] M) * (g : M ≃ₗ[R] M) := rfl
+
+end IsometryEquiv
+end QuadraticMap
+
 namespace Spinor
 
 universe uR uM
@@ -168,5 +217,28 @@ noncomputable def spinIsometryEquiv (x : spinGroup Q) : Q.IsometryEquiv Q where
 @[simp]
 theorem spinIsometryEquiv_apply (x : spinGroup Q) (m : M) :
     spinIsometryEquiv (Q := Q) x m = spinLinearRepresentation (Q := Q) x m := rfl
+
+/-- The ambient spin action packaged directly as a homomorphism into quadratic-form isometries. -/
+noncomputable def spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q where
+  toFun := spinIsometryEquiv (Q := Q)
+  map_one' := by
+    apply DFunLike.ext
+    intro m
+    simpa [spinIsometryEquiv_apply] using
+      congrArg (fun e : M ≃ₗ[R] M => e m) (spinLinearRepresentation (Q := Q)).map_one
+  map_mul' x y := by
+    apply DFunLike.ext
+    intro m
+    simpa [spinIsometryEquiv_apply, QuadraticMap.IsometryEquiv.mul_apply, LinearEquiv.mul_apply] using
+      congrArg (fun e : M ≃ₗ[R] M => e m) ((spinLinearRepresentation (Q := Q)).map_mul x y)
+
+@[simp]
+theorem spinIsometryRepresentation_apply (x : spinGroup Q) :
+    spinIsometryRepresentation (Q := Q) x = spinIsometryEquiv (Q := Q) x := rfl
+
+@[simp]
+theorem spinIsometryRepresentation_toLinearEquiv (x : spinGroup Q) :
+    ((spinIsometryRepresentation (Q := Q) x : Q.IsometryEquiv Q) : M ≃ₗ[R] M) =
+      spinLinearRepresentation (Q := Q) x := rfl
 
 end Spinor

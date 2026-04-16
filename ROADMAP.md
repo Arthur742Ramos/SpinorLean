@@ -150,6 +150,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinLinearRepresentation : spinGroup Q → (V ≃ₗ[R] V)` by conjugation on
     `CliffordAlgebra.ι Q`, and prove each spin element preserves `Q` via
     `Spinor.spinVector_preserves_quadratic` / `Spinor.spinIsometryEquiv`
+  - [x] package those ambient isometries as a genuine homomorphism
+    `Spinor.spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q`
 - [ ] Kernel is {1, -1}
 - [ ] The spin representation does NOT factor through SO
 
