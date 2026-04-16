@@ -139,6 +139,11 @@ Implemented so far:
   `2^(dim V / 2 - 1)` on each factor
 - via `CliffordAlgebra.equivEven`, the standard odd split form `H(W) ⊕ ⟨1⟩` is now also packaged as
   `Cl(H(W) ⊕ ⟨1⟩) ≃ Mat_(2^dim W)(K) × Mat_(2^dim W)(K)`
+- over `ℂ`, the standard even-dimensional sum-of-squares form on `Fin n ⊕ Fin n` is now packaged as
+  `Cl(2n, ℂ) ≃ Mat_(2^n)(ℂ)` in `Spinor.ComplexClassification.complexEvenCliffordEquivMatrix`
+- over `ℂ`, the corresponding odd-dimensional grouped sum-of-squares form is now packaged as
+  `Cl(2n+1, ℂ) ≃ Mat_(2^n)(ℂ) × Mat_(2^n)(ℂ)` in
+  `Spinor.ComplexClassification.complexOddCliffordEquivProdMatrix`
 
 Still open from the roadmap:
 

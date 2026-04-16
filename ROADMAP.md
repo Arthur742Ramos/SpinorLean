@@ -130,8 +130,12 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   `Mat_(2^(dim V / 2 - 1))(K) × Mat_(2^(dim V / 2 - 1))(K)`
 - [x] Package the standard odd split form `H(W) ⊕ ⟨1⟩` as
   `Mat_(2^dim W)(K) × Mat_(2^dim W)(K)` via `CliffordAlgebra.equivEven`
-- [ ] Cl(n, ℂ) ≅ Mat(2^(n/2), ℂ) for n even
-- [ ] Cl(n, ℂ) ≅ Mat(2^((n-1)/2), ℂ) × Mat(2^((n-1)/2), ℂ) for n odd
+- [x] Cl(n, ℂ) ≅ Mat(2^(n/2), ℂ) for n even
+  - implemented as `Spinor.ComplexClassification.complexEvenCliffordEquivMatrix`, i.e. the standard
+    `2n`-dimensional complex sum-of-squares form on `Fin n ⊕ Fin n`
+- [x] Cl(n, ℂ) ≅ Mat(2^((n-1)/2), ℂ) × Mat(2^((n-1)/2), ℂ) for n odd
+  - implemented as `Spinor.ComplexClassification.complexOddCliffordEquivProdMatrix`, i.e. the
+    standard grouped form consisting of the even `2n` sum-of-squares block plus one extra square
 - [ ] Bott periodicity for real Clifford algebras (period 8)
 
 ### 4.2 Low-Dimensional Examples
