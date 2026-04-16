@@ -107,7 +107,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     positive split rank, prove the same for `⋀^odd W`
   - [x] Transport that half-spin simplicity to the explicit hyperbolic, Witt, and split-Witt
     presentation APIs
-  - [ ] Prove the remaining inequivalence statement and the ambient/global `S⁺` / `S⁻` version
+  - [x] Prove the chosen-model inequivalence statement and transport it to the explicit
+    hyperbolic, Witt, and split-Witt presentation APIs
+  - [ ] Prove the remaining ambient/global `S⁺` / `S⁻` version
 
 ---
 

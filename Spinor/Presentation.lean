@@ -197,6 +197,16 @@ theorem oddCliffordModule_isSimple [FiniteDimensional K V] (P : HyperbolicPresen
   exact oddHyperbolicCliffordAction_isSimpleModule
     (K := K) (Q := Q) (W := P.W) P.iso hW
 
+/-- The chosen even and odd halves attached to an explicit hyperbolic presentation are inequivalent
+as modules over the even Clifford algebra. -/
+theorem not_nonempty_evenOddCliffordLinearEquiv [FiniteDimensional K V]
+    (P : HyperbolicPresentation Q) :
+    letI := P.evenCliffordModule
+    letI := P.oddCliffordModule
+    ¬ Nonempty (P.evenSpinorModule ≃ₗ[CliffordAlgebra.even Q] P.oddSpinorModule) := by
+  exact not_nonempty_evenOddHyperbolicCliffordLinearEquiv
+    (K := K) (Q := Q) (W := P.W) P.iso
+
 /-- The spin action induced by an explicit hyperbolic presentation preserves the even half. -/
 theorem spinRepresentation_mem_even (P : HyperbolicPresentation Q)
     {g : spinGroup Q} {x : P.spinorModule} (hx : x ∈ P.evenSpinorModule) :
@@ -647,6 +657,17 @@ theorem oddWittCliffordModule_isSimple (Q : QuadraticForm K V)
   exact HyperbolicPresentation.oddCliffordModule_isSimple
     (K := K) (Q := Q) (P := wittPresentation (K := K) Q e) hW
 
+/-- The chosen even and odd halves of the canonical Witt model are inequivalent under the even
+Clifford action. -/
+theorem not_nonempty_evenOddWittCliffordLinearEquiv (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    letI := evenWittCliffordModule (K := K) Q e
+    letI := oddWittCliffordModule (K := K) Q e
+    ¬ Nonempty
+      (evenWittExterior (K := K) Q ≃ₗ[CliffordAlgebra.even Q] oddWittExterior (K := K) Q) := by
+  exact HyperbolicPresentation.not_nonempty_evenOddCliffordLinearEquiv
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e)
+
 /-- The transported Witt-model spin action preserves the even half. -/
 theorem wittSpinRepresentation_mem_even (Q : QuadraticForm K V)
     (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace))
@@ -888,6 +909,17 @@ theorem oddSplitWittCliffordModule_isSimple (Q : QuadraticForm K V) (hQ : Q.Nond
     IsSimpleModule (CliffordAlgebra.even Q) (oddWittExterior (K := K) Q) := by
   exact HyperbolicPresentation.oddCliffordModule_isSimple
     (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit) hW
+
+/-- In split rank, the chosen even and odd halves of the canonical Witt model are inequivalent
+under the even Clifford action. -/
+theorem not_nonempty_evenOddSplitWittCliffordLinearEquiv (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    letI := evenSplitWittCliffordModule (K := K) Q hQ hsplit
+    letI := oddSplitWittCliffordModule (K := K) Q hQ hsplit
+    ¬ Nonempty
+      (evenWittExterior (K := K) Q ≃ₗ[CliffordAlgebra.even Q] oddWittExterior (K := K) Q) := by
+  exact HyperbolicPresentation.not_nonempty_evenOddCliffordLinearEquiv
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
 
 /-- The split-rank canonical Witt-model spin action preserves the even half. -/
 theorem splitWittSpinRepresentation_mem_even (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)

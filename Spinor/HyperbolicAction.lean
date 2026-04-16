@@ -330,6 +330,64 @@ theorem oddHyperbolicCliffordAction_isSimpleModule [FiniteDimensional K V]
       (by simpa [l] using Function.bijective_id)).2
       (oddSplitCliffordAction_isSimpleModule (K := K) (W := W) hW)
 
+/-- Transport the split parity projector to an explicit hyperbolic presentation. -/
+theorem exists_evenHyperbolicCliffordParityProjector [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    ∃ a : CliffordAlgebra.even Q,
+      (∀ x : evenExteriorSubmodule (K := K) W,
+        evenHyperbolicCliffordAction (K := K) (Q := Q) (W := W) e a x = x) ∧
+      ∀ x : oddExteriorSubmodule (K := K) W,
+        oddHyperbolicCliffordAction (K := K) (Q := Q) (W := W) e a x = 0 := by
+  obtain ⟨aSplit, haEven, haOdd⟩ :=
+    exists_evenSplitCliffordParityProjector (K := K) (W := W)
+  obtain ⟨a, ha⟩ := evenCliffordMap_surjective (K := K) (Q := Q) (W := W) e aSplit
+  refine ⟨a, ?_, ?_⟩
+  · intro x
+    simpa [evenHyperbolicCliffordAction, ha] using haEven x
+  · intro x
+    simpa [oddHyperbolicCliffordAction, ha] using haOdd x
+
+/-- The chosen even and odd halves attached to an explicit hyperbolic presentation are inequivalent
+as modules over the even Clifford algebra. -/
+theorem not_nonempty_evenOddHyperbolicCliffordLinearEquiv [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    letI := evenHyperbolicCliffordModule (K := K) (Q := Q) (W := W) e
+    letI := oddHyperbolicCliffordModule (K := K) (Q := Q) (W := W) e
+    ¬ Nonempty
+      (evenExteriorSubmodule (K := K) W ≃ₗ[CliffordAlgebra.even Q]
+        oddExteriorSubmodule (K := K) W) := by
+  classical
+  letI := evenHyperbolicCliffordModule (K := K) (Q := Q) (W := W) e
+  letI := oddHyperbolicCliffordModule (K := K) (Q := Q) (W := W) e
+  intro hEq
+  rcases hEq with ⟨f⟩
+  obtain ⟨a, haEven, haOdd⟩ :=
+    exists_evenHyperbolicCliffordParityProjector (K := K) (Q := Q) (W := W) e
+  let hone : evenExteriorSubmodule (K := K) W := ⟨1, by
+    refine (mem_evenExteriorSubmodule_of_mem_exteriorPower (K := K) (W := W)
+      (n := 0) (x := (1 : IsotropicExteriorModel (K := K) W))) ?_ (by simp)
+    change (1 : IsotropicExteriorModel (K := K) W) ∈
+      (LinearMap.range (ExteriorAlgebra.ι K : W →ₗ[K] IsotropicExteriorModel (K := K) W) ^ 0)
+    simpa using
+      (show (1 : IsotropicExteriorModel (K := K) W) ∈
+          (1 : Submodule K (IsotropicExteriorModel (K := K) W)) from one_mem _)
+  ⟩
+  have hone_ne : hone ≠ 0 := by
+    intro h
+    have h' : (hone : IsotropicExteriorModel (K := K) W) = 0 := congrArg Subtype.val h
+    exact one_ne_zero h'
+  have hzero : f hone = 0 := by
+    calc
+      f hone = f (evenHyperbolicCliffordAction (K := K) (Q := Q) (W := W) e a hone) := by
+                  rw [haEven hone]
+      _ = oddHyperbolicCliffordAction (K := K) (Q := Q) (W := W) e a (f hone) := by
+            simpa [evenHyperbolicClifford_smul_def, oddHyperbolicClifford_smul_def] using
+              (map_smulₛₗ f a hone)
+      _ = 0 := haOdd (f hone)
+  have hone_eq_zero : hone = 0 := by
+    exact f.injective (by simpa using hzero)
+  exact hone_ne hone_eq_zero
+
 /-- Restrict the transported hyperbolic Clifford action on `⋀W` to the spin group of `Q`. -/
 def hyperbolicSpinRepresentation (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
     spinGroup Q →* Module.End K (IsotropicExteriorModel (K := K) W) :=

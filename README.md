@@ -125,12 +125,15 @@ Implemented so far:
 - in the split model, the chosen even half `⋀^even W` is simple under the even Clifford algebra,
   and in positive split rank the same is true for `⋀^odd W`; this half-spin simplicity is also
   transported to the explicit hyperbolic, Witt, and split-Witt chosen-model presentations
+- the chosen even and odd halves are now also proved inequivalent as modules over the even
+  Clifford algebra in the split model, and that inequivalence is transported to the explicit
+  hyperbolic, Witt, and split-Witt chosen-model presentations
 
 Still open from the roadmap:
 
 - the final identification of the ambient chiral pieces `S⁺` and `S⁻` with the chosen-model
   submodules `⋀^even W` and `⋀^odd W`
-- chiral inequivalence and the ambient/global `S⁺` / `S⁻` irreducibility statements, periodicity,
+- the ambient/global `S⁺` / `S⁻` irreducibility and inequivalence statements, periodicity,
   low-dimensional identifications, and the double-cover theorems
 - paper-writing and final research-polish tasks
 
