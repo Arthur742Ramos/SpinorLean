@@ -12,3 +12,4 @@ import Mathlib.LinearAlgebra.ExteriorAlgebra.Basis
 import Mathlib.LinearAlgebra.QuadraticForm.Dual
 import Mathlib.LinearAlgebra.QuadraticForm.Radical
 import Mathlib.LinearAlgebra.QuadraticForm.Signature
+import Mathlib.RingTheory.SimpleModule.Basic

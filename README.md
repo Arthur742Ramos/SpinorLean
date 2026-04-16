@@ -113,15 +113,22 @@ Implemented so far:
   preserving both summands and restricting to actions on each summand
 - on the zero-form chosen model `⋀W`, an identification of the abstract chiral pieces with the
   explicit even/odd exterior summands `⋀^even W` and `⋀^odd W`
+- in the split model, `splitCliffordAction : Cl(W* × W, dualProd) → End(⋀W)` is now proved
+  surjective and injective by explicit basis projectors / matrix units
 - through `HyperbolicPresentation`, `wittPresentation`, and `splitWittPresentation`, a chosen-model
   positive/negative chiral API on `⋀W` identified with those even/odd summands and carrying the
   corresponding restricted spin representations
+- through those same presentation APIs, the transported chosen-model Clifford action on `⋀W` is
+  now proved faithful in the explicit hyperbolic, Witt, and split-Witt settings
+- in the split model, the full Clifford module `⋀W` is now simple, and that simplicity is
+  transported to the explicit hyperbolic, Witt, and split-Witt chosen-model presentations
 
 Still open from the roadmap:
 
 - the final identification of the ambient chiral pieces `S⁺` and `S⁻` with the chosen-model
   submodules `⋀^even W` and `⋀^odd W`
-- periodicity, low-dimensional identifications, irreducibility results, and the double-cover theorems
+- periodicity, low-dimensional identifications, chiral irreducibility/inequivalence results, and the
+  double-cover theorems
 - paper-writing and final research-polish tasks
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

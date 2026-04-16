@@ -333,6 +333,199 @@ theorem contractionAction_algebraMap (W : Submodule K V) (d : Module.Dual K W) (
   rw [map_zero, contractionAction_symm_apply]
   simp
 
+section BasisActions
+
+variable {I : Type*} [LinearOrder I]
+variable {W : Submodule K V}
+
+theorem basis_empty (b : Module.Basis I K W) :
+    b.ExteriorAlgebra (∅ : Finset I) = 1 := by
+  rw [ExteriorAlgebra.basis_apply_ofCard (R := K) (n := 0) (b := b) (s := (∅ : Finset I))
+      (by simp)]
+  simp [ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_zero_apply]
+
+theorem basis_singleton (b : Module.Basis I K W) (i : I) :
+    b.ExteriorAlgebra ({i} : Finset I) = ExteriorAlgebra.ι K (b i) := by
+  rw [ExteriorAlgebra.basis_apply_ofCard (R := K) (n := 1) (b := b) (s := ({i} : Finset I))
+      (by simp)]
+  simp [ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_succ_apply,
+    Set.powersetCard.ofFinEmbEquiv_symm_apply, Finset.orderEmbOfFin_singleton]
+
+private theorem basis_eq_unit_smul_wedge_basis_erase
+    (b : Module.Basis I K W) {i : I} {s : Finset I} (hi : i ∈ s) :
+    ∃ c : K, c * c = 1 ∧
+      b.ExteriorAlgebra s =
+        c • ((ExteriorAlgebra.ι K (b i)) * b.ExteriorAlgebra (s.erase i)) := by
+  let s₁ : Set.powersetCard I 1 := ⟨{i}, by simp⟩
+  let t : Set.powersetCard I (s.erase i).card := ⟨s.erase i, rfl⟩
+  have hdis : Disjoint s₁.val t.val := by
+    simp [s₁, t]
+  have hmul :
+      b.ExteriorAlgebra ({i} : Finset I) * b.ExteriorAlgebra (s.erase i) =
+        (((Set.powersetCard.permOfDisjoint hdis).sign : K)) •
+          b.ExteriorAlgebra (insert i (s.erase i)) := by
+    simpa [s₁, t, basis_singleton] using
+      (ExteriorAlgebra.basis_mul_of_disjoint (R := K) (b := b) (s := s₁) (t := t) hdis)
+  let c : K := ((Set.powersetCard.permOfDisjoint hdis).sign : K)
+  have hc : c * c = 1 := by
+    dsimp [c]
+    rw [← Int.cast_mul]
+    simpa using congrArg (fun z : ℤ => (z : K))
+      (Int.units_coe_mul_self (Set.powersetCard.permOfDisjoint hdis).sign)
+  refine ⟨c, hc, ?_⟩
+  calc
+    b.ExteriorAlgebra s
+        = b.ExteriorAlgebra (insert i (s.erase i)) := by simp [hi]
+    _ = c •
+          (c •
+          b.ExteriorAlgebra (insert i (s.erase i))) := by
+            simpa [c, smul_smul, hc]
+    _ = c •
+          ((ExteriorAlgebra.ι K (b i)) * b.ExteriorAlgebra (s.erase i)) := by
+          simpa [c, basis_singleton] using congrArg (fun x => c • x) (Eq.symm hmul)
+
+theorem wedgeAction_basis_eq_zero_of_mem
+    (b : Module.Basis I K W) {i : I} {s : Finset I} (hi : i ∈ s) :
+    wedgeAction (K := K) W (b i) (b.ExteriorAlgebra s) = 0 := by
+  rw [wedgeAction_apply]
+  let s₁ : Set.powersetCard I 1 := ⟨{i}, by simp⟩
+  let t : Set.powersetCard I s.card := ⟨s, rfl⟩
+  have hnot : ¬ Disjoint s₁.val t.val := by
+    simp [s₁, t, hi]
+  simpa [s₁, t, basis_singleton] using
+    (ExteriorAlgebra.basis_mul_of_not_disjoint (R := K) (b := b) (s := s₁) (t := t) hnot)
+
+theorem contractionAction_basis_eq_zero_of_not_mem
+    (b : Module.Basis I K W) (i : I) :
+    ∀ {s : Finset I}, i ∉ s →
+      contractionAction (K := K) W (b.coord i) (b.ExteriorAlgebra s) = 0
+  := by
+  intro s hs
+  induction s using Finset.induction_on with
+  | empty =>
+      simpa [basis_empty] using
+        contractionAction_algebraMap (K := K) (W := W) (d := b.coord i) (r := 1)
+  | @insert j s hj ih =>
+      have hji : i ≠ j := by
+        intro h
+        exact hs (h ▸ Finset.mem_insert_self _ _)
+      have his : i ∉ s := by
+        simpa [Finset.mem_insert, hji] using hs
+      rcases basis_eq_unit_smul_wedge_basis_erase (K := K) (W := W) (b := b)
+          (i := j) (s := insert j s) (by simp) with ⟨c, hc, hu⟩
+      rw [hu, map_smul, contractionAction_ι_mul]
+      have hcoord : b.coord i (b j) = 0 := by
+        simpa [hji] using (b.coord_apply i j)
+      have hmulzero :
+          (ExteriorAlgebra.ι K (b j)) *
+              contractionAction (K := K) W (b.coord i) (b.ExteriorAlgebra (s.erase j)) = 0 := by
+        simpa [hj] using
+          congrArg (fun x => (ExteriorAlgebra.ι K (b j)) * x) (ih his)
+      simp [hcoord, hmulzero]
+
+theorem contract_wedge_basis_eq_self_of_not_mem
+    (b : Module.Basis I K W) {i : I} {s : Finset I} (hi : i ∉ s) :
+    contractionAction (K := K) W (b.coord i)
+        (wedgeAction (K := K) W (b i) (b.ExteriorAlgebra s)) =
+      b.ExteriorAlgebra s := by
+  rw [wedgeAction_apply, contractionAction_ι_mul]
+  have hcoord : b.coord i (b i) = 1 := by
+    simpa using (b.coord_apply i i)
+  simp [hcoord, contractionAction_basis_eq_zero_of_not_mem (K := K) (W := W) b i hi]
+
+theorem contract_wedge_basis_eq_zero_of_mem
+    (b : Module.Basis I K W) {i : I} {s : Finset I} (hi : i ∈ s) :
+    contractionAction (K := K) W (b.coord i)
+        (wedgeAction (K := K) W (b i) (b.ExteriorAlgebra s)) =
+      0 := by
+  simp [wedgeAction_basis_eq_zero_of_mem (K := K) (W := W) b hi]
+
+theorem wedge_contract_basis_eq_self_of_mem
+    (b : Module.Basis I K W) {i : I} {s : Finset I} (hi : i ∈ s) :
+    wedgeAction (K := K) W (b i)
+        (contractionAction (K := K) W (b.coord i) (b.ExteriorAlgebra s)) =
+      b.ExteriorAlgebra s := by
+  rcases basis_eq_unit_smul_wedge_basis_erase (K := K) (W := W) (b := b) hi with ⟨c, hc, hu⟩
+  rw [hu, map_smul, contractionAction_ι_mul, wedgeAction_apply]
+  have hzero :
+      contractionAction (K := K) W (b.coord i) (b.ExteriorAlgebra (s.erase i)) = 0 := by
+    apply contractionAction_basis_eq_zero_of_not_mem (K := K) (W := W) b i
+    simp
+  simp [hzero, hi, mul_assoc, smul_mul_assoc]
+
+theorem wedge_contract_basis_eq_zero_of_not_mem
+    (b : Module.Basis I K W) {i : I} {s : Finset I} (hi : i ∉ s) :
+    wedgeAction (K := K) W (b i)
+        (contractionAction (K := K) W (b.coord i) (b.ExteriorAlgebra s)) =
+      0 := by
+  simp [contractionAction_basis_eq_zero_of_not_mem (K := K) (W := W) b i hi]
+
+noncomputable def basisMembershipProjectorOp (b : Module.Basis I K W) (s : Finset I) (i : I) :
+    Module.End K (IsotropicExteriorModel (K := K) W) :=
+  if i ∈ s then
+    (wedgeAction (K := K) W (b i)).comp (contractionAction (K := K) W (b.coord i))
+  else
+    (contractionAction (K := K) W (b.coord i)).comp (wedgeAction (K := K) W (b i))
+
+theorem basisMembershipProjectorOp_apply_basis
+    (b : Module.Basis I K W) (s t : Finset I) (i : I) :
+    basisMembershipProjectorOp (K := K) (W := W) b s i (b.ExteriorAlgebra t) =
+      if i ∈ s ↔ i ∈ t then b.ExteriorAlgebra t else 0 := by
+  by_cases his : i ∈ s <;> by_cases hit : i ∈ t
+  · simp [basisMembershipProjectorOp, his, hit,
+      wedge_contract_basis_eq_self_of_mem (K := K) (W := W) b hit]
+  · simp [basisMembershipProjectorOp, his, hit,
+      wedge_contract_basis_eq_zero_of_not_mem (K := K) (W := W) b hit]
+  · simp [basisMembershipProjectorOp, his, hit,
+      contract_wedge_basis_eq_zero_of_mem (K := K) (W := W) b hit]
+  · simp [basisMembershipProjectorOp, his, hit,
+      contract_wedge_basis_eq_self_of_not_mem (K := K) (W := W) b hit]
+
+noncomputable def basisMembershipProjectorAux (b : Module.Basis I K W) (s : Finset I) :
+    List I → Module.End K (IsotropicExteriorModel (K := K) W)
+  | [] => LinearMap.id
+  | i :: l =>
+      (basisMembershipProjectorAux b s l).comp (basisMembershipProjectorOp (K := K) (W := W) b s i)
+
+theorem basisMembershipProjectorAux_apply_basis
+    (b : Module.Basis I K W) (s t : Finset I) :
+    ∀ l,
+      basisMembershipProjectorAux (K := K) (W := W) b s l (b.ExteriorAlgebra t) =
+        if ∀ i, i ∈ l → (i ∈ s ↔ i ∈ t) then b.ExteriorAlgebra t else 0
+  | [] => by
+      simp [basisMembershipProjectorAux]
+  | i :: l => by
+      by_cases h : i ∈ s ↔ i ∈ t
+      · simp [basisMembershipProjectorAux, basisMembershipProjectorOp_apply_basis,
+          basisMembershipProjectorAux_apply_basis, h]
+      · simp [basisMembershipProjectorAux, basisMembershipProjectorOp_apply_basis,
+          basisMembershipProjectorAux_apply_basis, h]
+
+noncomputable def basisMembershipProjector [Fintype I] (b : Module.Basis I K W) (s : Finset I) :
+    Module.End K (IsotropicExteriorModel (K := K) W) :=
+  basisMembershipProjectorAux (K := K) (W := W) b s ((Finset.univ : Finset I).sort (· ≤ ·))
+
+theorem basisMembershipProjector_apply_basis [Fintype I]
+    (b : Module.Basis I K W) (s t : Finset I) :
+    basisMembershipProjector (K := K) (W := W) b s (b.ExteriorAlgebra t) =
+      if t = s then b.ExteriorAlgebra s else 0 := by
+  rw [basisMembershipProjector, basisMembershipProjectorAux_apply_basis]
+  by_cases hts : t = s
+  · subst hts
+    simp
+  · have hcond : ¬ ∀ i, i ∈ ((Finset.univ : Finset I).sort (· ≤ ·)) → (i ∈ s ↔ i ∈ t) := by
+      intro hall
+      apply hts
+      apply Finset.ext
+      intro i
+      exact (hall i (by simp)).symm
+    have hcond' : ¬ ∀ i, i ∈ s ↔ i ∈ t := by
+      intro hall
+      exact hcond (fun i hi => hall i)
+    simp [hcond', hts]
+
+end BasisActions
+
 private theorem contractionAction_mem_exteriorPower_pred_and_zero
     (W : Submodule K V) (d : Module.Dual K W)
     {m : ℕ} {y : ExteriorAlgebra K ↥W}
@@ -536,6 +729,325 @@ theorem splitClifford_smul_def (W : Submodule K V)
     (a : CliffordAlgebra (QuadraticForm.dualProd K W))
     (x : IsotropicExteriorModel (K := K) W) :
     a • x = splitCliffordAction (K := K) W a x := rfl
+
+section SplitFaithfulness
+
+variable {I : Type*} [LinearOrder I]
+
+noncomputable def basisMembershipProjectorFactor
+    {W : Submodule K V} (b : Module.Basis I K W) (s : Finset I) (i : I) :
+    CliffordAlgebra (QuadraticForm.dualProd K W) :=
+  if i ∈ s then
+    CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, b i) *
+      CliffordAlgebra.ι (QuadraticForm.dualProd K W) (b.coord i, 0)
+  else
+    CliffordAlgebra.ι (QuadraticForm.dualProd K W) (b.coord i, 0) *
+      CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, b i)
+
+theorem basisMembershipProjectorFactor_eq
+    {W : Submodule K V} (b : Module.Basis I K W) (s : Finset I) (i : I) :
+    splitCliffordAction (K := K) W (basisMembershipProjectorFactor (K := K) b s i) =
+      basisMembershipProjectorOp (K := K) (W := W) b s i := by
+  by_cases his : i ∈ s
+  · ext x
+    simp [basisMembershipProjectorFactor, basisMembershipProjectorOp, his,
+      splitCliffordAction_apply_ι, splitGeneratorAction, map_mul]
+  · ext x
+    simp [basisMembershipProjectorFactor, basisMembershipProjectorOp, his,
+      splitCliffordAction_apply_ι, splitGeneratorAction, map_mul]
+
+noncomputable def basisMembershipProjectorElemAux
+    {W : Submodule K V} (b : Module.Basis I K W) (s : Finset I) :
+    List I → CliffordAlgebra (QuadraticForm.dualProd K W)
+  | [] => 1
+  | i :: l =>
+      basisMembershipProjectorElemAux b s l *
+        basisMembershipProjectorFactor (K := K) b s i
+
+theorem basisMembershipProjectorElemAux_eq
+    {W : Submodule K V} (b : Module.Basis I K W) (s : Finset I) :
+    ∀ l,
+      splitCliffordAction (K := K) W
+          (basisMembershipProjectorElemAux (K := K) b s l) =
+        basisMembershipProjectorAux (K := K) (W := W) b s l
+  | [] => by
+      ext x
+      simp [basisMembershipProjectorElemAux, basisMembershipProjectorAux]
+  | i :: l => by
+      rw [basisMembershipProjectorElemAux, basisMembershipProjectorAux, map_mul,
+        basisMembershipProjectorElemAux_eq, basisMembershipProjectorFactor_eq,
+        Module.End.mul_eq_comp]
+
+noncomputable def basisMembershipProjectorElem
+    {W : Submodule K V} [Fintype I] (b : Module.Basis I K W) (s : Finset I) :
+    CliffordAlgebra (QuadraticForm.dualProd K W) :=
+  basisMembershipProjectorElemAux (K := K) b s ((Finset.univ : Finset I).sort (· ≤ ·))
+
+theorem basisMembershipProjectorElem_apply_basis
+    {W : Submodule K V} [Fintype I] (b : Module.Basis I K W) (s t : Finset I) :
+    splitCliffordAction (K := K) W
+        (basisMembershipProjectorElem (K := K) b s) (b.ExteriorAlgebra t) =
+      if t = s then b.ExteriorAlgebra s else 0 := by
+  rw [basisMembershipProjectorElem, basisMembershipProjectorElemAux_eq]
+  simpa [basisMembershipProjector] using
+    basisMembershipProjector_apply_basis (K := K) (W := W) b s t
+
+theorem exists_splitCliffordAction_contract_basis
+    {W : Submodule K V} (b : Module.Basis I K W) {i : I} {s : Finset I} (hi : i ∈ s) :
+    ∃ a : CliffordAlgebra (QuadraticForm.dualProd K W),
+      splitCliffordAction (K := K) W a (b.ExteriorAlgebra s) = b.ExteriorAlgebra (s.erase i) := by
+  rcases basis_eq_unit_smul_wedge_basis_erase (K := K) (W := W) (b := b) hi with ⟨c, hc, hs⟩
+  have hcontr :
+      contractionAction (K := K) W (b.coord i) (b.ExteriorAlgebra s) =
+        c • b.ExteriorAlgebra (s.erase i) := by
+    rw [hs, map_smul, contractionAction_ι_mul]
+    have hzero :
+        contractionAction (K := K) W (b.coord i) (b.ExteriorAlgebra (s.erase i)) = 0 := by
+      apply contractionAction_basis_eq_zero_of_not_mem (K := K) (W := W) b i
+      simp
+    simp [hzero]
+  refine ⟨algebraMap K _ c *
+      CliffordAlgebra.ι (QuadraticForm.dualProd K W) (b.coord i, 0), ?_⟩
+  calc
+    splitCliffordAction (K := K) W
+        (algebraMap K _ c * CliffordAlgebra.ι (QuadraticForm.dualProd K W) (b.coord i, 0))
+        (b.ExteriorAlgebra s)
+        = c • contractionAction (K := K) W (b.coord i) (b.ExteriorAlgebra s) := by
+            simp [map_mul, splitCliffordAction_apply_ι, splitGeneratorAction]
+    _ = b.ExteriorAlgebra (s.erase i) := by
+          simpa [smul_smul, hc] using congrArg (fun x => c • x) hcontr
+
+theorem exists_splitCliffordAction_wedge_basis
+    {W : Submodule K V} (b : Module.Basis I K W) {i : I} {s : Finset I} (hi : i ∉ s) :
+    ∃ a : CliffordAlgebra (QuadraticForm.dualProd K W),
+      splitCliffordAction (K := K) W a (b.ExteriorAlgebra s) = b.ExteriorAlgebra (insert i s) := by
+  rcases basis_eq_unit_smul_wedge_basis_erase (K := K) (W := W) (b := b)
+      (i := i) (s := insert i s) (by simp) with ⟨c, hc, hs⟩
+  have hs' :
+      b.ExteriorAlgebra (insert i s) =
+        c • ((ExteriorAlgebra.ι K (b i)) * b.ExteriorAlgebra s) := by
+    simpa [hi] using hs
+  refine ⟨algebraMap K _ c *
+      CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, b i), ?_⟩
+  calc
+    splitCliffordAction (K := K) W
+        (algebraMap K _ c * CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, b i))
+        (b.ExteriorAlgebra s)
+        = c • wedgeAction (K := K) W (b i) (b.ExteriorAlgebra s) := by
+            simp [map_mul, splitCliffordAction_apply_ι, splitGeneratorAction]
+    _ = b.ExteriorAlgebra (insert i s) := by
+          simpa [wedgeAction_apply] using hs'.symm
+
+theorem exists_splitCliffordAction_remove_basis
+    {W : Submodule K V} (b : Module.Basis I K W) (r t : Finset I) (hr : r ⊆ t) :
+    ∃ a : CliffordAlgebra (QuadraticForm.dualProd K W),
+      splitCliffordAction (K := K) W a (b.ExteriorAlgebra t) = b.ExteriorAlgebra (t \ r) := by
+  induction r using Finset.induction_on generalizing t with
+  | empty =>
+      refine ⟨1, ?_⟩
+      simp
+  | @insert i r hir ih =>
+      have hit : i ∈ t := hr (by simp)
+      rcases exists_splitCliffordAction_contract_basis (K := K) (W := W) b hit with ⟨ai, hai⟩
+      have hrt : r ⊆ t.erase i := by
+        intro j hj
+        have hjt : j ∈ t := hr (by simp [hj])
+        have hji : j ≠ i := by
+          intro hji
+          subst hji
+          exact hir hj
+        simp [hjt, hji]
+      rcases ih (t.erase i) hrt with ⟨ar, har⟩
+      refine ⟨ar * ai, ?_⟩
+      calc
+        splitCliffordAction (K := K) W (ar * ai) (b.ExteriorAlgebra t)
+            = splitCliffordAction (K := K) W ar (b.ExteriorAlgebra (t.erase i)) := by
+                simp [map_mul, hai]
+        _ = b.ExteriorAlgebra ((t.erase i) \ r) := har
+        _ = b.ExteriorAlgebra (t \ insert i r) := by
+              congr 1
+              ext j
+              simp [hir, and_left_comm, and_assoc]
+
+theorem exists_splitCliffordAction_add_basis
+    {W : Submodule K V} (b : Module.Basis I K W) (r t : Finset I) (hr : Disjoint r t) :
+    ∃ a : CliffordAlgebra (QuadraticForm.dualProd K W),
+      splitCliffordAction (K := K) W a (b.ExteriorAlgebra t) = b.ExteriorAlgebra (t ∪ r) := by
+  induction r using Finset.induction_on generalizing t with
+  | empty =>
+      refine ⟨1, ?_⟩
+      simp
+  | @insert i r hir ih =>
+      have hrt : Disjoint r t := by
+        rw [Finset.disjoint_left] at hr ⊢
+        intro j hjr hjt
+        exact hr (by simp [hjr]) hjt
+      rcases ih t hrt with ⟨ar, har⟩
+      have hit : i ∉ t := by
+        rw [Finset.disjoint_left] at hr
+        exact fun hit => hr (by simp) hit
+      have hi_union : i ∉ t ∪ r := by
+        simp [hit, hir]
+      rcases exists_splitCliffordAction_wedge_basis (K := K) (W := W) b hi_union with ⟨ai, hai⟩
+      refine ⟨ai * ar, ?_⟩
+      calc
+        splitCliffordAction (K := K) W (ai * ar) (b.ExteriorAlgebra t)
+            = splitCliffordAction (K := K) W ai (b.ExteriorAlgebra (t ∪ r)) := by
+                simp [map_mul, har]
+        _ = b.ExteriorAlgebra (insert i (t ∪ r)) := hai
+        _ = b.ExteriorAlgebra (t ∪ insert i r) := by
+              congr 1
+              ext j
+              simp [or_left_comm, or_assoc]
+
+theorem exists_splitCliffordAction_basis_transfer
+    {W : Submodule K V} (b : Module.Basis I K W) (s t : Finset I) :
+    ∃ a : CliffordAlgebra (QuadraticForm.dualProd K W),
+      splitCliffordAction (K := K) W a (b.ExteriorAlgebra t) = b.ExteriorAlgebra s := by
+  let r₁ := t \ s
+  rcases exists_splitCliffordAction_remove_basis (K := K) (W := W) b r₁ t (by
+      intro i hi
+      simp [r₁] at hi
+      exact hi.1) with ⟨ar, har⟩
+  rcases exists_splitCliffordAction_add_basis (K := K) (W := W) b (s \ t) (t ∩ s) (by
+      rw [Finset.disjoint_left]
+      intro i hi1 hi2
+      simp at hi1 hi2
+      exact hi1.2 hi2.1) with ⟨aa, haa⟩
+  refine ⟨aa * ar, ?_⟩
+  calc
+    splitCliffordAction (K := K) W (aa * ar) (b.ExteriorAlgebra t)
+        = splitCliffordAction (K := K) W aa (b.ExteriorAlgebra (t \ r₁)) := by
+            simp [map_mul, har]
+    _ = splitCliffordAction (K := K) W aa (b.ExteriorAlgebra (t ∩ s)) := by
+          have hts : t \ r₁ = t ∩ s := by
+            ext i
+            simp [r₁, and_left_comm, and_assoc]
+          simpa [hts]
+    _ = b.ExteriorAlgebra ((t ∩ s) ∪ (s \ t)) := haa
+    _ = b.ExteriorAlgebra s := by
+          congr 1
+          ext i
+          by_cases hit : i ∈ t <;> simp [hit]
+
+theorem exists_splitCliffordAction_eq_basisEnd
+    {W : Submodule K V} [Fintype I] (b : Module.Basis I K W) (s t : Finset I) :
+    ∃ a : CliffordAlgebra (QuadraticForm.dualProd K W),
+      splitCliffordAction (K := K) W a = (b.ExteriorAlgebra).end (s, t) := by
+  rcases exists_splitCliffordAction_basis_transfer (K := K) (W := W) b s t with ⟨a, ha⟩
+  refine ⟨a * basisMembershipProjectorElem (K := K) b t, ?_⟩
+  apply (b.ExteriorAlgebra).ext
+  intro u
+  by_cases hut : u = t
+  · subst hut
+    rw [map_mul, Module.End.mul_eq_comp]
+    change
+      ((splitCliffordAction (K := K) W) a)
+        (((splitCliffordAction (K := K) W) (basisMembershipProjectorElem (K := K) b u))
+          (b.ExteriorAlgebra u)) =
+        ((b.ExteriorAlgebra).end (s, u)) (b.ExteriorAlgebra u)
+    rw [basisMembershipProjectorElem_apply_basis, if_pos rfl, ha]
+    simpa using ((b.ExteriorAlgebra).end_apply_apply (s, u) u).symm
+  · have hend :
+        ((b.ExteriorAlgebra).end (s, t)) (b.ExteriorAlgebra u) = 0 := by
+          have htu : t ≠ u := by
+            intro htu
+            exact hut htu.symm
+          simpa [htu] using (b.ExteriorAlgebra.end_apply_apply (s, t) u)
+    rw [map_mul, Module.End.mul_eq_comp]
+    change
+      ((splitCliffordAction (K := K) W) a)
+        (((splitCliffordAction (K := K) W) (basisMembershipProjectorElem (K := K) b t))
+          (b.ExteriorAlgebra u)) =
+        ((b.ExteriorAlgebra).end (s, t)) (b.ExteriorAlgebra u)
+    simp [basisMembershipProjectorElem_apply_basis, hut, hend]
+
+theorem splitCliffordAction_surjective
+    {W : Submodule K V} [Fintype I] (b : Module.Basis I K W) :
+    Function.Surjective (splitCliffordAction (K := K) W) := by
+  let bE := b.ExteriorAlgebra
+  have hspan :
+      Submodule.span K (Set.range bE.end) ≤ LinearMap.range (splitCliffordAction (K := K) W).toLinearMap := by
+    refine Submodule.span_le.mpr ?_
+    rintro f ⟨st, rfl⟩
+    rcases exists_splitCliffordAction_eq_basisEnd (K := K) (W := W) b st.1 st.2 with ⟨a, ha⟩
+    exact ⟨a, by simpa using ha⟩
+  have htop : (⊤ : Submodule K (Module.End K (IsotropicExteriorModel (K := K) W))) ≤
+      LinearMap.range (splitCliffordAction (K := K) W).toLinearMap := by
+    rw [← bE.end.span_eq]
+    exact hspan
+  exact LinearMap.range_eq_top.mp (le_antisymm le_top htop)
+
+theorem splitCliffordAction_finrank_eq
+    {W : Submodule K V} [Fintype I] [Invertible (2 : K)] (b : Module.Basis I K W) :
+    Module.finrank K (CliffordAlgebra (QuadraticForm.dualProd K W)) =
+      Module.finrank K (Module.End K (IsotropicExteriorModel (K := K) W)) := by
+  classical
+  letI : LinearOrder (I ⊕ I) := linearOrderOfSTO WellOrderingRel
+  let bCl :
+      Module.Basis (Finset I × Finset I) K (CliffordAlgebra (QuadraticForm.dualProd K W)) :=
+    (((b.dualBasis.prod b).ExteriorAlgebra.map
+      (CliffordAlgebra.equivExterior (QuadraticForm.dualProd K W)).symm).reindex
+        Finset.sumEquiv.toEquiv)
+  let bEnd : Module.Basis (Finset I × Finset I) K
+      (Module.End K (IsotropicExteriorModel (K := K) W)) :=
+    (b.ExteriorAlgebra).end
+  letI := bCl.finiteDimensional_of_finite
+  letI := bEnd.finiteDimensional_of_finite
+  rw [Module.finrank_eq_card_basis bCl, Module.finrank_eq_card_basis bEnd]
+
+theorem splitCliffordAction_injective
+    {W : Submodule K V} [Fintype I] [Invertible (2 : K)] (b : Module.Basis I K W) :
+    Function.Injective (splitCliffordAction (K := K) W) := by
+  classical
+  letI : LinearOrder (I ⊕ I) := linearOrderOfSTO WellOrderingRel
+  let bCl :
+      Module.Basis (Finset I × Finset I) K (CliffordAlgebra (QuadraticForm.dualProd K W)) :=
+    (((b.dualBasis.prod b).ExteriorAlgebra.map
+      (CliffordAlgebra.equivExterior (QuadraticForm.dualProd K W)).symm).reindex
+        Finset.sumEquiv.toEquiv)
+  let bEnd : Module.Basis (Finset I × Finset I) K
+      (Module.End K (IsotropicExteriorModel (K := K) W)) :=
+    (b.ExteriorAlgebra).end
+  letI := bCl.finiteDimensional_of_finite
+  letI := bEnd.finiteDimensional_of_finite
+  have hdim := splitCliffordAction_finrank_eq (K := K) (W := W) b
+  exact (LinearMap.injective_iff_surjective_of_finrank_eq_finrank
+      (f := (splitCliffordAction (K := K) W).toLinearMap) hdim).mpr
+    (splitCliffordAction_surjective (K := K) (W := W) b)
+
+end SplitFaithfulness
+
+section SplitIrreducibility
+
+variable [FiniteDimensional K V]
+
+/-- Because the split chosen-model Clifford action hits the full endomorphism algebra of `⋀W`, the
+split `Cl(W* × W)`-module `⋀W` is simple. -/
+theorem splitCliffordAction_isSimpleModule (W : Submodule K V) :
+    IsSimpleModule (CliffordAlgebra (QuadraticForm.dualProd K W))
+      (IsotropicExteriorModel (K := K) W) := by
+  classical
+  let b := Module.finBasis K W
+  let σ : CliffordAlgebra (QuadraticForm.dualProd K W) →+*
+      Module.End K (IsotropicExteriorModel (K := K) W) :=
+    (splitCliffordAction (K := K) W).toRingHom
+  letI : RingHomSurjective σ := ⟨splitCliffordAction_surjective (K := K) (W := W) b⟩
+  let l :
+      IsotropicExteriorModel (K := K) W →ₛₗ[σ]
+        IsotropicExteriorModel (K := K) W :=
+    { toFun := id
+      map_add' := by
+        intro x y
+        rfl
+      map_smul' := by
+        intro a x
+        simpa [σ, splitClifford_smul_def] }
+  exact
+    (LinearMap.isSimpleModule_iff_of_bijective (σ := σ) (l := l)
+      (by simpa [l] using Function.bijective_id)).2 inferInstance
+
+end SplitIrreducibility
 
 /-- Even split Clifford elements preserve the chosen even summand of `⋀W`. -/
 theorem splitCliffordAction_mem_evenExteriorSubmodule (W : Submodule K V)

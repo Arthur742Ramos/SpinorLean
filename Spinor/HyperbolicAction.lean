@@ -102,11 +102,98 @@ theorem hyperbolicCliffordAction_sq_apply
   simpa [hyperbolicCliffordAction_apply_ι, e.map_app v] using
     splitGeneratorAction_sq_apply (K := K) (W := W) (d := (e v).1) (w := (e v).2) (x := x)
 
+/-- In the finite-dimensional hyperbolic case, the transported chosen-model Clifford action on `⋀W`
+is faithful. -/
+theorem hyperbolicCliffordAction_injective [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    Function.Injective (hyperbolicCliffordAction (K := K) (W := W) e) := by
+  classical
+  let b := Module.finBasis K W
+  intro a a' h
+  have hmap :
+      CliffordAlgebra.map e.toIsometry a = CliffordAlgebra.map e.toIsometry a' := by
+    apply splitCliffordAction_injective (K := K) (W := W) b
+    simpa [hyperbolicCliffordAction] using h
+  have hisom : e.symm.toIsometry.comp e.toIsometry = QuadraticMap.Isometry.id Q := by
+    ext v
+    exact e.symm_apply_apply v
+  have hback0 := congrArg (CliffordAlgebra.map e.symm.toIsometry) hmap
+  have hback :
+      CliffordAlgebra.map (e.symm.toIsometry.comp e.toIsometry) a =
+        CliffordAlgebra.map (e.symm.toIsometry.comp e.toIsometry) a' := by
+    change
+      ((CliffordAlgebra.map e.symm.toIsometry).comp (CliffordAlgebra.map e.toIsometry)) a =
+        ((CliffordAlgebra.map e.symm.toIsometry).comp (CliffordAlgebra.map e.toIsometry)) a' at hback0
+    rw [CliffordAlgebra.map_comp_map] at hback0
+    exact hback0
+  simpa [hisom, CliffordAlgebra.map_id] using hback
+
 /-- The module structure on `⋀W` induced by a hyperbolic isometry `Q ≃ dualProd`. -/
 abbrev hyperbolicModule (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
     Module (CliffordAlgebra Q) (IsotropicExteriorModel (K := K) W) :=
   Module.compHom (IsotropicExteriorModel (K := K) W)
     (hyperbolicCliffordAction (K := K) (W := W) e).toRingHom
+
+@[simp]
+theorem hyperbolicClifford_smul_def (e : Q.IsometryEquiv (QuadraticForm.dualProd K W))
+    (a : CliffordAlgebra Q) (x : IsotropicExteriorModel (K := K) W) :
+    letI := hyperbolicModule (K := K) (W := W) e
+    a • x = hyperbolicCliffordAction (K := K) (W := W) e a x := rfl
+
+/-- In the finite-dimensional hyperbolic case, the transported Clifford action on `⋀W` still hits
+the full endomorphism algebra. -/
+theorem hyperbolicCliffordAction_surjective [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    Function.Surjective (hyperbolicCliffordAction (K := K) (W := W) e) := by
+  classical
+  let b := Module.finBasis K W
+  intro f
+  obtain ⟨a, ha⟩ := splitCliffordAction_surjective (K := K) (W := W) b f
+  refine ⟨CliffordAlgebra.map e.symm.toIsometry a, ?_⟩
+  have hright :
+      e.toIsometry.comp e.symm.toIsometry =
+        QuadraticMap.Isometry.id (QuadraticForm.dualProd K W) := by
+    ext v <;> simp [QuadraticMap.Isometry.comp_apply, e.apply_symm_apply]
+  have hmap :
+      CliffordAlgebra.map e.toIsometry (CliffordAlgebra.map e.symm.toIsometry a) =
+        CliffordAlgebra.map (e.toIsometry.comp e.symm.toIsometry) a := by
+    change
+      ((CliffordAlgebra.map e.toIsometry).comp (CliffordAlgebra.map e.symm.toIsometry)) a =
+        CliffordAlgebra.map (e.toIsometry.comp e.symm.toIsometry) a
+    exact
+      congrArg
+        (fun φ : CliffordAlgebra (QuadraticForm.dualProd K W) →ₐ[K]
+            CliffordAlgebra (QuadraticForm.dualProd K W) => φ a)
+        (CliffordAlgebra.map_comp_map (f := e.toIsometry) (g := e.symm.toIsometry))
+  change
+    splitCliffordAction (K := K) W
+      (CliffordAlgebra.map e.toIsometry (CliffordAlgebra.map e.symm.toIsometry a)) = f
+  rw [hmap, hright, CliffordAlgebra.map_id]
+  simpa using ha
+
+/-- The transported chosen-model Clifford module attached to an explicit hyperbolic presentation is
+simple. -/
+theorem hyperbolicCliffordAction_isSimpleModule [FiniteDimensional K V]
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
+    letI := hyperbolicModule (K := K) (W := W) e
+    IsSimpleModule (CliffordAlgebra Q) (IsotropicExteriorModel (K := K) W) := by
+  letI := hyperbolicModule (K := K) (W := W) e
+  let σ : CliffordAlgebra Q →+* Module.End K (IsotropicExteriorModel (K := K) W) :=
+    (hyperbolicCliffordAction (K := K) (W := W) e).toRingHom
+  letI : RingHomSurjective σ := ⟨hyperbolicCliffordAction_surjective (K := K) (W := W) e⟩
+  let l :
+      IsotropicExteriorModel (K := K) W →ₛₗ[σ]
+        IsotropicExteriorModel (K := K) W :=
+    { toFun := id
+      map_add' := by
+        intro x y
+        rfl
+      map_smul' := by
+        intro a x
+        simpa [σ, hyperbolicClifford_smul_def] }
+  exact
+    (LinearMap.isSimpleModule_iff_of_bijective (σ := σ) (l := l)
+      (by simpa [l] using Function.bijective_id)).2 inferInstance
 
 /-- Restrict the transported hyperbolic Clifford action on `⋀W` to the spin group of `Q`. -/
 def hyperbolicSpinRepresentation (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
@@ -250,6 +337,18 @@ theorem hyperbolicCliffordActionOfIsCompl_sq_apply
       (K := K) (Q := Q) (W := W) (U := U) hQ hW hsplit hWU)
     v x
 
+/-- The split-data transported chosen-model Clifford action is faithful. -/
+theorem hyperbolicCliffordActionOfIsCompl_injective
+    (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W)
+    (hsplit : Module.finrank K V = 2 * Module.finrank K W) (hWU : IsCompl W U) :
+    Function.Injective
+      (hyperbolicCliffordActionOfIsCompl (K := K) (Q := Q) (W := W) (U := U)
+        hQ hW hsplit hWU) := by
+  exact hyperbolicCliffordAction_injective
+    (K := K) (Q := Q) (W := W)
+    (e := QuadraticForm.splitIsometryEquivOfIsCompl
+      (K := K) (Q := Q) (W := W) (U := U) hQ hW hsplit hWU)
+
 /-- The split-data ambient spin action preserves the even half of `⋀W`. -/
 theorem hyperbolicSpinRepresentationOfIsCompl_mem_evenExteriorSubmodule
     (hQ : Q.Nondegenerate) (hW : Q.IsTotallyIsotropic W)
@@ -288,6 +387,13 @@ variable [FiniteDimensional K V]
 noncomputable def wittHyperbolicCliffordAction (Q : QuadraticForm K V)
     (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :=
   hyperbolicCliffordAction (K := K) (W := Q.wittSubspace) e
+
+/-- The transported hyperbolic Clifford action on the canonical Witt model is faithful. -/
+theorem wittHyperbolicCliffordAction_injective (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    Function.Injective (wittHyperbolicCliffordAction (K := K) Q e) := by
+  exact hyperbolicCliffordAction_injective
+    (K := K) (Q := Q) (W := Q.wittSubspace) e
 
 /-- The transported hyperbolic spin representation on the canonical Witt model. -/
 noncomputable def wittHyperbolicSpinRepresentation (Q : QuadraticForm K V)

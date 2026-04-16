@@ -885,11 +885,22 @@ noncomputable def splitIsometryEquivOfIsCompl
       exact hself
     have hcross0 :
         (2 : K) * Q.associated (u : V) w = Q ((w : V) + u) - Q u := by
-      have hAssoc :=
-        QuadraticMap.associated_apply (S := K) (Q := Q) (u : V) (w : V)
-      have hAssoc' := congrArg (fun t : K => (2 : K) * t) hAssoc
-      simpa [smul_eq_mul, hw0, add_comm, add_left_comm, add_assoc, sub_eq_add_neg,
-        mul_add, add_mul, mul_assoc, two_ne_zero] using hAssoc'
+      rw [QuadraticMap.associated_apply (S := K) (Q := Q) (u : V) (w : V)]
+      have htwo : (2 : K) * ⅟(2 : K) = 1 := by
+        simpa using invOf_mul_self (2 : K)
+      calc
+        (2 : K) * (⅟(2 : Module.End K K) • (Q ((u : V) + w) - Q u - Q w))
+            = (2 : K) * (⅟(2 : K) * (Q ((u : V) + w) - Q u - Q w)) := by
+                change
+                  (2 : K) * ((⅟(2 : Module.End K K)) (Q ((u : V) + w) - Q u - Q w)) =
+                    (2 : K) * (⅟(2 : K) * (Q ((u : V) + w) - Q u - Q w))
+                rw [QuadraticMap.half_moduleEnd_apply_eq_half_smul
+                  (R := K) (M := K) (x := Q ((u : V) + w) - Q u - Q w)]
+                simp [smul_eq_mul]
+        _ = Q ((u : V) + w) - Q u - Q w := by
+              rw [← mul_assoc, htwo, one_mul]
+        _ = Q ((w : V) + u) - Q u := by
+              simp [hw0, add_comm]
     have hcross : Q ((w : V) + u) = (2 : K) * Q.associated (u : V) w + Q u := by
       calc
         Q ((w : V) + u) = (Q ((w : V) + u) - Q u) + Q u := by ring

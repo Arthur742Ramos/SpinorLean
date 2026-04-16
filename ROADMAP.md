@@ -70,10 +70,16 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [ ] Prove this action satisfies the Clifford relation: a(v) ∘ a(v) = Q(v) · id
   - [x] In the transported hyperbolic case, prove the vector relation on `⋀W`
 - [ ] Prove ⋀W is a faithful Cl(V,Q)-module (for non-degenerate Q)
+  - [x] In the split model, show `splitCliffordAction : Cl(W* × W, dualProd) → End(⋀W)` is
+    surjective and injective
+  - [x] Transport that faithfulness to explicit hyperbolic presentations `Q ≃ dualProd K W`,
+    the Witt-presentation API, and the split-rank canonical Witt model
 
 ### 2.3 The Spinor Module
 - [ ] **Define `SpinorModule Q` := ⋀W as a `Module (CliffordAlgebra Q)`**
 - [ ] Prove irreducibility (for algebraically closed fields, even dimension)
+  - [x] In the split model, prove the full Clifford module `⋀W` is simple
+  - [x] Transport that simplicity to the explicit hyperbolic, Witt, and split-Witt presentation APIs
 - [ ] Prove the dimension formula: dim(S) = 2^(n/2)
   - [x] In the explicit hyperbolic case `Q ≃ dualProd K W`, show `dim(⋀W) = 2 ^ (dim V / 2)`
 

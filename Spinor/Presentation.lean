@@ -134,6 +134,18 @@ abbrev spinMulAction (P : HyperbolicPresentation Q) :
       Q v • x :=
   hyperbolicCliffordAction_sq_apply (K := K) (Q := Q) (W := P.W) P.iso v x
 
+/-- The Clifford action attached to an explicit hyperbolic presentation is faithful on the chosen
+model `⋀W`. -/
+theorem cliffordAction_injective [FiniteDimensional K V] (P : HyperbolicPresentation Q) :
+    Function.Injective P.cliffordAction := by
+  exact hyperbolicCliffordAction_injective (K := K) (Q := Q) (W := P.W) P.iso
+
+/-- The chosen-model Clifford module attached to an explicit hyperbolic presentation is simple. -/
+theorem cliffordModule_isSimple [FiniteDimensional K V] (P : HyperbolicPresentation Q) :
+    letI := P.cliffordModule
+    IsSimpleModule (CliffordAlgebra Q) P.spinorModule := by
+  exact hyperbolicCliffordAction_isSimpleModule (K := K) (Q := Q) (W := P.W) P.iso
+
 /-- The spin action induced by an explicit hyperbolic presentation preserves the even half. -/
 theorem spinRepresentation_mem_even (P : HyperbolicPresentation Q)
     {g : spinGroup Q} {x : P.spinorModule} (hx : x ∈ P.evenSpinorModule) :
@@ -511,6 +523,21 @@ noncomputable abbrev wittSpinMulAction (Q : QuadraticForm K V)
   exact HyperbolicPresentation.cliffordAction_sq_apply
     (K := K) (Q := Q) (P := wittPresentation (K := K) Q e) v x
 
+/-- The transported Clifford action on the canonical Witt model is faithful. -/
+theorem wittCliffordAction_injective (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    Function.Injective (wittCliffordAction (K := K) Q e) := by
+  exact HyperbolicPresentation.cliffordAction_injective
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e)
+
+/-- The transported Clifford module on the canonical Witt model is simple. -/
+theorem wittCliffordModule_isSimple (Q : QuadraticForm K V)
+    (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace)) :
+    letI := wittCliffordModule (K := K) Q e
+    IsSimpleModule (CliffordAlgebra Q) (WittExteriorModel (K := K) Q) := by
+  exact HyperbolicPresentation.cliffordModule_isSimple
+    (K := K) (Q := Q) (P := wittPresentation (K := K) Q e)
+
 /-- The transported Witt-model spin action preserves the even half. -/
 theorem wittSpinRepresentation_mem_even (Q : QuadraticForm K V)
     (e : Q.IsometryEquiv (QuadraticForm.dualProd K Q.wittSubspace))
@@ -678,6 +705,21 @@ vectors. -/
       Q v • x := by
   exact HyperbolicPresentation.cliffordAction_sq_apply
     (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit) v x
+
+/-- The split-rank canonical Witt-model Clifford action is faithful. -/
+theorem splitWittCliffordAction_injective (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    Function.Injective (splitWittCliffordAction (K := K) Q hQ hsplit) := by
+  exact HyperbolicPresentation.cliffordAction_injective
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+
+/-- The split-rank canonical Witt-model Clifford module is simple. -/
+theorem splitWittCliffordModule_isSimple (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
+    letI := splitWittCliffordModule (K := K) Q hQ hsplit
+    IsSimpleModule (CliffordAlgebra Q) (WittExteriorModel (K := K) Q) := by
+  exact HyperbolicPresentation.cliffordModule_isSimple
+    (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
 
 /-- The split-rank canonical Witt-model spin action preserves the even half. -/
 theorem splitWittSpinRepresentation_mem_even (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
