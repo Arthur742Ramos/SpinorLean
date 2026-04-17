@@ -2209,9 +2209,12 @@ theorem dualProdLineScalingHom_surjective :
         (((t : K)⁻¹) • (LinearMap.id : Module.Dual K K), 0) := by
     have hcoord_id : coord.symm ((1, 0) : K × K) = ((LinearMap.id : Module.Dual K K), 0) := by
       apply Prod.ext
-      · ext y
+      · apply LinearMap.ext
+        intro y
+        change ((dualLineCoordEquiv (K := K)).symm 1) y = (LinearMap.id : Module.Dual K K) y
+        simp [dualLineCoordEquiv, smul_eq_mul]
+      · change (LinearEquiv.refl K K).symm 0 = (0 : K)
         simp
-      · simp
     have hdual_coord : coord (g.1 ((LinearMap.id : Module.Dual K K), 0)) = p := by
       calc
         coord (g.1 ((LinearMap.id : Module.Dual K K), 0)) =
@@ -2239,9 +2242,12 @@ theorem dualProdLineScalingHom_surjective :
   have hprimal : g.1 (0, (1 : K)) = (0, (t : K)) := by
     have hcoord_primal : coord.symm ((0, 1) : K × K) = (0, (1 : K)) := by
       apply Prod.ext
-      · ext y
+      · apply LinearMap.ext
+        intro y
+        change ((dualLineCoordEquiv (K := K)).symm 0) y = (0 : K)
+        simp [dualLineCoordEquiv, smul_eq_mul]
+      · change (LinearEquiv.refl K K).symm 1 = (1 : K)
         simp
-      · simp
     have hprimal_coord : coord (g.1 (0, (1 : K))) = q := by
       calc
         coord (g.1 (0, (1 : K))) = coord (g.1 (coord.symm ((0, 1) : K × K))) := by
