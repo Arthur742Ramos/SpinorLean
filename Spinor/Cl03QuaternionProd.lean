@@ -631,6 +631,50 @@ theorem realCl04Form_diagRightVector_eq_neg_one
   have hq := unitaryQuaternion_sqSum_eq_one q
   nlinarith [hq, hk]
 
+/-- The `k`-axis copy of `U(1)` inside the unit quaternions. -/
+noncomputable def unitaryComplexToUnitaryQuaternionK (z : unitary ℂ) : unitary H := by
+  refine ⟨⟨(z : ℂ).re, 0, 0, (z : ℂ).im⟩, ?_⟩
+  rw [Unitary.mem_iff]
+  have hz_complex : ((Complex.normSq (z : ℂ) : ℝ) : ℂ) = 1 := by
+    rw [Complex.normSq_eq_conj_mul_self]
+    simpa [Complex.star_def] using
+      (Unitary.coe_star_mul_self z : ((star z : unitary ℂ) : ℂ) * z = 1)
+  have hz_norm : Complex.normSq (z : ℂ) = 1 :=
+    Complex.ofReal_injective hz_complex
+  have hmul : (z : ℂ).re * (z : ℂ).re + (z : ℂ).im * (z : ℂ).im = 1 := by
+    simpa [Complex.normSq_apply] using hz_norm
+  constructor
+  · ext <;> simp
+    · exact hmul
+    · ring
+  · ext <;> simp
+    · exact hmul
+    · ring
+
+/-- Fixed left vector for the anti-diagonal complex slice inside `Spin(4)`. -/
+abbrev complexKLeftBaseVector : (((ℝ × ℝ) × ℝ) × ℝ) :=
+  (((0, 0), 0), 1)
+
+/-- Right vector encoding a unit complex number in the `k`-slice. -/
+abbrev complexKRightVector (z : ℂ) : (((ℝ × ℝ) × ℝ) × ℝ) :=
+  (((0, 0), z.im), -z.re)
+
+@[simp] theorem realCl04Form_complexKLeftBaseVector_eq_neg_one :
+    realCl04Form complexKLeftBaseVector = -1 := by
+  simp [complexKLeftBaseVector, realCl04Form_apply]
+
+theorem realCl04Form_complexKRightVector_eq_neg_one (z : unitary ℂ) :
+    realCl04Form (complexKRightVector (z : ℂ)) = -1 := by
+  have hz_complex : ((Complex.normSq (z : ℂ) : ℝ) : ℂ) = 1 := by
+    rw [Complex.normSq_eq_conj_mul_self]
+    simpa [Complex.star_def] using
+      (Unitary.coe_star_mul_self z : ((star z : unitary ℂ) : ℂ) * z = 1)
+  have hz_norm : Complex.normSq (z : ℂ) = 1 :=
+    Complex.ofReal_injective hz_complex
+  rw [realCl04Form_apply]
+  rw [Complex.normSq_apply] at hz_norm
+  nlinarith
+
 theorem realEvenCl04EquivQuaternionProd_apply_bilin_diag_slice
     (p r : unitary H)
     (hp : (p : H).imK = 0) (hr : (r : H).imK = 0) :
@@ -681,6 +725,32 @@ noncomputable def unitaryQuaternionToSpinGroupRealCl04Diagonal
     (iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := realCl04Form)
       (quaternionDiagRightVector
         ((realSpin03RightSlice q : unitary H) : H)) hRight)
+
+noncomputable def realSpin04AntidiagonalComplexPreimageEven
+    (z : unitary ℂ) :
+    CliffordAlgebra.even realCl04Form :=
+  (CliffordAlgebra.even.ι realCl04Form).bilin
+    complexKLeftBaseVector
+    (complexKRightVector (z : ℂ))
+
+noncomputable def unitaryComplexToSpinGroupRealCl04Antidiagonal
+    (z : unitary ℂ) :
+    spinGroup realCl04Form := by
+  have hLeft : realCl04Form complexKLeftBaseVector = -1 :=
+    realCl04Form_complexKLeftBaseVector_eq_neg_one
+  have hRight : realCl04Form (complexKRightVector (z : ℂ)) = -1 :=
+    realCl04Form_complexKRightVector_eq_neg_one z
+  refine ⟨realSpin04AntidiagonalComplexPreimageEven z, ?_⟩
+  refine ⟨?_, (realSpin04AntidiagonalComplexPreimageEven z).property⟩
+  change
+    (CliffordAlgebra.ι realCl04Form complexKLeftBaseVector *
+      CliffordAlgebra.ι realCl04Form (complexKRightVector (z : ℂ))) ∈
+      pinGroup realCl04Form
+  exact Submonoid.mul_mem _
+    (iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := realCl04Form)
+      complexKLeftBaseVector hLeft)
+    (iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := realCl04Form)
+      (complexKRightVector (z : ℂ)) hRight)
 
 noncomputable def spinGroupRealCl04ToQuaternionProd :
     spinGroup realCl04Form →* (H × H) :=
@@ -763,6 +833,30 @@ noncomputable def spinGroupRealCl04ToUnitaryQuaternionPair :
       (realSpin03LeftSlice_imK q) (realSpin03RightSlice_imK q)]
   simpa using congrArg (fun z : H => (z, z)) (realSpin03LeftSlice_mul_rightSlice q)
 
+@[simp] theorem spinGroupRealCl04ToQuaternionProd_apply_antidiag_complex_preimage
+    (z : unitary ℂ) :
+    spinGroupRealCl04ToQuaternionProd
+        (unitaryComplexToSpinGroupRealCl04Antidiagonal z) =
+      (((unitaryComplexToUnitaryQuaternionK z : unitary H) : H),
+        (star (unitaryComplexToUnitaryQuaternionK z) : H)) := by
+  change
+    realEvenCl04EquivQuaternionProd
+      (spinGroupToEven realCl04Form
+        (unitaryComplexToSpinGroupRealCl04Antidiagonal z)) =
+      (((unitaryComplexToUnitaryQuaternionK z : unitary H) : H),
+        (star (unitaryComplexToUnitaryQuaternionK z) : H))
+  have hEven :
+      spinGroupToEven realCl04Form
+        (unitaryComplexToSpinGroupRealCl04Antidiagonal z) =
+      realSpin04AntidiagonalComplexPreimageEven z := by
+    apply Subtype.ext
+    simp [spinGroupToEven, unitaryComplexToSpinGroupRealCl04Antidiagonal,
+      realSpin04AntidiagonalComplexPreimageEven]
+  rw [hEven, realSpin04AntidiagonalComplexPreimageEven,
+    realEvenCl04EquivQuaternionProd_apply_bilin]
+  ext <;> simp [complexKLeftBaseVector, complexKRightVector,
+    unitaryComplexToUnitaryQuaternionK, QuaternionAlgebra.mk_mul_mk]
+
 @[simp] theorem spinGroupRealCl04ToUnitaryQuaternionProd_apply_diag_preimage
     (q : unitary H) :
     spinGroupRealCl04ToUnitaryQuaternionProd
@@ -783,6 +877,26 @@ noncomputable def spinGroupRealCl04ToUnitaryQuaternionPair :
         (unitaryQuaternionToSpinGroupRealCl04Diagonal q)) =
     (q, q)
   rw [spinGroupRealCl04ToUnitaryQuaternionProd_apply_diag_preimage]
+  ext <;> rfl
+
+@[simp] theorem spinGroupRealCl04ToUnitaryQuaternionPair_apply_antidiag_complex_preimage
+    (z : unitary ℂ) :
+    spinGroupRealCl04ToUnitaryQuaternionPair
+        (unitaryComplexToSpinGroupRealCl04Antidiagonal z) =
+      (unitaryComplexToUnitaryQuaternionK z, star (unitaryComplexToUnitaryQuaternionK z)) := by
+  change unitaryQuaternionProdEquiv
+      (spinGroupRealCl04ToUnitaryQuaternionProd
+        (unitaryComplexToSpinGroupRealCl04Antidiagonal z)) =
+    (unitaryComplexToUnitaryQuaternionK z, star (unitaryComplexToUnitaryQuaternionK z))
+  rw [show
+      spinGroupRealCl04ToUnitaryQuaternionProd
+          (unitaryComplexToSpinGroupRealCl04Antidiagonal z) =
+        ⟨(((unitaryComplexToUnitaryQuaternionK z : unitary H) : H),
+            (star (unitaryComplexToUnitaryQuaternionK z) : H)), by
+            rw [Unitary.mem_iff]
+            constructor <;> ext <;> simp⟩ by
+      apply Subtype.ext
+      exact spinGroupRealCl04ToQuaternionProd_apply_antidiag_complex_preimage z]
   ext <;> rfl
 
 theorem spinGroupRealCl04ToUnitaryQuaternionProd_injective :

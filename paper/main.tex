@@ -74,7 +74,8 @@ and split real signatures (including $\Cl(n,n) \simeq \Mat_{2^n}(\mathbb{R})$),
 explicit low-dimensional identifications including
 $\Spin(2) \simeq U(1)$ and $\Spin(3) \simeq SU(2)$, together with an
 injective homomorphism $\Spin(4) \to SU(2) \times SU(2)$ built from the
-explicit equivalence $\Cl^+(0,4) \simeq \mathbb{H} \times \mathbb{H}$. The
+explicit equivalence $\Cl^+(0,4) \simeq \mathbb{H} \times \mathbb{H}$ and
+explicit diagonal and anti-diagonal-circle subgroup constructions. The
 library builds cleanly with zero
 \code{sorry}/\code{admit}.
 \end{abstract}
@@ -363,7 +364,9 @@ current library.
         equivalence \code{realEvenCl04EquivQuaternionProd : Cl^+(0,4) \simeq
         \mathbb{H} \times \mathbb{H}}; the diagonal compact subgroup is now
         constructed explicitly through
-        \code{unitaryQuaternionToSpinGroupRealCl04Diagonal}.
+        \code{unitaryQuaternionToSpinGroupRealCl04Diagonal}, and the
+        anti-diagonal complex circle through
+        \code{unitaryComplexToSpinGroupRealCl04Antidiagonal}.
 \end{itemize}
 
 % --- 5. Key Proof Highlights ---------------------------------------------

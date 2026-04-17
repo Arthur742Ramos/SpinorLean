@@ -208,8 +208,11 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_injective`; an explicit
     diagonal compact subgroup is now also packaged via
     `Spinor.unitaryQuaternionToSpinGroupRealCl04Diagonal` together with
-    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_diag_preimage`,
-    leaving the second factor / full surjectivity-equivalence step
+    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_diag_preimage`; the
+    anti-diagonal complex circle is now also packaged via
+    `Spinor.unitaryComplexToSpinGroupRealCl04Antidiagonal` together with
+    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_antidiag_complex_preimage`,
+    leaving the full surjectivity-equivalence step
 - [ ] These connect spinors to familiar physics
   - foundation now includes explicit low-dimensional Clifford-algebra models in
     `Spinor.LowDimensional`, including complex `Cl(1)`, `Cl(2)`, `Cl(3)`, `Cl(4)`, real

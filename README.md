@@ -228,8 +228,11 @@ Still open from the roadmap:
   spinGroup realCl04Form →* unitary ℍ[ℝ, -1, -1] × unitary ℍ[ℝ, -1, -1]`;
   the diagonal compact subgroup is now constructed explicitly via
   `Spinor.unitaryQuaternionToSpinGroupRealCl04Diagonal` and
-  `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_diag_preimage`,
-  leaving the second factor / full surjectivity-equivalence step as the next gap
+  `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_diag_preimage`, while the
+  anti-diagonal complex circle is now packaged via
+  `Spinor.unitaryComplexToSpinGroupRealCl04Antidiagonal` and
+  `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_antidiag_complex_preimage`,
+  leaving the full surjectivity-equivalence step as the next gap
 - the fully general double-cover / surjectivity and non-factorization theorems beyond the
   packaged split-rank kernel and non-factorization results
 - paper polish, evaluation, and submission-ready exposition beyond the current working draft
