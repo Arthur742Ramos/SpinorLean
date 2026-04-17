@@ -45,9 +45,8 @@ theorem cliffordEquivEven_symm_apply_star (Q : QuadraticForm R M)
     (x : CliffordAlgebra.even (CliffordAlgebra.EquivEven.Q' Q)) :
     (CliffordAlgebra.equivEven Q).symm
         ⟨star (x : CliffordAlgebra (CliffordAlgebra.EquivEven.Q' Q)), by
-          simpa [CliffordAlgebra.even, CliffordAlgebra.even_toSubmodule, CliffordAlgebra.star_def,
-            CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff] using
-            x.property⟩ =
+          simp [CliffordAlgebra.even, CliffordAlgebra.star_def,
+            CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff]⟩ =
       star ((CliffordAlgebra.equivEven Q).symm x) := by
   apply (CliffordAlgebra.equivEven Q).injective
   ext
@@ -192,16 +191,14 @@ noncomputable def realEvenCl02EquivComplex :
 theorem realEvenCl02EquivComplex_apply_star (x : CliffordAlgebra.even realCl02Form) :
     realEvenCl02EquivComplex
         ⟨star (x : CliffordAlgebra realCl02Form), by
-          simpa [CliffordAlgebra.even, CliffordAlgebra.even_toSubmodule, CliffordAlgebra.star_def,
-            CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff] using
-            x.property⟩ =
+          simp [CliffordAlgebra.even, CliffordAlgebra.star_def,
+            CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff]⟩ =
       star (realEvenCl02EquivComplex x) := by
   change realCl01EquivComplex
       ((CliffordAlgebra.equivEven realCl01Form).symm
         ⟨star (x : CliffordAlgebra realCl02Form), by
-          simpa [CliffordAlgebra.even, CliffordAlgebra.even_toSubmodule, CliffordAlgebra.star_def,
-            CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff] using
-            x.property⟩) =
+          simp [CliffordAlgebra.even, CliffordAlgebra.star_def,
+            CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff]⟩) =
     star (realCl01EquivComplex ((CliffordAlgebra.equivEven realCl01Form).symm x))
   rw [cliffordEquivEven_symm_apply_star, realCl01EquivComplex_apply_star]
 
@@ -373,16 +370,14 @@ noncomputable def realEvenCl03EquivQuaternion :
 theorem realEvenCl03EquivQuaternion_apply_star (x : CliffordAlgebra.even realCl03Form) :
     realEvenCl03EquivQuaternion
         ⟨star (x : CliffordAlgebra realCl03Form), by
-          simpa [CliffordAlgebra.even, CliffordAlgebra.even_toSubmodule, CliffordAlgebra.star_def,
-            CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff] using
-            x.property⟩ =
+          simp [CliffordAlgebra.even, CliffordAlgebra.star_def,
+            CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff]⟩ =
       star (realEvenCl03EquivQuaternion x) := by
   change realCl02EquivQuaternion
       ((CliffordAlgebra.equivEven realCl02Form).symm
         ⟨star (x : CliffordAlgebra realCl03Form), by
-          simpa [CliffordAlgebra.even, CliffordAlgebra.even_toSubmodule, CliffordAlgebra.star_def,
-            CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff] using
-            x.property⟩) =
+          simp [CliffordAlgebra.even, CliffordAlgebra.star_def,
+            CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff]⟩) =
     star (realCl02EquivQuaternion ((CliffordAlgebra.equivEven realCl02Form).symm x))
   rw [cliffordEquivEven_symm_apply_star, realCl02EquivQuaternion_apply_star]
 
@@ -509,7 +504,7 @@ theorem realEvenCl03EquivQuaternion_apply_bilin_slice
           (quaternionRightVector (r : ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)]))) =
       ((p : ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)]) * r :
         ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)]) := by
-  ext <;> simp [realEvenCl03EquivQuaternion_apply_bilin, hp, hr] <;> ring
+  ext <;> (simp [realEvenCl03EquivQuaternion_apply_bilin, hp, hr]; try ring)
 
 noncomputable def realSpin03LeftSlice
     (q : unitary ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)]) :
@@ -533,8 +528,8 @@ noncomputable def realSpin03LeftSlice
       nlinarith [hs_sq]
     rw [Unitary.mem_iff]
     constructor
-    · ext <;> simp [hsum] <;> ring
-    · ext <;> simp [hsum] <;> ring
+    · ext <;> (simp [hsum]; try ring)
+    · ext <;> (simp [hsum]; try ring)
 
 noncomputable def realSpin03RightSlice
     (q : unitary ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)]) :

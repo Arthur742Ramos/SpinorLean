@@ -209,7 +209,7 @@ private theorem zero_evenOdd_one_le_oddExteriorSubmodule :
   | ι m =>
       exact mem_oddExteriorSubmodule_of_mem_exteriorPower (K := K) (W := W)
         (n := 1) (x := ExteriorAlgebra.ι K m)
-        (by simpa [pow_one] using LinearMap.mem_range_self (ExteriorAlgebra.ι K) m)
+        (by simp [pow_one])
         (by simp)
   | add x y hx hy ihx ihy =>
       exact Submodule.add_mem _ ihx ihy

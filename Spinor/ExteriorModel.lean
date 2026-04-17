@@ -407,8 +407,7 @@ private theorem basis_eq_unit_smul_wedge_basis_erase
   have hc : c * c = 1 := by
     dsimp [c]
     rw [← Int.cast_mul]
-    simpa using congrArg (fun z : ℤ => (z : K))
-      (Int.units_coe_mul_self (Set.powersetCard.permOfDisjoint hdis).sign)
+    simp
   refine ⟨c, hc, ?_⟩
   calc
     b.ExteriorAlgebra s
@@ -961,7 +960,7 @@ theorem exists_splitCliffordAction_basis_transfer
           have hts : t \ r₁ = t ∩ s := by
             ext i
             simp [r₁]
-          simpa [hts]
+          simp [hts]
     _ = b.ExteriorAlgebra ((t ∩ s) ∪ (s \ t)) := haa
     _ = b.ExteriorAlgebra s := by
           congr 1
@@ -1292,9 +1291,7 @@ theorem evenSplitCliffordAction_isSimpleModule (W : Submodule K V) :
       (n := 0) (x := (1 : IsotropicExteriorModel (K := K) W))) ?_ (by simp)
     change (1 : IsotropicExteriorModel (K := K) W) ∈
       (LinearMap.range (ExteriorAlgebra.ι K : W →ₗ[K] IsotropicExteriorModel (K := K) W) ^ 0)
-    simpa using
-      (show (1 : IsotropicExteriorModel (K := K) W) ∈
-          (1 : Submodule K (IsotropicExteriorModel (K := K) W)) from one_mem _)
+    simp
   ⟩
   have hone_ne : hone ≠ 0 := by
     intro h
@@ -1344,7 +1341,7 @@ theorem evenSplitCliffordAction_isSimpleModule (W : Submodule K V) :
           ((aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) +
             (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W))) x := by
             symm
-            simpa using congrArg
+            exact congrArg
               (fun f : Module.End K (IsotropicExteriorModel (K := K) W) => f x)
               ((splitCliffordAction (K := K) W).map_add
                 (aEven : CliffordAlgebra (QuadraticForm.dualProd K W))
@@ -1392,9 +1389,10 @@ theorem oddSplitCliffordAction_isSimpleModule (W : Submodule K V)
       (n := 1) (x := ExteriorAlgebra.ι K (b i))) ?_ ?_
     · change ExteriorAlgebra.ι K (b i) ∈
         (LinearMap.range (ExteriorAlgebra.ι K : W →ₗ[K] IsotropicExteriorModel (K := K) W) ^ 1)
-      simpa using
-        (LinearMap.mem_range_self
-          (ExteriorAlgebra.ι K : W →ₗ[K] IsotropicExteriorModel (K := K) W) (b i))
+      rw [pow_one]
+      exact
+        LinearMap.mem_range_self
+          (ExteriorAlgebra.ι K : W →ₗ[K] IsotropicExteriorModel (K := K) W) (b i)
     · simp
   ⟩
   have hodd_ne : hodd ≠ 0 := by
@@ -1445,7 +1443,7 @@ theorem oddSplitCliffordAction_isSimpleModule (W : Submodule K V)
           ((aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) +
             (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W))) x := by
             symm
-            simpa using congrArg
+            exact congrArg
               (fun f : Module.End K (IsotropicExteriorModel (K := K) W) => f x)
               ((splitCliffordAction (K := K) W).map_add
                 (aEven : CliffordAlgebra (QuadraticForm.dualProd K W))
@@ -1524,7 +1522,7 @@ theorem exists_evenSplitCliffordParityProjector (W : Submodule K V) :
               ((aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) +
                 (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W))) x := by
               symm
-              simpa using congrArg
+              exact congrArg
                 (fun f : Module.End K (IsotropicExteriorModel (K := K) W) => f x)
                 ((splitCliffordAction (K := K) W).map_add
                   (aEven : CliffordAlgebra (QuadraticForm.dualProd K W))
@@ -1536,9 +1534,12 @@ theorem exists_evenSplitCliffordParityProjector (W : Submodule K V) :
               simpa [p] using congrArg
                 (fun f : Module.End K (IsotropicExteriorModel (K := K) W) => f x) ha
         _ = x := by
-              simpa [p] using
-                (Submodule.IsCompl.projection_apply_left
-                  (evenExteriorSubmodule_isCompl (K := K) (W := W)) x)
+              change
+                Submodule.IsCompl.projection
+                    (evenExteriorSubmodule_isCompl (K := K) (W := W)) x = x
+              exact
+                Submodule.IsCompl.projection_apply_left
+                  (evenExteriorSubmodule_isCompl (K := K) (W := W)) x
     obtain ⟨u, v, _huv, huniqX⟩ := Submodule.existsUnique_add_of_isCompl
       (evenExteriorSubmodule_isCompl (K := K) (W := W)) (x : IsotropicExteriorModel (K := K) W)
     have huv0' : x = u ∧ (0 : oddExteriorSubmodule (K := K) W) = v := by
@@ -1580,7 +1581,7 @@ theorem exists_evenSplitCliffordParityProjector (W : Submodule K V) :
             ((aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) +
               (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W))) x := by
               symm
-              simpa using congrArg
+              exact congrArg
                 (fun f : Module.End K (IsotropicExteriorModel (K := K) W) => f x)
                 ((splitCliffordAction (K := K) W).map_add
                   (aEven : CliffordAlgebra (QuadraticForm.dualProd K W))
@@ -1592,7 +1593,10 @@ theorem exists_evenSplitCliffordParityProjector (W : Submodule K V) :
               simpa [p] using congrArg
                 (fun f : Module.End K (IsotropicExteriorModel (K := K) W) => f x) ha
         _ = 0 := by
-              simpa [p] using
+              change
+                Submodule.IsCompl.projection
+                    (evenExteriorSubmodule_isCompl (K := K) (W := W)) x = 0
+              exact
                 (Submodule.IsCompl.projection_apply_eq_zero_iff
                   (evenExteriorSubmodule_isCompl (K := K) (W := W))).2 x.2
     have hsum' :
@@ -1643,9 +1647,7 @@ theorem not_nonempty_evenOddSplitCliffordLinearEquiv (W : Submodule K V) :
       (n := 0) (x := (1 : IsotropicExteriorModel (K := K) W))) ?_ (by simp)
     change (1 : IsotropicExteriorModel (K := K) W) ∈
       (LinearMap.range (ExteriorAlgebra.ι K : W →ₗ[K] IsotropicExteriorModel (K := K) W) ^ 0)
-    simpa using
-      (show (1 : IsotropicExteriorModel (K := K) W) ∈
-          (1 : Submodule K (IsotropicExteriorModel (K := K) W)) from one_mem _)
+    simp
   ⟩
   have hone_ne : hone ≠ 0 := by
     intro h
@@ -1745,7 +1747,7 @@ theorem evenSplitCliffordActionProd_surjective (W : Submodule K V) :
             ((aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) +
               (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W))) x := by
               symm
-              simpa using congrArg
+              exact congrArg
                 (fun g : Module.End K (IsotropicExteriorModel (K := K) W) => g x)
                 ((splitCliffordAction (K := K) W).map_add
                   (aEven : CliffordAlgebra (QuadraticForm.dualProd K W))
@@ -1802,7 +1804,7 @@ theorem evenSplitCliffordActionProd_surjective (W : Submodule K V) :
                     (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x +
                     splitCliffordAction (K := K) W
                       (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x by
-                    simpa using congrArg
+                    exact congrArg
                       (fun g : Module.End K (IsotropicExteriorModel (K := K) W) => g x)
                       ((splitCliffordAction (K := K) W).map_add
                         (aEven : CliffordAlgebra (QuadraticForm.dualProd K W))
