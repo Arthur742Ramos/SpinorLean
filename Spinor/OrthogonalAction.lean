@@ -876,6 +876,30 @@ theorem pinLinearRepresentation_add_self_mem_span_singleton_of_quadratic_eq_neg_
     (Submodule.smul_mem (R ∙ a) (-(QuadraticMap.polar Q a b))
       (Submodule.mem_span_singleton_self a))
 
+/-- The ambient pin action of a norm-`-1` vector preserves its span as a submodule. -/
+theorem pinLinearRepresentation_span_singleton_le_comap_of_quadratic_eq_neg_one
+    (a : M) (hq : Q a = -1) :
+    (R ∙ a) ≤ (R ∙ a).comap
+      (((pinLinearRepresentation (Q := Q)
+          ⟨CliffordAlgebra.ι Q a, iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := Q) a hq⟩) :
+            M ≃ₗ[R] M) : M →ₗ[R] M) := by
+  intro b hb
+  exact pinLinearRepresentation_mem_span_singleton_of_quadratic_eq_neg_one (Q := Q) a b hq hb
+
+/-- Modulo the line spanned by a norm-`-1` vector, its ambient pin action is `-id`. -/
+theorem pinLinearRepresentation_mapQ_span_singleton_eq_neg_id_of_quadratic_eq_neg_one
+    (a : M) (hq : Q a = -1) :
+    (R ∙ a).mapQ (R ∙ a)
+      ((((pinLinearRepresentation (Q := Q)
+          ⟨CliffordAlgebra.ι Q a, iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := Q) a hq⟩) :
+            M ≃ₗ[R] M) : M →ₗ[R] M))
+      (pinLinearRepresentation_span_singleton_le_comap_of_quadratic_eq_neg_one (Q := Q) a hq) =
+      (-1 : R) • LinearMap.id := by
+  ext b
+  apply (Submodule.Quotient.eq (R ∙ a)).mpr
+  simpa [sub_eq_add_neg, add_assoc] using
+    pinLinearRepresentation_add_self_mem_span_singleton_of_quadratic_eq_neg_one (Q := Q) a b hq
+
 omit [Invertible (2 : R)] in
 /-- If the quadratic form represents `-1`, then the scalar `-1` lies in the spin group. -/
 theorem neg_one_mem_spinGroup_of_quadratic_eq_neg_one (m : M) (hq : Q m = -1) :
