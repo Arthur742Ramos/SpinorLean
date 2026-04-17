@@ -811,6 +811,32 @@ theorem iota_mem_pinGroup_of_quadratic_eq_neg_one (m : M) (hq : Q m = -1) :
   rw [← hu]
   exact huPin
 
+/-- The ambient pin action of a norm-`-1` vector is the explicit conjugation formula
+`b ↦ (⅟(Q a) * polar_Q(a,b)) • a - b`, specialized to `Q a = -1`. -/
+theorem pinLinearRepresentation_apply_iota_of_quadratic_eq_neg_one
+    (a b : M) (hq : Q a = -1) :
+    pinLinearRepresentation (Q := Q)
+        ⟨CliffordAlgebra.ι Q a, iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := Q) a hq⟩ b =
+      (-(QuadraticMap.polar Q a b)) • a - b := by
+  let x : pinGroup Q :=
+    ⟨CliffordAlgebra.ι Q a, iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := Q) a hq⟩
+  letI : Invertible (Q a) := by
+    rw [hq]
+    exact isUnit_neg_one.invertible
+  letI : Invertible (CliffordAlgebra.ι Q a) := CliffordAlgebra.invertibleιOfInvertible (Q := Q) a
+  have hInv : (⅟(Q a) : R) = -1 := by
+    apply invOf_eq_right_inv
+    rw [hq]
+    simp
+  apply cliffordIota_injective (Q := Q)
+  rw [pinLinearRepresentation_apply, pinLinearEquiv_ι, ConjAct.units_smul_def,
+    ConjAct.ofConjAct_toConjAct]
+  rw [← invOf_units (pinGroup.toUnits x)]
+  simp [x]
+  rw [CliffordAlgebra.ι_mul_ι_mul_invOf_ι]
+  rw [hInv]
+  simp
+
 omit [Invertible (2 : R)] in
 /-- If the quadratic form represents `-1`, then the scalar `-1` lies in the spin group. -/
 theorem neg_one_mem_spinGroup_of_quadratic_eq_neg_one (m : M) (hq : Q m = -1) :
