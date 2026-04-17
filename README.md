@@ -211,6 +211,13 @@ Implemented so far:
   row of the Bott periodicity table (Phase 4.1); the same module also packages the grouped odd
   split-signature row `Cl(n+1,n) ≃ Mat_(2^n)(ℝ) × Mat_(2^n)(ℝ)` as
   `realOddSplitPositiveCliffordEquivProdMatrix`
+- `Spinor.Cl03QuaternionProd` now packages the compact quaternionic identification
+  `realSpin04EquivUnitaryQuaternionPair :
+  spinGroup realCl04Form ≃* unitary ℍ[ℝ, -1, -1] × unitary ℍ[ℝ, -1, -1]`,
+  together with the surjective forward map
+  `spinGroupRealCl04ToUnitaryQuaternionPair`, the diagonal constructor
+  `unitaryQuaternionToSpinGroupRealCl04Diagonal`, and the full anti-diagonal constructor
+  `unitaryQuaternionToSpinGroupRealCl04Antidiagonal` (Phase 4.2)
 - `paper/` now contains a substantive working draft (`main.tex`, `refs.bib`,
   `README.md`) grounded in the current repository state, with target venues recorded for
   CPP 2027 / ITP 2027 / *Advances in Applied Clifford Algebras* (Phase 5.1)
@@ -219,20 +226,6 @@ Still open from the roadmap:
 
 - periodicity beyond the new split real foundation and canonical negative-signature entries
   (the full Bott period-8 table is still in progress)
-- the remaining low-dimensional group identification `Spin(4) → SU(2) × SU(2)`; the
-  Clifford-algebra side already includes
-  `Spinor.Cl03QuaternionProd.realCl03EquivQuaternionProd : Cl(0,3) ≃ₐ[ℝ] ℍ × ℍ` and
-  `Spinor.realEvenCl04EquivQuaternionProd : Cl⁺(0,4) ≃ₐ[ℝ] ℍ × ℍ`; the current
-  group-level scaffold now reaches
-  `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair :
-  spinGroup realCl04Form →* unitary ℍ[ℝ, -1, -1] × unitary ℍ[ℝ, -1, -1]`;
-  the diagonal compact subgroup is now constructed explicitly via
-  `Spinor.unitaryQuaternionToSpinGroupRealCl04Diagonal` and
-  `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_diag_preimage`, while the
-  anti-diagonal complex circle is now packaged via
-  `Spinor.unitaryComplexToSpinGroupRealCl04Antidiagonal` and
-  `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_antidiag_complex_preimage`,
-  leaving the full surjectivity-equivalence step as the next gap
 - the fully general double-cover / surjectivity and non-factorization theorems beyond the
   packaged split-rank kernel and non-factorization results
 - paper polish, evaluation, and submission-ready exposition beyond the current working draft

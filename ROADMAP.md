@@ -196,7 +196,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     spinGroup realCl03Form ≃* unitary ℍ`,
     using the explicit factorization of every unit quaternion into a product of two
     unit 3-vectors in `Cl⁺(0,3)`
-- [ ] Spin(4) → SU(2) × SU(2)
+- [x] Spin(4) → SU(2) × SU(2)
   - scaffolding: `Spinor.LowDimensional.realCl04Form` (negative-signature 4-form) and
     `Spinor.LowDimensional.realEvenCl04EquivCl03 : Cl⁺(0,4) ≃ₐ[ℝ] Cl(0,3)` via
     `CliffordAlgebra.equivEven`; the classical `Cl⁺(0,4) ≃ ℍ × ℍ` is now packaged as
@@ -205,21 +205,25 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     group-level forward map is now packaged as
     `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair :
     spinGroup realCl04Form →* unitary ℍ × unitary ℍ` with injective theorem
-    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_injective`; an explicit
+    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_injective`, surjective theorem
+    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_surjective`, and final equivalence
+    `Spinor.realSpin04EquivUnitaryQuaternionPair`; an explicit
     diagonal compact subgroup is now also packaged via
     `Spinor.unitaryQuaternionToSpinGroupRealCl04Diagonal` together with
     `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_diag_preimage`; the
-    anti-diagonal complex circle is now also packaged via
-    `Spinor.unitaryComplexToSpinGroupRealCl04Antidiagonal` together with
-    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_antidiag_complex_preimage`,
-    leaving the full surjectivity-equivalence step
+    full anti-diagonal subgroup is now also packaged via
+    `Spinor.unitaryQuaternionToSpinGroupRealCl04Antidiagonal` together with
+    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_antidiag_preimage`,
+    and arbitrary pairs are lifted explicitly by
+    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_preimage`
 - [ ] These connect spinors to familiar physics
   - foundation now includes explicit low-dimensional Clifford-algebra models in
     `Spinor.LowDimensional`, including complex `Cl(1)`, `Cl(2)`, `Cl(3)`, `Cl(4)`, real
     `Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ`, `Cl⁺(2,0) ≃ ℂ`, `Cl⁺(3,0) ≃ ℍ`, and split-real
     `Cl(1,1)`, `Cl⁺(1,1)`, `Cl(2,2)`, `Cl⁺(2,2)`; the first group-level compact identification
-    layer now packages `Spin(2) ≃ U(1)` and `Spin(3) ≃ SU(2)`, leaving the higher
-    low-dimensional Spin-identification layer (starting with `Spin(4)`)
+    layer now packages `Spin(2) ≃ U(1)`, `Spin(3) ≃ SU(2)`, and
+    `Spin(4) ≃ SU(2) × SU(2)`, leaving the higher low-dimensional
+    Spin-identification layer (starting with `Spin(5)`)
 
 ### 4.3 The Covering Map
 - [ ] Upgrade the ambient isometry representation to a packaged double cover `Spin(V,Q) → SO(V,Q)`

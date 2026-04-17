@@ -899,6 +899,223 @@ noncomputable def spinGroupRealCl04ToUnitaryQuaternionPair :
       exact spinGroupRealCl04ToQuaternionProd_apply_antidiag_complex_preimage z]
   ext <;> rfl
 
+/-- Fixed left vector for the full anti-diagonal subgroup in `Spin(4)`. -/
+abbrev quaternionAntidiagLeftBaseVector : (((ℝ × ℝ) × ℝ) × ℝ) :=
+  (((0, 0), 1), 0)
+
+/-- Right vector whose bilinear image is the anti-diagonal pair `(q, star q)`. -/
+abbrev quaternionAntidiagRightVector (q : H) : (((ℝ × ℝ) × ℝ) × ℝ) :=
+  (((q.imJ, -q.imI), -q.re), -q.imK)
+
+@[simp] theorem realCl04Form_antidiagLeftBaseVector_eq_neg_one :
+    realCl04Form quaternionAntidiagLeftBaseVector = -1 := by
+  simp [quaternionAntidiagLeftBaseVector, realCl04Form_apply]
+
+theorem realCl04Form_antidiagRightVector_eq_neg_one (q : unitary H) :
+    realCl04Form (quaternionAntidiagRightVector (q : H)) = -1 := by
+  rw [realCl04Form_apply]
+  have hq := unitaryQuaternion_sqSum_eq_one q
+  nlinarith
+
+noncomputable def realSpin04AntidiagonalPreimageEven
+    (q : unitary H) :
+    CliffordAlgebra.even realCl04Form :=
+  (CliffordAlgebra.even.ι realCl04Form).bilin
+    quaternionAntidiagLeftBaseVector
+    (quaternionAntidiagRightVector (q : H))
+
+noncomputable def unitaryQuaternionToSpinGroupRealCl04Antidiagonal
+    (q : unitary H) :
+    spinGroup realCl04Form := by
+  have hLeft : realCl04Form quaternionAntidiagLeftBaseVector = -1 :=
+    realCl04Form_antidiagLeftBaseVector_eq_neg_one
+  have hRight : realCl04Form (quaternionAntidiagRightVector (q : H)) = -1 :=
+    realCl04Form_antidiagRightVector_eq_neg_one q
+  refine ⟨realSpin04AntidiagonalPreimageEven q, ?_⟩
+  refine ⟨?_, (realSpin04AntidiagonalPreimageEven q).property⟩
+  change
+    (CliffordAlgebra.ι realCl04Form quaternionAntidiagLeftBaseVector *
+      CliffordAlgebra.ι realCl04Form (quaternionAntidiagRightVector (q : H))) ∈
+      pinGroup realCl04Form
+  exact Submonoid.mul_mem _
+    (iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := realCl04Form)
+      quaternionAntidiagLeftBaseVector hLeft)
+    (iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := realCl04Form)
+      (quaternionAntidiagRightVector (q : H)) hRight)
+
+@[simp] theorem spinGroupRealCl04ToQuaternionProd_apply_antidiag_preimage
+    (q : unitary H) :
+    spinGroupRealCl04ToQuaternionProd
+        (unitaryQuaternionToSpinGroupRealCl04Antidiagonal q) =
+      ((q : H), (star q : H)) := by
+  change
+    realEvenCl04EquivQuaternionProd
+      (spinGroupToEven realCl04Form
+        (unitaryQuaternionToSpinGroupRealCl04Antidiagonal q)) =
+      ((q : H), (star q : H))
+  have hEven :
+      spinGroupToEven realCl04Form
+        (unitaryQuaternionToSpinGroupRealCl04Antidiagonal q) =
+      realSpin04AntidiagonalPreimageEven q := by
+    apply Subtype.ext
+    simp [spinGroupToEven, unitaryQuaternionToSpinGroupRealCl04Antidiagonal,
+      realSpin04AntidiagonalPreimageEven]
+  rw [hEven, realSpin04AntidiagonalPreimageEven,
+    realEvenCl04EquivQuaternionProd_apply_bilin]
+  ext <;> simp [quaternionAntidiagLeftBaseVector, quaternionAntidiagRightVector,
+    QuaternionAlgebra.mk_mul_mk] <;> ring
+
+@[simp] theorem spinGroupRealCl04ToUnitaryQuaternionPair_apply_antidiag_preimage
+    (q : unitary H) :
+    spinGroupRealCl04ToUnitaryQuaternionPair
+        (unitaryQuaternionToSpinGroupRealCl04Antidiagonal q) =
+      (q, star q) := by
+  change unitaryQuaternionProdEquiv
+      (spinGroupRealCl04ToUnitaryQuaternionProd
+        (unitaryQuaternionToSpinGroupRealCl04Antidiagonal q)) =
+    (q, star q)
+  rw [show
+      spinGroupRealCl04ToUnitaryQuaternionProd
+          (unitaryQuaternionToSpinGroupRealCl04Antidiagonal q) =
+        ⟨(((q : H)), ((star q : unitary H) : H)), by
+            rw [Unitary.mem_iff]
+            constructor <;> ext <;> simp⟩ by
+      apply Subtype.ext
+      exact spinGroupRealCl04ToQuaternionProd_apply_antidiag_preimage q]
+  ext <;> rfl
+
+theorem unitaryQuaternion_eq_neg_one_of_re_eq_neg_one
+    (u : unitary H) (h : (u : H).re = -1) :
+    (u : H) = -1 := by
+  ext <;> simp [h]
+  · have hu := unitaryQuaternion_sqSum_eq_one u
+    nlinarith
+  · have hu := unitaryQuaternion_sqSum_eq_one u
+    nlinarith
+  · have hu := unitaryQuaternion_sqSum_eq_one u
+    nlinarith
+
+/-- A canonical square root of a unit quaternion, with a fixed `k`-axis choice at `-1`. -/
+noncomputable def unitaryQuaternionCanonicalSqrt (u : unitary H) : unitary H := by
+  by_cases h : (u : H).re = -1
+  · exact ⟨⟨0, 0, 0, 1⟩, by
+      rw [Unitary.mem_iff]
+      constructor <;> ext <;> simp⟩
+  · let a : ℝ := (u : H).re
+    let b : ℝ := (u : H).imI
+    let c : ℝ := (u : H).imJ
+    let d : ℝ := (u : H).imK
+    let s : ℝ := Real.sqrt ((a + 1) / 2)
+    have hs_sq : s ^ 2 = (a + 1) / 2 := by
+      dsimp [s]
+      nlinarith [Real.sq_sqrt (show 0 ≤ (a + 1) / 2 by
+        have hu := unitaryQuaternion_sqSum_eq_one u
+        nlinarith [hu])]
+    have hs : s ≠ 0 := by
+      intro hs0
+      have : (a + 1) / 2 = 0 := by nlinarith [hs_sq, hs0]
+      apply h
+      nlinarith
+    refine ⟨⟨s, b / (2 * s), c / (2 * s), d / (2 * s)⟩, ?_⟩
+    rw [Unitary.mem_iff]
+    have hu := unitaryQuaternion_sqSum_eq_one u
+    constructor <;> ext <;> simp [a, b, c, d, hs]
+    · field_simp [hs]
+      ring_nf at *
+      nlinarith [hu, hs_sq]
+    · ring
+    · ring
+    · ring
+    · field_simp [hs]
+      ring_nf at *
+      nlinarith [hu, hs_sq]
+    · ring
+    · ring
+    · ring
+
+theorem unitaryQuaternionCanonicalSqrt_sq (u : unitary H) :
+    ((unitaryQuaternionCanonicalSqrt u : unitary H) : H) *
+        ((unitaryQuaternionCanonicalSqrt u : unitary H) : H) =
+      (u : H) := by
+  by_cases h : (u : H).re = -1
+  · have hu : (u : H) = -1 := unitaryQuaternion_eq_neg_one_of_re_eq_neg_one u h
+    have hk :
+        ((unitaryQuaternionCanonicalSqrt u : unitary H) : H) = ⟨0, 0, 0, 1⟩ := by
+      simp [unitaryQuaternionCanonicalSqrt, h]
+    rw [hk, hu]
+    ext <;> simp
+  · let a : ℝ := (u : H).re
+    let b : ℝ := (u : H).imI
+    let c : ℝ := (u : H).imJ
+    let d : ℝ := (u : H).imK
+    let s : ℝ := Real.sqrt ((a + 1) / 2)
+    have hs_sq : s ^ 2 = (a + 1) / 2 := by
+      dsimp [s]
+      nlinarith [Real.sq_sqrt (show 0 ≤ (a + 1) / 2 by
+        have hu := unitaryQuaternion_sqSum_eq_one u
+        nlinarith [hu])]
+    have hs : s ≠ 0 := by
+      intro hs0
+      have : (a + 1) / 2 = 0 := by nlinarith [hs_sq, hs0]
+      apply h
+      nlinarith
+    have hsqrt :
+        ((unitaryQuaternionCanonicalSqrt u : unitary H) : H) =
+          ⟨s, b / (2 * s), c / (2 * s), d / (2 * s)⟩ := by
+      simp [unitaryQuaternionCanonicalSqrt, h, a, b, c, d, s]
+    rw [hsqrt]
+    ext <;> simp [QuaternionAlgebra.mk_mul_mk]
+    · field_simp [hs]
+      have hu := unitaryQuaternion_sqSum_eq_one u
+      nlinarith [hu, hs_sq]
+    · field_simp [hs]
+      ring
+    · field_simp [hs]
+      ring
+    · field_simp [hs]
+      ring
+
+noncomputable def unitaryQuaternionPairToSpinGroupRealCl04
+    (p r : unitary H) :
+    spinGroup realCl04Form :=
+  let q₂ : unitary H := unitaryQuaternionCanonicalSqrt (star r * p)
+  let q₁ : unitary H := p * star q₂
+  unitaryQuaternionToSpinGroupRealCl04Diagonal q₁ *
+    unitaryQuaternionToSpinGroupRealCl04Antidiagonal q₂
+
+@[simp] theorem spinGroupRealCl04ToUnitaryQuaternionPair_apply_preimage
+    (p r : unitary H) :
+    spinGroupRealCl04ToUnitaryQuaternionPair
+        (unitaryQuaternionPairToSpinGroupRealCl04 p r) =
+      (p, r) := by
+  dsimp [unitaryQuaternionPairToSpinGroupRealCl04]
+  let q₂ : unitary H := unitaryQuaternionCanonicalSqrt (star r * p)
+  let q₁ : unitary H := p * star q₂
+  rw [map_mul, spinGroupRealCl04ToUnitaryQuaternionPair_apply_diag_preimage,
+    spinGroupRealCl04ToUnitaryQuaternionPair_apply_antidiag_preimage]
+  apply Prod.ext <;> apply Subtype.ext
+  · change ((q₁ : unitary H) : H) * (q₂ : H) = (p : H)
+    dsimp [q₁]
+    rw [mul_assoc, Unitary.coe_star_mul_self q₂, mul_one]
+  · change ((q₁ : unitary H) : H) * (star q₂ : H) = (r : H)
+    dsimp [q₁]
+    have hsq : (q₂ : H) * (q₂ : H) = ((star r : unitary H) * p : H) := by
+      simpa [q₂] using unitaryQuaternionCanonicalSqrt_sq (star r * p)
+    have hsq_star : (star q₂ : H) * (star q₂ : H) = ((star p : unitary H) * r : H) := by
+      simpa [q₂, mul_assoc] using congrArg star hsq
+    rw [mul_assoc, hsq_star]
+    change (p : H) * ((star p : H) * (r : H)) = (r : H)
+    rw [← mul_assoc]
+    have hpstar : (p : H) * (star p : H) = 1 := by
+      simpa using (Unitary.coe_mul_star_self p)
+    rw [hpstar, one_mul]
+
+theorem spinGroupRealCl04ToUnitaryQuaternionPair_surjective :
+    Function.Surjective spinGroupRealCl04ToUnitaryQuaternionPair := by
+  rintro ⟨p, r⟩
+  exact ⟨unitaryQuaternionPairToSpinGroupRealCl04 p r,
+    spinGroupRealCl04ToUnitaryQuaternionPair_apply_preimage p r⟩
+
 theorem spinGroupRealCl04ToUnitaryQuaternionProd_injective :
     Function.Injective spinGroupRealCl04ToUnitaryQuaternionProd := by
   intro x y h
@@ -912,5 +1129,11 @@ theorem spinGroupRealCl04ToUnitaryQuaternionProd_injective :
 theorem spinGroupRealCl04ToUnitaryQuaternionPair_injective :
     Function.Injective spinGroupRealCl04ToUnitaryQuaternionPair :=
   unitaryQuaternionProdEquiv.injective.comp spinGroupRealCl04ToUnitaryQuaternionProd_injective
+
+noncomputable def realSpin04EquivUnitaryQuaternionPair :
+    spinGroup realCl04Form ≃* unitary H × unitary H :=
+  MulEquiv.ofBijective spinGroupRealCl04ToUnitaryQuaternionPair
+    ⟨spinGroupRealCl04ToUnitaryQuaternionPair_injective,
+      spinGroupRealCl04ToUnitaryQuaternionPair_surjective⟩
 
 end Spinor

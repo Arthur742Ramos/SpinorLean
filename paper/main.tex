@@ -72,8 +72,8 @@ $\Cl(Q) \simeq \End(\wedgeW)$ and $\Cl^+(Q) \simeq
 \End(\wedgeEven) \times \End(\wedgeOdd)$, matrix models over $\mathbb{C}$
 and split real signatures (including $\Cl(n,n) \simeq \Mat_{2^n}(\mathbb{R})$),
 explicit low-dimensional identifications including
-$\Spin(2) \simeq U(1)$ and $\Spin(3) \simeq SU(2)$, together with an
-injective homomorphism $\Spin(4) \to SU(2) \times SU(2)$ built from the
+$\Spin(2) \simeq U(1)$, $\Spin(3) \simeq SU(2)$, and
+$\Spin(4) \simeq SU(2) \times SU(2)$, built from the
 explicit equivalence $\Cl^+(0,4) \simeq \mathbb{H} \times \mathbb{H}$ and
 explicit diagonal and anti-diagonal-circle subgroup constructions. The
 library builds cleanly with zero
@@ -358,15 +358,18 @@ current library.
         \code{realSpin02EquivUnitaryComplex}, and the quaternionic compact
         identification $\Spin(3) \simeq SU(2)$, packaged as
         \code{realSpin03EquivUnitaryQuaternion}.
-  \item The next compact step, an injective homomorphism
-        $\Spin(4) \to SU(2) \times SU(2)$, is packaged as
-        \code{spinGroupRealCl04ToUnitaryQuaternionPair} on top of the algebra
+  \item The next compact step, the equivalence
+        $\Spin(4) \simeq SU(2) \times SU(2)$, is packaged as
+        \code{realSpin04EquivUnitaryQuaternionPair}; its forward map
+        \code{spinGroupRealCl04ToUnitaryQuaternionPair} sits on top of the algebra
         equivalence \code{realEvenCl04EquivQuaternionProd : Cl^+(0,4) \simeq
-        \mathbb{H} \times \mathbb{H}}; the diagonal compact subgroup is now
+        \mathbb{H} \times \mathbb{H}}; the diagonal compact subgroup is
         constructed explicitly through
-        \code{unitaryQuaternionToSpinGroupRealCl04Diagonal}, and the
-        anti-diagonal complex circle through
-        \code{unitaryComplexToSpinGroupRealCl04Antidiagonal}.
+        \code{unitaryQuaternionToSpinGroupRealCl04Diagonal}, the full
+        anti-diagonal subgroup through
+        \code{unitaryQuaternionToSpinGroupRealCl04Antidiagonal}, and arbitrary
+        pairs are lifted by
+        \code{spinGroupRealCl04ToUnitaryQuaternionPair_apply_preimage}.
 \end{itemize}
 
 % --- 5. Key Proof Highlights ---------------------------------------------
@@ -560,13 +563,12 @@ The group-level picture has now reached the first two compact cases.
 \code{Cl03QuaternionProd.lean} and the low-dimensional even-Clifford
 equivalences package the algebraic identifications
 \code{realCl03EquivQuaternionProd} and
-\code{realEvenCl04EquivQuaternionProd}. The next group-level scaffold is
-also now present as
-\code{spinGroupRealCl04ToUnitaryQuaternionPair}, an injective homomorphism
-from $\Spin(4)$ into pairs of unit quaternions. The remaining crisp
-milestone is to prove the missing surjectivity statement and package the
-full equivalence. Only after that does it make sense to pursue
-$\Spin(5)$ and $\Spin(6)$.
+\code{realEvenCl04EquivQuaternionProd}. The resulting group-level capstone is
+now packaged as
+\code{realSpin04EquivUnitaryQuaternionPair}, identifying $\Spin(4)$ with pairs
+of unit quaternions. This clears the remaining compact low-dimensional
+quaternionic gap and shifts the next natural targets to $\Spin(5)$ and
+$\Spin(6)$.
 
 \paragraph{Geometric lift.}
 Beyond the current algebraic scope, the \code{ROADMAP.md} non-goals
