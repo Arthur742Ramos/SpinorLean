@@ -222,8 +222,11 @@ Still open from the roadmap:
 - the remaining low-dimensional group identification `Spin(4) → SU(2) × SU(2)`; the
   Clifford-algebra side already includes
   `Spinor.Cl03QuaternionProd.realCl03EquivQuaternionProd : Cl(0,3) ≃ₐ[ℝ] ℍ × ℍ` and
-  `Spinor.realEvenCl04EquivQuaternionProd : Cl⁺(0,4) ≃ₐ[ℝ] ℍ × ℍ`, leaving the
-  group-level packaging for `Spin(4)` as the next gap
+  `Spinor.realEvenCl04EquivQuaternionProd : Cl⁺(0,4) ≃ₐ[ℝ] ℍ × ℍ`; the current
+  group-level scaffold now reaches
+  `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair :
+  spinGroup realCl04Form →* unitary ℍ[ℝ, -1, -1] × unitary ℍ[ℝ, -1, -1]`,
+  leaving the explicit surjectivity / equivalence step as the next gap
 - the fully general double-cover / surjectivity and non-factorization theorems beyond the
   packaged split-rank kernel and non-factorization results
 - paper polish, evaluation, and submission-ready exposition beyond the current working draft

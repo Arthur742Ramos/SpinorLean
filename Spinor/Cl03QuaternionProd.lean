@@ -322,6 +322,12 @@ private lemma ι_decomp (a b c : ℝ) :
   rw [hdec, map_add, map_add, map_smul, map_smul, map_smul]
   rfl
 
+@[simp] lemma toQuatPair_ι (a b c : ℝ) :
+    toQuatPair (ι realCl03Form ((a, b), c)) =
+      ((⟨0, a, b, c⟩ : H), (⟨0, a, b, -c⟩ : H)) := by
+  rw [ι_decomp]
+  ext <;> simp [toQuatPair]
+
 /-- `ω` is central: it commutes with every element of `Cl(0,3)`. -/
 lemma ω_central (x : CliffordAlgebra realCl03Form) : ω * x = x * ω := by
   induction x using CliffordAlgebra.induction with
@@ -520,11 +526,26 @@ noncomputable def realCl03EquivQuaternionProd :
     toQuatPair_comp_ofQuatPair
     ofQuatPair_comp_toQuatPair
 
+@[simp] theorem realCl03EquivQuaternionProd_apply_star (x : CliffordAlgebra realCl03Form) :
+    realCl03EquivQuaternionProd (star x) = star (realCl03EquivQuaternionProd x) := by
+  induction x using CliffordAlgebra.induction with
+  | algebraMap r =>
+      ext <;> simp [realCl03EquivQuaternionProd]
+  | ι v =>
+      obtain ⟨⟨a, b⟩, c⟩ := v
+      ext <;> simp [realCl03EquivQuaternionProd, CliffordAlgebra.star_def]
+  | mul a b ha hb =>
+      simp [ha, hb]
+  | add a b ha hb =>
+      simp [ha, hb]
+
 end
 
 end Cl03QuaternionProd
 
-open scoped Quaternion in
+open scoped Quaternion
+local notation "H" => ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)]
+
 /-- The even real Clifford algebra `Cl⁺(0,4)` is isomorphic to `ℍ × ℍ`.
 
 This composes `realEvenCl04EquivCl03 : Cl⁺(0,4) ≃ Cl(0,3)` (from
@@ -533,7 +554,95 @@ Cl(0,3) ≃ ℍ × ℍ`. It is the classical Bott-period entry
 `Cl⁺(0,4) ≃ ℍ ⊕ ℍ` and the algebraic core of `Spin(4) ≃ Sp(1) × Sp(1)`. -/
 noncomputable def realEvenCl04EquivQuaternionProd :
     CliffordAlgebra.even realCl04Form ≃ₐ[ℝ]
-      ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)] × ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)] :=
+      H × H :=
   realEvenCl04EquivCl03.trans Cl03QuaternionProd.realCl03EquivQuaternionProd
+
+@[simp] theorem realEvenCl04EquivQuaternionProd_apply_star (x : CliffordAlgebra.even realCl04Form) :
+    realEvenCl04EquivQuaternionProd
+        ⟨star (x : CliffordAlgebra realCl04Form), by
+          simpa [CliffordAlgebra.even, CliffordAlgebra.even_toSubmodule, CliffordAlgebra.star_def,
+            CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff] using
+            x.property⟩ =
+      star (realEvenCl04EquivQuaternionProd x) := by
+  change Cl03QuaternionProd.realCl03EquivQuaternionProd
+      ((CliffordAlgebra.equivEven realCl03Form).symm
+        ⟨star (x : CliffordAlgebra realCl04Form), by
+          simpa [CliffordAlgebra.even, CliffordAlgebra.even_toSubmodule, CliffordAlgebra.star_def,
+            CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff] using
+            x.property⟩) =
+    star (Cl03QuaternionProd.realCl03EquivQuaternionProd ((CliffordAlgebra.equivEven realCl03Form).symm x))
+  rw [cliffordEquivEven_symm_apply_star, Cl03QuaternionProd.realCl03EquivQuaternionProd_apply_star]
+
+noncomputable def spinGroupRealCl04ToQuaternionProd :
+    spinGroup realCl04Form →* (H × H) :=
+  realEvenCl04EquivQuaternionProd.toMonoidHom.comp (spinGroupToEven realCl04Form)
+
+theorem spinGroupRealCl04ToQuaternionProd_mem_unitary (x : spinGroup realCl04Form) :
+    spinGroupRealCl04ToQuaternionProd x ∈ unitary (H × H) := by
+  rw [Unitary.mem_iff]
+  let x₀ : CliffordAlgebra.even realCl04Form := spinGroupToEven realCl04Form x
+  let xStar : CliffordAlgebra.even realCl04Form := ⟨star (x : CliffordAlgebra realCl04Form), by
+    simpa [CliffordAlgebra.even, CliffordAlgebra.even_toSubmodule, CliffordAlgebra.star_def,
+      CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff] using
+      (spinGroup.mem_even x.prop)⟩
+  constructor
+  · change star (realEvenCl04EquivQuaternionProd x₀) * realEvenCl04EquivQuaternionProd x₀ = 1
+    rw [← realEvenCl04EquivQuaternionProd_apply_star, ← map_mul]
+    have hx : xStar * x₀ = 1 := by
+      ext
+      exact spinGroup.coe_star_mul_self x
+    change realEvenCl04EquivQuaternionProd (xStar * x₀) = 1
+    rw [hx, map_one]
+  · change realEvenCl04EquivQuaternionProd x₀ * star (realEvenCl04EquivQuaternionProd x₀) = 1
+    rw [← realEvenCl04EquivQuaternionProd_apply_star, ← map_mul]
+    have hx : x₀ * xStar = 1 := by
+      ext
+      exact spinGroup.coe_mul_star_self x
+    change realEvenCl04EquivQuaternionProd (x₀ * xStar) = 1
+    rw [hx, map_one]
+
+noncomputable def spinGroupRealCl04ToUnitaryQuaternionProd :
+    spinGroup realCl04Form →* unitary (H × H) :=
+  (spinGroupRealCl04ToQuaternionProd).codRestrict
+    (unitary (H × H))
+    spinGroupRealCl04ToQuaternionProd_mem_unitary
+
+noncomputable def unitaryQuaternionProdEquiv :
+    unitary (H × H) ≃* unitary H × unitary H where
+  toFun u := by
+    refine ⟨?_, ?_⟩
+    · refine ⟨u.1.1, ?_⟩
+      rw [Unitary.mem_iff]
+      exact ⟨congrArg Prod.fst u.property.1, congrArg Prod.fst u.property.2⟩
+    · refine ⟨u.1.2, ?_⟩
+      rw [Unitary.mem_iff]
+      exact ⟨congrArg Prod.snd u.property.1, congrArg Prod.snd u.property.2⟩
+  invFun u := by
+    refine ⟨(u.1, u.2), ?_⟩
+    rw [Unitary.mem_iff]
+    constructor <;> ext <;> simp [Unitary.coe_star_mul_self, Unitary.coe_mul_star_self]
+  left_inv u := by
+    ext <;> rfl
+  right_inv u := by
+    ext <;> rfl
+  map_mul' u v := rfl
+
+noncomputable def spinGroupRealCl04ToUnitaryQuaternionPair :
+    spinGroup realCl04Form →* (unitary H × unitary H) :=
+  unitaryQuaternionProdEquiv.toMonoidHom.comp spinGroupRealCl04ToUnitaryQuaternionProd
+
+theorem spinGroupRealCl04ToUnitaryQuaternionProd_injective :
+    Function.Injective spinGroupRealCl04ToUnitaryQuaternionProd := by
+  intro x y h
+  have h' : spinGroupRealCl04ToQuaternionProd x = spinGroupRealCl04ToQuaternionProd y := congrArg Subtype.val h
+  have hEven : spinGroupToEven realCl04Form x = spinGroupToEven realCl04Form y := by
+    apply realEvenCl04EquivQuaternionProd.injective
+    simpa [spinGroupRealCl04ToQuaternionProd] using h'
+  apply Subtype.ext
+  simpa [spinGroupToEven] using congrArg Subtype.val hEven
+
+theorem spinGroupRealCl04ToUnitaryQuaternionPair_injective :
+    Function.Injective spinGroupRealCl04ToUnitaryQuaternionPair :=
+  unitaryQuaternionProdEquiv.injective.comp spinGroupRealCl04ToUnitaryQuaternionProd_injective
 
 end Spinor

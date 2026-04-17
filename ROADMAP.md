@@ -201,7 +201,12 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.LowDimensional.realEvenCl04EquivCl03 : Cl⁺(0,4) ≃ₐ[ℝ] Cl(0,3)` via
     `CliffordAlgebra.equivEven`; the classical `Cl⁺(0,4) ≃ ℍ × ℍ` is now packaged as
     `Spinor.realEvenCl04EquivQuaternionProd` in `Spinor.Cl03QuaternionProd`,
-    composed from `realEvenCl04EquivCl03` and `realCl03EquivQuaternionProd`
+    composed from `realEvenCl04EquivCl03` and `realCl03EquivQuaternionProd`; the
+    group-level forward map is now packaged as
+    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair :
+    spinGroup realCl04Form →* unitary ℍ × unitary ℍ` with injective theorem
+    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_injective`, leaving the
+    explicit surjectivity / equivalence step
 - [ ] These connect spinors to familiar physics
   - foundation now includes explicit low-dimensional Clifford-algebra models in
     `Spinor.LowDimensional`, including complex `Cl(1)`, `Cl(2)`, `Cl(3)`, `Cl(4)`, real
