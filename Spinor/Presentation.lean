@@ -46,7 +46,10 @@ identifications of the chiral pieces with `⋀^even W` / `⋀^odd W`, the Witt-i
   matrix-algebra packaging of `CliffordAlgebra Q`.
 * `HyperbolicPresentation.spinRepresentation_injective`,
   `HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_pos_finrank` —
-  faithfulness of the spin representation and the non-factorization theorem.
+  faithfulness of the chosen-model spin representation and its non-factorization theorem.
+* `HyperbolicPresentation.ambientSpinRepresentation_not_factor_through_isometry_of_pos_finrank`,
+  `Spinor.splitSpinRepresentation_not_factor_through_isometry` — the corresponding ambient
+  regular-model non-factorization theorems in positive split rank.
 * `splitSpinorModule`, `positiveHalfSpinorModule`, `negativeHalfSpinorModule` and their
   associated action / simplicity / inequivalence aliases — the top-level split-rank
   canonical chosen-model API built from `HyperbolicPresentation` together with
@@ -339,6 +342,22 @@ theorem spinRepresentation_not_factor_through_isometry_of_pos_finrank [FiniteDim
   apply spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one
     (K := K) (Q := Q) P
   exact P.exists_quadratic_eq_neg_one hW
+
+/-- Positive hyperbolic rank also obstructs factoring the ambient regular-model spin representation
+through the ambient isometry representation. -/
+theorem ambientSpinRepresentation_not_factor_through_isometry_of_pos_finrank [FiniteDimensional K V]
+    (P : HyperbolicPresentation Q) (hW : 0 < Module.finrank K P.W) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K (SpinorModule (R := K) (M := V) Q),
+        Spinor.spinRepresentation Q = ρ.comp (Spinor.spinIsometryRepresentation (Q := Q)) := by
+  have hneq : (-1 : K) ≠ 1 := by
+    intro h
+    have h' : (0 : K) = 1 + 1 := by
+      simpa using congrArg (fun t : K => t + 1) h
+    have h2 : (2 : K) = 0 := by
+      simpa [one_add_one_eq_two] using h'.symm
+    exact two_ne_zero h2
+  exact Spinor.spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one
+    (Q := Q) (P.exists_quadratic_eq_neg_one hW) hneq
 
 /-- Matrix form of the hyperbolic chosen-model Clifford equivalence. -/
 noncomputable def cliffordEquivMatrix [FiniteDimensional K V] (P : HyperbolicPresentation Q) :
@@ -1721,6 +1740,20 @@ theorem splitSpinorRepresentation_not_factor_through_isometry (Q : QuadraticForm
     (HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_pos_finrank
       (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
       hW')
+
+/-- In positive split rank, the ambient regular-model spin representation does not factor through
+the ambient isometry representation. -/
+theorem splitSpinRepresentation_not_factor_through_isometry (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (hW : 0 < Q.wittIndex) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K (SpinorModule (R := K) (M := V) Q),
+        Spinor.spinRepresentation Q = ρ.comp (Spinor.spinIsometryRepresentation (Q := Q)) := by
+  have hW' : 0 < Module.finrank K (splitWittPresentation (K := K) Q hQ hsplit).W := by
+    change 0 < Module.finrank K Q.wittSubspace
+    rwa [Q.finrank_wittSubspace]
+  simpa using
+    (HyperbolicPresentation.ambientSpinRepresentation_not_factor_through_isometry_of_pos_finrank
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit) hW')
 
 /-- The canonical chosen spinor module is simple in split rank. -/
 theorem splitSpinorModule_isSimple (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)

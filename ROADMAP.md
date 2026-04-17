@@ -254,9 +254,11 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [ ] The spin representation does NOT factor through the ambient isometry representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
     `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`
-  - done in positive split rank on the canonical chosen-model API via
-    `splitSpinorRepresentation_not_factor_through_isometry`; the fully general covering-map
-    formulation remains open
+  - [x] in positive split rank on the ambient regular model, package
+    `splitSpinRepresentation_not_factor_through_isometry`
+  - [x] in positive split rank on the canonical chosen-model API via
+    `splitSpinorRepresentation_not_factor_through_isometry`
+  - [ ] Remaining gap: the fully general covering-map formulation remains open
 
 ---
 
