@@ -225,8 +225,11 @@ Still open from the roadmap:
   `Spinor.realEvenCl04EquivQuaternionProd : Cl⁺(0,4) ≃ₐ[ℝ] ℍ × ℍ`; the current
   group-level scaffold now reaches
   `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair :
-  spinGroup realCl04Form →* unitary ℍ[ℝ, -1, -1] × unitary ℍ[ℝ, -1, -1]`,
-  leaving the explicit surjectivity / equivalence step as the next gap
+  spinGroup realCl04Form →* unitary ℍ[ℝ, -1, -1] × unitary ℍ[ℝ, -1, -1]`;
+  the diagonal compact subgroup is now constructed explicitly via
+  `Spinor.unitaryQuaternionToSpinGroupRealCl04Diagonal` and
+  `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_diag_preimage`,
+  leaving the second factor / full surjectivity-equivalence step as the next gap
 - the fully general double-cover / surjectivity and non-factorization theorems beyond the
   packaged split-rank kernel and non-factorization results
 - paper polish, evaluation, and submission-ready exposition beyond the current working draft

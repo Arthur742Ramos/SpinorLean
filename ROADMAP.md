@@ -205,8 +205,11 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     group-level forward map is now packaged as
     `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair :
     spinGroup realCl04Form →* unitary ℍ × unitary ℍ` with injective theorem
-    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_injective`, leaving the
-    explicit surjectivity / equivalence step
+    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_injective`; an explicit
+    diagonal compact subgroup is now also packaged via
+    `Spinor.unitaryQuaternionToSpinGroupRealCl04Diagonal` together with
+    `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_diag_preimage`,
+    leaving the second factor / full surjectivity-equivalence step
 - [ ] These connect spinors to familiar physics
   - foundation now includes explicit low-dimensional Clifford-algebra models in
     `Spinor.LowDimensional`, including complex `Cl(1)`, `Cl(2)`, `Cl(3)`, `Cl(4)`, real
@@ -239,15 +242,16 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 ## Phase 5: Paper & Polish (Week 7-8)
 
 ### 5.1 Paper Writing
-- paper scaffolding created at `paper/` (initial `main.tex`, `refs.bib`, and
-  `README.md` with target venues and grounded per-section prose); individual
-  sub-bullets below remain open pending a full draft
-- [ ] Introduction: why spinors matter, why formalization is novel
-- [ ] Related work: lean-ga, Mathlib Clifford, what's missing
-- [ ] Formalization architecture
-- [ ] Key proof highlights (the hard parts)
-- [ ] Lessons learned & Mathlib gaps discovered
-- [ ] Future work: spinor bundles, Dirac operators
+- paper draft now lives at `paper/` (`main.tex`, `refs.bib`, `README.md`) with
+  substantive prose tied to the current repository state; it is now a working
+  draft rather than mere scaffolding, though polishing and final exposition
+  remain
+- [x] Introduction: why spinors matter, why formalization is novel
+- [x] Related work: lean-ga, Mathlib Clifford, what's missing
+- [x] Formalization architecture
+- [x] Key proof highlights (the hard parts)
+- [x] Lessons learned & Mathlib gaps discovered
+- [x] Future work: spinor bundles, Dirac operators
 
 ### 5.2 Code Quality
 - [x] Full `lake build` clean
@@ -256,9 +260,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [x] Module documentation (Mathlib-style `/-! # ... -/` blocks on all 19 `Spinor/*.lean` files)
 
 ### 5.3 Submission
-- [ ] Target: CPP 2027 (deadline ~Sep 2026) or ITP 2027
-- [ ] Secondary: *Advances in Applied Clifford Algebras* (journal, no deadline)
-- [ ] Tertiary: *Journal of Automated Reasoning*
+- [x] Target: CPP 2027 (deadline ~Sep 2026) or ITP 2027
+- [x] Secondary: *Advances in Applied Clifford Algebras* (journal, no deadline)
+- [x] Tertiary: *Journal of Automated Reasoning*
 
 ---
 

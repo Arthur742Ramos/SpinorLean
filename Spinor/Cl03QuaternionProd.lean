@@ -41,7 +41,7 @@ def e3 : CliffordAlgebra realCl03Form := ι realCl03Form ((0, 0), 1)
 @[simp]
 lemma realCl03Form_apply (a b c : ℝ) :
     realCl03Form ((a, b), c) = -(a * a + b * b + c * c) := by
-  simp [realCl03Form, CliffordAlgebra.EquivEven.Q'_apply, realCl02Form_apply]
+  simp [realCl03Form]
   ring
 
 /-- `e₁² = -1` in `Cl(0,3)`. -/
@@ -135,6 +135,12 @@ noncomputable def toH (ε : ℝ) (hε : ε * ε = 1) :
   rw [CliffordAlgebra.lift_ι_apply]
   show toHLin ε ((0, 0), 1) = _
   ext <;> simp
+
+@[simp] lemma toH_ι (ε : ℝ) (hε : ε * ε = 1) (a b c : ℝ) :
+    toH ε hε (ι realCl03Form ((a, b), c)) = ⟨0, a, b, ε * c⟩ := by
+  unfold toH
+  rw [CliffordAlgebra.lift_ι_apply]
+  ext <;> simp [toHLin_apply]
 
 /-- Forward map `Cl(0,3) → ℍ × ℍ`: paired lifts differing by sign on `e₃`. -/
 noncomputable def toQuatPair : CliffordAlgebra realCl03Form →ₐ[ℝ] H × H :=
@@ -441,9 +447,7 @@ lemma pMinus_sub_pPlus : pMinus - pPlus = -ω := by
     toH ε hε ω = algebraMap ℝ H (-ε) := by
   show toH ε hε (e1 * e2 * e3) = _
   rw [map_mul, map_mul, toH_e1, toH_e2, toH_e3]
-  ext <;> simp [QuaternionAlgebra.re_mul, QuaternionAlgebra.imI_mul,
-    QuaternionAlgebra.imJ_mul, QuaternionAlgebra.imK_mul,
-    Algebra.algebraMap_eq_smul_one]
+  ext <;> simp [Algebra.algebraMap_eq_smul_one]
 
 @[simp] lemma toH_one_pPlus : toH 1 (by ring) pPlus = 0 := by
   show toH 1 (by ring) ((2⁻¹ : ℝ) • (1 + ω)) = 0
@@ -570,8 +574,113 @@ noncomputable def realEvenCl04EquivQuaternionProd :
           simpa [CliffordAlgebra.even, CliffordAlgebra.even_toSubmodule, CliffordAlgebra.star_def,
             CliffordAlgebra.reverse_mem_evenOdd_iff, CliffordAlgebra.involute_mem_evenOdd_iff] using
             x.property⟩) =
-    star (Cl03QuaternionProd.realCl03EquivQuaternionProd ((CliffordAlgebra.equivEven realCl03Form).symm x))
+      star (Cl03QuaternionProd.realCl03EquivQuaternionProd ((CliffordAlgebra.equivEven realCl03Form).symm x))
   rw [cliffordEquivEven_symm_apply_star, Cl03QuaternionProd.realCl03EquivQuaternionProd_apply_star]
+
+@[simp] theorem realEvenCl04EquivQuaternionProd_apply_bilin
+    (x y : (((ℝ × ℝ) × ℝ) × ℝ)) :
+    realEvenCl04EquivQuaternionProd ((CliffordAlgebra.even.ι realCl04Form).bilin x y) =
+      (((⟨x.2, x.1.1.1, x.1.1.2, x.1.2⟩ : H) *
+          ⟨-y.2, y.1.1.1, y.1.1.2, y.1.2⟩),
+        ((⟨x.2, x.1.1.1, x.1.1.2, -x.1.2⟩ : H) *
+          ⟨-y.2, y.1.1.1, y.1.1.2, -y.1.2⟩)) := by
+  obtain ⟨⟨⟨x1, x2⟩, x3⟩, x4⟩ := x
+  obtain ⟨⟨⟨y1, y2⟩, y3⟩, y4⟩ := y
+  change
+    Cl03QuaternionProd.toQuatPair
+        ((CliffordAlgebra.equivEven realCl03Form).symm
+          ((CliffordAlgebra.even.ι realCl04Form).bilin (((x1, x2), x3), x4) (((y1, y2), y3), y4))) =
+      _
+  rw [show
+      (CliffordAlgebra.equivEven realCl03Form).symm
+          ((CliffordAlgebra.even.ι realCl04Form).bilin (((x1, x2), x3), x4) (((y1, y2), y3), y4)) =
+        CliffordAlgebra.ofEven realCl03Form
+          ((CliffordAlgebra.even.ι realCl04Form).bilin (((x1, x2), x3), x4) (((y1, y2), y3), y4)) by
+      rfl]
+  rw [CliffordAlgebra.ofEven_ι]
+  rw [map_mul, map_add, map_sub]
+  ext <;> simp [Cl03QuaternionProd.toQuatPair, Cl03QuaternionProd.toH_ι,
+    QuaternionAlgebra.mk_mul_mk] <;> ring
+
+@[simp] theorem realCl04Form_apply (a b c d : ℝ) :
+    realCl04Form (((a, b), c), d) = -(a * a + b * b + c * c + d * d) := by
+  simp [realCl04Form, Spinor.realCl03Form_apply]
+  ring
+
+/-- Embed a slice quaternion `a + bi + cj` as a left unit vector in `ℝ⁴`,
+with the third spatial coordinate fixed to zero. -/
+abbrev quaternionDiagLeftVector (q : H) : (((ℝ × ℝ) × ℝ) × ℝ) :=
+  (((q.imI, q.imJ), 0), q.re)
+
+/-- Embed a slice quaternion `a + bi + cj` as a right unit vector in `ℝ⁴`,
+with the third spatial coordinate fixed to zero. -/
+abbrev quaternionDiagRightVector (q : H) : (((ℝ × ℝ) × ℝ) × ℝ) :=
+  (((q.imI, q.imJ), 0), -q.re)
+
+theorem realCl04Form_diagLeftVector_eq_neg_one
+    (q : unitary H) (hk : (q : H).imK = 0) :
+    realCl04Form (quaternionDiagLeftVector (q : H)) = -1 := by
+  rw [realCl04Form_apply]
+  have hq := unitaryQuaternion_sqSum_eq_one q
+  nlinarith [hq, hk]
+
+theorem realCl04Form_diagRightVector_eq_neg_one
+    (q : unitary H) (hk : (q : H).imK = 0) :
+    realCl04Form (quaternionDiagRightVector (q : H)) = -1 := by
+  rw [realCl04Form_apply]
+  have hq := unitaryQuaternion_sqSum_eq_one q
+  nlinarith [hq, hk]
+
+theorem realEvenCl04EquivQuaternionProd_apply_bilin_diag_slice
+    (p r : unitary H)
+    (hp : (p : H).imK = 0) (hr : (r : H).imK = 0) :
+    realEvenCl04EquivQuaternionProd
+        ((CliffordAlgebra.even.ι realCl04Form).bilin
+          (quaternionDiagLeftVector (p : H))
+          (quaternionDiagRightVector (r : H))) =
+      (((p : H) * r : H), ((p : H) * r : H)) := by
+  ext <;> simp [realEvenCl04EquivQuaternionProd_apply_bilin, quaternionDiagLeftVector,
+    quaternionDiagRightVector, hp, hr, QuaternionAlgebra.mk_mul_mk] <;> ring
+
+noncomputable def realSpin04DiagonalPreimageEven
+    (q : unitary H) :
+    CliffordAlgebra.even realCl04Form :=
+  (CliffordAlgebra.even.ι realCl04Form).bilin
+    (quaternionDiagLeftVector
+      ((realSpin03LeftSlice q : unitary H) : H))
+    (quaternionDiagRightVector
+      ((realSpin03RightSlice q : unitary H) : H))
+
+noncomputable def unitaryQuaternionToSpinGroupRealCl04Diagonal
+    (q : unitary H) :
+    spinGroup realCl04Form := by
+  have hLeft : realCl04Form
+      (quaternionDiagLeftVector
+        ((realSpin03LeftSlice q : unitary H) : H)) = -1 :=
+    realCl04Form_diagLeftVector_eq_neg_one
+      (realSpin03LeftSlice q) (realSpin03LeftSlice_imK q)
+  have hRight : realCl04Form
+      (quaternionDiagRightVector
+        ((realSpin03RightSlice q : unitary H) : H)) = -1 :=
+    realCl04Form_diagRightVector_eq_neg_one
+      (realSpin03RightSlice q) (realSpin03RightSlice_imK q)
+  refine ⟨realSpin04DiagonalPreimageEven q, ?_⟩
+  refine ⟨?_, (realSpin04DiagonalPreimageEven q).property⟩
+  change
+    (CliffordAlgebra.ι realCl04Form
+        (quaternionDiagLeftVector
+          ((realSpin03LeftSlice q : unitary H) : H)) *
+      CliffordAlgebra.ι realCl04Form
+        (quaternionDiagRightVector
+          ((realSpin03RightSlice q : unitary H) : H))) ∈
+      pinGroup realCl04Form
+  exact Submonoid.mul_mem _
+    (iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := realCl04Form)
+      (quaternionDiagLeftVector
+        ((realSpin03LeftSlice q : unitary H) : H)) hLeft)
+    (iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := realCl04Form)
+      (quaternionDiagRightVector
+        ((realSpin03RightSlice q : unitary H) : H)) hRight)
 
 noncomputable def spinGroupRealCl04ToQuaternionProd :
     spinGroup realCl04Form →* (H × H) :=
@@ -620,7 +729,7 @@ noncomputable def unitaryQuaternionProdEquiv :
   invFun u := by
     refine ⟨(u.1, u.2), ?_⟩
     rw [Unitary.mem_iff]
-    constructor <;> ext <;> simp [Unitary.coe_star_mul_self, Unitary.coe_mul_star_self]
+    constructor <;> ext <;> simp
   left_inv u := by
     ext <;> rfl
   right_inv u := by
@@ -630,6 +739,51 @@ noncomputable def unitaryQuaternionProdEquiv :
 noncomputable def spinGroupRealCl04ToUnitaryQuaternionPair :
     spinGroup realCl04Form →* (unitary H × unitary H) :=
   unitaryQuaternionProdEquiv.toMonoidHom.comp spinGroupRealCl04ToUnitaryQuaternionProd
+
+@[simp] theorem spinGroupRealCl04ToQuaternionProd_apply_diag_preimage
+    (q : unitary H) :
+    spinGroupRealCl04ToQuaternionProd
+        (unitaryQuaternionToSpinGroupRealCl04Diagonal q) =
+      ((q : H), (q : H)) := by
+  change
+    realEvenCl04EquivQuaternionProd
+      (spinGroupToEven realCl04Form
+        (unitaryQuaternionToSpinGroupRealCl04Diagonal q)) =
+      ((q : H), (q : H))
+  have hEven :
+      spinGroupToEven realCl04Form
+        (unitaryQuaternionToSpinGroupRealCl04Diagonal q) =
+      realSpin04DiagonalPreimageEven q := by
+    apply Subtype.ext
+    simp [spinGroupToEven, unitaryQuaternionToSpinGroupRealCl04Diagonal,
+      realSpin04DiagonalPreimageEven]
+  rw [hEven, realSpin04DiagonalPreimageEven,
+    realEvenCl04EquivQuaternionProd_apply_bilin_diag_slice
+      (realSpin03LeftSlice q) (realSpin03RightSlice q)
+      (realSpin03LeftSlice_imK q) (realSpin03RightSlice_imK q)]
+  simpa using congrArg (fun z : H => (z, z)) (realSpin03LeftSlice_mul_rightSlice q)
+
+@[simp] theorem spinGroupRealCl04ToUnitaryQuaternionProd_apply_diag_preimage
+    (q : unitary H) :
+    spinGroupRealCl04ToUnitaryQuaternionProd
+        (unitaryQuaternionToSpinGroupRealCl04Diagonal q) =
+      ⟨((q : H), (q : H)), by
+        rw [Unitary.mem_iff]
+        constructor <;> ext <;> simp⟩ := by
+  apply Subtype.ext
+  exact spinGroupRealCl04ToQuaternionProd_apply_diag_preimage q
+
+@[simp] theorem spinGroupRealCl04ToUnitaryQuaternionPair_apply_diag_preimage
+    (q : unitary H) :
+    spinGroupRealCl04ToUnitaryQuaternionPair
+        (unitaryQuaternionToSpinGroupRealCl04Diagonal q) =
+      (q, q) := by
+  change unitaryQuaternionProdEquiv
+      (spinGroupRealCl04ToUnitaryQuaternionProd
+        (unitaryQuaternionToSpinGroupRealCl04Diagonal q)) =
+    (q, q)
+  rw [spinGroupRealCl04ToUnitaryQuaternionProd_apply_diag_preimage]
+  ext <;> rfl
 
 theorem spinGroupRealCl04ToUnitaryQuaternionProd_injective :
     Function.Injective spinGroupRealCl04ToUnitaryQuaternionProd := by

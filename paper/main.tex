@@ -71,8 +71,11 @@ half-spin (Weyl) simplicity and inequivalence, the algebra equivalences
 $\Cl(Q) \simeq \End(\wedgeW)$ and $\Cl^+(Q) \simeq
 \End(\wedgeEven) \times \End(\wedgeOdd)$, matrix models over $\mathbb{C}$
 and split real signatures (including $\Cl(n,n) \simeq \Mat_{2^n}(\mathbb{R})$),
-explicit low-dimensional identifications, and the compact identification
-$\Spin(2) \simeq U(1)$. The library builds cleanly with zero
+explicit low-dimensional identifications including
+$\Spin(2) \simeq U(1)$ and $\Spin(3) \simeq SU(2)$, together with an
+injective homomorphism $\Spin(4) \to SU(2) \times SU(2)$ built from the
+explicit equivalence $\Cl^+(0,4) \simeq \mathbb{H} \times \mathbb{H}$. The
+library builds cleanly with zero
 \code{sorry}/\code{admit}.
 \end{abstract}
 
@@ -354,6 +357,13 @@ current library.
         \code{realSpin02EquivUnitaryComplex}, and the quaternionic compact
         identification $\Spin(3) \simeq SU(2)$, packaged as
         \code{realSpin03EquivUnitaryQuaternion}.
+  \item The next compact step, an injective homomorphism
+        $\Spin(4) \to SU(2) \times SU(2)$, is packaged as
+        \code{spinGroupRealCl04ToUnitaryQuaternionPair} on top of the algebra
+        equivalence \code{realEvenCl04EquivQuaternionProd : Cl^+(0,4) \simeq
+        \mathbb{H} \times \mathbb{H}}; the diagonal compact subgroup is now
+        constructed explicitly through
+        \code{unitaryQuaternionToSpinGroupRealCl04Diagonal}.
 \end{itemize}
 
 % --- 5. Key Proof Highlights ---------------------------------------------
