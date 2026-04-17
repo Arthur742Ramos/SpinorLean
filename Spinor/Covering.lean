@@ -8,7 +8,10 @@ import Mathlib.LinearAlgebra.CliffordAlgebra.Prod
   "kernel elements commute with everything" to "kernel elements are scalar".
   This file resolves that step in finite-dimensional nondegenerate rank by
   passing to the canonical doubled hyperbolic presentation `Q ⊕ (-Q)`,
-  where the chosen-model Clifford action is an endomorphism algebra.
+  where the chosen-model Clifford action is an endomorphism algebra. It also
+  lifts the resulting kernel statement from the ambient isometry map to the
+  `SO(V,Q)`-valued factor and packages the final covering-map statement under
+  the remaining pair-generator closure hypothesis.
 -/
 
 namespace Spinor
@@ -146,5 +149,39 @@ theorem spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one [FiniteDimen
   exact even_eq_algebraMap_of_commute (Q := Q) hQ
     (ha := spinGroup.mem_even y.property)
     (hcomm := commute_of_spinIsometryRepresentation_eq_one (Q := Q) y hy)
+
+/-- The factored ambient spin map into `SO(V,Q)` has the same finite-dimensional kernel
+description as the ambient isometry map. -/
+theorem spinSpecialOrthogonalRepresentationFiniteDimensional_eq_one_iff_coe_eq_one_or_neg_one
+    [FiniteDimensional K V] (hQ : Q.Nondegenerate) (x : spinGroup Q) :
+    spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q) x = 1 ↔
+      (x : CliffordAlgebra Q) = 1 ∨ (x : CliffordAlgebra Q) = -1 := by
+  constructor
+  · intro hx
+    have hx' : spinIsometryRepresentation (Q := Q) x = 1 := by
+      simpa [coe_spinSpecialOrthogonalRepresentationFiniteDimensional] using
+        congrArg (fun g : Q.specialOrthogonalGroup => (g : Q.IsometryEquiv Q)) hx
+    exact (spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one
+      (Q := Q) hQ x).1 hx'
+  · intro hx
+    apply Subtype.ext
+    simpa [coe_spinSpecialOrthogonalRepresentationFiniteDimensional] using
+      (spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one (Q := Q) hQ x).2 hx
+
+/-- Once the canonical pair generators span `SO(V,Q)`, the factored ambient spin map is
+surjective and its kernel is exactly `±1`. -/
+theorem spinSpecialOrthogonalRepresentationFiniteDimensional_covering_of_pairGeneratorClosure_eq_top
+    [FiniteDimensional K V] (hQ : Q.Nondegenerate)
+    (hgen : Subgroup.closure (spinSpecialOrthogonalPairGeneratorSet (Q := Q)) = ⊤) :
+    Function.Surjective (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q)) ∧
+      ∀ x : spinGroup Q,
+        spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q) x = 1 ↔
+          (x : CliffordAlgebra Q) = 1 ∨ (x : CliffordAlgebra Q) = -1 := by
+  constructor
+  · exact spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_of_pairGeneratorClosure_eq_top
+      (Q := Q) hgen
+  · intro x
+    exact spinSpecialOrthogonalRepresentationFiniteDimensional_eq_one_iff_coe_eq_one_or_neg_one
+      (Q := Q) hQ x
 
 end Spinor

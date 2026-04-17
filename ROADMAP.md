@@ -243,8 +243,11 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one`
   - [x] reduce surjectivity to a concrete generator theorem via
     `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_of_pairGeneratorClosure_eq_top`
+  - [x] package the final `SO(V,Q)`-valued covering statement under that closure hypothesis via
+    `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_covering_of_pairGeneratorClosure_eq_top`
   - [ ] Remaining gap: prove the canonical two-reflection lifts
-    `Spinor.spinSpecialOrthogonalPairGeneratorSet` generate `SO(V,Q)`
+    `Spinor.spinSpecialOrthogonalPairGeneratorSet` generate `SO(V,Q)`, i.e. prove the closure
+    hypothesis fed into the theorem above
 - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
   - done on the ambient API by
