@@ -75,7 +75,7 @@ theorem sq_nondegenerate :
     rw [QuadraticMap.associated_sq]
     have hRefl : (LinearMap.mul K K).IsRefl := by
       intro x y
-      simp [LinearMap.mul_apply', mul_comm]
+      simp [mul_comm]
     rw [hRefl.nondegenerate_iff_separatingLeft]
     intro x hx
     have h1 := hx 1
@@ -154,7 +154,7 @@ theorem oddSplitEvenCliffordMap_surjective :
       (oddSplitOneUpIsometry (K := K) (M := M)).toIsometry.comp
           (oddSplitOneUpIsometry (K := K) (M := M)).symm.toIsometry =
         QuadraticMap.Isometry.id (QuadraticForm.dualProd K (⊤ : Submodule K (M × K))) := by
-    ext v <;> simp [QuadraticMap.Isometry.comp_apply, LinearEquiv.apply_symm_apply]
+    ext v <;> simp [QuadraticMap.Isometry.comp_apply]
   have hmap :
       CliffordAlgebra.map (oddSplitOneUpIsometry (K := K) (M := M)).toIsometry
           (CliffordAlgebra.map (oddSplitOneUpIsometry (K := K) (M := M)).symm.toIsometry a.1) =
@@ -192,7 +192,7 @@ theorem oddSplitEvenCliffordMap_injective :
       (oddSplitOneUpIsometry (K := K) (M := M)).symm.toIsometry.comp
           (oddSplitOneUpIsometry (K := K) (M := M)).toIsometry =
         QuadraticMap.Isometry.id (CliffordAlgebra.EquivEven.Q' (oddSplitForm (K := K) M)) := by
-    ext v <;> simp [QuadraticMap.Isometry.comp_apply, LinearEquiv.symm_apply_apply]
+    ext v <;> simp [QuadraticMap.Isometry.comp_apply]
   have hmapa :
       CliffordAlgebra.map (oddSplitOneUpIsometry (K := K) (M := M)).symm.toIsometry
           (CliffordAlgebra.map (oddSplitOneUpIsometry (K := K) (M := M)).toIsometry a.1) =
