@@ -29,8 +29,11 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
 * `Spinor.cliffordIota_injective`, `Spinor.cliffordAlgebraMap_injective`,
   `Spinor.cliffordIotaRangeEquiv` — the Clifford inclusion of `M` is a linear embedding in
   characteristic not two.
-* `Spinor.pinConjAlgEquiv`, `Spinor.spinConjAlgEquiv` — Clifford conjugation by a pin/spin
-  element as an algebra automorphism.
+* `Spinor.lipschitzConjAlgEquiv`, `Spinor.pinConjAlgEquiv`, `Spinor.spinConjAlgEquiv` —
+  Clifford conjugation by a Lipschitz/pin/spin element as an algebra automorphism.
+* `Spinor.lipschitzVectorAction`, `Spinor.lipschitzLinearEquiv`,
+  `Spinor.lipschitzLinearRepresentation : lipschitzGroup Q →* (M ≃ₗ[R] M)` — the ambient
+  vector action of the Lipschitz group by conjugation on `CliffordAlgebra.ι Q`.
 * `Spinor.pinVectorAction`, `Spinor.pinLinearEquiv`,
   `Spinor.pinLinearRepresentation : pinGroup Q →* (M ≃ₗ[R] M)` — the ambient vector action of
   the pin group by conjugation on `CliffordAlgebra.ι Q`.
@@ -42,8 +45,12 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
   `Spinor.spinVector_preserves_quadratic`, `Spinor.spinIsometryEquiv`,
   `Spinor.spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q` — each pin/spin
   element acts as an isometry of `Q`, assembled into a homomorphism.
-* `Spinor.spinSpecialOrthogonalRepresentation` — once the determinant-one step is supplied, the
-  ambient isometry representation factors through `QuadraticForm.specialOrthogonalGroup Q`.
+* `Spinor.spinLinearRepresentation_det_eq_one` — over finite-dimensional fields, the ambient spin
+  representation has determinant `1`.
+* `Spinor.spinSpecialOrthogonalRepresentation`,
+  `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional` — the ambient isometry
+  representation factors through `QuadraticForm.specialOrthogonalGroup Q`, either from an external
+  determinant hypothesis or canonically in the finite-dimensional field setting.
 * `Spinor.spinRepresentation_not_factor_through_isometry_of_kernel_witness`,
   `Spinor.spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one` —
   the spin representation does not factor through the ambient isometry representation when
@@ -206,6 +213,93 @@ omit [Invertible (2 : R)] in
 @[simp]
 theorem coe_spinGroupToPinGroup (x : spinGroup Q) :
     ((spinGroupToPinGroup (Q := Q) x : pinGroup Q) : CliffordAlgebra Q) = x := rfl
+
+/-- Conjugation by a Lipschitz element as an algebra automorphism of the Clifford algebra. -/
+noncomputable def lipschitzConjAlgEquiv (x : lipschitzGroup Q) :
+    CliffordAlgebra Q ≃ₐ[R] CliffordAlgebra Q :=
+  MulSemiringAction.toAlgEquiv R (CliffordAlgebra Q)
+    (ConjAct.toConjAct (x : (CliffordAlgebra Q)ˣ))
+
+omit [Invertible (2 : R)] in
+@[simp]
+theorem lipschitzConjAlgEquiv_apply (x : lipschitzGroup Q) (a : CliffordAlgebra Q) :
+    lipschitzConjAlgEquiv (Q := Q) x a =
+      ConjAct.toConjAct (x : (CliffordAlgebra Q)ˣ) • a := rfl
+
+/-- The Lipschitz conjugation action preserves the Clifford copy of the ambient vector space. -/
+noncomputable def lipschitzRangeAction (x : lipschitzGroup Q) :
+    LinearMap.range (CliffordAlgebra.ι Q) →ₗ[R] LinearMap.range (CliffordAlgebra.ι Q) where
+  toFun y := by
+    let z := lipschitzConjAlgEquiv (Q := Q) x y
+    refine ⟨z, ?_⟩
+    let m : M := Classical.choose y.property
+    have hm : CliffordAlgebra.ι Q m = (y : CliffordAlgebra Q) := Classical.choose_spec y.property
+    exact by
+      simpa [z, hm] using lipschitzGroup.conjAct_smul_ι_mem_range_ι
+        (Q := Q) (x := (x : (CliffordAlgebra Q)ˣ)) x.property m
+  map_add' y z := by
+    apply Subtype.ext
+    simp [lipschitzConjAlgEquiv]
+  map_smul' a y := by
+    apply Subtype.ext
+    simp [lipschitzConjAlgEquiv]
+
+@[simp]
+theorem lipschitzRangeAction_apply (x : lipschitzGroup Q)
+    (y : LinearMap.range (CliffordAlgebra.ι Q)) :
+    ((lipschitzRangeAction (Q := Q) x y : LinearMap.range (CliffordAlgebra.ι Q)) :
+        CliffordAlgebra Q) =
+      lipschitzConjAlgEquiv (Q := Q) x y := rfl
+
+/-- The ambient linear map induced by Lipschitz conjugation on the image of `CliffordAlgebra.ι`. -/
+noncomputable def lipschitzVectorAction (x : lipschitzGroup Q) : M →ₗ[R] M :=
+  (cliffordIotaRangeEquiv (Q := Q)).symm.toLinearMap.comp
+    ((lipschitzRangeAction (Q := Q) x).comp (cliffordIotaRangeEquiv (Q := Q)).toLinearMap)
+
+@[simp]
+theorem lipschitzVectorAction_ι (x : lipschitzGroup Q) (m : M) :
+    CliffordAlgebra.ι Q (lipschitzVectorAction (Q := Q) x m) =
+      ConjAct.toConjAct (x : (CliffordAlgebra Q)ˣ) • CliffordAlgebra.ι Q m := by
+  simp [lipschitzVectorAction, lipschitzConjAlgEquiv]
+
+/-- Each Lipschitz element acts by a linear automorphism of the ambient quadratic module. -/
+noncomputable def lipschitzLinearEquiv (x : lipschitzGroup Q) : M ≃ₗ[R] M :=
+  { lipschitzVectorAction (Q := Q) x with
+    invFun := lipschitzVectorAction (Q := Q) x⁻¹
+    left_inv := by
+      intro m
+      apply cliffordIota_injective (Q := Q)
+      simp [lipschitzVectorAction_ι]
+    right_inv := by
+      intro m
+      apply cliffordIota_injective (Q := Q)
+      simp [lipschitzVectorAction_ι] }
+
+@[simp]
+theorem lipschitzLinearEquiv_apply (x : lipschitzGroup Q) (m : M) :
+    lipschitzLinearEquiv (Q := Q) x m = lipschitzVectorAction (Q := Q) x m := rfl
+
+@[simp]
+theorem lipschitzLinearEquiv_ι (x : lipschitzGroup Q) (m : M) :
+    CliffordAlgebra.ι Q (lipschitzLinearEquiv (Q := Q) x m) =
+      ConjAct.toConjAct (x : (CliffordAlgebra Q)ˣ) • CliffordAlgebra.ι Q m :=
+  lipschitzVectorAction_ι (Q := Q) x m
+
+/-- The ambient vector action of the Lipschitz group. -/
+noncomputable def lipschitzLinearRepresentation : lipschitzGroup Q →* (M ≃ₗ[R] M) where
+  toFun := lipschitzLinearEquiv (Q := Q)
+  map_one' := by
+    ext m
+    apply cliffordIota_injective (Q := Q)
+    simp
+  map_mul' x y := by
+    ext m
+    apply cliffordIota_injective (Q := Q)
+    simp [LinearEquiv.mul_apply, mul_smul]
+
+@[simp]
+theorem lipschitzLinearRepresentation_apply (x : lipschitzGroup Q) :
+    lipschitzLinearRepresentation (Q := Q) x = lipschitzLinearEquiv (Q := Q) x := rfl
 
 /-- Conjugation by a pin element as an algebra automorphism of the Clifford algebra. -/
 noncomputable def pinConjAlgEquiv (x : pinGroup Q) : CliffordAlgebra Q ≃ₐ[R] CliffordAlgebra Q :=
@@ -566,6 +660,15 @@ theorem pinLinearRepresentation_spinGroupToPinGroup (x : spinGroup Q) :
     pinLinearEquiv_ι, spinLinearEquiv_ι, hUnits]
 
 @[simp]
+theorem lipschitzLinearRepresentation_toUnits_spinGroup (x : spinGroup Q) :
+    lipschitzLinearRepresentation (Q := Q)
+        ⟨spinGroup.toUnits x, spinGroup.units_mem_lipschitzGroup x.prop⟩ =
+      spinLinearRepresentation (Q := Q) x := by
+  ext m
+  apply cliffordIota_injective (Q := Q)
+  simp
+
+@[simp]
 theorem pinIsometryRepresentation_comp_spinGroupToPinGroup :
     (pinIsometryRepresentation (Q := Q)).comp (spinGroupToPinGroup (Q := Q)) =
       spinIsometryRepresentation (Q := Q) := by
@@ -764,6 +867,132 @@ theorem spinRepresentation_not_factor_through_isometry_of_coe_eq_algebraMap_of_n
   · exact spinIsometryRepresentation_eq_one_of_coe_eq_algebraMap (Q := Q) x r hx
   · exact spinRepresentation_ne_one_of_coe_eq_algebraMap_of_ne_one (Q := Q) x r hx hr
 
+/-- The Clifford unit attached to a vector with invertible quadratic norm. -/
+noncomputable def cliffordIotaUnit (a : M) [Invertible (Q a)] : (CliffordAlgebra Q)ˣ :=
+  (CliffordAlgebra.isUnit_ι_of_isUnit (Q := Q) (isUnit_of_invertible (Q a))).unit
+
+omit [Invertible (2 : R)] in
+@[simp]
+theorem coe_cliffordIotaUnit (a : M) [Invertible (Q a)] :
+    ((cliffordIotaUnit (Q := Q) a : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
+      CliffordAlgebra.ι Q a :=
+  IsUnit.unit_spec <| CliffordAlgebra.isUnit_ι_of_isUnit (Q := Q) (isUnit_of_invertible (Q a))
+
+/-- A vector with invertible quadratic norm determines an element of the Lipschitz group. -/
+noncomputable def cliffordIotaLipschitz (a : M) [Invertible (Q a)] : lipschitzGroup Q :=
+  ⟨cliffordIotaUnit (Q := Q) a, by
+    unfold lipschitzGroup
+    exact Subgroup.subset_closure <| by
+      change (((cliffordIotaUnit (Q := Q) a : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q)) ∈
+        Set.range (CliffordAlgebra.ι Q)
+      exact ⟨a, coe_cliffordIotaUnit (Q := Q) a⟩⟩
+
+omit [Invertible (2 : R)] in
+@[simp]
+theorem coe_cliffordIotaLipschitz (a : M) [Invertible (Q a)] :
+    (((cliffordIotaLipschitz (Q := Q) a : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) :
+        CliffordAlgebra Q) =
+      CliffordAlgebra.ι Q a :=
+  coe_cliffordIotaUnit (Q := Q) a
+
+/-- The ambient Lipschitz action of an invertible vector is the explicit reflection formula
+`b ↦ (⅟(Q a) * polar_Q(a,b)) • a - b`. -/
+theorem lipschitzLinearRepresentation_apply_cliffordIota
+    (a b : M) [Invertible (Q a)] :
+    lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a) b =
+      (⅟(Q a) * QuadraticMap.polar Q a b) • a - b := by
+  let x : lipschitzGroup Q := cliffordIotaLipschitz (Q := Q) a
+  letI : Invertible (CliffordAlgebra.ι Q a) := (cliffordIotaUnit (Q := Q) a).invertible
+  apply cliffordIota_injective (Q := Q)
+  rw [lipschitzLinearRepresentation_apply, lipschitzLinearEquiv_ι, ConjAct.units_smul_def,
+    ConjAct.ofConjAct_toConjAct]
+  change (((x : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) * CliffordAlgebra.ι Q b *
+      ↑((x : (CliffordAlgebra Q)ˣ)⁻¹)) =
+    CliffordAlgebra.ι Q ((⅟(Q a) * QuadraticMap.polar Q a b) • a - b)
+  simp [x, cliffordIotaLipschitz]
+  rw [← invOf_units (cliffordIotaUnit (Q := Q) a)]
+  simpa [cliffordIotaLipschitz, cliffordIotaUnit] using
+    (CliffordAlgebra.ι_mul_ι_mul_invOf_ι (Q := Q) a b)
+
+/-- The ambient Lipschitz action of an invertible vector fixes that vector. -/
+theorem lipschitzLinearRepresentation_apply_cliffordIota_self
+    (a : M) [Invertible (Q a)] :
+    lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a) a = a := by
+  rw [lipschitzLinearRepresentation_apply_cliffordIota (Q := Q) a a]
+  have hcoef : (⅟(Q a) * QuadraticMap.polar Q a a : R) = 2 := by
+    have hq1 : (⅟(Q a) * Q a : R) = 1 := invOf_mul_self (Q a)
+    rw [QuadraticMap.polar_self, two_smul, mul_add, hq1]
+    simpa using (two_mul (1 : R)).symm
+  rw [hcoef]
+  simp [two_smul, sub_eq_add_neg, add_assoc]
+
+/-- The ambient Lipschitz action of an invertible vector acts by negation on vectors orthogonal to
+it. -/
+theorem lipschitzLinearRepresentation_apply_cliffordIota_of_isOrtho
+    (a b : M) [Invertible (Q a)] (hab : Q.IsOrtho a b) :
+    lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a) b = -b := by
+  rw [lipschitzLinearRepresentation_apply_cliffordIota (Q := Q) a b, hab.polar_eq_zero]
+  simp
+
+/-- The ambient Lipschitz action of an invertible vector preserves its span. -/
+theorem lipschitzLinearRepresentation_mem_span_singleton_cliffordIota
+    (a b : M) [Invertible (Q a)] (hb : b ∈ R ∙ a) :
+    lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a) b ∈ R ∙ a := by
+  obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.mp hb
+  rw [map_smul, lipschitzLinearRepresentation_apply_cliffordIota_self (Q := Q) a]
+  exact Submodule.mem_span_singleton.mpr ⟨c, rfl⟩
+
+/-- The ambient Lipschitz action of an invertible vector differs from `-id` by a vector in its
+span. -/
+theorem lipschitzLinearRepresentation_add_self_mem_span_singleton_cliffordIota
+    (a b : M) [Invertible (Q a)] :
+    lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a) b + b ∈ R ∙ a := by
+  rw [lipschitzLinearRepresentation_apply_cliffordIota (Q := Q) a b]
+  simpa [sub_eq_add_neg, add_assoc] using
+    (Submodule.smul_mem (R ∙ a) (⅟(Q a) * QuadraticMap.polar Q a b)
+      (Submodule.mem_span_singleton_self a))
+
+/-- The ambient Lipschitz action of an invertible vector preserves its span as a submodule. -/
+theorem lipschitzLinearRepresentation_span_singleton_le_comap_cliffordIota
+    (a : M) [Invertible (Q a)] :
+    (R ∙ a) ≤ (R ∙ a).comap
+      (((lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a)) :
+          M ≃ₗ[R] M) : M →ₗ[R] M) := by
+  intro b hb
+  exact lipschitzLinearRepresentation_mem_span_singleton_cliffordIota (Q := Q) a b hb
+
+/-- Modulo the line spanned by an invertible vector, its ambient Lipschitz action is `-id`. -/
+theorem lipschitzLinearRepresentation_mapQ_span_singleton_eq_neg_id_cliffordIota
+    (a : M) [Invertible (Q a)] :
+    (R ∙ a).mapQ (R ∙ a)
+      ((((lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a)) :
+          M ≃ₗ[R] M) : M →ₗ[R] M))
+      (lipschitzLinearRepresentation_span_singleton_le_comap_cliffordIota (Q := Q) a) =
+      (-1 : R) • LinearMap.id := by
+  ext b
+  apply (Submodule.Quotient.eq (R ∙ a)).mpr
+  simpa [sub_eq_add_neg, add_assoc] using
+    lipschitzLinearRepresentation_add_self_mem_span_singleton_cliffordIota (Q := Q) a b
+
+/-- On the line spanned by an invertible vector, its ambient Lipschitz action is the identity. -/
+theorem lipschitzLinearRepresentation_restrict_span_singleton_eq_id_cliffordIota
+    (a : M) [Invertible (Q a)] :
+    ((((lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a)) :
+        M ≃ₗ[R] M) : M →ₗ[R] M).restrict
+      (lipschitzLinearRepresentation_span_singleton_le_comap_cliffordIota (Q := Q) a)) =
+      LinearMap.id := by
+  ext b
+  obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp b.2
+  have hc_mem : c • a ∈ R ∙ a := Submodule.smul_mem _ c (Submodule.mem_span_singleton_self a)
+  have hb : b = ⟨c • a, hc_mem⟩ := by
+    apply Subtype.ext
+    simpa using hc.symm
+  rw [hb]
+  simpa [LinearMap.restrict_apply, map_smul, lipschitzLinearRepresentation_apply,
+    lipschitzLinearEquiv_apply] using
+    congrArg (fun m => c • m)
+      (lipschitzLinearRepresentation_apply_cliffordIota_self (Q := Q) a)
+
 omit [Invertible (2 : R)] in
 /-- A vector of quadratic norm `-1` defines a pin element. -/
 theorem iota_mem_pinGroup_of_quadratic_eq_neg_one (m : M) (hq : Q m = -1) :
@@ -957,6 +1186,275 @@ theorem pinLinearRepresentation_det_of_quadratic_eq_neg_one
     _ = (-1 : K) ^ Module.finrank K (V ⧸ p) := by
       rw [LinearMap.det_smul, LinearMap.det_id]
       simp
+
+/-- Over a finite-dimensional vector space, the ambient Lipschitz action of an invertible vector
+has determinant `(-1)^(dim V - 1)`. -/
+theorem lipschitzLinearRepresentation_det_toLinearMap_cliffordIota
+    (a : V) [Invertible (Q a)] :
+    LinearMap.det
+        ((((lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a)) :
+            V ≃ₗ[K] V) : V →ₗ[K] V)) =
+      (-1 : K) ^ (Module.finrank K V - 1) := by
+  let f : V →ₗ[K] V :=
+    (((lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a)) :
+        V ≃ₗ[K] V) : V →ₗ[K] V)
+  let p : Submodule K V := K ∙ a
+  change LinearMap.det f = (-1 : K) ^ (Module.finrank K V - 1)
+  have hp : p ≤ p.comap f := by
+    simpa [p, f] using
+      lipschitzLinearRepresentation_span_singleton_le_comap_cliffordIota (Q := Q) a
+  have hrestrict : f.restrict hp = LinearMap.id := by
+    simpa [p, f] using
+      lipschitzLinearRepresentation_restrict_span_singleton_eq_id_cliffordIota (Q := Q) a
+  have hmapQ : p.mapQ p f hp = (-1 : K) • LinearMap.id := by
+    simpa [p, f] using
+      lipschitzLinearRepresentation_mapQ_span_singleton_eq_neg_id_cliffordIota (Q := Q) a
+  have ha : a ≠ 0 := by
+    intro ha
+    exact (isUnit_of_invertible (Q a)).ne_zero (by simp [ha])
+  have hfin : Module.finrank K (V ⧸ p) = Module.finrank K V - 1 := by
+    have hdim : Module.finrank K (V ⧸ p) + 1 = Module.finrank K V := by
+      simpa [p, finrank_span_singleton ha] using p.finrank_quotient_add_finrank
+    exact Nat.eq_sub_of_add_eq hdim
+  calc
+    LinearMap.det f = LinearMap.det (f.restrict hp) * LinearMap.det (p.mapQ p f hp) := by
+      simpa [p, f] using LinearMap.det_eq_det_mul_det (W := p) f hp
+    _ = 1 * LinearMap.det ((-1 : K) • (LinearMap.id : (V ⧸ p) →ₗ[K] (V ⧸ p))) := by
+      simp [hrestrict, hmapQ]
+    _ = (-1 : K) ^ Module.finrank K (V ⧸ p) := by
+      rw [LinearMap.det_smul, LinearMap.det_id]
+      simp
+    _ = (-1 : K) ^ (Module.finrank K V - 1) := by rw [hfin]
+
+/-- Unit-valued determinant version of
+`lipschitzLinearRepresentation_det_toLinearMap_cliffordIota`. -/
+theorem lipschitzLinearRepresentation_det_cliffordIota
+    (a : V) [Invertible (Q a)] :
+    LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a)) =
+      (-1 : Kˣ) ^ (Module.finrank K V - 1) := by
+  apply Units.ext
+  rw [LinearEquiv.coe_det]
+  simpa using lipschitzLinearRepresentation_det_toLinearMap_cliffordIota (Q := Q) a
+
+private def lipschitzVal (x : lipschitzGroup Q) : CliffordAlgebra Q :=
+  ((x : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q)
+
+/-- `lipschitzLinearRepresentationDetParity x` records the two determinant/involution patterns
+compatible with multiplicative generation by vectors. -/
+def lipschitzLinearRepresentationDetParity (x : lipschitzGroup Q) : Prop :=
+  (CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) x) = lipschitzVal (Q := Q) x ∧
+      LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) x) = 1)
+    ∨
+  (CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) x) = -(lipschitzVal (Q := Q) x) ∧
+      LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) x) =
+        (-1 : Kˣ) ^ (Module.finrank K V - 1))
+
+theorem lipschitzLinearRepresentationDetParity_cliffordIota
+    (a : V) [Invertible (Q a)] :
+    lipschitzLinearRepresentationDetParity (Q := Q) (cliffordIotaLipschitz (Q := Q) a) := by
+  right
+  constructor
+  · change CliffordAlgebra.involute (Q := Q) (CliffordAlgebra.ι Q a) = -CliffordAlgebra.ι Q a
+    simp
+  · exact lipschitzLinearRepresentation_det_cliffordIota (Q := Q) a
+
+omit [Invertible (2 : K)] [FiniteDimensional K V] in
+@[simp]
+theorem coe_cliffordIotaLipschitz_inv (a : V) [Invertible (Q a)] :
+    lipschitzVal (Q := Q) ((cliffordIotaLipschitz (Q := Q) a)⁻¹) =
+      (⅟(Q a)) • CliffordAlgebra.ι Q a := by
+  letI : Invertible (CliffordAlgebra.ι Q a) := (cliffordIotaUnit (Q := Q) a).invertible
+  change (⅟(CliffordAlgebra.ι Q a) : CliffordAlgebra Q) = _
+  simpa using (CliffordAlgebra.invOf_ι (Q := Q) a)
+
+theorem lipschitzLinearRepresentationDetParity_inv_cliffordIota
+    (a : V) [Invertible (Q a)] :
+    lipschitzLinearRepresentationDetParity (Q := Q) ((cliffordIotaLipschitz (Q := Q) a)⁻¹) := by
+  right
+  constructor
+  · rw [coe_cliffordIotaLipschitz_inv (Q := Q) a]
+    simp [CliffordAlgebra.involute_ι, map_smul]
+  · have hdetInv :
+        LinearEquiv.det
+            (lipschitzLinearRepresentation (Q := Q) ((cliffordIotaLipschitz (Q := Q) a)⁻¹)) =
+          (LinearEquiv.det
+            (lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a)))⁻¹ := by
+      rw [(lipschitzLinearRepresentation (Q := Q)).map_inv]
+      exact map_inv (LinearEquiv.det : (V ≃ₗ[K] V) →* Kˣ)
+        (lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a))
+    rw [hdetInv, lipschitzLinearRepresentation_det_cliffordIota (Q := Q) a]
+    let n : ℕ := Module.finrank K V - 1
+    have hsq : ((-1 : Kˣ) ^ n) * ((-1 : Kˣ) ^ n) = 1 := by
+      apply Units.ext
+      change (((-1 : K) ^ n) * ((-1 : K) ^ n)) = 1
+      rw [← pow_add, ← two_mul n, pow_mul]
+      simp
+    exact inv_eq_of_mul_eq_one_left hsq
+
+omit [FiniteDimensional K V] in
+theorem lipschitzLinearRepresentationDetParity_mul {x y : lipschitzGroup Q}
+    (hx : lipschitzLinearRepresentationDetParity (Q := Q) x)
+    (hy : lipschitzLinearRepresentationDetParity (Q := Q) y) :
+    lipschitzLinearRepresentationDetParity (Q := Q) (x * y) := by
+  have hinvoluteMul :
+      CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) (x * y)) =
+        CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) x) *
+          CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) y) := by
+    change CliffordAlgebra.involute (Q := Q)
+        (lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y) = _
+    exact map_mul (CliffordAlgebra.involute (Q := Q))
+      (lipschitzVal (Q := Q) x) (lipschitzVal (Q := Q) y)
+  have hdetMul :
+      LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) (x * y)) =
+        LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) x) *
+          LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) y) := by
+    rw [(lipschitzLinearRepresentation (Q := Q)).map_mul]
+    exact map_mul (LinearEquiv.det : (V ≃ₗ[K] V) →* Kˣ)
+      (lipschitzLinearRepresentation (Q := Q) x) (lipschitzLinearRepresentation (Q := Q) y)
+  rcases hx with hx | hx <;> rcases hy with hy | hy
+  · left
+    constructor
+    · calc
+        CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) (x * y)) =
+            CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) x) *
+              CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) y) := hinvoluteMul
+        _ = lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y := by rw [hx.1, hy.1]
+        _ = lipschitzVal (Q := Q) (x * y) := by rfl
+    · rw [hdetMul, hx.2, hy.2]
+      simp
+  · right
+    constructor
+    · calc
+        CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) (x * y)) =
+            CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) x) *
+              CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) y) := hinvoluteMul
+        _ = lipschitzVal (Q := Q) x * (-(lipschitzVal (Q := Q) y)) := by rw [hx.1, hy.1]
+        _ = -(lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y) := by rw [mul_neg]
+        _ = -(lipschitzVal (Q := Q) (x * y)) := by rfl
+    · rw [hdetMul, hx.2, hy.2]
+      simp
+  · right
+    constructor
+    · calc
+        CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) (x * y)) =
+            CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) x) *
+              CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) y) := hinvoluteMul
+        _ = (-(lipschitzVal (Q := Q) x)) * lipschitzVal (Q := Q) y := by rw [hx.1, hy.1]
+        _ = -(lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y) := by rw [neg_mul]
+        _ = -(lipschitzVal (Q := Q) (x * y)) := by rfl
+    · rw [hdetMul, hx.2, hy.2]
+      simp
+  · left
+    constructor
+    · calc
+        CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) (x * y)) =
+            CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) x) *
+              CliffordAlgebra.involute (Q := Q) (lipschitzVal (Q := Q) y) := hinvoluteMul
+        _ = (-(lipschitzVal (Q := Q) x)) * (-(lipschitzVal (Q := Q) y)) := by rw [hx.1, hy.1]
+        _ = lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y := by simp
+        _ = lipschitzVal (Q := Q) (x * y) := by rfl
+    · rw [hdetMul, hx.2, hy.2]
+      let n : ℕ := Module.finrank K V - 1
+      have hsq : ((-1 : Kˣ) ^ n) * ((-1 : Kˣ) ^ n) = 1 := by
+        apply Units.ext
+        change (((-1 : K) ^ n) * ((-1 : K) ^ n)) = 1
+        rw [← pow_add, ← two_mul n, pow_mul]
+        simp
+      have hd : (((-1 : Kˣ) ^ n)⁻¹) = (-1 : Kˣ) ^ n :=
+        inv_eq_of_mul_eq_one_left hsq
+      calc
+        (-1 : Kˣ) ^ n * (-1 : Kˣ) ^ n = ((-1 : Kˣ) ^ n)⁻¹ * ((-1 : Kˣ) ^ n) := by rw [hd]
+        _ = 1 := by simp
+
+/-- Every Lipschitz element acts with determinant either `1` or the determinant of an invertible
+vector generator, according to its Clifford parity. -/
+theorem lipschitzLinearRepresentation_detParity (x : lipschitzGroup Q) :
+    lipschitzLinearRepresentationDetParity (Q := Q) x := by
+  let s : Set (CliffordAlgebra Q)ˣ := ((↑) ⁻¹' Set.range (CliffordAlgebra.ι Q))
+  let p : (g : (CliffordAlgebra Q)ˣ) → g ∈ Subgroup.closure s → Prop :=
+    fun g hg =>
+      lipschitzLinearRepresentationDetParity (Q := Q)
+        ⟨g, by simpa [lipschitzGroup, s] using hg⟩
+  have hx : ((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) ∈ Subgroup.closure s := by
+    have hx0 := x.property
+    simp [lipschitzGroup, s] at hx0 ⊢
+  exact Subgroup.closure_induction'' (s := s) (p := p)
+    (fun g hg => by
+      obtain ⟨a, ha⟩ := hg
+      letI := g.invertible
+      letI : Invertible (CliffordAlgebra.ι Q a) := by rwa [ha]
+      letI : Invertible (Q a) := CliffordAlgebra.invertibleOfInvertibleι (Q := Q) a
+      have hg' : g = cliffordIotaUnit (Q := Q) a := by
+        apply Units.ext
+        simpa [cliffordIotaUnit] using ha.symm
+      simpa [p, hg'] using
+        lipschitzLinearRepresentationDetParity_cliffordIota (Q := Q) a)
+    (fun g hg => by
+      obtain ⟨a, ha⟩ := hg
+      letI := g.invertible
+      letI : Invertible (CliffordAlgebra.ι Q a) := by rwa [ha]
+      letI : Invertible (Q a) := CliffordAlgebra.invertibleOfInvertibleι (Q := Q) a
+      have hg' : g = cliffordIotaUnit (Q := Q) a := by
+        apply Units.ext
+        simpa [cliffordIotaUnit] using ha.symm
+      simpa [p, hg'] using
+        lipschitzLinearRepresentationDetParity_inv_cliffordIota (Q := Q) a)
+    (by
+      left
+      constructor
+      · simp [lipschitzVal]
+      · change LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) (1 : lipschitzGroup Q)) = 1
+        rw [(lipschitzLinearRepresentation (Q := Q)).map_one]
+        simp)
+    (fun g h hg hh hg' hh' => by
+      simpa [p] using lipschitzLinearRepresentationDetParity_mul (Q := Q) hg' hh')
+    hx
+
+/-- The ambient spin representation always has determinant `1`. -/
+theorem spinLinearRepresentation_det_eq_one (x : spinGroup Q) :
+    LinearEquiv.det (spinLinearRepresentation (Q := Q) x) = 1 := by
+  let xL : lipschitzGroup Q :=
+    ⟨spinGroup.toUnits x, spinGroup.units_mem_lipschitzGroup x.prop⟩
+  rcases lipschitzLinearRepresentation_detParity (Q := Q) xL with h | h
+  · simpa [xL, lipschitzLinearRepresentation_toUnits_spinGroup (Q := Q) x] using h.2
+  · have hx_even : CliffordAlgebra.involute (Q := Q) (x : CliffordAlgebra Q) = x :=
+      spinGroup.involute_eq x.prop
+    have hx_odd : CliffordAlgebra.involute (Q := Q) (x : CliffordAlgebra Q) = -(x : CliffordAlgebra Q) := by
+      simpa [xL] using h.1
+    have hneg : (x : CliffordAlgebra Q) = -(x : CliffordAlgebra Q) := by
+      calc
+        (x : CliffordAlgebra Q) = CliffordAlgebra.involute (Q := Q) (x : CliffordAlgebra Q) := by
+          simpa using hx_even.symm
+        _ = -(x : CliffordAlgebra Q) := hx_odd
+    have htwo : (2 : K) • (x : CliffordAlgebra Q) = 0 := by
+      calc
+        (2 : K) • (x : CliffordAlgebra Q) = (x : CliffordAlgebra Q) + x := by simp [two_smul]
+        _ = (x : CliffordAlgebra Q) + (-(x : CliffordAlgebra Q)) := by
+              exact congrArg (fun t : CliffordAlgebra Q => (x : CliffordAlgebra Q) + t) hneg
+        _ = 0 := by simp
+    have htwo_ne_zero : (2 : K) ≠ 0 := (isUnit_of_invertible (2 : K)).ne_zero
+    have hx_zero : (x : CliffordAlgebra Q) = 0 := by
+      exact (smul_eq_zero.mp htwo).resolve_left htwo_ne_zero
+    exact False.elim ((Units.ne_zero (spinGroup.toUnits x)) (by simpa using hx_zero))
+
+/-- The ambient spin action factors through the special orthogonal group over finite-dimensional
+fields. -/
+noncomputable def spinSpecialOrthogonalRepresentationFiniteDimensional :
+    spinGroup Q →* Q.specialOrthogonalGroup :=
+  spinSpecialOrthogonalRepresentation (Q := Q) (spinLinearRepresentation_det_eq_one (Q := Q))
+
+@[simp]
+theorem coe_spinSpecialOrthogonalRepresentationFiniteDimensional (x : spinGroup Q) :
+    ↑(spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q) x) =
+      spinIsometryRepresentation (Q := Q) x := rfl
+
+@[simp]
+theorem spinSpecialOrthogonalRepresentationFiniteDimensional_comp_subtype :
+    (Q.specialOrthogonalGroup.subtype).comp
+        (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q)) =
+      spinIsometryRepresentation (Q := Q) := by
+  ext x
+  rfl
 
 end Field
 

@@ -235,10 +235,11 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q`
   - [x] package the special orthogonal target as
     `QuadraticForm.specialOrthogonalGroup`
-  - [x] once a determinant-one proof is supplied, factor the ambient action through that target as
-    `Spinor.spinSpecialOrthogonalRepresentation`
-  - [ ] Remaining gap: prove the determinant-one statement for
-    `Spinor.spinLinearRepresentation` and package the surjective double-cover statement
+  - [x] prove the determinant-one statement
+    `Spinor.spinLinearRepresentation_det_eq_one`
+  - [x] factor the ambient action through that target as
+    `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional`
+  - [ ] Remaining gap: package the surjective double-cover statement
 - [ ] Kernel of the ambient spin-to-isometry map is `{1, -1}`
   - done in the finite-dimensional split/hyperbolic setting on the canonical chosen-model API via
     `splitSpinorCoveringKernel_eq_one_or_neg_one`; the fully general / surjective double-cover
