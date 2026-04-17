@@ -88,8 +88,8 @@ noncomputable def realSplitCliffordEquivMatrix (n : ℕ) :
     CliffordAlgebra (standardSignatureForm n n) ≃ₐ[ℝ]
       Matrix (Fin (2 ^ n)) (Fin (2 ^ n)) ℝ := by
   letI : Invertible (2 : ℝ) := invertibleOfNonzero (by norm_num)
-  have hfin : Module.finrank ℝ (Fin n → ℝ) = n := by
-    simpa using (Module.finrank_fintype_fun_eq_card (R := ℝ) (η := Fin n))
+  have hfin := Module.finrank_fintype_fun_eq_card (R := ℝ) (η := Fin n)
+  rw [Fintype.card_fin] at hfin
   let e : Fin (2 ^ Module.finrank ℝ (Fin n → ℝ)) ≃ Fin (2 ^ n) :=
     Equiv.cast (by rw [hfin])
   exact
@@ -105,8 +105,8 @@ noncomputable def realSplitEvenCliffordEquivProdMatrix (n : ℕ) (hn : 0 < n) :
       Matrix (Fin (2 ^ (n - 1))) (Fin (2 ^ (n - 1))) ℝ ×
         Matrix (Fin (2 ^ (n - 1))) (Fin (2 ^ (n - 1))) ℝ := by
   letI : Invertible (2 : ℝ) := invertibleOfNonzero (by norm_num)
-  have hfin : Module.finrank ℝ (Fin n → ℝ) = n := by
-    simpa using (Module.finrank_fintype_fun_eq_card (R := ℝ) (η := Fin n))
+  have hfin := Module.finrank_fintype_fun_eq_card (R := ℝ) (η := Fin n)
+  rw [Fintype.card_fin] at hfin
   have hV : 0 < Module.finrank ℝ (Fin n → ℝ) := by
     rw [hfin]
     exact hn

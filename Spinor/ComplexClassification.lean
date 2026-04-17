@@ -86,8 +86,8 @@ noncomputable def complexEvenCliffordEquivMatrix (n : ℕ) :
     CliffordAlgebra (complexSumSquares (Fin n ⊕ Fin n)) ≃ₐ[ℂ]
       Matrix (Fin (2 ^ n)) (Fin (2 ^ n)) ℂ := by
   letI : Invertible (2 : ℂ) := invertibleOfNonzero (by norm_num)
-  have hfin : Module.finrank ℂ (Fin n → ℂ) = n := by
-    simpa using (Module.finrank_fintype_fun_eq_card (R := ℂ) (η := Fin n))
+  have hfin := Module.finrank_fintype_fun_eq_card (R := ℂ) (η := Fin n)
+  rw [Fintype.card_fin] at hfin
   let e : Fin (2 ^ Module.finrank ℂ (Fin n → ℂ)) ≃ Fin (2 ^ n) :=
     Equiv.cast (by rw [hfin])
   exact
