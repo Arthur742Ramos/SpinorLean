@@ -175,10 +175,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [ ] Spin(4) → SU(2) × SU(2)
   - scaffolding: `Spinor.LowDimensional.realCl04Form` (negative-signature 4-form) and
     `Spinor.LowDimensional.realEvenCl04EquivCl03 : Cl⁺(0,4) ≃ₐ[ℝ] Cl(0,3)` via
-    `CliffordAlgebra.equivEven`; the remaining gap is the classical
-    `Cl(0,3) ≃ ℍ × ℍ` (equivalently `Cl⁺(0,4) ≃ ℍ × ℍ`) isomorphism, which
-    requires a pseudoscalar / central-idempotent splitting currently absent
-    from Mathlib
+    `CliffordAlgebra.equivEven`; the classical `Cl(0,3) ≃ ℍ × ℍ` (equivalently
+    `Cl⁺(0,4) ≃ ℍ × ℍ`) isomorphism is now packaged as
+    `Spinor.realCl03EquivQuaternionProd` in `Spinor.Cl03QuaternionProd`, using
+    the pseudoscalar idempotents `p± := (1 ± e₁e₂e₃)/2` to split the algebra
 - [ ] These connect spinors to familiar physics
   - foundation now includes explicit low-dimensional Clifford-algebra models in
     `Spinor.LowDimensional`, including complex `Cl(1)`, `Cl(2)`, `Cl(3)`, `Cl(4)`, real
