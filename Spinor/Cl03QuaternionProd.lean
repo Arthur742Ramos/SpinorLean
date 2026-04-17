@@ -524,4 +524,16 @@ end
 
 end Cl03QuaternionProd
 
+open scoped Quaternion in
+/-- The even real Clifford algebra `Cl⁺(0,4)` is isomorphic to `ℍ × ℍ`.
+
+This composes `realEvenCl04EquivCl03 : Cl⁺(0,4) ≃ Cl(0,3)` (from
+`Spinor.LowDimensional`) with `Cl03QuaternionProd.realCl03EquivQuaternionProd :
+Cl(0,3) ≃ ℍ × ℍ`. It is the classical Bott-period entry
+`Cl⁺(0,4) ≃ ℍ ⊕ ℍ` and the algebraic core of `Spin(4) ≃ Sp(1) × Sp(1)`. -/
+noncomputable def realEvenCl04EquivQuaternionProd :
+    CliffordAlgebra.even realCl04Form ≃ₐ[ℝ]
+      ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)] × ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)] :=
+  realEvenCl04EquivCl03.trans Cl03QuaternionProd.realCl03EquivQuaternionProd
+
 end Spinor

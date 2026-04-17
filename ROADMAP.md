@@ -172,13 +172,16 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.LowDimensional.realSpin02EquivUnitaryComplex : spinGroup realCl02Form ≃* unitary ℂ`
     using Mathlib's compact negative-signature normalization
 - [ ] Spin(3) → SU(2) (Pauli matrices / quaternions)
+  - **algebraic core done** via `Spinor.Cl03QuaternionProd.realCl03EquivQuaternionProd :
+    CliffordAlgebra realCl03Form ≃ₐ[ℝ] ℍ × ℍ`; the remaining step is the
+    explicit surjectivity of `spinGroup realCl03Form → unitary ℍ`
+    (every unit quaternion is a product of two unit 3-vectors in `Cl⁺(0,3)`)
 - [ ] Spin(4) → SU(2) × SU(2)
   - scaffolding: `Spinor.LowDimensional.realCl04Form` (negative-signature 4-form) and
     `Spinor.LowDimensional.realEvenCl04EquivCl03 : Cl⁺(0,4) ≃ₐ[ℝ] Cl(0,3)` via
-    `CliffordAlgebra.equivEven`; the classical `Cl(0,3) ≃ ℍ × ℍ` (equivalently
-    `Cl⁺(0,4) ≃ ℍ × ℍ`) isomorphism is now packaged as
-    `Spinor.realCl03EquivQuaternionProd` in `Spinor.Cl03QuaternionProd`, using
-    the pseudoscalar idempotents `p± := (1 ± e₁e₂e₃)/2` to split the algebra
+    `CliffordAlgebra.equivEven`; the classical `Cl⁺(0,4) ≃ ℍ × ℍ` is now packaged as
+    `Spinor.realEvenCl04EquivQuaternionProd` in `Spinor.Cl03QuaternionProd`,
+    composed from `realEvenCl04EquivCl03` and `realCl03EquivQuaternionProd`
 - [ ] These connect spinors to familiar physics
   - foundation now includes explicit low-dimensional Clifford-algebra models in
     `Spinor.LowDimensional`, including complex `Cl(1)`, `Cl(2)`, `Cl(3)`, `Cl(4)`, real
