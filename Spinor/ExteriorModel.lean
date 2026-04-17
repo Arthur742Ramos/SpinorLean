@@ -372,12 +372,14 @@ section BasisActions
 variable {I : Type*} [LinearOrder I]
 variable {W : Submodule K V}
 
+omit [Invertible (2 : K)] in
 theorem basis_empty (b : Module.Basis I K W) :
     b.ExteriorAlgebra (∅ : Finset I) = 1 := by
   rw [ExteriorAlgebra.basis_apply_ofCard (R := K) (n := 0) (b := b) (s := (∅ : Finset I))
       (by simp)]
   simp [ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_zero_apply]
 
+omit [Invertible (2 : K)] in
 theorem basis_singleton (b : Module.Basis I K W) (i : I) :
     b.ExteriorAlgebra ({i} : Finset I) = ExteriorAlgebra.ι K (b i) := by
   rw [ExteriorAlgebra.basis_apply_ofCard (R := K) (n := 1) (b := b) (s := ({i} : Finset I))
@@ -385,6 +387,7 @@ theorem basis_singleton (b : Module.Basis I K W) (i : I) :
   simp [ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_succ_apply,
     Set.powersetCard.ofFinEmbEquiv_symm_apply, Finset.orderEmbOfFin_singleton]
 
+omit [Invertible (2 : K)] in
 private theorem basis_eq_unit_smul_wedge_basis_erase
     (b : Module.Basis I K W) {i : I} {s : Finset I} (hi : i ∈ s) :
     ∃ c : K, c * c = 1 ∧
@@ -413,11 +416,12 @@ private theorem basis_eq_unit_smul_wedge_basis_erase
     _ = c •
           (c •
           b.ExteriorAlgebra (insert i (s.erase i))) := by
-            simpa [c, smul_smul, hc]
+            simp [c, smul_smul, hc]
     _ = c •
           ((ExteriorAlgebra.ι K (b i)) * b.ExteriorAlgebra (s.erase i)) := by
           simpa [c, basis_singleton] using congrArg (fun x => c • x) (Eq.symm hmul)
 
+omit [Invertible (2 : K)] in
 theorem wedgeAction_basis_eq_zero_of_mem
     (b : Module.Basis I K W) {i : I} {s : Finset I} (hi : i ∈ s) :
     wedgeAction (K := K) W (b i) (b.ExteriorAlgebra s) = 0 := by
@@ -449,7 +453,7 @@ theorem contractionAction_basis_eq_zero_of_not_mem
           (i := j) (s := insert j s) (by simp) with ⟨c, hc, hu⟩
       rw [hu, map_smul, contractionAction_ι_mul]
       have hcoord : b.coord i (b j) = 0 := by
-        simpa [hji] using (b.coord_apply i j)
+        simp [hji]
       have hmulzero :
           (ExteriorAlgebra.ι K (b j)) *
               contractionAction (K := K) W (b.coord i) (b.ExteriorAlgebra (s.erase j)) = 0 := by
@@ -464,7 +468,7 @@ theorem contract_wedge_basis_eq_self_of_not_mem
       b.ExteriorAlgebra s := by
   rw [wedgeAction_apply, contractionAction_ι_mul]
   have hcoord : b.coord i (b i) = 1 := by
-    simpa using (b.coord_apply i i)
+    simp
   simp [hcoord, contractionAction_basis_eq_zero_of_not_mem (K := K) (W := W) b i hi]
 
 theorem contract_wedge_basis_eq_zero_of_mem
@@ -485,7 +489,7 @@ theorem wedge_contract_basis_eq_self_of_mem
       contractionAction (K := K) W (b.coord i) (b.ExteriorAlgebra (s.erase i)) = 0 := by
     apply contractionAction_basis_eq_zero_of_not_mem (K := K) (W := W) b i
     simp
-  simp [hzero, hi, mul_assoc, smul_mul_assoc]
+  simp [hzero]
 
 theorem wedge_contract_basis_eq_zero_of_not_mem
     (b : Module.Basis I K W) {i : I} {s : Finset I} (hi : i ∉ s) :
@@ -533,7 +537,7 @@ theorem basisMembershipProjectorAux_apply_basis
       · simp [basisMembershipProjectorAux, basisMembershipProjectorOp_apply_basis,
           basisMembershipProjectorAux_apply_basis, h]
       · simp [basisMembershipProjectorAux, basisMembershipProjectorOp_apply_basis,
-          basisMembershipProjectorAux_apply_basis, h]
+          h]
 
 noncomputable def basisMembershipProjector [Fintype I] (b : Module.Basis I K W) (s : Finset I) :
     Module.End K (IsotropicExteriorModel (K := K) W) :=
@@ -901,7 +905,7 @@ theorem exists_splitCliffordAction_remove_basis
         _ = b.ExteriorAlgebra (t \ insert i r) := by
               congr 1
               ext j
-              simp [hir, and_left_comm, and_assoc]
+              simp [and_left_comm, and_assoc]
 
 theorem exists_splitCliffordAction_add_basis
     {W : Submodule K V} (b : Module.Basis I K W) (r t : Finset I) (hr : Disjoint r t) :
@@ -932,7 +936,7 @@ theorem exists_splitCliffordAction_add_basis
         _ = b.ExteriorAlgebra (t ∪ insert i r) := by
               congr 1
               ext j
-              simp [or_left_comm, or_assoc]
+              simp
 
 theorem exists_splitCliffordAction_basis_transfer
     {W : Submodule K V} (b : Module.Basis I K W) (s t : Finset I) :
@@ -956,7 +960,7 @@ theorem exists_splitCliffordAction_basis_transfer
     _ = splitCliffordAction (K := K) W aa (b.ExteriorAlgebra (t ∩ s)) := by
           have hts : t \ r₁ = t ∩ s := by
             ext i
-            simp [r₁, and_left_comm, and_assoc]
+            simp [r₁]
           simpa [hts]
     _ = b.ExteriorAlgebra ((t ∩ s) ∪ (s \ t)) := haa
     _ = b.ExteriorAlgebra s := by
@@ -1012,6 +1016,7 @@ theorem splitCliffordAction_surjective
     exact hspan
   exact LinearMap.range_eq_top.mp (le_antisymm le_top htop)
 
+omit [Invertible (2 : K)] in
 theorem splitCliffordAction_finrank_eq
     {W : Submodule K V} [Fintype I] [Invertible (2 : K)] (b : Module.Basis I K W) :
     Module.finrank K (CliffordAlgebra (QuadraticForm.dualProd K W)) =
@@ -1030,6 +1035,7 @@ theorem splitCliffordAction_finrank_eq
   letI := bEnd.finiteDimensional_of_finite
   rw [Module.finrank_eq_card_basis bCl, Module.finrank_eq_card_basis bEnd]
 
+omit [Invertible (2 : K)] in
 theorem splitCliffordAction_injective
     {W : Submodule K V} [Fintype I] [Invertible (2 : K)] (b : Module.Basis I K W) :
     Function.Injective (splitCliffordAction (K := K) W) := by
@@ -1076,7 +1082,7 @@ theorem splitCliffordAction_isSimpleModule (W : Submodule K V) :
         rfl
       map_smul' := by
         intro a x
-        simpa [σ, splitClifford_smul_def] }
+        simp [σ, splitClifford_smul_def] }
   exact
     (LinearMap.isSimpleModule_iff_of_bijective (σ := σ) (l := l)
       (by simpa [l] using Function.bijective_id)).2 inferInstance
@@ -1214,7 +1220,7 @@ noncomputable def evenSplitCliffordAction (W : Submodule K V) :
   commutes' := by
     intro r
     ext x
-    simp [LinearMap.restrict_apply, splitClifford_smul_def]
+    simp [LinearMap.restrict_apply]
 
 /-- The split Clifford action restricted to the even Clifford part and the chosen odd half. -/
 noncomputable def oddSplitCliffordAction (W : Submodule K V) :
@@ -1240,7 +1246,7 @@ noncomputable def oddSplitCliffordAction (W : Submodule K V) :
   commutes' := by
     intro r
     ext x
-    simp [LinearMap.restrict_apply, splitClifford_smul_def]
+    simp [LinearMap.restrict_apply]
 
 /-- The chosen even half of `⋀W` is a module over the even split Clifford algebra. -/
 noncomputable abbrev evenSplitCliffordModule (W : Submodule K V) :
@@ -1508,15 +1514,15 @@ theorem exists_evenSplitCliffordParityProjector (W : Submodule K V) :
           oddExteriorSubmodule (K := K) W :=
       splitCliffordAction_mem_oddExteriorSubmodule_of_odd (K := K) (W := W) aOdd.2 x.2
     have hsum :
-        splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x +
-            splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x =
+      splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x +
+          splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x =
           x := by
-      calc
-        splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x +
-            splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x =
-          splitCliffordAction (K := K) W
-            ((aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) +
-              (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W))) x := by
+        calc
+          splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x +
+              splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x =
+            splitCliffordAction (K := K) W
+              ((aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) +
+                (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W))) x := by
               symm
               simpa using congrArg
                 (fun f : Module.End K (IsotropicExteriorModel (K := K) W) => f x)
@@ -1564,8 +1570,8 @@ theorem exists_evenSplitCliffordParityProjector (W : Submodule K V) :
           evenExteriorSubmodule (K := K) W :=
       splitCliffordAction_mem_evenExteriorSubmodule_of_odd (K := K) (W := W) aOdd.2 x.2
     have hsum :
-        splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x +
-            splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x =
+      splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x +
+          splitCliffordAction (K := K) W (aOdd : CliffordAlgebra (QuadraticForm.dualProd K W)) x =
           0 := by
       calc
         splitCliffordAction (K := K) W (aEven : CliffordAlgebra (QuadraticForm.dualProd K W)) x +
@@ -1683,6 +1689,7 @@ noncomputable def splitHalfSpinBlockDiagonal (W : Submodule K V) :
     (LinearMap.prodMapAlgHom K (evenExteriorSubmodule (K := K) W)
       (oddExteriorSubmodule (K := K) W))
 
+omit [Invertible (2 : K)] [FiniteDimensional K V] in
 @[simp] theorem splitHalfSpinBlockDiagonal_apply_even (W : Submodule K V)
     (f : Module.End K (evenExteriorSubmodule (K := K) W) ×
       Module.End K (oddExteriorSubmodule (K := K) W))
@@ -1692,8 +1699,9 @@ noncomputable def splitHalfSpinBlockDiagonal (W : Submodule K V) :
       (evenExteriorSubmodule (K := K) W × oddExteriorSubmodule (K := K) W) ≃ₗ[K]
         IsotropicExteriorModel (K := K) W :=
     Submodule.prodEquivOfIsCompl _ _ (evenExteriorSubmodule_isCompl (K := K) (W := W))
-  simp [splitHalfSpinBlockDiagonal, e, LinearEquiv.conjAlgEquiv_apply]
+  simp [splitHalfSpinBlockDiagonal, LinearEquiv.conjAlgEquiv_apply]
 
+omit [Invertible (2 : K)] [FiniteDimensional K V] in
 @[simp] theorem splitHalfSpinBlockDiagonal_apply_odd (W : Submodule K V)
     (f : Module.End K (evenExteriorSubmodule (K := K) W) ×
       Module.End K (oddExteriorSubmodule (K := K) W))
@@ -1703,7 +1711,7 @@ noncomputable def splitHalfSpinBlockDiagonal (W : Submodule K V) :
       (evenExteriorSubmodule (K := K) W × oddExteriorSubmodule (K := K) W) ≃ₗ[K]
         IsotropicExteriorModel (K := K) W :=
     Submodule.prodEquivOfIsCompl _ _ (evenExteriorSubmodule_isCompl (K := K) (W := W))
-  simp [splitHalfSpinBlockDiagonal, e, LinearEquiv.conjAlgEquiv_apply]
+  simp [splitHalfSpinBlockDiagonal, LinearEquiv.conjAlgEquiv_apply]
 
 /-- Every pair of endomorphisms of the chosen half-spin modules comes from an even split Clifford
 element. -/

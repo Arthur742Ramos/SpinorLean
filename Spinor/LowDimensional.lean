@@ -154,7 +154,7 @@ noncomputable def realCl02QuaternionIsometry :
     realCl02Form.IsometryEquiv (CliffordAlgebraQuaternion.Q (-1 : ℝ) (-1 : ℝ)) where
   toLinearEquiv := LinearEquiv.refl ℝ (ℝ × ℝ)
   map_app' v := by
-    simpa [realCl02Form_eq_quaternionQ] using rfl
+    simp [realCl02Form_eq_quaternionQ]
 
 /-- The real Clifford algebra `Cl(0,2)` is Hamilton's quaternion algebra. -/
 noncomputable def realCl02EquivQuaternion :
@@ -345,7 +345,7 @@ abbrev realCl03Form : QuadraticForm ℝ ((ℝ × ℝ) × ℝ) :=
 theorem realCl03Form_apply (x : ((ℝ × ℝ) × ℝ)) :
     realCl03Form x = -(x.1.1 * x.1.1) - x.1.2 * x.1.2 - x.2 * x.2 := by
   obtain ⟨⟨x1, x2⟩, x3⟩ := x
-  simp [realCl03Form, realCl02Form_apply]
+  simp [realCl03Form]
   ring
 
 /-- The standard positive real 3-dimensional quadratic form on `((ℝ × ℝ) × ℝ)`. -/
@@ -409,7 +409,7 @@ theorem realEvenCl03EquivQuaternion_apply_bilin
           ((CliffordAlgebra.even.ι realCl03Form).bilin ((x1, x2), x3) ((y1, y2), y3)) by
       rfl]
   rw [CliffordAlgebra.ofEven_ι]
-  ext <;> simp [realCl02EquivQuaternion_apply_ι, QuaternionAlgebra.mk_mul_mk] <;> ring
+  ext <;> simp [realCl02EquivQuaternion_apply_ι] <;> ring
 
 noncomputable def spinGroupRealCl03ToQuaternion :
     spinGroup realCl03Form →* ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)] :=
@@ -558,7 +558,7 @@ theorem realSpin03RightSlice_imK
         ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)]).imK = 0 := by
   by_cases h : (q : ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)]).imJ = 0 ∧
       (q : ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)]).imK = 0
-  · simp [realSpin03RightSlice, realSpin03LeftSlice, h, h.2]
+  · simp [realSpin03RightSlice, realSpin03LeftSlice, h]
   · let a : ℝ := (q : ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)]).re
     let b : ℝ := (q : ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)]).imI
     let c : ℝ := (q : ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)]).imJ
@@ -571,7 +571,7 @@ theorem realSpin03RightSlice_imK
       intro hs
       apply h
       constructor <;> nlinarith [hs_sq]
-    simp [realSpin03RightSlice, realSpin03LeftSlice, h, a, b, c, d, s]
+    simp [realSpin03RightSlice, realSpin03LeftSlice, h]
     field_simp [hs]
     ring
 

@@ -498,11 +498,13 @@ identification on `W`. -/
 noncomputable abbrev negativeChiralSpinorModule (P : HyperbolicPresentation Q) :=
   negativeChiral (R := K) (M := P.W) (0 : QuadraticForm K P.W)
 
+omit [FiniteDimensional K V] in
 @[simp] theorem positiveChiralSpinorModule_eq_evenSpinorModule (P : HyperbolicPresentation Q) :
     P.positiveChiralSpinorModule = P.evenSpinorModule := by
   simpa [positiveChiralSpinorModule, evenSpinorModule] using
     (positiveChiral_zero_eq_evenExteriorSubmodule (K := K) (W := P.W))
 
+omit [FiniteDimensional K V] in
 @[simp] theorem negativeChiralSpinorModule_eq_oddSpinorModule (P : HyperbolicPresentation Q) :
     P.negativeChiralSpinorModule = P.oddSpinorModule := by
   simpa [negativeChiralSpinorModule, oddSpinorModule] using
@@ -544,11 +546,13 @@ noncomputable abbrev negativeChiralCliffordModule (P : HyperbolicPresentation Q)
     Module (CliffordAlgebra.even Q) (P.negativeChiralSpinorModule) :=
   Module.compHom (P.negativeChiralSpinorModule) (P.negativeChiralCliffordAction.toRingHom)
 
+omit [FiniteDimensional K V] in
 @[simp] theorem positiveChiralCliffordModule_smul (P : HyperbolicPresentation Q)
     (a : CliffordAlgebra.even Q) (x : P.positiveChiralSpinorModule) :
     letI := P.positiveChiralCliffordModule
     a • x = P.positiveChiralCliffordAction a x := rfl
 
+omit [FiniteDimensional K V] in
 @[simp] theorem negativeChiralCliffordModule_smul (P : HyperbolicPresentation Q)
     (a : CliffordAlgebra.even Q) (x : P.negativeChiralSpinorModule) :
     letI := P.negativeChiralCliffordModule
@@ -626,6 +630,7 @@ theorem not_nonempty_positiveNegativeChiralCliffordLinearEquiv (P : HyperbolicPr
   exact ⟨((P.positiveChiralCliffordLinearEquivEven).symm.trans e).trans
     (P.negativeChiralCliffordLinearEquivOdd)⟩
 
+omit [FiniteDimensional K V] in
 /-- The spin action induced by an explicit hyperbolic presentation preserves the positive-chiral
 half of the chosen model. -/
 theorem spinRepresentation_mem_positiveChiral (P : HyperbolicPresentation Q)
@@ -636,6 +641,7 @@ theorem spinRepresentation_mem_positiveChiral (P : HyperbolicPresentation Q)
   have h := P.spinRepresentation_mem_even (g := g) (x := x) hx'
   simpa [positiveChiralSpinorModule_eq_evenSpinorModule (P := P)] using h
 
+omit [FiniteDimensional K V] in
 /-- The spin action induced by an explicit hyperbolic presentation preserves the negative-chiral
 half of the chosen model. -/
 theorem spinRepresentation_mem_negativeChiral (P : HyperbolicPresentation Q)
@@ -678,6 +684,7 @@ noncomputable abbrev positiveChiralSpinMulAction (P : HyperbolicPresentation Q) 
     MulAction (spinGroup Q) (P.positiveChiralSpinorModule) :=
   MulAction.compHom (P.positiveChiralSpinorModule) (P.positiveChiralSpinRepresentation)
 
+omit [FiniteDimensional K V] in
 @[simp] theorem positiveChiralSpinMulAction_smul (P : HyperbolicPresentation Q)
     (g : spinGroup Q) (x : P.positiveChiralSpinorModule) :
     letI := P.positiveChiralSpinMulAction
@@ -689,6 +696,7 @@ noncomputable abbrev negativeChiralSpinMulAction (P : HyperbolicPresentation Q) 
     MulAction (spinGroup Q) (P.negativeChiralSpinorModule) :=
   MulAction.compHom (P.negativeChiralSpinorModule) (P.negativeChiralSpinRepresentation)
 
+omit [FiniteDimensional K V] in
 @[simp] theorem negativeChiralSpinMulAction_smul (P : HyperbolicPresentation Q)
     (g : spinGroup Q) (x : P.negativeChiralSpinorModule) :
     letI := P.negativeChiralSpinMulAction

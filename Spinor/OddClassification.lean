@@ -256,9 +256,14 @@ theorem finrank_evenOddSplitOneUpExterior :
       2 ^ Module.finrank K M := by
   have hTopFinrank :
       Module.finrank K (⊤ : Submodule K (M × K)) = Module.finrank K M + 1 := by
-    simpa [Module.finrank_prod] using
+    have htopEquiv :=
       (LinearEquiv.finrank_eq
         (Submodule.topEquiv : (⊤ : Submodule K (M × K)) ≃ₗ[K] (M × K))).symm
+    rw [Module.finrank_prod] at htopEquiv
+    calc
+      Module.finrank K (⊤ : Submodule K (M × K)) = Module.finrank K M + Module.finrank K K :=
+        htopEquiv.symm
+      _ = Module.finrank K M + 1 := by simp
   have htop : 0 < Module.finrank K (⊤ : Submodule K (M × K)) := by
     rw [hTopFinrank]
     exact Nat.succ_pos _

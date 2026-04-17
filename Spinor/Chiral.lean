@@ -151,7 +151,7 @@ private theorem zero_evenOdd_zero_le_evenExteriorSubmodule :
   induction x, hx using CliffordAlgebra.even_induction with
   | algebraMap r =>
       exact mem_evenExteriorSubmodule_of_mem_exteriorPower (K := K) (W := W)
-        (by simpa [pow_zero] : algebraMap K (IsotropicExteriorModel (K := K) W) r ∈ ⋀[K]^0 W)
+        (by simp [pow_zero] : algebraMap K (IsotropicExteriorModel (K := K) W) r ∈ ⋀[K]^0 W)
         (by simp)
   | add x y hx hy ihx ihy =>
       exact Submodule.add_mem _ ihx ihy
@@ -166,6 +166,7 @@ private theorem zero_evenOdd_zero_le_evenExteriorSubmodule :
           wedgeAction_mem_evenExteriorSubmodule (K := K) (W := W) m₁ hodd
       simpa [mul_assoc] using heven
 
+omit [FiniteDimensional K V] in
 private theorem evenExteriorSubmodule_le_zero_evenOdd_zero :
     evenExteriorSubmodule (K := K) W ≤ CliffordAlgebra.evenOdd (0 : QuadraticForm K W) 0 := by
   classical
@@ -188,6 +189,7 @@ private theorem evenExteriorSubmodule_le_zero_evenOdd_zero :
         IsotropicExteriorModel (K := K) W)) ∈ ⋀[K]^i W from
       (exteriorDecompose (K := K) W x i).property)
 
+omit [FiniteDimensional K V] in
 /--
 For the zero quadratic form on the chosen isotropic space `W`, the abstract even Clifford parity
 piece is exactly the explicit even-degree exterior summand `⋀^even W`.
@@ -222,6 +224,7 @@ private theorem zero_evenOdd_one_le_oddExteriorSubmodule :
           wedgeAction_mem_oddExteriorSubmodule (K := K) (W := W) m₁ heven
       simpa [mul_assoc] using hodd
 
+omit [FiniteDimensional K V] in
 private theorem oddExteriorSubmodule_le_zero_evenOdd_one :
     oddExteriorSubmodule (K := K) W ≤ CliffordAlgebra.evenOdd (0 : QuadraticForm K W) 1 := by
   classical
@@ -244,6 +247,7 @@ private theorem oddExteriorSubmodule_le_zero_evenOdd_one :
         IsotropicExteriorModel (K := K) W)) ∈ ⋀[K]^i W from
       (exteriorDecompose (K := K) W x i).property)
 
+omit [FiniteDimensional K V] in
 /--
 For the zero quadratic form on the chosen isotropic space `W`, the abstract odd Clifford parity
 piece is exactly the explicit odd-degree exterior summand `⋀^odd W`.
@@ -262,19 +266,21 @@ omit [FiniteDimensional K V] in
 theorem equivExterior_zero :
     CliffordAlgebra.equivExterior (0 : QuadraticForm K W) = LinearEquiv.refl K _ := by
   ext x
-  simp [CliffordAlgebra.equivExterior, CliffordAlgebra.changeForm.associated_neg_proof,
-    CliffordAlgebra.changeFormEquiv]
+  simp [CliffordAlgebra.equivExterior, CliffordAlgebra.changeFormEquiv]
 
+omit [FiniteDimensional K V] in
 @[simp]
 theorem equivExterior_zero_symm :
     (CliffordAlgebra.equivExterior (0 : QuadraticForm K W)).symm = LinearEquiv.refl K _ := by
   simpa using congrArg LinearEquiv.symm (equivExterior_zero (K := K) (W := W))
 
+omit [FiniteDimensional K V] in
 @[simp]
 theorem equivExterior_zero_symm_apply (x : SpinorModule (R := K) (M := W) (0 : QuadraticForm K W)) :
     (CliffordAlgebra.equivExterior (0 : QuadraticForm K W)).symm x = x := by
   simpa using congrArg (fun e => e x) (equivExterior_zero_symm (K := K) (W := W))
 
+omit [FiniteDimensional K V] in
 /--
 On the zero-form chosen model `⋀W`, the transported positive-chiral submodule is the explicit
 even-degree summand `⋀^even W`.
@@ -286,6 +292,7 @@ theorem positiveChiral_zero_eq_evenExteriorSubmodule :
   rw [mem_positiveChiral_iff, equivExterior_zero_symm_apply (K := K) (W := W) x]
   rw [zero_evenOdd_zero_eq_evenExteriorSubmodule (K := K) (W := W)]
 
+omit [FiniteDimensional K V] in
 /--
 On the zero-form chosen model `⋀W`, the transported negative-chiral submodule is the explicit
 odd-degree summand `⋀^odd W`.
