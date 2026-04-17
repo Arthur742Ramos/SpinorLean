@@ -1795,6 +1795,324 @@ end DualProd
 
 end Field
 
+section DualProdLine
+
+variable {K : Type*} [Field K] [Invertible (2 : K)]
+
+omit [Invertible (2 : K)] in
+private theorem dualMap_eq_smul_id (d : Module.Dual K K) :
+    d = (d 1) • (LinearMap.id : Module.Dual K K) := by
+  apply LinearMap.ext
+  intro y
+  calc
+    d y = d (y • (1 : K)) := by simp
+    _ = y • d 1 := by rw [d.map_smul]
+    _ = d 1 * y := by simp [smul_eq_mul, mul_comm]
+
+/-- On the split hyperbolic line `K* × K`, the norm-`-1` reflection attached to the vector
+`(-a⁻¹, a)` has an explicit coordinate formula. -/
+theorem pinLinearRepresentation_apply_iota_of_dualProd_line
+    (a : Kˣ) (d : Module.Dual K K) (u : K) :
+    pinLinearRepresentation (Q := QuadraticForm.dualProd K K)
+        (pinIotaOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K K)
+          (-(((a : K)⁻¹) • (LinearMap.id : Module.Dual K K)), (a : K))
+          (by simp [QuadraticForm.dualProd]))
+        (d, u) =
+      (-((u / ((a : K) ^ 2)) : K) • (LinearMap.id : Module.Dual K K), -((a : K) ^ 2) * d 1) := by
+  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one
+    (K := K) (W := K) (f := ((a : K)⁻¹) • (LinearMap.id : Module.Dual K K))
+    (w := (a : K)) (by simp) (d := d) (u := u)]
+  have hd : ∀ x : K, d x = d 1 * x := by
+    intro x
+    have h := congrArg (fun e : Module.Dual K K => e x) (dualMap_eq_smul_id (K := K) d)
+    simpa [LinearMap.id_apply, smul_eq_mul, mul_comm, mul_left_comm, mul_assoc] using h
+  apply Prod.ext
+  · apply LinearMap.ext
+    intro y
+    simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, smul_eq_mul,
+      div_eq_mul_inv]
+    rw [hd (a : K), hd y]
+    field_simp [a.ne_zero]
+    ring
+  · rw [hd (a : K)]
+    simp only [LinearMap.smul_apply, LinearMap.id_apply, smul_eq_mul]
+    field_simp [a.ne_zero]
+    ring
+
+/-- Every split line pair generator acts by a square scalar on the primal line and the inverse
+square on the dual line. -/
+theorem spinSpecialOrthogonalPairGenerator_apply_dualProd_line
+    (a b : Kˣ) (d : Module.Dual K K) (u : K) :
+    (spinSpecialOrthogonalPairGenerator (Q := QuadraticForm.dualProd K K)
+        (-(((a : K)⁻¹) • (LinearMap.id : Module.Dual K K)), (a : K))
+        (-(((b : K)⁻¹) • (LinearMap.id : Module.Dual K K)), (b : K))
+        (by simp [QuadraticForm.dualProd])
+        (by simp [QuadraticForm.dualProd])).1 (d, u) =
+      ((((b : K) / a) ^ 2 : K) • d, (((a : K) / b) ^ 2 : K) * u) := by
+  rw [coe_spinSpecialOrthogonalPairGenerator, QuadraticMap.IsometryEquiv.mul_apply,
+    pinIsometryRepresentation_apply, pinIsometryEquiv_apply]
+  have hfirst :
+      ((pinIsometryRepresentation (Q := QuadraticForm.dualProd K K))
+          (pinIotaOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K K)
+            (-(((b : K)⁻¹) • (LinearMap.id : Module.Dual K K)), (b : K))
+            (by simp [QuadraticForm.dualProd]))) (d, u) =
+        (-((u / ((b : K) ^ 2)) : K) • (LinearMap.id : Module.Dual K K), -((b : K) ^ 2) * d 1) := by
+    simpa [pinIsometryRepresentation_apply, pinIsometryEquiv_apply] using
+      (pinLinearRepresentation_apply_iota_of_dualProd_line (K := K) (a := b) (d := d) (u := u))
+  rw [hfirst]
+  rw [pinLinearRepresentation_apply_iota_of_dualProd_line (K := K) (a := a)
+    (d := -((u / ((b : K) ^ 2)) : K) • (LinearMap.id : Module.Dual K K))
+    (u := -((b : K) ^ 2) * d 1)]
+  have hd : ∀ x : K, d x = d 1 * x := by
+    intro x
+    have h := congrArg (fun e : Module.Dual K K => e x) (dualMap_eq_smul_id (K := K) d)
+    simpa [LinearMap.id_apply, smul_eq_mul, mul_comm, mul_left_comm, mul_assoc] using h
+  apply Prod.ext
+  · apply LinearMap.ext
+    intro y
+    simp only [LinearMap.smul_apply, LinearMap.id_apply, smul_eq_mul, div_eq_mul_inv]
+    rw [hd y]
+    field_simp [a.ne_zero, b.ne_zero]
+  · simp only [LinearMap.smul_apply, LinearMap.id_apply, smul_eq_mul, div_eq_mul_inv]
+    field_simp [a.ne_zero, b.ne_zero]
+
+/-- On the split hyperbolic line, the determinant-one transport of a scalar unit acts by the
+inverse scalar on the dual coordinate and by the scalar itself on the primal coordinate. -/
+theorem dualProdSpecialOrthogonalOfLinearEquiv_apply_smulOfUnit
+    (a : Kˣ) (d : Module.Dual K K) (u : K) :
+    (dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K) (LinearEquiv.smulOfUnit a)).1 (d, u) =
+      (((a : K)⁻¹) • d, (a : K) * u) := by
+  rw [coe_dualProdSpecialOrthogonalOfLinearEquiv]
+  change (((LinearEquiv.smulOfUnit a).dualMap.symm d), (LinearEquiv.smulOfUnit a u)) =
+    (((a : K)⁻¹) • d, (a : K) * u)
+  apply Prod.ext
+  · apply LinearMap.ext
+    intro y
+    rw [show ((LinearEquiv.smulOfUnit a).dualMap.symm d) y = d ((↑a)⁻¹ * y) by
+      simp [LinearEquiv.smulOfUnit, Units.smul_def, Units.val_inv_eq_inv_val]]
+    rw [show ((((a : K)⁻¹) • d) y) = (↑a)⁻¹ * d y by
+      simp [smul_eq_mul]]
+    simpa [smul_eq_mul] using d.map_smul ((↑a)⁻¹) y
+  · rfl
+
+/-- A split line pair generator is exactly the square-scaling element determined by the ratio of
+its two unit parameters. -/
+theorem spinSpecialOrthogonalPairGenerator_dualProd_line_eq_squareScaling
+    (a b : Kˣ) :
+    spinSpecialOrthogonalPairGenerator (Q := QuadraticForm.dualProd K K)
+        (-(((a : K)⁻¹) • (LinearMap.id : Module.Dual K K)), (a : K))
+        (-(((b : K)⁻¹) • (LinearMap.id : Module.Dual K K)), (b : K))
+        (by simp [QuadraticForm.dualProd])
+        (by simp [QuadraticForm.dualProd]) =
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K)
+        (LinearEquiv.smulOfUnit ((a / b) ^ 2)) := by
+  apply Subtype.ext
+  apply DFunLike.ext
+  intro x
+  rcases x with ⟨d, u⟩
+  rw [spinSpecialOrthogonalPairGenerator_apply_dualProd_line (K := K) (a := a) (b := b) (d := d)
+    (u := u)]
+  rw [dualProdSpecialOrthogonalOfLinearEquiv_apply_smulOfUnit (K := K) (a := (a / b) ^ 2)
+    (d := d) (u := u)]
+  apply Prod.ext
+  · apply LinearMap.ext
+    intro y
+    simp [smul_eq_mul, div_eq_mul_inv, pow_two, mul_assoc, mul_comm, mul_left_comm]
+  · simp [div_eq_mul_inv, pow_two, mul_assoc, mul_comm, mul_left_comm]
+
+omit [Invertible (2 : K)] in
+/-- A norm-`-1` vector in the split hyperbolic line is determined by a nonzero primal coordinate
+and the matching inverse dual scalar. -/
+theorem dualProd_line_eq_neg_inv_smul_id_of_eq_neg_one
+    {d : Module.Dual K K} {u : K} (h : QuadraticForm.dualProd K K (d, u) = -1) :
+    u ≠ 0 ∧ d = -(u⁻¹ • (LinearMap.id : Module.Dual K K)) := by
+  have hd : ∀ x : K, d x = d 1 * x := by
+    intro x
+    have h' := congrArg (fun e : Module.Dual K K => e x) (dualMap_eq_smul_id (K := K) d)
+    simpa [LinearMap.id_apply, smul_eq_mul, mul_comm, mul_left_comm, mul_assoc] using h'
+  have hu : u ≠ 0 := by
+    intro hu0
+    have hzero : (0 : K) ≠ -1 := by simp
+    exact hzero (by simpa [QuadraticForm.dualProd, hu0] using h)
+  have hdu : d 1 * u = -1 := by
+    have hdu' : d u = -1 := by
+      simpa [QuadraticForm.dualProd] using h
+    rw [hd u] at hdu'
+    exact hdu'
+  have hd1 : d 1 = -u⁻¹ := by
+    have hmul : d 1 * u = (-u⁻¹ : K) * u := by
+      calc
+      d 1 * u = -1 := hdu
+      _ = (-u⁻¹ : K) * u := by
+        field_simp [hu]
+    exact mul_right_cancel₀ hu hmul
+  refine ⟨hu, ?_⟩
+  calc
+    d = (-u⁻¹ : K) • (LinearMap.id : Module.Dual K K) := by
+      simpa [hd1] using dualMap_eq_smul_id (K := K) d
+    _ = -(u⁻¹ • (LinearMap.id : Module.Dual K K)) := by
+      ext x
+      simp [smul_eq_mul]
+
+/-- Every split line pair generator belongs to the square-scaling family. -/
+theorem spinSpecialOrthogonalPairGenerator_eq_squareScaling_of_dualProd_line
+    {d₁ d₂ : Module.Dual K K} {u₁ u₂ : K}
+    (h₁ : QuadraticForm.dualProd K K (d₁, u₁) = -1)
+    (h₂ : QuadraticForm.dualProd K K (d₂, u₂) = -1) :
+    ∃ t : Kˣ,
+      spinSpecialOrthogonalPairGenerator (Q := QuadraticForm.dualProd K K)
+          (d₁, u₁) (d₂, u₂) h₁ h₂ =
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K)
+          (LinearEquiv.smulOfUnit (t ^ 2)) := by
+  obtain ⟨hu₁, hd₁⟩ := dualProd_line_eq_neg_inv_smul_id_of_eq_neg_one (K := K) (d := d₁)
+    (u := u₁) h₁
+  obtain ⟨hu₂, hd₂⟩ := dualProd_line_eq_neg_inv_smul_id_of_eq_neg_one (K := K) (d := d₂)
+    (u := u₂) h₂
+  let a : Kˣ := Units.mk0 u₁ hu₁
+  let b : Kˣ := Units.mk0 u₂ hu₂
+  refine ⟨a / b, ?_⟩
+  subst d₁ d₂
+  have h₁canon :
+      h₁ =
+        (by
+          simp [QuadraticForm.dualProd, hu₁] :
+          QuadraticForm.dualProd K K (-(u₁⁻¹ • (LinearMap.id : Module.Dual K K)), u₁) = -1) :=
+    Subsingleton.elim _ _
+  have h₂canon :
+      h₂ =
+        (by
+          simp [QuadraticForm.dualProd, hu₂] :
+          QuadraticForm.dualProd K K (-(u₂⁻¹ • (LinearMap.id : Module.Dual K K)), u₂) = -1) :=
+    Subsingleton.elim _ _
+  cases h₁canon
+  cases h₂canon
+  simpa [a, b] using
+    (spinSpecialOrthogonalPairGenerator_dualProd_line_eq_squareScaling (K := K) (a := a)
+      (b := b))
+
+/-- Scalar multiplication on the split hyperbolic line gives a packaged one-parameter subgroup of
+`SO(1,1)`. -/
+noncomputable def dualProdLineScalingHom :
+    Kˣ →* (QuadraticForm.dualProd K K).specialOrthogonalGroup where
+  toFun t :=
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K) (LinearEquiv.smulOfUnit t)
+  map_one' := by
+    apply Subtype.ext
+    apply DFunLike.ext
+    intro x
+    rcases x with ⟨d, u⟩
+    rw [dualProdSpecialOrthogonalOfLinearEquiv_apply_smulOfUnit (K := K) (a := 1) (d := d) (u := u)]
+    simp
+  map_mul' t s := by
+    apply Subtype.ext
+    apply DFunLike.ext
+    intro x
+    rcases x with ⟨d, u⟩
+    change (dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K)
+        (LinearEquiv.smulOfUnit (t * s))).1 (d, u) =
+      ((dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K) (LinearEquiv.smulOfUnit t)).1 *
+        (dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K) (LinearEquiv.smulOfUnit s)).1)
+        (d, u)
+    rw [QuadraticMap.IsometryEquiv.mul_apply]
+    rw [dualProdSpecialOrthogonalOfLinearEquiv_apply_smulOfUnit (K := K) (a := s) (d := d) (u := u)]
+    rw [dualProdSpecialOrthogonalOfLinearEquiv_apply_smulOfUnit (K := K) (a := t)
+      (d := ((↑s : K)⁻¹) • d) (u := (s : K) * u)]
+    rw [dualProdSpecialOrthogonalOfLinearEquiv_apply_smulOfUnit (K := K) (a := t * s)
+      (d := d) (u := u)]
+    apply Prod.ext
+    · apply LinearMap.ext
+      intro y
+      simp [smul_eq_mul, mul_assoc, mul_comm, mul_left_comm]
+    · simp [mul_assoc, mul_comm, mul_left_comm]
+
+/-- The split-line scaling family is faithful: the scalar is recovered from the action on the
+primal basis vector. -/
+theorem dualProdLineScalingHom_injective :
+    Function.Injective (dualProdLineScalingHom (K := K)) := by
+  intro t s h
+  have hscaling :
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K) (LinearEquiv.smulOfUnit t) =
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K) (LinearEquiv.smulOfUnit s) := by
+    simpa [dualProdLineScalingHom] using h
+  have hsnd : (t : K) = (s : K) := by
+    have h' :=
+      congrArg
+        (fun g : (QuadraticForm.dualProd K K).specialOrthogonalGroup =>
+          Prod.snd (g.1 (0, (1 : K)))) hscaling
+    change Prod.snd ((dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K)
+        (LinearEquiv.smulOfUnit t)).1 (0, (1 : K))) =
+      Prod.snd ((dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K)
+        (LinearEquiv.smulOfUnit s)).1 (0, (1 : K))) at h'
+    have ht_eval :
+        Prod.snd ((dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K)
+          (LinearEquiv.smulOfUnit t)).1 (0, (1 : K))) = (t : K) := by
+      rw [dualProdSpecialOrthogonalOfLinearEquiv_apply_smulOfUnit (K := K) (a := t) (d := 0)
+        (u := 1)]
+      simp
+    have hs_eval :
+        Prod.snd ((dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K)
+          (LinearEquiv.smulOfUnit s)).1 (0, (1 : K))) = (s : K) := by
+      rw [dualProdSpecialOrthogonalOfLinearEquiv_apply_smulOfUnit (K := K) (a := s) (d := 0)
+        (u := 1)]
+      simp
+    rw [ht_eval, hs_eval] at h'
+    exact h'
+  exact Units.ext hsnd
+
+/-- The square-scaling subgroup of the split hyperbolic line. Every canonical pair generator lands
+here. -/
+noncomputable def dualProdLineSquareScalingSubgroup :
+    Subgroup ((QuadraticForm.dualProd K K).specialOrthogonalGroup) :=
+  MonoidHom.range ((dualProdLineScalingHom (K := K)).comp (powMonoidHom (α := Kˣ) 2))
+
+/-- On the split hyperbolic line, every canonical pair generator is a square scaling. -/
+theorem spinSpecialOrthogonalPairGeneratorSet_dualProdLine_subset_squareScalingSubgroup :
+    spinSpecialOrthogonalPairGeneratorSet (Q := QuadraticForm.dualProd K K) ⊆
+      dualProdLineSquareScalingSubgroup (K := K) := by
+  rintro _ ⟨p, rfl⟩
+  rcases spinSpecialOrthogonalPairGenerator_eq_squareScaling_of_dualProd_line
+      (K := K) (h₁ := p.2.1) (h₂ := p.2.2) with ⟨t, ht⟩
+  exact ⟨t, by
+    simpa [dualProdLineSquareScalingSubgroup, dualProdLineScalingHom] using ht.symm⟩
+
+/-- Hence the subgroup generated by the split-line pair generators is contained in the square
+scaling subgroup. -/
+theorem spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_le_squareScalingSubgroup :
+    Subgroup.closure (spinSpecialOrthogonalPairGeneratorSet (Q := QuadraticForm.dualProd K K)) ≤
+      dualProdLineSquareScalingSubgroup (K := K) := by
+  rw [Subgroup.closure_le]
+  exact spinSpecialOrthogonalPairGeneratorSet_dualProdLine_subset_squareScalingSubgroup (K := K)
+
+/-- A nonsquare split-line scaling does not lie in the subgroup generated by canonical pair
+generators. -/
+theorem dualProdLineScalingHom_not_mem_squareScalingSubgroup {u : Kˣ}
+    (hu : u ∉ MonoidHom.range (powMonoidHom (α := Kˣ) 2)) :
+    dualProdLineScalingHom (K := K) u ∉ dualProdLineSquareScalingSubgroup (K := K) := by
+  rintro ⟨t, ht⟩
+  apply hu
+  refine ⟨t, ?_⟩
+  apply dualProdLineScalingHom_injective (K := K)
+  simpa [dualProdLineSquareScalingSubgroup, dualProdLineScalingHom] using ht
+
+/-- If `Kˣ` has a unit outside the square map, then the canonical pair generators do not generate
+`SO(1,1)` on the split hyperbolic line. This refutes the current generator route in split rank
+one over such fields. -/
+theorem spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_ne_top_of_exists_nonsquare_unit
+    (hnsq : ∃ u : Kˣ, u ∉ MonoidHom.range (powMonoidHom (α := Kˣ) 2)) :
+    Subgroup.closure (spinSpecialOrthogonalPairGeneratorSet (Q := QuadraticForm.dualProd K K)) ≠
+      (⊤ : Subgroup ((QuadraticForm.dualProd K K).specialOrthogonalGroup)) := by
+  rcases hnsq with ⟨u, hu⟩
+  intro htop
+  have hmem :
+      dualProdLineScalingHom (K := K) u ∈
+        Subgroup.closure (spinSpecialOrthogonalPairGeneratorSet (Q := QuadraticForm.dualProd K K)) := by
+    simpa [htop]
+  exact (dualProdLineScalingHom_not_mem_squareScalingSubgroup (K := K) hu)
+    ((spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_le_squareScalingSubgroup
+      (K := K)) hmem)
+
+end DualProdLine
+
 omit [Invertible (2 : R)] in
 /-- If the quadratic form represents `-1`, then the scalar `-1` lies in the spin group. -/
 theorem neg_one_mem_spinGroup_of_quadratic_eq_neg_one (m : M) (hq : Q m = -1) :

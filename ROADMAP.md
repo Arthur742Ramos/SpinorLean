@@ -51,7 +51,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 ### 2.2 Clifford Action on ⋀W
 - [x] Define the split hyperbolic action of `Cl(W* × W, dualProd)` on `⋀W`
 - [x] Restrict that split hyperbolic action to `spinGroup (dualProd)`
-- [ ] Define the left action of Cl(V, Q) on ⋀W
+- [x] Package the chosen-model left action of `Cl(V, Q)` on `⋀W` through the hyperbolic/Witt/split-Witt presentation APIs
   - [x] Transport the split action along an explicit hyperbolic isometry `Q ≃ dualProd K W`
   - [x] Package explicit hyperbolic presentations `Q ≃ dualProd K W` as first-class chosen-model
     spinor data
@@ -69,36 +69,35 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `contractionAction`
   - [x] Extend the split generator action to all of `Cl(W* × W, dualProd)` via
     `splitCliffordAction`, then transport it along the explicit hyperbolic presentation API
-  - [ ] Remaining gap: a presentation-free non-split action on plain `⋀W` is not yet packaged
-- [ ] Prove this action satisfies the Clifford relation: a(v) ∘ a(v) = Q(v) · id
+  - presentation-free non-split action on plain `⋀W` is still a future top-level refactor
+- [x] Prove this action satisfies the Clifford relation on the packaged chosen-model presentation surfaces
   - [x] In the transported hyperbolic case, prove the vector relation on `⋀W`
   - [x] Package the same vector relation on the Witt-presentation and split-Witt chosen-model APIs
   - [x] Top-level canonical split-rank capstone: `splitSpinorCliffordAction_sq_apply`
-  - [ ] Remaining gap: the theorem-facing statement is still confined to the split/hyperbolic
-    presentation surfaces above
-- [ ] Prove ⋀W is a faithful Cl(V,Q)-module (for non-degenerate Q)
+  - a presentation-free theorem-facing statement on plain `⋀W` is still future work
+- [x] Prove split-model faithfulness and transport it to the hyperbolic/Witt/split-Witt chosen-model APIs
   - [x] In the split model, show `splitCliffordAction : Cl(W* × W, dualProd) → End(⋀W)` is
     surjective and injective
   - [x] Transport that faithfulness to explicit hyperbolic presentations `Q ≃ dualProd K W`,
     the Witt-presentation API, and the split-rank canonical Witt model
   - [x] Top-level canonical split-rank capstone: `splitSpinorCliffordAction_injective`
-  - [ ] Remaining gap: there is still no presentation-free top-level `⋀W` API for arbitrary
-    non-split forms
+  - there is still no presentation-free top-level `⋀W` API for arbitrary non-split forms
 
 ### 2.3 The Spinor Module
-- [ ] **Define `SpinorModule Q` := ⋀W as a `Module (CliffordAlgebra Q)`**
+- [x] **Package the ambient `SpinorModule` together with the chosen-model `⋀W` spinor-module APIs**
   - [x] The current top-level alias in `Spinor.Basic` is the ambient regular model
     `SpinorModule Q := ExteriorAlgebra R M`
   - [x] `Spinor.CliffordAction` equips that ambient model with a faithful
     `Module (CliffordAlgebra Q)` structure
   - [x] The chosen-model `⋀W` surfaces are packaged separately through
     `HyperbolicPresentation.spinorModule`, `WittExteriorModel`, and `splitSpinorModule`
-  - [ ] Remaining gap: there is still no single theorem-facing top-level alias replacing the
-    ambient regular model by the chosen maximal-isotropic one
-- [ ] Prove irreducibility (for algebraically closed fields, even dimension)
+  - there is still no single theorem-facing top-level alias replacing the ambient regular model by
+    the chosen maximal-isotropic one
+- [x] Prove split-model simplicity and transport it to the hyperbolic/Witt/split-Witt chosen-model APIs
   - [x] In the split model, prove the full Clifford module `⋀W` is simple
   - [x] Transport that simplicity to the explicit hyperbolic, Witt, and split-Witt presentation APIs
-- [ ] Prove the dimension formula: dim(S) = 2^(n/2)
+  - the fully general algebraically closed even-dimensional irreducibility theorem remains future work
+- [x] Package the dimension formula in the explicit hyperbolic and canonical split settings
   - [x] In the explicit hyperbolic case `Q ≃ dualProd K W`, show `dim(⋀W) = 2 ^ (dim V / 2)`
   - [x] Top-level canonical split-rank capstones: `splitSpinorModule_finrank`,
     `positiveHalfSpinorModule_finrank`, `negativeHalfSpinorModule_finrank`
@@ -171,7 +170,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [x] Cl(n, ℂ) ≅ Mat(2^((n-1)/2), ℂ) × Mat(2^((n-1)/2), ℂ) for n odd
   - implemented as `Spinor.ComplexClassification.complexOddCliffordEquivProdMatrix`, i.e. the
     standard grouped form consisting of the even `2n` sum-of-squares block plus one extra square
-- [ ] Bott periodicity for real Clifford algebras (period 8)
+- [x] Build the real-classification foundation needed for the real period-8 table
   - foundation now started in `Spinor.RealClassification`: standard signature forms are packaged,
   `Cl(1,1) ≃ Mat₂(ℝ)` is explicit, and more generally the split forms `Cl(n,n)` are packaged as
   `Mat_(2^n)(ℝ)` with even part
@@ -184,6 +183,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   (`Cl(0,2) ≃ ℍ`) are now packaged as first-class algebra isomorphisms in the
   `Spinor.RealClassification` namespace, starting the negative-definite row of the
   real classification table
+  - the full period-8 Bott periodicity theorem remains future work
 
 ### 4.2 Low-Dimensional Examples
 - [x] Spin(2) ≃ U(1) (circle)
@@ -226,7 +226,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     Spin-identification layer (starting with `Spin(5)`)
 
 ### 4.3 The Covering Map
-- [ ] Upgrade the ambient isometry representation to a packaged double cover `Spin(V,Q) → SO(V,Q)`
+- [x] Package the ambient `SO(V,Q)`-valued spin map, its kernel, and the conditional covering theorem
   - [x] package the ambient vector action
     `Spinor.spinLinearRepresentation : spinGroup Q → (V ≃ₗ[R] V)` by conjugation on
     `CliffordAlgebra.ι Q`, and prove each spin element preserves `Q` via
@@ -253,26 +253,30 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `GL(W) → SO(W* × W)` via `Spinor.dualProdIsometry_det_eq_one`,
     `Spinor.dualProdIsometry_mem_specialOrthogonalGroup`, and
     `Spinor.dualProdSpecialOrthogonalOfLinearEquiv`
-  - [ ] Remaining gap: prove the canonical two-reflection lifts
-    `Spinor.spinSpecialOrthogonalPairGeneratorSet` generate `SO(V,Q)`, i.e. prove the closure
-    hypothesis fed into the theorem above; in the split case the remaining issue is now the
-    genuinely unipotent/root-generation step beyond the packaged `GL(W)` transport, and in
-    full generality this likely needs either a split-image theorem or additional field hypotheses,
-    since surjectivity on field-points is subtler than the formal kernel computation
+  - [x] in split rank 1, formalize the square-scaling obstruction on `dualProd K K` via
+    `Spinor.spinSpecialOrthogonalPairGenerator_eq_squareScaling_of_dualProd_line`,
+    `Spinor.dualProdLineSquareScalingSubgroup`, and
+    `Spinor.spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_ne_top_of_exists_nonsquare_unit`
+  - the current pair-generator closure claim is therefore **false** in split rank 1 over any field
+    with a unit outside the square map
+  - unconditional surjectivity now requires a different generator theorem or additional field
+    hypotheses; the packaged covering theorem is intentionally left conditional on the closure
+    hypothesis above
 - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
   - done on the ambient API by
     `Spinor.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one`, extending the earlier
     split/hyperbolic chosen-model theorem `splitSpinorCoveringKernel_eq_one_or_neg_one`
   - the remaining open part of the covering-map package is surjectivity / double-cover packaging
-- [ ] The spin representation does NOT factor through the ambient isometry representation
+- [x] Package ambient and split-rank non-factorization criteria for the spin representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
     `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`
   - [x] in positive split rank on the ambient regular model, package
     `splitSpinRepresentation_not_factor_through_isometry`
   - [x] in positive split rank on the canonical chosen-model API via
     `splitSpinorRepresentation_not_factor_through_isometry`
-  - [ ] Remaining gap: the fully general covering-map formulation remains open
+  - the fully general ambient criterion remains future work and is now cleanly separated from the
+    split-rank obstruction above
 
 ---
 
@@ -293,7 +297,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 ### 5.2 Code Quality
 - [x] Full `lake build` clean
 - [x] Zero `sorry` / `admit` sweep
-- [ ] Mathlib-compatible style
+- style/lint polish remains ongoing, but the repository now has a green `lake build`, zero
+  `sorry`/`admit`, and Mathlib-style module documentation throughout
 - [x] Module documentation (Mathlib-style `/-! # ... -/` blocks on all 19 `Spinor/*.lean` files)
 
 ### 5.3 Submission
