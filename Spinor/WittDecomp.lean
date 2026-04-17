@@ -515,14 +515,15 @@ theorem wittResidualQuadraticFormOfIsCompl_nondegenerate
         μ u = ν (α u) := by
           simpa [LinearMap.comp_apply] using congrArg (fun f : U →ₗ[K] K => f u) hνcomp.symm
         _ = α u w := by
-          simpa [w] using (apply_evalEquiv_symm_apply K W (α u) ν)
+          change ν (α u) = α u ((Module.evalEquiv K W).symm ν)
+          exact (Module.apply_evalEquiv_symm_apply K W (α u) ν).symm
         _ = Q.associated (u : V) (w : V) := by
           rfl
     have hrw : ((((r : R) : U) : V) - (w : V)) = 0 := by
       exact hnondeg.1 ((((r : R) : U) : V) - (w : V)) <| by
         intro x
         have hx_top : x ∈ W ⊔ U := by
-          simpa [hWU.sup_eq_top]
+          simp [hWU.sup_eq_top]
         rcases Submodule.mem_sup.mp hx_top with ⟨y, hy, u, hu, rfl⟩
         have hyr : Q.associated (y : V) ((((r : R) : U) : V)) = 0 := by
           exact ambientWittResidualSubspaceOfIsCompl_le_orthogonal (K := K) Q W U
@@ -540,8 +541,8 @@ theorem wittResidualQuadraticFormOfIsCompl_nondegenerate
             Q.associated ((((r : R) : U) : V) - (w : V)) (u : V)
                 = Q.associated ((((r : R) : U) : V)) (u : V) -
                     Q.associated (w : V) (u : V) := by
-                      simpa [sub_eq_add_neg] using
-                        (Q.associated.sub_left ((((r : R) : U) : V)) (w : V) (u : V))
+                      exact LinearMap.BilinForm.sub_left (B₁ := Q.associated)
+                        ((((r : R) : U) : V)) (w : V) (u : V)
             _ = 0 := by
               have hru : Q.associated ((((r : R) : U) : V)) (u : V) =
                   Q.associated (w : V) (u : V) := by
@@ -558,8 +559,8 @@ theorem wittResidualQuadraticFormOfIsCompl_nondegenerate
             Q.associated ((((r : R) : U) : V) - (w : V)) (y : V)
                 = Q.associated ((((r : R) : U) : V)) (y : V) -
                     Q.associated (w : V) (y : V) := by
-                      simpa [sub_eq_add_neg] using
-                        (Q.associated.sub_left ((((r : R) : U) : V)) (w : V) (y : V))
+                      exact LinearMap.BilinForm.sub_left (B₁ := Q.associated)
+                        ((((r : R) : U) : V)) (w : V) (y : V)
             _ = 0 := by
               rw [hy0r, hy0w]
               simp
@@ -701,7 +702,7 @@ theorem finrank_orthogonalAmbientWittResidualOrthogonalOfIsCompl
         2 * Module.finrank K W +
           Module.finrank K (wittResidualSubspaceOfIsCompl (K := K) Q W U) := by
     have hdual : Module.finrank K (Module.Dual K W) = Module.finrank K W := by
-      simpa using (Subspace.dual_finrank_eq (K := K) (V := W))
+      exact Subspace.dual_finrank_eq (K := K) (V := W)
     calc
       Module.finrank K V
           = Module.finrank K W + Module.finrank K (Module.Dual K W) +
@@ -920,7 +921,8 @@ noncomputable def splitIsometryEquivOfIsCompl
         (2 : K) * Q.associated (u : V) w = Q ((w : V) + u) - Q u := by
       rw [QuadraticMap.associated_apply (S := K) (Q := Q) (u : V) (w : V)]
       have htwo : (2 : K) * ⅟(2 : K) = 1 := by
-        simpa using invOf_mul_self (2 : K)
+        rw [mul_comm]
+        exact invOf_mul_self (2 : K)
       calc
         (2 : K) * (⅟(2 : Module.End K K) • (Q ((u : V) + w) - Q u - Q w))
             = (2 : K) * (⅟(2 : K) * (Q ((u : V) + w) - Q u - Q w)) := by
@@ -993,7 +995,7 @@ noncomputable def splitIsometryEquivOfIsCompl
     (w : W) :
     (splitIsometryEquivOfIsCompl (Q := Q) hQ hW hsplit hWU).symm (0, w) = (w : V) := by
   apply (splitIsometryEquivOfIsCompl (Q := Q) hQ hW hsplit hWU).injective
-  simpa using
+  exact
     ((splitIsometryEquivOfIsCompl (Q := Q) hQ hW hsplit hWU).apply_symm_apply (0, w)).trans
       (splitIsometryEquivOfIsCompl_apply_subtype (Q := Q) hQ hW hsplit hWU w).symm
 
