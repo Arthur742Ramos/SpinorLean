@@ -249,11 +249,16 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     via `Spinor.spinSpecialOrthogonalPairGenerator_apply_dualProd`,
     `Spinor.spinSpecialOrthogonalPairGenerator_apply_dualProd_primal_transvection`, and
     `Spinor.spinSpecialOrthogonalPairGenerator_apply_dualProd_dual_transvection`
+  - [x] in the split hyperbolic model `dualProd K W`, package the determinant-one transport
+    `GL(W) → SO(W* × W)` via `Spinor.dualProdIsometry_det_eq_one`,
+    `Spinor.dualProdIsometry_mem_specialOrthogonalGroup`, and
+    `Spinor.dualProdSpecialOrthogonalOfLinearEquiv`
   - [ ] Remaining gap: prove the canonical two-reflection lifts
     `Spinor.spinSpecialOrthogonalPairGeneratorSet` generate `SO(V,Q)`, i.e. prove the closure
-    hypothesis fed into the theorem above; this likely needs either a split-image theorem or
-    additional field hypotheses, since surjectivity on field-points is subtler than the formal
-    kernel computation
+    hypothesis fed into the theorem above; in the split case the remaining issue is now the
+    genuinely unipotent/root-generation step beyond the packaged `GL(W)` transport, and in
+    full generality this likely needs either a split-image theorem or additional field hypotheses,
+    since surjectivity on field-points is subtler than the formal kernel computation
 - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
   - done on the ambient API by

@@ -4,6 +4,7 @@
 
 import Spinor.SpinRep
 import Mathlib.LinearAlgebra.Determinant
+import Mathlib.LinearAlgebra.Transvection.Basic
 
 /-!
 # Ambient vector representation of the spin group
@@ -1660,6 +1661,70 @@ theorem spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_of_pairG
 section DualProd
 
 variable {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
+
+omit [Invertible (2 : K)] in
+/-- Any linear automorphism of `W` induces a determinant-one isometry of the split hyperbolic form
+`W* × W`. -/
+theorem dualProdIsometry_det_eq_one (e : W ≃ₗ[K] W) :
+    LinearEquiv.det
+        ((QuadraticForm.dualProdIsometry (R := K) e).toLinearEquiv) = 1 := by
+  apply Units.ext
+  rw [LinearEquiv.coe_det, QuadraticForm.dualProdIsometry]
+  rw [LinearEquiv.coe_prodCongr, LinearMap.det_prodMap]
+  calc
+    LinearMap.det ((e.dualMap.symm : Module.Dual K W →ₗ[K] Module.Dual K W)) *
+        LinearMap.det (e : W →ₗ[K] W) =
+      LinearMap.det ((e.dualMap.symm : Module.Dual K W →ₗ[K] Module.Dual K W)) *
+        LinearMap.det (e.dualMap : Module.Dual K W →ₗ[K] Module.Dual K W) := by
+          have hdet : LinearMap.det (e : W →ₗ[K] W) =
+              LinearMap.det (e.dualMap : Module.Dual K W →ₗ[K] Module.Dual K W) := by
+            simpa [LinearEquiv.dualMap] using (LinearMap.det_dualMap (e : W →ₗ[K] W)).symm
+          rw [hdet]
+    _ = 1 := LinearEquiv.det_symm_mul_det (e.dualMap)
+
+omit [Invertible (2 : K)] in
+/-- The split hyperbolic transport of a linear automorphism lies in the packaged special orthogonal
+group. -/
+theorem dualProdIsometry_mem_specialOrthogonalGroup (e : W ≃ₗ[K] W) :
+    QuadraticForm.dualProdIsometry (R := K) e ∈
+      (QuadraticForm.dualProd K W).specialOrthogonalGroup := by
+  rw [QuadraticForm.mem_specialOrthogonalGroup_iff]
+  exact dualProdIsometry_det_eq_one (K := K) e
+
+omit [Invertible (2 : K)] in
+/-- A linear automorphism of `W` gives a canonical element of the split special orthogonal group on
+`W* × W`. -/
+noncomputable def dualProdSpecialOrthogonalOfLinearEquiv (e : W ≃ₗ[K] W) :
+    (QuadraticForm.dualProd K W).specialOrthogonalGroup :=
+  ⟨QuadraticForm.dualProdIsometry (R := K) e,
+    dualProdIsometry_mem_specialOrthogonalGroup (K := K) e⟩
+
+omit [Invertible (2 : K)] in
+@[simp]
+theorem coe_dualProdSpecialOrthogonalOfLinearEquiv (e : W ≃ₗ[K] W) :
+    ↑(dualProdSpecialOrthogonalOfLinearEquiv (K := K) e) =
+      QuadraticForm.dualProdIsometry (R := K) e := rfl
+
+omit [Invertible (2 : K)] in
+/-- The split special-orthogonal transport of a primal transvection has the expected block
+coordinate formula on `W* × W`. -/
+theorem dualProdSpecialOrthogonalOfLinearEquiv_apply_transvection
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0)
+    (d : Module.Dual K W) (u : W) :
+    let e : W ≃ₗ[K] W := LinearEquiv.transvection (f := -δ) (v := w) (by simpa using hδ)
+    (dualProdSpecialOrthogonalOfLinearEquiv (K := K) e).1 (d, u) =
+      (d + (d w : K) • δ, u - (δ u : K) • w) := by
+  let e : W ≃ₗ[K] W := LinearEquiv.transvection (f := -δ) (v := w) (by simpa using hδ)
+  apply Prod.ext
+  · ext x
+    change d (e.symm x) = (d + (d w : K) • δ) x
+    have hsx : e.symm x = x + (δ x : K) • w := by
+      apply e.injective
+      simp [e, LinearMap.transvection.apply, hδ, mul_comm]
+    rw [hsx]
+    simp [mul_comm]
+  · change e u = u - (δ u : K) • w
+    simp [e, LinearMap.transvection.apply, sub_eq_add_neg]
 
 /-- In the split hyperbolic form, the pair generator built from `(-(f + δ), w)` and `(-f, w)`
 has an explicit coordinate action on arbitrary `(d, u)`. This packages the basic hyperbolic
