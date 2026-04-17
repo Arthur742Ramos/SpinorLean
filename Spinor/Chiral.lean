@@ -114,6 +114,7 @@ variable {K : Type uR} [Field K]
 variable {V : Type uM} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
 variable (W : Submodule K V)
 
+omit [FiniteDimensional K V] in
 private theorem exteriorPower_le_zero_evenOdd_zero_of_even {n : ℕ} (hn : Even n) :
     (⋀[K]^n W : Submodule K (IsotropicExteriorModel (K := K) W)) ≤
       CliffordAlgebra.evenOdd (0 : QuadraticForm K W) 0 := by
@@ -127,6 +128,7 @@ private theorem exteriorPower_le_zero_evenOdd_zero_of_even {n : ℕ} (hn : Even 
     exact ⟨m, by omega⟩
   exact Submodule.mem_iSup_of_mem ⟨m + m, hz⟩ hx'
 
+omit [FiniteDimensional K V] in
 private theorem exteriorPower_le_zero_evenOdd_one_of_odd {n : ℕ} (hn : ¬ Even n) :
     (⋀[K]^n W : Submodule K (IsotropicExteriorModel (K := K) W)) ≤
       CliffordAlgebra.evenOdd (0 : QuadraticForm K W) 1 := by
@@ -142,6 +144,7 @@ private theorem exteriorPower_le_zero_evenOdd_one_of_odd {n : ℕ} (hn : ¬ Even
     simpa using hz'
   exact Submodule.mem_iSup_of_mem ⟨2 * m + 1, hz⟩ hx'
 
+omit [FiniteDimensional K V] in
 private theorem zero_evenOdd_zero_le_evenExteriorSubmodule :
     CliffordAlgebra.evenOdd (0 : QuadraticForm K W) 0 ≤ evenExteriorSubmodule (K := K) W := by
   intro x hx
@@ -196,6 +199,7 @@ theorem zero_evenOdd_zero_eq_evenExteriorSubmodule :
     (zero_evenOdd_zero_le_evenExteriorSubmodule (K := K) (W := W))
     (evenExteriorSubmodule_le_zero_evenOdd_zero (K := K) (W := W))
 
+omit [FiniteDimensional K V] in
 private theorem zero_evenOdd_one_le_oddExteriorSubmodule :
     CliffordAlgebra.evenOdd (0 : QuadraticForm K W) 1 ≤ oddExteriorSubmodule (K := K) W := by
   intro x hx
@@ -253,12 +257,13 @@ theorem zero_evenOdd_one_eq_oddExteriorSubmodule :
 
 variable [Invertible (2 : K)]
 
+omit [FiniteDimensional K V] in
 @[simp]
 theorem equivExterior_zero :
     CliffordAlgebra.equivExterior (0 : QuadraticForm K W) = LinearEquiv.refl K _ := by
-  ext x <;>
-    simp [CliffordAlgebra.equivExterior, CliffordAlgebra.changeForm.associated_neg_proof,
-      CliffordAlgebra.changeFormEquiv]
+  ext x
+  simp [CliffordAlgebra.equivExterior, CliffordAlgebra.changeForm.associated_neg_proof,
+    CliffordAlgebra.changeFormEquiv]
 
 @[simp]
 theorem equivExterior_zero_symm :

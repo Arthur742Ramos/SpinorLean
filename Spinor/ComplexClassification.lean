@@ -33,7 +33,7 @@ theorem complexSumSquares_nondegenerate (ι : Type*) [Fintype ι] :
     exact (Pi.mem_spanSubset_iff.mp hx) i (by simp)
   · intro hx
     rw [hx]
-    simp [Pi.mem_spanSubset_iff]
+    simp
 
 theorem complexSumSquares_prod_comp_sumArrowLequivProdArrow
     (ι κ : Type*) [Fintype ι] [Fintype κ] :
@@ -68,7 +68,7 @@ noncomputable def complexEvenSplitIsometry (n : ℕ) :
       (w' := Sum.elim (fun _ : Fin n => (1 : ℂ)) (fun _ : Fin n => (-1 : ℂ)))
       (by
         intro i
-        cases i <;> simp [unitI, Complex.I_sq, pow_two])
+        cases i <;> simp [unitI, Complex.I_sq])
   let prodIso :
       ((complexSumSquares (Fin n)).prod (-complexSumSquares (Fin n))).IsometryEquiv
         (QuadraticMap.weightedSumSquares ℂ

@@ -324,7 +324,7 @@ theorem hyperbolicCliffordAction_isSimpleModule [FiniteDimensional K V]
         rfl
       map_smul' := by
         intro a x
-        simpa [σ, hyperbolicClifford_smul_def] }
+        simp [σ, hyperbolicClifford_smul_def] }
   exact
     (LinearMap.isSimpleModule_iff_of_bijective (σ := σ) (l := l)
       (by simpa [l] using Function.bijective_id)).2 inferInstance
@@ -353,6 +353,7 @@ noncomputable def evenCliffordMap (e : Q.IsometryEquiv (QuadraticForm.dualProd K
     ext
     simp
 
+omit [Invertible (2 : K)] in
 /-- The transported even Clifford map is surjective. -/
 theorem evenCliffordMap_surjective (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
     Function.Surjective (evenCliffordMap (K := K) (Q := Q) (W := W) e) := by
@@ -377,6 +378,7 @@ theorem evenCliffordMap_surjective (e : Q.IsometryEquiv (QuadraticForm.dualProd 
   rw [hmap, hright, CliffordAlgebra.map_id]
   rfl
 
+omit [Invertible (2 : K)] in
 /-- The transported even Clifford map is injective. -/
 theorem evenCliffordMap_injective (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :
     Function.Injective (evenCliffordMap (K := K) (Q := Q) (W := W) e) := by
@@ -388,7 +390,8 @@ theorem evenCliffordMap_injective (e : Q.IsometryEquiv (QuadraticForm.dualProd K
   have hback := congrArg (CliffordAlgebra.map e.symm.toIsometry) hval
   have hleft :
       e.symm.toIsometry.comp e.toIsometry = QuadraticMap.Isometry.id Q := by
-    ext v <;> simp [QuadraticMap.Isometry.comp_apply, e.symm_apply_apply]
+    ext v
+    simp [QuadraticMap.Isometry.comp_apply, e.symm_apply_apply]
   have hmapa :
       CliffordAlgebra.map e.symm.toIsometry (CliffordAlgebra.map e.toIsometry a.1) =
         CliffordAlgebra.map (e.symm.toIsometry.comp e.toIsometry) a.1 := by
@@ -518,7 +521,7 @@ theorem evenHyperbolicCliffordAction_isSimpleModule [FiniteDimensional K V]
         rfl
       map_smul' := by
         intro a x
-        simpa [σ, evenHyperbolicClifford_smul_def, evenHyperbolicCliffordAction,
+        simp [σ, evenHyperbolicClifford_smul_def, evenHyperbolicCliffordAction,
           evenSplitClifford_smul_def] }
   exact
     (LinearMap.isSimpleModule_iff_of_bijective (σ := σ) (l := l)
@@ -546,7 +549,7 @@ theorem oddHyperbolicCliffordAction_isSimpleModule [FiniteDimensional K V]
         rfl
       map_smul' := by
         intro a x
-        simpa [σ, oddHyperbolicClifford_smul_def, oddHyperbolicCliffordAction,
+        simp [σ, oddHyperbolicClifford_smul_def, oddHyperbolicCliffordAction,
           oddSplitClifford_smul_def] }
   exact
     (LinearMap.isSimpleModule_iff_of_bijective (σ := σ) (l := l)
@@ -1032,7 +1035,7 @@ theorem finrank_hyperbolicIsotropicSubmodule {Q : QuadraticForm K V} {W : Submod
   · intro hv
     refine ⟨(0, ⟨v, hv⟩), ?_, ?_⟩
     · exact ⟨⟨v, hv⟩, rfl⟩
-    · simpa using
+    · exact
         (QuadraticForm.splitIsometryEquivOfIsCompl_symm_inr (K := K) (Q := Q) (W := W) (U := U)
           hQ hW hsplit hWU ⟨v, hv⟩)
 

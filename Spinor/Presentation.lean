@@ -295,6 +295,7 @@ theorem spinRepresentation_not_factor_through_isometry_of_coe_eq_algebraMap_of_n
   · exact spinIsometryRepresentation_eq_one_of_coe_eq_algebraMap (Q := Q) x r hx
   · exact spinRepresentation_ne_one_of_coe_eq_algebraMap_of_ne_one (K := K) (Q := Q) P x r hx hr
 
+omit [Invertible (2 : K)] in
 /-- Positive hyperbolic rank forces the quadratic form to represent `-1`. -/
 theorem exists_quadratic_eq_neg_one [FiniteDimensional K V]
     (P : HyperbolicPresentation Q) (hW : 0 < Module.finrank K P.W) :
@@ -1253,9 +1254,8 @@ noncomputable def splitWittPresentation (Q : QuadraticForm K V) (hQ : Q.Nondegen
     (hsplit : Module.finrank K V = 2 * Module.finrank K W) (hWU : IsCompl W U) :
     (HyperbolicPresentation.ofIsCompl (K := K) (Q := Q) (W := W) (U := U)
       hQ hW hsplit hWU).isotropicSubmodule = W := by
-  simpa [HyperbolicPresentation.isotropicSubmodule] using
-    hyperbolicIsotropicSubmodule_splitIsometryEquivOfIsCompl
-      (K := K) (Q := Q) (W := W) (U := U) hQ hW hsplit hWU
+  exact hyperbolicIsotropicSubmodule_splitIsometryEquivOfIsCompl
+    (K := K) (Q := Q) (W := W) (U := U) hQ hW hsplit hWU
 
 @[simp] theorem splitWittPresentation_isotropicSubmodule (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
     (hsplit : Module.finrank K V = 2 * Q.wittIndex) :
@@ -1654,26 +1654,21 @@ noncomputable abbrev negativeHalfSpinorCliffordModule (Q : QuadraticForm K V)
     (a : CliffordAlgebra Q) (x : splitSpinorModule (K := K) Q) :
     letI := splitSpinorCliffordModule (K := K) Q hQ hsplit
     a • x = splitSpinorCliffordAction (K := K) Q hQ hsplit a x := by
-  simpa [splitSpinorCliffordModule, splitSpinorCliffordAction, splitSpinorModule] using
-    (splitWittCliffordModule_smul (K := K) Q hQ hsplit (a := a) (x := x))
+  exact splitWittCliffordModule_smul (K := K) Q hQ hsplit (a := a) (x := x)
 
 @[simp] theorem positiveHalfSpinorCliffordModule_smul (Q : QuadraticForm K V)
     (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
     (a : CliffordAlgebra.even Q) (x : positiveHalfSpinorModule (K := K) Q) :
     letI := positiveHalfSpinorCliffordModule (K := K) Q hQ hsplit
     a • x = positiveHalfSpinorCliffordAction (K := K) Q hQ hsplit a x := by
-  simpa [positiveHalfSpinorCliffordModule, positiveHalfSpinorCliffordAction,
-    positiveHalfSpinorModule] using
-    (positiveSplitWittCliffordModule_smul (K := K) Q hQ hsplit (a := a) (x := x))
+  exact positiveSplitWittCliffordModule_smul (K := K) Q hQ hsplit (a := a) (x := x)
 
 @[simp] theorem negativeHalfSpinorCliffordModule_smul (Q : QuadraticForm K V)
     (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
     (a : CliffordAlgebra.even Q) (x : negativeHalfSpinorModule (K := K) Q) :
     letI := negativeHalfSpinorCliffordModule (K := K) Q hQ hsplit
     a • x = negativeHalfSpinorCliffordAction (K := K) Q hQ hsplit a x := by
-  simpa [negativeHalfSpinorCliffordModule, negativeHalfSpinorCliffordAction,
-    negativeHalfSpinorModule] using
-    (negativeSplitWittCliffordModule_smul (K := K) Q hQ hsplit (a := a) (x := x))
+  exact negativeSplitWittCliffordModule_smul (K := K) Q hQ hsplit (a := a) (x := x)
 
 /-- The split-rank spin representation on the canonical chosen model. -/
 noncomputable def splitSpinorRepresentation (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
