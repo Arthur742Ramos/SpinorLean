@@ -3,7 +3,9 @@
 -/
 
 import Spinor.SpinRep
+import Mathlib.LinearAlgebra.Basis.Fin
 import Mathlib.LinearAlgebra.Determinant
+import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.LinearAlgebra.Transvection.Basic
 
 /-!
@@ -1809,6 +1811,31 @@ private theorem dualMap_eq_smul_id (d : Module.Dual K K) :
     _ = y • d 1 := by rw [d.map_smul]
     _ = d 1 * y := by simp [smul_eq_mul, mul_comm]
 
+omit [Invertible (2 : K)] in
+private noncomputable def dualLineCoordEquiv : Module.Dual K K ≃ₗ[K] K where
+  toFun d := d 1
+  invFun a := a • (LinearMap.id : Module.Dual K K)
+  left_inv d := by
+    simpa using (dualMap_eq_smul_id (K := K) d).symm
+  right_inv a := by
+    simp
+  map_add' d e := by
+    simp
+  map_smul' a d := by
+    simp [smul_eq_mul, mul_comm]
+
+omit [Invertible (2 : K)] in
+private noncomputable def dualProdLineCoordEquiv :
+    (Module.Dual K K × K) ≃ₗ[K] (K × K) :=
+  LinearEquiv.prodCongr (dualLineCoordEquiv (K := K)) (LinearEquiv.refl K K)
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineCoordEquiv_symm_quadratic (x : K × K) :
+    QuadraticForm.dualProd K K ((dualProdLineCoordEquiv (K := K)).symm x) = x.1 * x.2 := by
+  rcases x with ⟨a, u⟩
+  change ((a • (LinearMap.id : Module.Dual K K)) u) = a * u
+  simp [smul_eq_mul]
+
 /-- On the split hyperbolic line `K* × K`, the norm-`-1` reflection attached to the vector
 `(-a⁻¹, a)` has an explicit coordinate formula. -/
 theorem pinLinearRepresentation_apply_iota_of_dualProd_line
@@ -2059,6 +2086,214 @@ theorem dualProdLineScalingHom_injective :
     exact h'
   exact Units.ext hsnd
 
+/-- The split-line scaling family exhausts `SO(1,1)`: every determinant-one isometry preserves the
+two isotropic lines and is uniquely determined by its scalar on the primal line. -/
+theorem dualProdLineScalingHom_surjective :
+    Function.Surjective (dualProdLineScalingHom (K := K)) := by
+  intro g
+  let coord : (Module.Dual K K × K) ≃ₗ[K] (K × K) := dualProdLineCoordEquiv (K := K)
+  let glin : (Module.Dual K K × K) ≃ₗ[K] (Module.Dual K K × K) :=
+    ((g : (QuadraticForm.dualProd K K).IsometryEquiv (QuadraticForm.dualProd K K)).toLinearEquiv :
+      (Module.Dual K K × K) ≃ₗ[K] (Module.Dual K K × K))
+  let h : (K × K) ≃ₗ[K] (K × K) := (coord.symm.trans glin).trans coord
+  let p : K × K := h (1, 0)
+  let q : K × K := h (0, 1)
+  have h_preserves (x : K × K) : (h x).1 * (h x).2 = x.1 * x.2 := by
+    have hmap :
+        QuadraticForm.dualProd K K (glin (coord.symm x)) =
+          QuadraticForm.dualProd K K (coord.symm x) := by
+      simpa [glin] using
+        (g : (QuadraticForm.dualProd K K).IsometryEquiv (QuadraticForm.dualProd K K)).map_app
+          (coord.symm x)
+    have hcoord : coord.symm (h x) = glin (coord.symm x) := by
+      apply coord.injective
+      simp [h]
+    calc
+      (h x).1 * (h x).2 = QuadraticForm.dualProd K K (coord.symm (h x)) := by
+        symm
+        exact dualProdLineCoordEquiv_symm_quadratic (K := K) (h x)
+      _ = QuadraticForm.dualProd K K (glin (coord.symm x)) := by
+        rw [hcoord]
+      _ = QuadraticForm.dualProd K K (coord.symm x) := hmap
+      _ = x.1 * x.2 := dualProdLineCoordEquiv_symm_quadratic (K := K) x
+  have hdet : LinearEquiv.det h = 1 := by
+    calc
+      LinearEquiv.det h = LinearEquiv.det glin := by
+        simpa [h] using (LinearEquiv.det_conj glin coord)
+      _ = 1 := by
+        simpa [glin] using QuadraticForm.det_eq_one (Q := QuadraticForm.dualProd K K) g
+  have h_apply (x : K × K) :
+      h x = (p.1 * x.1 + q.1 * x.2, p.2 * x.1 + q.2 * x.2) := by
+    rcases x with ⟨x₁, x₂⟩
+    have hx : ((x₁, x₂) : K × K) = x₁ • ((1, 0) : K × K) + x₂ • ((0, 1) : K × K) := by
+      ext <;> simp [smul_eq_mul, mul_comm]
+    rw [hx, map_add, map_smul, map_smul]
+    ext <;> simp [p, q, smul_eq_mul, mul_assoc, mul_comm, mul_left_comm]
+  have hp_iso : p.1 * p.2 = 0 := by
+    simpa [p] using h_preserves ((1, 0) : K × K)
+  have hq_iso : q.1 * q.2 = 0 := by
+    simpa [q] using h_preserves ((0, 1) : K × K)
+  have hsum : p.1 * q.2 + q.1 * p.2 = 1 := by
+    have h11 : (p.1 + q.1) * (p.2 + q.2) = 1 := by
+      have h11' : (h ((1, 1) : K × K)).1 * (h ((1, 1) : K × K)).2 = 1 := by
+        simpa using h_preserves ((1, 1) : K × K)
+      have hh11 : h ((1, 1) : K × K) = (p.1 + q.1, p.2 + q.2) := by
+        simpa [p, q] using h_apply ((1, 1) : K × K)
+      rw [hh11] at h11'
+      exact h11'
+    calc
+      p.1 * q.2 + q.1 * p.2 = (p.1 + q.1) * (p.2 + q.2) := by
+        symm
+        calc
+          (p.1 + q.1) * (p.2 + q.2) = p.1 * p.2 + p.1 * q.2 + (q.1 * p.2 + q.1 * q.2) := by
+            ring
+          _ = p.1 * q.2 + q.1 * p.2 := by
+            rw [hp_iso, hq_iso]
+            ring
+      _ = 1 := h11
+  have hdet_matrix : p.1 * q.2 - q.1 * p.2 = 1 := by
+    let h' : (Fin 2 → K) ≃ₗ[K] (Fin 2 → K) :=
+      ((LinearEquiv.finTwoArrow K K).trans h).trans (LinearEquiv.finTwoArrow K K).symm
+    have hdet' : LinearEquiv.det h' = 1 := by
+      simpa [h'] using (LinearEquiv.det_conj h (LinearEquiv.finTwoArrow K K).symm).trans hdet
+    have hdet_lin : LinearMap.det (h' : (Fin 2 → K) →ₗ[K] (Fin 2 → K)) = (1 : K) := by
+      simpa [LinearEquiv.coe_det] using congrArg (fun u : Kˣ => (u : K)) hdet'
+    have hmat :
+        LinearMap.toMatrix' (h' : (Fin 2 → K) →ₗ[K] (Fin 2 → K)) = !![p.1, q.1; p.2, q.2] := by
+      ext i j <;> fin_cases i <;> fin_cases j <;>
+        simp [LinearMap.toMatrix'_apply, h', h_apply, LinearEquiv.finTwoArrow]
+    rw [← LinearMap.det_toMatrix' (h' : (Fin 2 → K) →ₗ[K] (Fin 2 → K)), hmat,
+      Matrix.det_fin_two] at hdet_lin
+    exact hdet_lin
+  have hcross_zero : q.1 * p.2 = 0 := by
+    have htwo : (2 : K) * (q.1 * p.2) = 0 := by
+      calc
+        (2 : K) * (q.1 * p.2) = (p.1 * q.2 + q.1 * p.2) - (p.1 * q.2 - q.1 * p.2) := by
+          ring
+        _ = 0 := by
+          rw [hsum, hdet_matrix]
+          ring
+    exact (mul_eq_zero.mp htwo).resolve_left ((isUnit_of_invertible (2 : K)).ne_zero)
+  have hpq_one : p.1 * q.2 = 1 := by
+    calc
+      p.1 * q.2 = p.1 * q.2 + q.1 * p.2 := by rw [hcross_zero, add_zero]
+      _ = 1 := hsum
+  have hp1_ne : p.1 ≠ 0 := by
+    intro hp1_zero
+    have : (0 : K) = 1 := by
+      simpa [hp1_zero] using hpq_one
+    exact zero_ne_one this
+  have hq2_ne : q.2 ≠ 0 := by
+    intro hq2_zero
+    have : (0 : K) = 1 := by
+      simpa [hq2_zero] using hpq_one
+    exact zero_ne_one this
+  have hp2_zero : p.2 = 0 := by
+    rcases mul_eq_zero.mp hp_iso with hp1_zero | hp2_zero
+    · exact False.elim (hp1_ne hp1_zero)
+    · exact hp2_zero
+  have hq1_zero : q.1 = 0 := by
+    rcases mul_eq_zero.mp hq_iso with hq1_zero | hq2_zero
+    · exact hq1_zero
+    · exact False.elim (hq2_ne hq2_zero)
+  let t : Kˣ := Units.mk0 q.2 hq2_ne
+  have hp1_inv : p.1 = ((t : K)⁻¹) := by
+    apply mul_right_cancel₀ t.ne_zero
+    calc
+      p.1 * (t : K) = 1 := by
+        simpa [t] using hpq_one
+      _ = ((t : K)⁻¹) * (t : K) := by
+        exact (inv_mul_cancel₀ t.ne_zero).symm
+  have hdual :
+      g.1 ((LinearMap.id : Module.Dual K K), 0) =
+        (((t : K)⁻¹) • (LinearMap.id : Module.Dual K K), 0) := by
+    have hcoord_id : coord.symm ((1, 0) : K × K) = ((LinearMap.id : Module.Dual K K), 0) := by
+      apply Prod.ext
+      · ext y
+        simp
+      · simp
+    have hdual_coord : coord (g.1 ((LinearMap.id : Module.Dual K K), 0)) = p := by
+      calc
+        coord (g.1 ((LinearMap.id : Module.Dual K K), 0)) =
+            coord (g.1 (coord.symm ((1, 0) : K × K))) := by
+              rw [hcoord_id.symm]
+        _ = p := by
+              change coord (glin (coord.symm ((1, 0) : K × K))) = p
+              simpa [h, p]
+    have hdual_eval : (g.1 ((LinearMap.id : Module.Dual K K), 0)).1 1 = (t : K)⁻¹ := by
+      have := congrArg Prod.fst hdual_coord
+      simpa [p, hp1_inv] using this
+    have hdual_second : (g.1 ((LinearMap.id : Module.Dual K K), 0)).2 = 0 := by
+      have := congrArg Prod.snd hdual_coord
+      simpa [p, hp2_zero] using this
+    apply Prod.ext
+    · calc
+        (g.1 ((LinearMap.id : Module.Dual K K), 0)).1 =
+            ((g.1 ((LinearMap.id : Module.Dual K K), 0)).1 1) •
+              (LinearMap.id : Module.Dual K K) := by
+              symm
+              exact (dualMap_eq_smul_id (K := K) (g.1 ((LinearMap.id : Module.Dual K K), 0)).1).symm
+        _ = ((t : K)⁻¹) • (LinearMap.id : Module.Dual K K) := by
+              rw [hdual_eval]
+    · exact hdual_second
+  have hprimal : g.1 (0, (1 : K)) = (0, (t : K)) := by
+    have hcoord_primal : coord.symm ((0, 1) : K × K) = (0, (1 : K)) := by
+      apply Prod.ext
+      · ext y
+        simp
+      · simp
+    have hprimal_coord : coord (g.1 (0, (1 : K))) = q := by
+      calc
+        coord (g.1 (0, (1 : K))) = coord (g.1 (coord.symm ((0, 1) : K × K))) := by
+          rw [hcoord_primal.symm]
+        _ = q := by
+          change coord (glin (coord.symm ((0, 1) : K × K))) = q
+          simpa [h, q]
+    have hprimal_eval : (g.1 (0, (1 : K))).1 1 = 0 := by
+      have := congrArg Prod.fst hprimal_coord
+      simpa [q, hq1_zero] using this
+    have hprimal_second : (g.1 (0, (1 : K))).2 = (t : K) := by
+      have := congrArg Prod.snd hprimal_coord
+      simpa [q, t] using this
+    apply Prod.ext
+    · calc
+        (g.1 (0, (1 : K))).1 = ((g.1 (0, (1 : K))).1 1) • (LinearMap.id : Module.Dual K K) := by
+          symm
+          exact (dualMap_eq_smul_id (K := K) (g.1 (0, (1 : K))).1).symm
+        _ = 0 := by
+          rw [hprimal_eval]
+          simp
+    · exact hprimal_second
+  refine ⟨t, ?_⟩
+  apply Subtype.ext
+  apply DFunLike.ext
+  intro x
+  rcases x with ⟨d, u⟩
+  have hx :
+      (d, u) = (d 1) • ((LinearMap.id : Module.Dual K K), (0 : K)) + u • (0, (1 : K)) := by
+    apply Prod.ext
+    · simpa using dualMap_eq_smul_id (K := K) d
+    · simp
+  have hxy : g.1 (d, u) = (dualProdLineScalingHom (K := K) t).1 (d, u) := by
+    calc
+      g.1 (d, u) = g.1 ((d 1) • ((LinearMap.id : Module.Dual K K), (0 : K)) + u • (0, (1 : K))) := by
+        rw [hx]
+      _ = (d 1) • g.1 ((LinearMap.id : Module.Dual K K), 0) + u • g.1 (0, (1 : K)) := by
+        rw [map_add, map_smul, map_smul]
+      _ = (d 1) • ((((t : K)⁻¹) • (LinearMap.id : Module.Dual K K)), 0) + u • (0, (t : K)) := by
+        rw [hdual, hprimal]
+      _ = (((t : K)⁻¹) • d, (t : K) * u) := by
+        apply Prod.ext
+        · rw [dualMap_eq_smul_id (K := K) d]
+          ext y
+          simp [smul_eq_mul, mul_assoc, mul_comm, mul_left_comm]
+        · simp [smul_eq_mul, mul_comm]
+      _ = (dualProdLineScalingHom (K := K) t).1 (d, u) := by
+        simpa [dualProdLineScalingHom] using
+          (dualProdSpecialOrthogonalOfLinearEquiv_apply_smulOfUnit
+            (K := K) (a := t) (d := d) (u := u)).symm
+  simpa using hxy.symm
+
 /-- The square-scaling subgroup of the split hyperbolic line. Every canonical pair generator lands
 here. -/
 noncomputable def dualProdLineSquareScalingSubgroup :
@@ -2082,6 +2317,64 @@ theorem spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_le_squareScal
       dualProdLineSquareScalingSubgroup (K := K) := by
   rw [Subgroup.closure_le]
   exact spinSpecialOrthogonalPairGeneratorSet_dualProdLine_subset_squareScalingSubgroup (K := K)
+
+/-- Conversely, every split-line square scaling is already a canonical pair generator, so the
+generated subgroup is exactly the square-scaling subgroup. -/
+theorem dualProdLineSquareScalingSubgroup_le_pairGeneratorClosure :
+    dualProdLineSquareScalingSubgroup (K := K) ≤
+      Subgroup.closure (spinSpecialOrthogonalPairGeneratorSet (Q := QuadraticForm.dualProd K K)) := by
+  rintro _ ⟨t, rfl⟩
+  let p :
+      {ab : ((Module.Dual K K × K) × (Module.Dual K K × K)) //
+          QuadraticForm.dualProd K K ab.1 = -1 ∧ QuadraticForm.dualProd K K ab.2 = -1} :=
+    ⟨(((-(((t : K)⁻¹) • (LinearMap.id : Module.Dual K K)), (t : K))),
+        (-((((1 : Kˣ) : K)⁻¹) • (LinearMap.id : Module.Dual K K)), (1 : K))),
+      by
+        simp [QuadraticForm.dualProd, t.ne_zero]⟩
+  exact Subgroup.subset_closure ⟨p, by
+    simpa [p, dualProdLineScalingHom] using
+      (spinSpecialOrthogonalPairGenerator_dualProd_line_eq_squareScaling (K := K) (a := t)
+        (b := 1))⟩
+
+/-- The split-line subgroup generated by canonical pair generators is exactly the square-scaling
+subgroup. -/
+theorem spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_squareScalingSubgroup :
+    Subgroup.closure (spinSpecialOrthogonalPairGeneratorSet (Q := QuadraticForm.dualProd K K)) =
+      dualProdLineSquareScalingSubgroup (K := K) := by
+  apply le_antisymm
+  · exact spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_le_squareScalingSubgroup (K := K)
+  · exact dualProdLineSquareScalingSubgroup_le_pairGeneratorClosure (K := K)
+
+/-- If every unit is a square, then the split-line pair generators do generate `SO(1,1)`. -/
+theorem dualProdLineSquareScalingSubgroup_eq_top_of_square_surjective
+    (hsq : Function.Surjective (powMonoidHom (α := Kˣ) 2)) :
+    dualProdLineSquareScalingSubgroup (K := K) = ⊤ := by
+  apply le_antisymm le_top
+  intro g hg
+  rcases dualProdLineScalingHom_surjective (K := K) g with ⟨t, rfl⟩
+  rcases hsq t with ⟨s, hs⟩
+  exact ⟨s, by
+    simpa [dualProdLineSquareScalingSubgroup, dualProdLineScalingHom] using
+      congrArg (dualProdLineScalingHom (K := K)) hs⟩
+
+/-- Hence over fields whose unit group is entirely squares, the split-line pair generators recover
+all of `SO(1,1)`. -/
+theorem spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_top_of_square_surjective
+    (hsq : Function.Surjective (powMonoidHom (α := Kˣ) 2)) :
+    Subgroup.closure (spinSpecialOrthogonalPairGeneratorSet (Q := QuadraticForm.dualProd K K)) =
+      (⊤ : Subgroup ((QuadraticForm.dualProd K K).specialOrthogonalGroup)) := by
+  rw [spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_squareScalingSubgroup]
+  exact dualProdLineSquareScalingSubgroup_eq_top_of_square_surjective (K := K) hsq
+
+/-- Under surjectivity of the square map on `Kˣ`, the ambient spin action on the split hyperbolic
+line is surjective onto `SO(1,1)`. -/
+theorem spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_of_square_surjective
+    (hsq : Function.Surjective (powMonoidHom (α := Kˣ) 2)) :
+    Function.Surjective (spinSpecialOrthogonalRepresentationFiniteDimensional
+      (Q := QuadraticForm.dualProd K K)) := by
+  apply spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_of_pairGeneratorClosure_eq_top
+  exact spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_top_of_square_surjective
+    (K := K) hsq
 
 /-- A nonsquare split-line scaling does not lie in the subgroup generated by canonical pair
 generators. -/

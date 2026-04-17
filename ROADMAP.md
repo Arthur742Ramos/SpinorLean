@@ -257,6 +257,12 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinSpecialOrthogonalPairGenerator_eq_squareScaling_of_dualProd_line`,
     `Spinor.dualProdLineSquareScalingSubgroup`, and
     `Spinor.spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_ne_top_of_exists_nonsquare_unit`
+  - [x] also package the exact split-line salvage under the opposite hypothesis: if the square map on
+    `Kˣ` is surjective, then
+    `Spinor.spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_top_of_square_surjective`
+    and
+    `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_of_square_surjective`
+    recover surjectivity onto `SO(1,1)`
   - the current pair-generator closure claim is therefore **false** in split rank 1 over any field
     with a unit outside the square map
   - unconditional surjectivity now requires a different generator theorem or additional field
