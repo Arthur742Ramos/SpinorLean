@@ -30,7 +30,7 @@ SpinorLean/
 │   ├── OrthogonalAction.lean -- Ambient spin-vector action and isometry homomorphism
 │   ├── ComplexClassification.lean -- Periodicity: complex even/odd matrix models
 │   ├── RealClassification.lean -- Periodicity: split `(n,n)` real matrix models + low-signature entries
-│   ├── LowDimensional.lean -- Explicit low-dim Clifford models + Spin(2) ≃ U(1)
+│   ├── LowDimensional.lean -- Explicit low-dim Clifford models + Spin(2), Spin(3) group IDs
 │   └── OddClassification.lean -- Classification pieces over the odd split form
 ├── paper/                  -- Paper scaffolding (main.tex, refs.bib, README.md)
 ├── ROADMAP.md
@@ -173,9 +173,11 @@ Implemented so far:
   `Cl⁺(3,0) ≃ ℍ`, `Cl(1,1) ≃ Mat₂(ℝ)`, `Cl⁺(1,1) ≃ ℝ × ℝ`, `Cl(2,2) ≃ Mat₄(ℝ)`, and
   `Cl⁺(2,2) ≃ Mat₂(ℝ) × Mat₂(ℝ)`
 - `Spinor.LowDimensional` now also packages the first compact low-dimensional group
-  identification:
-  `realSpin02EquivUnitaryComplex : spinGroup realCl02Form ≃* unitary ℂ`,
-  i.e. `Spin(2) ≃ U(1)` in Mathlib's negative-signature convention
+  identifications:
+  `realSpin02EquivUnitaryComplex : spinGroup realCl02Form ≃* unitary ℂ` and
+  `realSpin03EquivUnitaryQuaternion : spinGroup realCl03Form ≃*
+  unitary ℍ[ℝ, -1, -1]`,
+  i.e. `Spin(2) ≃ U(1)` and `Spin(3) ≃ SU(2)` in Mathlib's negative-signature convention
 - over `ℝ`, the standard split-signature form `(n,n)` is now packaged as
   `Cl(n,n) ≃ Mat_(2^n)(ℝ)` in `Spinor.RealClassification.realSplitCliffordEquivMatrix`,
   with the first explicit base case `Cl(1,1) ≃ Mat₂(ℝ)` recorded as
@@ -206,8 +208,10 @@ Implemented so far:
 - `Spinor.RealClassification` now also records the canonical low-signature entries
   `cl_0_1_equivComplex : Cl(0,1) ≃ₐ[ℝ] ℂ` and
   `cl_0_2_equivQuaternion : Cl(0,2) ≃ₐ[ℝ] ℍ[ℝ, -1, -1]`, starting the negative-definite
-  row of the Bott periodicity table (Phase 4.1)
-- `paper/` now contains a first pass of paper scaffolding (`main.tex`, `refs.bib`,
+  row of the Bott periodicity table (Phase 4.1); the same module also packages the grouped odd
+  split-signature row `Cl(n+1,n) ≃ Mat_(2^n)(ℝ) × Mat_(2^n)(ℝ)` as
+  `realOddSplitPositiveCliffordEquivProdMatrix`
+- `paper/` now contains a substantive working draft (`main.tex`, `refs.bib`,
   `README.md`) grounded in the current repository state, with target venues recorded for
   CPP 2027 / ITP 2027 / *Advances in Applied Clifford Algebras* (Phase 5.1)
 
@@ -215,14 +219,13 @@ Still open from the roadmap:
 
 - periodicity beyond the new split real foundation and canonical negative-signature entries
   (the full Bott period-8 table is still in progress)
-- the remaining low-dimensional group identifications (`Spin(3) → SU(2)`,
-  `Spin(4) → SU(2) × SU(2)`); algebraic scaffolding for the `Spin(4)` case is now in
-  `Spinor.LowDimensional` via `realCl04Form` and
-  `realEvenCl04EquivCl03 : Cl⁺(0,4) ≃ₐ[ℝ] Cl(0,3)`, leaving the classical
-  `Cl(0,3) ≃ ℍ × ℍ` step as the remaining gap
+- the remaining low-dimensional group identification `Spin(4) → SU(2) × SU(2)`; the
+  Clifford-algebra side already includes
+  `Spinor.Cl03QuaternionProd.realCl03EquivQuaternionProd : Cl(0,3) ≃ₐ[ℝ] ℍ × ℍ` and
+  `Spinor.realEvenCl04EquivQuaternionProd : Cl⁺(0,4) ≃ₐ[ℝ] ℍ × ℍ`, leaving the
+  group-level packaging for `Spin(4)` as the next gap
 - the fully general double-cover / surjectivity and non-factorization theorems beyond the
   packaged split-rank kernel and non-factorization results
-- the full paper draft (proof walkthroughs, evaluation, lessons-learned) beyond the
-  initial scaffolding, and final research-polish tasks
+- paper polish, evaluation, and submission-ready exposition beyond the current working draft
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

@@ -64,21 +64,37 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     build the transported action without an explicit isometry argument
   - [x] Specialize that transport canonically to the doubled form `Q ⊕ (-Q)` in the nondegenerate case
   - [x] Derive that isometry canonically from a full Witt decomposition `V ≃ W ⊕ W* ⊕ V₀`
-  - For w ∈ W: action is exterior multiplication (w ∧ −)
-  - For f ∈ W*: action is interior multiplication / contraction (ι_f)
-  - Extend to all of Cl(V,Q) via universal property
+  - [x] For `w ∈ W`, the split generator action is exterior multiplication via `wedgeAction`
+  - [x] For `f ∈ W*`, the split generator action is interior multiplication / contraction via
+    `contractionAction`
+  - [x] Extend the split generator action to all of `Cl(W* × W, dualProd)` via
+    `splitCliffordAction`, then transport it along the explicit hyperbolic presentation API
+  - [ ] Remaining gap: a presentation-free non-split action on plain `⋀W` is not yet packaged
 - [ ] Prove this action satisfies the Clifford relation: a(v) ∘ a(v) = Q(v) · id
   - [x] In the transported hyperbolic case, prove the vector relation on `⋀W`
+  - [x] Package the same vector relation on the Witt-presentation and split-Witt chosen-model APIs
   - [x] Top-level canonical split-rank capstone: `splitSpinorCliffordAction_sq_apply`
+  - [ ] Remaining gap: the theorem-facing statement is still confined to the split/hyperbolic
+    presentation surfaces above
 - [ ] Prove ⋀W is a faithful Cl(V,Q)-module (for non-degenerate Q)
   - [x] In the split model, show `splitCliffordAction : Cl(W* × W, dualProd) → End(⋀W)` is
     surjective and injective
   - [x] Transport that faithfulness to explicit hyperbolic presentations `Q ≃ dualProd K W`,
     the Witt-presentation API, and the split-rank canonical Witt model
   - [x] Top-level canonical split-rank capstone: `splitSpinorCliffordAction_injective`
+  - [ ] Remaining gap: there is still no presentation-free top-level `⋀W` API for arbitrary
+    non-split forms
 
 ### 2.3 The Spinor Module
 - [ ] **Define `SpinorModule Q` := ⋀W as a `Module (CliffordAlgebra Q)`**
+  - [x] The current top-level alias in `Spinor.Basic` is the ambient regular model
+    `SpinorModule Q := ExteriorAlgebra R M`
+  - [x] `Spinor.CliffordAction` equips that ambient model with a faithful
+    `Module (CliffordAlgebra Q)` structure
+  - [x] The chosen-model `⋀W` surfaces are packaged separately through
+    `HyperbolicPresentation.spinorModule`, `WittExteriorModel`, and `splitSpinorModule`
+  - [ ] Remaining gap: there is still no single theorem-facing top-level alias replacing the
+    ambient regular model by the chosen maximal-isotropic one
 - [ ] Prove irreducibility (for algebraically closed fields, even dimension)
   - [x] In the split model, prove the full Clifford module `⋀W` is simple
   - [x] Transport that simplicity to the explicit hyperbolic, Witt, and split-Witt presentation APIs
@@ -158,24 +174,28 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [ ] Bott periodicity for real Clifford algebras (period 8)
   - foundation now started in `Spinor.RealClassification`: standard signature forms are packaged,
   `Cl(1,1) ≃ Mat₂(ℝ)` is explicit, and more generally the split forms `Cl(n,n)` are packaged as
-    `Mat_(2^n)(ℝ)` with even part
-    `Cl⁺(n,n) ≃ Mat_(2^(n-1))(ℝ) × Mat_(2^(n-1))(ℝ)`;
-    canonical low-signature entries `Spinor.RealClassification.cl_0_1_equivComplex`
-    (`Cl(0,1) ≃ ℂ`) and `Spinor.RealClassification.cl_0_2_equivQuaternion`
-    (`Cl(0,2) ≃ ℍ`) are now packaged as first-class algebra isomorphisms in the
-    `Spinor.RealClassification` namespace, starting the negative-definite row of the
-    real classification table
+  `Mat_(2^n)(ℝ)` with even part
+  `Cl⁺(n,n) ≃ Mat_(2^(n-1))(ℝ) × Mat_(2^(n-1))(ℝ)`;
+  the grouped odd split-signature row `Cl(n+1,n)` is now also packaged as
+  `Spinor.realOddSplitPositiveCliffordEquivProdMatrix`, i.e.
+  `Mat_(2^n)(ℝ) × Mat_(2^n)(ℝ)`;
+  canonical low-signature entries `Spinor.RealClassification.cl_0_1_equivComplex`
+  (`Cl(0,1) ≃ ℂ`) and `Spinor.RealClassification.cl_0_2_equivQuaternion`
+  (`Cl(0,2) ≃ ℍ`) are now packaged as first-class algebra isomorphisms in the
+  `Spinor.RealClassification` namespace, starting the negative-definite row of the
+  real classification table
 
 ### 4.2 Low-Dimensional Examples
 - [x] Spin(2) ≃ U(1) (circle)
   - packaged as
     `Spinor.LowDimensional.realSpin02EquivUnitaryComplex : spinGroup realCl02Form ≃* unitary ℂ`
     using Mathlib's compact negative-signature normalization
-- [ ] Spin(3) → SU(2) (Pauli matrices / quaternions)
-  - **algebraic core done** via `Spinor.Cl03QuaternionProd.realCl03EquivQuaternionProd :
-    CliffordAlgebra realCl03Form ≃ₐ[ℝ] ℍ × ℍ`; the remaining step is the
-    explicit surjectivity of `spinGroup realCl03Form → unitary ℍ`
-    (every unit quaternion is a product of two unit 3-vectors in `Cl⁺(0,3)`)
+- [x] Spin(3) ≃ SU(2) (unit quaternions / Pauli matrices)
+  - packaged as
+    `Spinor.LowDimensional.realSpin03EquivUnitaryQuaternion :
+    spinGroup realCl03Form ≃* unitary ℍ`,
+    using the explicit factorization of every unit quaternion into a product of two
+    unit 3-vectors in `Cl⁺(0,3)`
 - [ ] Spin(4) → SU(2) × SU(2)
   - scaffolding: `Spinor.LowDimensional.realCl04Form` (negative-signature 4-form) and
     `Spinor.LowDimensional.realEvenCl04EquivCl03 : Cl⁺(0,4) ≃ₐ[ℝ] Cl(0,3)` via
@@ -187,22 +207,24 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.LowDimensional`, including complex `Cl(1)`, `Cl(2)`, `Cl(3)`, `Cl(4)`, real
     `Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ`, `Cl⁺(2,0) ≃ ℂ`, `Cl⁺(3,0) ≃ ℍ`, and split-real
     `Cl(1,1)`, `Cl⁺(1,1)`, `Cl(2,2)`, `Cl⁺(2,2)`; the first group-level compact identification
-    `Spin(2) ≃ U(1)` is now packaged, and the remaining gap is the higher low-dimensional
-    Spin-identification layer
+    layer now packages `Spin(2) ≃ U(1)` and `Spin(3) ≃ SU(2)`, leaving the higher
+    low-dimensional Spin-identification layer (starting with `Spin(4)`)
 
 ### 4.3 The Covering Map
-- [ ] Spin(V,Q) → SO(V,Q) is a double cover
+- [ ] Upgrade the ambient isometry representation to a packaged double cover `Spin(V,Q) → SO(V,Q)`
   - [x] package the ambient vector action
     `Spinor.spinLinearRepresentation : spinGroup Q → (V ≃ₗ[R] V)` by conjugation on
     `CliffordAlgebra.ι Q`, and prove each spin element preserves `Q` via
     `Spinor.spinVector_preserves_quadratic` / `Spinor.spinIsometryEquiv`
   - [x] package those ambient isometries as a genuine homomorphism
     `Spinor.spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q`
-- [ ] Kernel is {1, -1}
+  - [ ] Remaining gap: land in a packaged special orthogonal group and prove the surjective
+    double-cover statement
+- [ ] Kernel of the ambient spin-to-isometry map is `{1, -1}`
   - done in the finite-dimensional split/hyperbolic setting on the canonical chosen-model API via
     `splitSpinorCoveringKernel_eq_one_or_neg_one`; the fully general / surjective double-cover
     packaging remains open
-- [ ] The spin representation does NOT factor through SO
+- [ ] The spin representation does NOT factor through the ambient isometry representation
   - done in positive split rank on the canonical chosen-model API via
     `splitSpinorRepresentation_not_factor_through_isometry`; the fully general covering-map
     formulation remains open
@@ -226,7 +248,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [x] Full `lake build` clean
 - [x] Zero `sorry` / `admit` sweep
 - [ ] Mathlib-compatible style
-- [x] Module documentation (Mathlib-style `/-! # ... -/` blocks on all 18 `Spinor/*.lean` files)
+- [x] Module documentation (Mathlib-style `/-! # ... -/` blocks on all 19 `Spinor/*.lean` files)
 
 ### 5.3 Submission
 - [ ] Target: CPP 2027 (deadline ~Sep 2026) or ITP 2027
@@ -243,10 +265,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 | `ExteriorAlgebra R M` | ✅ Complete | As quotient of tensor algebra |
 | `spinGroup Q` | ✅ Basic | Group structure, conjugation action |
 | `pinGroup Q` | ✅ Basic | Same |
-| `QuadraticForm.Isotropic` | ⚠️ Partial | May need maximal isotropic API |
-| `QuadraticForm.WittDecomp` | ❌ Missing | Need to build this |
-| Interior product on ⋀V | ⚠️ Partial | `ExteriorAlgebra.ιMulti` exists, contraction unclear |
-| Clifford module structure | ❌ Missing | **This is the main contribution** |
+| `QuadraticForm.Isotropic` | ⚠️ Partial | Mathlib gives the basic isotropic-subspace API; maximal totally isotropic / Witt-index packaging is built locally |
+| `QuadraticForm.WittDecomp` | ❌ Missing | Implemented locally in `Spinor.WittDecomp` and fed into `Spinor.Presentation` |
+| Interior product on ⋀V | ⚠️ Partial | `ExteriorAlgebra.ιMulti` exists; this project adds `contractionAction` on the chosen `⋀W` models |
+| Clifford module structure | ❌ Missing | Built locally via the ambient `Spinor.CliffordAction` and the chosen-model `Spinor.HyperbolicAction` / `Spinor.Presentation` APIs |
 
 ---
 

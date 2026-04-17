@@ -39,8 +39,12 @@ Per `ROADMAP.md` §5.3, the intended submission targets are:
 
 ## Status
 
-This is **initial scaffolding** only (ROADMAP §5.1). Every section contains
-grounded prose derived from the current repository state, but the paper is
-not yet a complete draft: proof walkthroughs, evaluation, and the full
-lessons-learned discussion remain to be written as the formalization reaches
-its final form.
+This is now a **substantive working draft** for ROADMAP §5.1. The paper
+contains grounded introduction, related-work, architecture, results,
+proof-highlight, lessons-learned, and future-work prose tied to the current
+Lean files and theorem names.
+
+It is still not submission-ready: evaluation, final exposition polishing,
+and the last open mathematical stories (notably the full covering-map
+theorem and the complete real Bott-periodicity narrative) remain to be
+finished.

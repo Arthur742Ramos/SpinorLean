@@ -3,6 +3,7 @@
 -/
 
 import Spinor.SpinRep
+import Mathlib.LinearAlgebra.Determinant
 
 /-!
 # Ambient vector representation of the spin group
@@ -23,6 +24,8 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
 ## Main declarations
 
 * `QuadraticMap.IsometryEquiv.instGroup` — the group structure on `Q.IsometryEquiv Q`.
+* `QuadraticForm.specialOrthogonalGroup` — the determinant-one subgroup of `Q.IsometryEquiv Q`,
+  i.e. the packaged special orthogonal target for the covering map.
 * `Spinor.cliffordIota_injective`, `Spinor.cliffordAlgebraMap_injective`,
   `Spinor.cliffordIotaRangeEquiv` — the Clifford inclusion of `M` is a linear embedding in
   characteristic not two.
@@ -34,6 +37,8 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
 * `Spinor.spinVector_preserves_quadratic`, `Spinor.spinIsometryEquiv`,
   `Spinor.spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q` — each spin element
   acts as an isometry of `Q`, assembled into a homomorphism.
+* `Spinor.spinSpecialOrthogonalRepresentation` — once the determinant-one step is supplied, the
+  ambient isometry representation factors through `QuadraticForm.specialOrthogonalGroup Q`.
 * `Spinor.spinRepresentation_not_factor_through_isometry_of_kernel_witness`,
   `Spinor.spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one` —
   the spin representation does not factor through the ambient isometry representation when
@@ -89,8 +94,65 @@ lemma toLinearEquiv_one (Q : QuadraticMap R M N) :
 lemma toLinearEquiv_mul {Q : QuadraticMap R M N} (f g : Q.IsometryEquiv Q) :
     ((f * g : Q.IsometryEquiv Q) : M ≃ₗ[R] M) = (f : M ≃ₗ[R] M) * (g : M ≃ₗ[R] M) := rfl
 
+@[simp]
+lemma toLinearEquiv_inv {Q : QuadraticMap R M N} (f : Q.IsometryEquiv Q) :
+    ((f⁻¹ : Q.IsometryEquiv Q) : M ≃ₗ[R] M) = (f : M ≃ₗ[R] M)⁻¹ := rfl
+
 end IsometryEquiv
 end QuadraticMap
+
+namespace QuadraticForm
+
+variable {R M : Type*}
+variable [CommRing R]
+variable [AddCommGroup M] [Module R M]
+variable [Module.Free R M] [Module.Finite R M]
+
+/-- The determinant-one subgroup of the ambient isometry group of `Q`. This packages the special
+orthogonal target for the spin covering map while staying in the ambient `Q.IsometryEquiv Q`
+language. -/
+def specialOrthogonalGroup (Q : QuadraticForm R M) : Subgroup (Q.IsometryEquiv Q) where
+  carrier := {f | LinearEquiv.det (f : M ≃ₗ[R] M) = 1}
+  one_mem' := by
+    simp [QuadraticMap.IsometryEquiv.toLinearEquiv_one]
+  mul_mem' {f} {g} hf hg := by
+    have hf' : LinearEquiv.det (f : M ≃ₗ[R] M) = 1 := hf
+    have hg' : LinearEquiv.det (g : M ≃ₗ[R] M) = 1 := hg
+    have hmul :
+        LinearEquiv.det ((f : M ≃ₗ[R] M) * (g : M ≃ₗ[R] M)) =
+          LinearEquiv.det (f : M ≃ₗ[R] M) * LinearEquiv.det (g : M ≃ₗ[R] M) :=
+      map_mul (LinearEquiv.det : (M ≃ₗ[R] M) →* Rˣ) (f : M ≃ₗ[R] M) (g : M ≃ₗ[R] M)
+    calc
+      LinearEquiv.det ((f * g : Q.IsometryEquiv Q) : M ≃ₗ[R] M) =
+          LinearEquiv.det (f : M ≃ₗ[R] M) * LinearEquiv.det (g : M ≃ₗ[R] M) := by
+            simpa [QuadraticMap.IsometryEquiv.toLinearEquiv_mul] using hmul
+      _ = 1 := by
+            rw [hf', hg']
+            simp
+  inv_mem' {f} hf := by
+    have hf' : LinearEquiv.det (f : M ≃ₗ[R] M) = 1 := hf
+    calc
+      LinearEquiv.det ((f⁻¹ : Q.IsometryEquiv Q) : M ≃ₗ[R] M) =
+          (LinearEquiv.det (f : M ≃ₗ[R] M))⁻¹ := by
+            simpa [QuadraticMap.IsometryEquiv.toLinearEquiv_inv] using
+              map_inv (LinearEquiv.det : (M ≃ₗ[R] M) →* Rˣ) (f : M ≃ₗ[R] M)
+      _ = 1 := by
+            rw [hf']
+            simp
+
+omit [Module.Free R M] [Module.Finite R M] in
+@[simp]
+theorem mem_specialOrthogonalGroup_iff (Q : QuadraticForm R M) (f : Q.IsometryEquiv Q) :
+    f ∈ Q.specialOrthogonalGroup ↔ LinearEquiv.det (f : M ≃ₗ[R] M) = 1 :=
+  Iff.rfl
+
+omit [Module.Free R M] [Module.Finite R M] in
+@[simp]
+theorem det_eq_one (Q : QuadraticForm R M) (f : Q.specialOrthogonalGroup) :
+    LinearEquiv.det ((f : Q.IsometryEquiv Q) : M ≃ₗ[R] M) = 1 :=
+  f.2
+
+end QuadraticForm
 
 namespace Spinor
 
@@ -300,6 +362,52 @@ theorem spinIsometryRepresentation_apply (x : spinGroup Q) :
 theorem spinIsometryRepresentation_toLinearEquiv (x : spinGroup Q) :
     ((spinIsometryRepresentation (Q := Q) x : Q.IsometryEquiv Q) : M ≃ₗ[R] M) =
       spinLinearRepresentation (Q := Q) x := rfl
+
+section SpecialOrthogonal
+
+variable [Module.Free R M] [Module.Finite R M]
+
+/-- Any determinant-one proof for the ambient spin action upgrades the corresponding isometry to a
+point of the packaged special orthogonal subgroup. -/
+theorem spinIsometryRepresentation_mem_specialOrthogonalGroup
+    (hdet : ∀ x : spinGroup Q, LinearEquiv.det (spinLinearRepresentation (Q := Q) x) = 1)
+    (x : spinGroup Q) :
+    spinIsometryRepresentation (Q := Q) x ∈ Q.specialOrthogonalGroup := by
+  simpa [QuadraticForm.mem_specialOrthogonalGroup_iff, spinIsometryRepresentation_toLinearEquiv]
+    using hdet x
+
+/-- Once the determinant-one step is established, the ambient spin-to-isometry map factors through
+the packaged special orthogonal subgroup. This isolates the remaining determinant/surjectivity gap
+in the roadmap's double-cover statement. -/
+noncomputable def spinSpecialOrthogonalRepresentation
+    (hdet : ∀ x : spinGroup Q, LinearEquiv.det (spinLinearRepresentation (Q := Q) x) = 1) :
+    spinGroup Q →* Q.specialOrthogonalGroup where
+  toFun x := ⟨spinIsometryRepresentation (Q := Q) x,
+    spinIsometryRepresentation_mem_specialOrthogonalGroup (Q := Q) hdet x⟩
+  map_one' := by
+    apply Subtype.ext
+    exact (spinIsometryRepresentation (Q := Q)).map_one
+  map_mul' x y := by
+    apply Subtype.ext
+    exact (spinIsometryRepresentation (Q := Q)).map_mul x y
+
+@[simp]
+theorem coe_spinSpecialOrthogonalRepresentation
+    (hdet : ∀ x : spinGroup Q, LinearEquiv.det (spinLinearRepresentation (Q := Q) x) = 1)
+    (x : spinGroup Q) :
+    ↑(spinSpecialOrthogonalRepresentation (Q := Q) hdet x) =
+      spinIsometryRepresentation (Q := Q) x := rfl
+
+@[simp]
+theorem spinSpecialOrthogonalRepresentation_comp_subtype
+    (hdet : ∀ x : spinGroup Q, LinearEquiv.det (spinLinearRepresentation (Q := Q) x) = 1) :
+    (Q.specialOrthogonalGroup.subtype).comp
+        (spinSpecialOrthogonalRepresentation (Q := Q) hdet) =
+      spinIsometryRepresentation (Q := Q) := by
+  ext x
+  rfl
+
+end SpecialOrthogonal
 
 /-- Scalar spin elements act trivially on the ambient quadratic-form isometry representation. -/
 theorem spinIsometryRepresentation_eq_one_of_coe_eq_algebraMap (x : spinGroup Q) (r : R)
