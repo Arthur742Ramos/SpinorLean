@@ -594,9 +594,8 @@ theorem not_nonempty_evenOddHyperbolicCliffordLinearEquiv [FiniteDimensional K V
       (n := 0) (x := (1 : IsotropicExteriorModel (K := K) W))) ?_ (by simp)
     change (1 : IsotropicExteriorModel (K := K) W) ∈
       (LinearMap.range (ExteriorAlgebra.ι K : W →ₗ[K] IsotropicExteriorModel (K := K) W) ^ 0)
-    simpa using
-      (show (1 : IsotropicExteriorModel (K := K) W) ∈
-          (1 : Submodule K (IsotropicExteriorModel (K := K) W)) from one_mem _)
+    rw [pow_zero]
+    simp
   ⟩
   have hone_ne : hone ≠ 0 := by
     intro h
@@ -1031,7 +1030,8 @@ theorem finrank_hyperbolicIsotropicSubmodule {Q : QuadraticForm K V} {W : Submod
   · intro hv
     rcases hv with ⟨x, hx, rfl⟩
     rcases hx with ⟨w, rfl⟩
-    simpa using (w : V).2
+    simp [QuadraticForm.splitIsometryEquivOfIsCompl_symm_inr
+      (K := K) (Q := Q) (W := W) (U := U) hQ hW hsplit hWU w]
   · intro hv
     refine ⟨(0, ⟨v, hv⟩), ?_, ?_⟩
     · exact ⟨⟨v, hv⟩, rfl⟩
