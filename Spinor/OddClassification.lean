@@ -142,6 +142,7 @@ noncomputable def oddSplitEvenCliffordMap :
     ext
     simp
 
+omit [FiniteDimensional K M] in
 /-- The transported even Clifford map for the odd split one-up form is surjective. -/
 theorem oddSplitEvenCliffordMap_surjective :
     Function.Surjective (oddSplitEvenCliffordMap (K := K) (M := M)) := by
@@ -176,6 +177,7 @@ theorem oddSplitEvenCliffordMap_surjective :
   rw [hmap, hright, CliffordAlgebra.map_id]
   rfl
 
+omit [FiniteDimensional K M] in
 /-- The transported even Clifford map for the odd split one-up form is injective. -/
 theorem oddSplitEvenCliffordMap_injective :
     Function.Injective (oddSplitEvenCliffordMap (K := K) (M := M)) := by
