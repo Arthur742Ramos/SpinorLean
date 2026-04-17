@@ -262,7 +262,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_top_of_square_surjective`
     and
     `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_of_square_surjective`
-    recover surjectivity onto `SO(1,1)`
+    recover surjectivity onto `SO(1,1)`, while
+    `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLine_of_square_surjective`
+    packages the full split-line double-cover statement
   - the current pair-generator closure claim is therefore **false** in split rank 1 over any field
     with a unit outside the square map
   - unconditional surjectivity now requires a different generator theorem or additional field
@@ -273,7 +275,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - done on the ambient API by
     `Spinor.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one`, extending the earlier
     split/hyperbolic chosen-model theorem `splitSpinorCoveringKernel_eq_one_or_neg_one`
-  - the remaining open part of the covering-map package is surjectivity / double-cover packaging
+  - the remaining open part of the covering-map package is unrestricted surjectivity / double-cover
+    packaging beyond the split-line square-surjective case
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
     `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`

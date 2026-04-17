@@ -184,4 +184,43 @@ theorem spinSpecialOrthogonalRepresentationFiniteDimensional_covering_of_pairGen
     exact spinSpecialOrthogonalRepresentationFiniteDimensional_eq_one_iff_coe_eq_one_or_neg_one
       (Q := Q) hQ x
 
+/-- Over fields whose unit group is entirely squares, the ambient spin map on the split hyperbolic
+line is a double cover of `SO(1,1)`: it is surjective and its kernel is exactly `±1`. -/
+theorem spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLine_of_square_surjective
+    (hsq : Function.Surjective (powMonoidHom (α := Kˣ) 2)) :
+    Function.Surjective (spinSpecialOrthogonalRepresentationFiniteDimensional
+      (Q := QuadraticForm.dualProd K K)) ∧
+      ∀ x : spinGroup (QuadraticForm.dualProd K K),
+        spinSpecialOrthogonalRepresentationFiniteDimensional
+            (Q := QuadraticForm.dualProd K K) x = 1 ↔
+          (x : CliffordAlgebra (QuadraticForm.dualProd K K)) = 1 ∨
+            (x : CliffordAlgebra (QuadraticForm.dualProd K K)) = -1 := by
+  apply spinSpecialOrthogonalRepresentationFiniteDimensional_covering_of_pairGeneratorClosure_eq_top
+      (Q := QuadraticForm.dualProd K K)
+  · rw [QuadraticMap.nondegenerate_iff_radical_eq_bot]
+    ext x
+    constructor
+    · intro hx
+      rcases (QuadraticMap.mem_radical_iff'.mp hx) with ⟨hxQ, hxrad⟩
+      have hxQ' : x.1 x.2 = 0 := by
+        simpa [QuadraticForm.dualProd] using hxQ
+      have hx₁ : x.1 = 0 := by
+        apply LinearMap.ext
+        intro w
+        have htest := hxrad (0, w)
+        simpa [QuadraticForm.dualProd, hxQ'] using htest
+      have hx₂eval : Module.Dual.eval K K x.2 = 0 := by
+        ext d
+        have htest := hxrad (d, 0)
+        simpa [QuadraticForm.dualProd, hxQ'] using htest
+      have hx₂ : x.2 = 0 := Module.eval_apply_injective K (V := K) (by
+        simpa using hx₂eval)
+      ext <;> simp [hx₁, hx₂]
+    · intro hx
+      rw [hx]
+      simp
+  · exact
+      spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_top_of_square_surjective
+        (K := K) hsq
+
 end Spinor
