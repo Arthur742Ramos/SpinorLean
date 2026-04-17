@@ -8,6 +8,7 @@
 
 import Spinor.ProdNeg
 import Mathlib.LinearAlgebra.CliffordAlgebra.EvenEquiv
+import Mathlib.LinearAlgebra.Matrix.Unique
 
 /-!
 # Odd split Clifford classification
@@ -298,5 +299,175 @@ noncomputable def oddSplitCliffordEquivProdMatrix :
     (AlgEquiv.prodCongr (LinearMap.toMatrixAlgEquiv bEven) (LinearMap.toMatrixAlgEquiv bOdd))
 
 end OddSplitOneUp
+
+section DualProdLine
+
+/-- Transport the split line `H(K)` from the ambient module `K` to its top submodule. -/
+noncomputable def dualProdLineTopIsometry :
+    (QuadraticForm.dualProd K K).IsometryEquiv
+      (QuadraticForm.dualProd K (⊤ : Submodule K K)) :=
+  QuadraticForm.dualProdIsometry (R := K)
+    (Submodule.topEquiv.symm : K ≃ₗ[K] (⊤ : Submodule K K))
+
+/-- Transport the even Clifford algebra of the split line to the top-submodule model. -/
+noncomputable def dualProdLineEvenCliffordMap :
+    CliffordAlgebra.even (QuadraticForm.dualProd K K) →ₐ[K]
+      CliffordAlgebra.even (QuadraticForm.dualProd K (⊤ : Submodule K K)) where
+  toFun a := ⟨CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).toIsometry a.1,
+    cliffordMap_mem_evenOdd_zero (K := K) (dualProdLineTopIsometry (K := K)) a.2⟩
+  map_zero' := by
+    ext
+    simp
+  map_add' := by
+    intro a b
+    ext
+    simp [map_add]
+  map_one' := by
+    ext
+    simp
+  map_mul' := by
+    intro a b
+    ext
+    simp [map_mul]
+  commutes' := by
+    intro r
+    ext
+    simp
+
+/-- The transported even Clifford map for the split line is surjective. -/
+theorem dualProdLineEvenCliffordMap_surjective :
+    Function.Surjective (dualProdLineEvenCliffordMap (K := K)) := by
+  intro a
+  refine ⟨⟨CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).symm.toIsometry a.1,
+      cliffordMap_mem_evenOdd_zero (K := K) (dualProdLineTopIsometry (K := K)).symm a.2⟩, ?_⟩
+  ext
+  have hright :
+      (dualProdLineTopIsometry (K := K)).toIsometry.comp
+          (dualProdLineTopIsometry (K := K)).symm.toIsometry =
+        QuadraticMap.Isometry.id (QuadraticForm.dualProd K (⊤ : Submodule K K)) := by
+    ext v <;> simp [QuadraticMap.Isometry.comp_apply]
+  have hmap :
+      CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).toIsometry
+          (CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).symm.toIsometry a.1) =
+        CliffordAlgebra.map
+          ((dualProdLineTopIsometry (K := K)).toIsometry.comp
+            (dualProdLineTopIsometry (K := K)).symm.toIsometry) a.1 := by
+    change
+      ((CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).toIsometry).comp
+          (CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).symm.toIsometry)) a.1 =
+        CliffordAlgebra.map
+          ((dualProdLineTopIsometry (K := K)).toIsometry.comp
+            (dualProdLineTopIsometry (K := K)).symm.toIsometry) a.1
+    exact congrArg (fun φ => φ a.1)
+      (CliffordAlgebra.map_comp_map
+        (f := (dualProdLineTopIsometry (K := K)).toIsometry)
+        (g := (dualProdLineTopIsometry (K := K)).symm.toIsometry))
+  change
+    CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).toIsometry
+      (CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).symm.toIsometry a.1) = a.1
+  rw [hmap, hright, CliffordAlgebra.map_id]
+  rfl
+
+/-- The transported even Clifford map for the split line is injective. -/
+theorem dualProdLineEvenCliffordMap_injective :
+    Function.Injective (dualProdLineEvenCliffordMap (K := K)) := by
+  intro a b h
+  apply Subtype.ext
+  have hval :
+      CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).toIsometry a.1 =
+        CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).toIsometry b.1 :=
+    congrArg Subtype.val h
+  have hback :=
+    congrArg (CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).symm.toIsometry) hval
+  have hleft :
+      (dualProdLineTopIsometry (K := K)).symm.toIsometry.comp
+          (dualProdLineTopIsometry (K := K)).toIsometry =
+        QuadraticMap.Isometry.id (QuadraticForm.dualProd K K) := by
+    ext v <;> simp [dualProdLineTopIsometry, QuadraticMap.Isometry.comp_apply,
+      QuadraticForm.dualProdIsometry]
+  have hmapa :
+      CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).symm.toIsometry
+          (CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).toIsometry a.1) =
+        CliffordAlgebra.map
+          ((dualProdLineTopIsometry (K := K)).symm.toIsometry.comp
+            (dualProdLineTopIsometry (K := K)).toIsometry) a.1 := by
+    change
+      ((CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).symm.toIsometry).comp
+          (CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).toIsometry)) a.1 =
+        CliffordAlgebra.map
+          ((dualProdLineTopIsometry (K := K)).symm.toIsometry.comp
+            (dualProdLineTopIsometry (K := K)).toIsometry) a.1
+    exact congrArg (fun φ => φ a.1)
+      (CliffordAlgebra.map_comp_map
+        (f := (dualProdLineTopIsometry (K := K)).symm.toIsometry)
+        (g := (dualProdLineTopIsometry (K := K)).toIsometry))
+  have hmapb :
+      CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).symm.toIsometry
+          (CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).toIsometry b.1) =
+        CliffordAlgebra.map
+          ((dualProdLineTopIsometry (K := K)).symm.toIsometry.comp
+            (dualProdLineTopIsometry (K := K)).toIsometry) b.1 := by
+    change
+      ((CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).symm.toIsometry).comp
+          (CliffordAlgebra.map (dualProdLineTopIsometry (K := K)).toIsometry)) b.1 =
+        CliffordAlgebra.map
+          ((dualProdLineTopIsometry (K := K)).symm.toIsometry.comp
+            (dualProdLineTopIsometry (K := K)).toIsometry) b.1
+    exact congrArg (fun φ => φ b.1)
+      (CliffordAlgebra.map_comp_map
+        (f := (dualProdLineTopIsometry (K := K)).symm.toIsometry)
+        (g := (dualProdLineTopIsometry (K := K)).toIsometry))
+  rw [hmapa, hmapb, hleft, CliffordAlgebra.map_id] at hback
+  exact hback
+
+variable [Invertible (2 : K)]
+
+/-- The even and odd halves of `⋀(K)` on the split line are both one-dimensional. -/
+theorem finrank_evenOddDualProdLineExterior :
+    Module.finrank K (evenExteriorSubmodule (K := K) (⊤ : Submodule K K)) = 1 ∧
+      Module.finrank K (oddExteriorSubmodule (K := K) (⊤ : Submodule K K)) = 1 := by
+  have hTopFinrank : Module.finrank K (⊤ : Submodule K K) = 1 := by
+    rw [LinearEquiv.finrank_eq (Submodule.topEquiv : (⊤ : Submodule K K) ≃ₗ[K] K)]
+    simp
+  have htop : 0 < Module.finrank K (⊤ : Submodule K K) := by
+    rw [hTopFinrank]
+    exact Nat.succ_pos 0
+  constructor
+  · simpa [hTopFinrank] using
+      finrank_evenExterior (K := K) (⊤ : Submodule K K) htop
+  · simpa [hTopFinrank] using
+      finrank_oddExterior (K := K) (⊤ : Submodule K K) htop
+
+/-- The even Clifford algebra of the split line `H(K)` is `K × K`. -/
+noncomputable def dualProdLineEvenCliffordEquivProd :
+    CliffordAlgebra.even (QuadraticForm.dualProd K K) ≃ₐ[K] K × K := by
+  let bTop := Module.finBasis K (⊤ : Submodule K K)
+  letI : FiniteDimensional K (IsotropicExteriorModel (K := K) (⊤ : Submodule K K)) :=
+    bTop.ExteriorAlgebra.finiteDimensional_of_finite
+  let hEven := (finrank_evenOddDualProdLineExterior (K := K)).1
+  let hOdd := (finrank_evenOddDualProdLineExterior (K := K)).2
+  let bEven :
+      Module.Basis (Fin 1) K (evenExteriorSubmodule (K := K) (⊤ : Submodule K K)) :=
+    Module.finBasisOfFinrankEq K
+      (evenExteriorSubmodule (K := K) (⊤ : Submodule K K)) hEven
+  let bOdd :
+      Module.Basis (Fin 1) K (oddExteriorSubmodule (K := K) (⊤ : Submodule K K)) :=
+    Module.finBasisOfFinrankEq K
+      (oddExteriorSubmodule (K := K) (⊤ : Submodule K K)) hOdd
+  let e : Fin 1 ≃ Unit := finOneEquiv
+  exact
+    (AlgEquiv.ofBijective (dualProdLineEvenCliffordMap (K := K))
+      ⟨dualProdLineEvenCliffordMap_injective (K := K),
+        dualProdLineEvenCliffordMap_surjective (K := K)⟩).trans
+      ((evenSplitCliffordEquivProdEnd (K := K) (⊤ : Submodule K K)).trans
+        (AlgEquiv.prodCongr
+          ((LinearMap.toMatrixAlgEquiv bEven).trans
+            ((Matrix.reindexAlgEquiv K K e).trans
+              (Matrix.uniqueAlgEquiv (R := K) (A := K) (m := Unit))))
+          ((LinearMap.toMatrixAlgEquiv bOdd).trans
+            ((Matrix.reindexAlgEquiv K K e).trans
+              (Matrix.uniqueAlgEquiv (R := K) (A := K) (m := Unit))))))
+
+end DualProdLine
 
 end Spinor
