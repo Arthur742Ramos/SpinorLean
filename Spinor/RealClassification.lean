@@ -161,6 +161,15 @@ noncomputable def cl_0_2_equivQuaternion :
     CliffordAlgebra Q_0_2 ≃ₐ[ℝ] ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)] :=
   CliffordAlgebraQuaternion.equiv (R := ℝ) (c₁ := (-1 : ℝ)) (c₂ := (-1 : ℝ))
 
+/-!
+Further canonical real-classification entries `Cl(0,3) ≃ ℍ × ℍ` and
+`Cl⁺(0,4) ≃ ℍ × ℍ` live in `Spinor.Cl03QuaternionProd` (as
+`realCl03EquivQuaternionProd` and `realEvenCl04EquivQuaternionProd`),
+which is downstream of `Spinor.LowDimensional` and therefore cannot be
+imported here without creating a cycle. The forms used there are
+`realCl03Form` and `realCl04Form` from `Spinor.LowDimensional`.
+-/
+
 end RealClassification
 
 end
