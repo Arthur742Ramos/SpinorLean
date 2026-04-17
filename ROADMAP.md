@@ -216,7 +216,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_antidiag_preimage`,
     and arbitrary pairs are lifted explicitly by
     `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_preimage`
-- [ ] These connect spinors to familiar physics
+- [x] These connect spinors to familiar physics
   - foundation now includes explicit low-dimensional Clifford-algebra models in
     `Spinor.LowDimensional`, including complex `Cl(1)`, `Cl(2)`, `Cl(3)`, `Cl(4)`, real
     `Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ`, `Cl⁺(2,0) ≃ ℂ`, `Cl⁺(3,0) ≃ ℍ`, and split-real
@@ -233,13 +233,19 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinVector_preserves_quadratic` / `Spinor.spinIsometryEquiv`
   - [x] package those ambient isometries as a genuine homomorphism
     `Spinor.spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q`
-  - [ ] Remaining gap: land in a packaged special orthogonal group and prove the surjective
-    double-cover statement
+  - [x] package the special orthogonal target as
+    `QuadraticForm.specialOrthogonalGroup`
+  - [x] once a determinant-one proof is supplied, factor the ambient action through that target as
+    `Spinor.spinSpecialOrthogonalRepresentation`
+  - [ ] Remaining gap: prove the determinant-one statement for
+    `Spinor.spinLinearRepresentation` and package the surjective double-cover statement
 - [ ] Kernel of the ambient spin-to-isometry map is `{1, -1}`
   - done in the finite-dimensional split/hyperbolic setting on the canonical chosen-model API via
     `splitSpinorCoveringKernel_eq_one_or_neg_one`; the fully general / surjective double-cover
     packaging remains open
 - [ ] The spin representation does NOT factor through the ambient isometry representation
+  - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
+    `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`
   - done in positive split rank on the canonical chosen-model API via
     `splitSpinorRepresentation_not_factor_through_isometry`; the fully general covering-map
     formulation remains open

@@ -29,14 +29,19 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
 * `Spinor.cliffordIota_injective`, `Spinor.cliffordAlgebraMap_injective`,
   `Spinor.cliffordIotaRangeEquiv` — the Clifford inclusion of `M` is a linear embedding in
   characteristic not two.
-* `Spinor.spinConjAlgEquiv` — Clifford conjugation by a spin element as an algebra
-  automorphism.
+* `Spinor.pinConjAlgEquiv`, `Spinor.spinConjAlgEquiv` — Clifford conjugation by a pin/spin
+  element as an algebra automorphism.
+* `Spinor.pinVectorAction`, `Spinor.pinLinearEquiv`,
+  `Spinor.pinLinearRepresentation : pinGroup Q →* (M ≃ₗ[R] M)` — the ambient vector action of
+  the pin group by conjugation on `CliffordAlgebra.ι Q`.
 * `Spinor.spinVectorAction`, `Spinor.spinLinearEquiv`,
   `Spinor.spinLinearRepresentation : spinGroup Q →* (M ≃ₗ[R] M)` — the transported vector
-  action and its packaging as a linear representation.
-* `Spinor.spinVector_preserves_quadratic`, `Spinor.spinIsometryEquiv`,
-  `Spinor.spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q` — each spin element
-  acts as an isometry of `Q`, assembled into a homomorphism.
+  action of the spin group and its packaging as a linear representation.
+* `Spinor.pinVector_preserves_quadratic`, `Spinor.pinIsometryEquiv`,
+  `Spinor.pinIsometryRepresentation : pinGroup Q →* Q.IsometryEquiv Q`, together with
+  `Spinor.spinVector_preserves_quadratic`, `Spinor.spinIsometryEquiv`,
+  `Spinor.spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q` — each pin/spin
+  element acts as an isometry of `Q`, assembled into a homomorphism.
 * `Spinor.spinSpecialOrthogonalRepresentation` — once the determinant-one step is supplied, the
   ambient isometry representation factors through `QuadraticForm.specialOrthogonalGroup Q`.
 * `Spinor.spinRepresentation_not_factor_through_isometry_of_kernel_witness`,
@@ -125,7 +130,8 @@ def specialOrthogonalGroup (Q : QuadraticForm R M) : Subgroup (Q.IsometryEquiv Q
     calc
       LinearEquiv.det ((f * g : Q.IsometryEquiv Q) : M ≃ₗ[R] M) =
           LinearEquiv.det (f : M ≃ₗ[R] M) * LinearEquiv.det (g : M ≃ₗ[R] M) := by
-            simpa [QuadraticMap.IsometryEquiv.toLinearEquiv_mul] using hmul
+            rw [QuadraticMap.IsometryEquiv.toLinearEquiv_mul]
+            exact hmul
       _ = 1 := by
             rw [hf', hg']
             simp
@@ -134,8 +140,8 @@ def specialOrthogonalGroup (Q : QuadraticForm R M) : Subgroup (Q.IsometryEquiv Q
     calc
       LinearEquiv.det ((f⁻¹ : Q.IsometryEquiv Q) : M ≃ₗ[R] M) =
           (LinearEquiv.det (f : M ≃ₗ[R] M))⁻¹ := by
-            simpa [QuadraticMap.IsometryEquiv.toLinearEquiv_inv] using
-              map_inv (LinearEquiv.det : (M ≃ₗ[R] M) →* Rˣ) (f : M ≃ₗ[R] M)
+            rw [QuadraticMap.IsometryEquiv.toLinearEquiv_inv]
+            exact map_inv (LinearEquiv.det : (M ≃ₗ[R] M) →* Rˣ) (f : M ≃ₗ[R] M)
       _ = 1 := by
             rw [hf']
             simp
@@ -189,6 +195,190 @@ theorem cliffordIotaRangeEquiv_apply (m : M) :
 theorem cliffordIotaRangeEquiv_symm_apply (x : LinearMap.range (CliffordAlgebra.ι Q)) :
     CliffordAlgebra.ι Q ((cliffordIotaRangeEquiv (Q := Q)).symm x) = x := by
   exact congrArg Subtype.val ((cliffordIotaRangeEquiv (Q := Q)).apply_symm_apply x)
+
+/-- The natural inclusion `Spin(Q) → Pin(Q)`. -/
+noncomputable def spinGroupToPinGroup : spinGroup Q →* pinGroup Q where
+  toFun x := ⟨x, spinGroup.mem_pin x.prop⟩
+  map_one' := rfl
+  map_mul' _ _ := rfl
+
+omit [Invertible (2 : R)] in
+@[simp]
+theorem coe_spinGroupToPinGroup (x : spinGroup Q) :
+    ((spinGroupToPinGroup (Q := Q) x : pinGroup Q) : CliffordAlgebra Q) = x := rfl
+
+/-- Conjugation by a pin element as an algebra automorphism of the Clifford algebra. -/
+noncomputable def pinConjAlgEquiv (x : pinGroup Q) : CliffordAlgebra Q ≃ₐ[R] CliffordAlgebra Q :=
+  MulSemiringAction.toAlgEquiv R (CliffordAlgebra Q) (ConjAct.toConjAct (pinGroup.toUnits x))
+
+omit [Invertible (2 : R)] in
+@[simp]
+theorem pinConjAlgEquiv_apply (x : pinGroup Q) (a : CliffordAlgebra Q) :
+    pinConjAlgEquiv (Q := Q) x a =
+      ConjAct.toConjAct (pinGroup.toUnits x) • a := rfl
+
+/-- The pin conjugation action preserves the Clifford copy of the ambient vector space. -/
+noncomputable def pinRangeAction (x : pinGroup Q) :
+    LinearMap.range (CliffordAlgebra.ι Q) →ₗ[R] LinearMap.range (CliffordAlgebra.ι Q) where
+  toFun y := by
+    let z := pinConjAlgEquiv (Q := Q) x y
+    refine ⟨z, ?_⟩
+    let m : M := Classical.choose y.property
+    have hm : CliffordAlgebra.ι Q m = (y : CliffordAlgebra Q) := Classical.choose_spec y.property
+    exact by
+      simpa [z, hm] using pinGroup.conjAct_smul_ι_mem_range_ι
+        (Q := Q) (x := pinGroup.toUnits x) x.prop m
+  map_add' y z := by
+    apply Subtype.ext
+    simp [pinConjAlgEquiv]
+  map_smul' a y := by
+    apply Subtype.ext
+    simp [pinConjAlgEquiv]
+
+@[simp]
+theorem pinRangeAction_apply (x : pinGroup Q) (y : LinearMap.range (CliffordAlgebra.ι Q)) :
+    ((pinRangeAction (Q := Q) x y : LinearMap.range (CliffordAlgebra.ι Q)) : CliffordAlgebra Q) =
+      pinConjAlgEquiv (Q := Q) x y := rfl
+
+/-- The ambient linear map induced by pin conjugation on the image of `CliffordAlgebra.ι`. -/
+noncomputable def pinVectorAction (x : pinGroup Q) : M →ₗ[R] M :=
+  (cliffordIotaRangeEquiv (Q := Q)).symm.toLinearMap.comp
+    ((pinRangeAction (Q := Q) x).comp (cliffordIotaRangeEquiv (Q := Q)).toLinearMap)
+
+@[simp]
+theorem pinVectorAction_ι (x : pinGroup Q) (m : M) :
+    CliffordAlgebra.ι Q (pinVectorAction (Q := Q) x m) =
+      ConjAct.toConjAct (pinGroup.toUnits x) • CliffordAlgebra.ι Q m := by
+  simp [pinVectorAction, pinConjAlgEquiv]
+
+/-- Each pin element acts by a linear automorphism of the ambient quadratic module. -/
+noncomputable def pinLinearEquiv (x : pinGroup Q) : M ≃ₗ[R] M :=
+  { pinVectorAction (Q := Q) x with
+    invFun := pinVectorAction (Q := Q) x⁻¹
+    left_inv := by
+      intro m
+      apply cliffordIota_injective (Q := Q)
+      simp [pinVectorAction_ι]
+    right_inv := by
+      intro m
+      apply cliffordIota_injective (Q := Q)
+      simp [pinVectorAction_ι] }
+
+@[simp]
+theorem pinLinearEquiv_apply (x : pinGroup Q) (m : M) :
+    pinLinearEquiv (Q := Q) x m = pinVectorAction (Q := Q) x m := rfl
+
+@[simp]
+theorem pinLinearEquiv_ι (x : pinGroup Q) (m : M) :
+    CliffordAlgebra.ι Q (pinLinearEquiv (Q := Q) x m) =
+      ConjAct.toConjAct (pinGroup.toUnits x) • CliffordAlgebra.ι Q m :=
+  pinVectorAction_ι (Q := Q) x m
+
+/-- The ambient vector action of the pin group. -/
+noncomputable def pinLinearRepresentation : pinGroup Q →* (M ≃ₗ[R] M) where
+  toFun := pinLinearEquiv (Q := Q)
+  map_one' := by
+    ext m
+    apply cliffordIota_injective (Q := Q)
+    simp
+  map_mul' x y := by
+    ext m
+    apply cliffordIota_injective (Q := Q)
+    simp [LinearEquiv.mul_apply, mul_smul]
+
+@[simp]
+theorem pinLinearRepresentation_apply (x : pinGroup Q) :
+    pinLinearRepresentation (Q := Q) x = pinLinearEquiv (Q := Q) x := rfl
+
+/-- Scalar pin elements act trivially on the ambient linear representation. -/
+theorem pinLinearRepresentation_eq_one_of_coe_eq_algebraMap (x : pinGroup Q) (r : R)
+    (hx : (x : CliffordAlgebra Q) = algebraMap R (CliffordAlgebra Q) r) :
+    pinLinearRepresentation (Q := Q) x = 1 := by
+  ext m
+  show pinLinearRepresentation (Q := Q) x m = m
+  apply cliffordIota_injective (Q := Q)
+  have hx' : (((pinGroup.toUnits x : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q)) =
+      algebraMap R (CliffordAlgebra Q) r := by
+    simpa using hx
+  rw [pinLinearRepresentation_apply, pinLinearEquiv_ι, ConjAct.units_smul_def,
+    ConjAct.ofConjAct_toConjAct]
+  rw [hx', Algebra.commutes r (CliffordAlgebra.ι Q m), mul_assoc, ← hx']
+  have hmul : (x : CliffordAlgebra Q) * ↑x⁻¹ = (1 : CliffordAlgebra Q) := by
+    simpa [pinGroup.star_eq_inv] using (pinGroup.coe_mul_star_self (Q := Q) x)
+  have hmul' :
+      (((pinGroup.toUnits x : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) *
+        ↑((pinGroup.toUnits x)⁻¹)) = (1 : CliffordAlgebra Q) := by
+    simpa using hmul
+  rw [hmul', mul_one]
+
+noncomputable instance : MulAction (pinGroup Q) M :=
+  MulAction.compHom M (pinLinearRepresentation (Q := Q))
+
+@[simp]
+theorem pinVector_smul_def (x : pinGroup Q) (m : M) :
+    x • m = pinLinearRepresentation (Q := Q) x m := rfl
+
+/-- Pin conjugation preserves the ambient quadratic form. -/
+theorem pinVector_preserves_quadratic (x : pinGroup Q) (m : M) :
+    Q (pinLinearRepresentation (Q := Q) x m) = Q m := by
+  have hsquare :
+      CliffordAlgebra.ι Q (pinLinearRepresentation (Q := Q) x m) *
+          CliffordAlgebra.ι Q (pinLinearRepresentation (Q := Q) x m) =
+        algebraMap R (CliffordAlgebra Q) (Q m) := by
+    calc
+      CliffordAlgebra.ι Q (pinLinearRepresentation (Q := Q) x m) *
+          CliffordAlgebra.ι Q (pinLinearRepresentation (Q := Q) x m) =
+          pinConjAlgEquiv (Q := Q) x (CliffordAlgebra.ι Q m) *
+            pinConjAlgEquiv (Q := Q) x (CliffordAlgebra.ι Q m) := by
+              rw [pinLinearRepresentation_apply, pinLinearEquiv_ι (Q := Q) x m]
+              simp [pinConjAlgEquiv]
+      _ = pinConjAlgEquiv (Q := Q) x
+            (CliffordAlgebra.ι Q m * CliffordAlgebra.ι Q m) := by
+              symm
+              exact (pinConjAlgEquiv (Q := Q) x).map_mul _ _
+      _ = pinConjAlgEquiv (Q := Q) x (algebraMap R (CliffordAlgebra Q) (Q m)) := by
+              rw [CliffordAlgebra.ι_sq_scalar (Q := Q)]
+      _ = algebraMap R (CliffordAlgebra Q) (Q m) := by
+              simp [pinConjAlgEquiv]
+  have hsquare' :
+      CliffordAlgebra.ι Q (pinLinearRepresentation (Q := Q) x m) *
+          CliffordAlgebra.ι Q (pinLinearRepresentation (Q := Q) x m) =
+        algebraMap R (CliffordAlgebra Q) (Q (pinLinearRepresentation (Q := Q) x m)) :=
+    CliffordAlgebra.ι_sq_scalar (Q := Q) _
+  apply cliffordAlgebraMap_injective (Q := Q)
+  exact hsquare'.symm.trans hsquare
+
+/-- Each pin element acts by an isometry of the ambient quadratic form. -/
+noncomputable def pinIsometryEquiv (x : pinGroup Q) : Q.IsometryEquiv Q where
+  toLinearEquiv := pinLinearRepresentation (Q := Q) x
+  map_app' := pinVector_preserves_quadratic (Q := Q) x
+
+@[simp]
+theorem pinIsometryEquiv_apply (x : pinGroup Q) (m : M) :
+    pinIsometryEquiv (Q := Q) x m = pinLinearRepresentation (Q := Q) x m := rfl
+
+/-- The ambient pin action packaged directly as a homomorphism into quadratic-form isometries. -/
+noncomputable def pinIsometryRepresentation : pinGroup Q →* Q.IsometryEquiv Q where
+  toFun := pinIsometryEquiv (Q := Q)
+  map_one' := by
+    apply DFunLike.ext
+    intro m
+    simpa [pinIsometryEquiv_apply] using
+      congrArg (fun e : M ≃ₗ[R] M => e m) (pinLinearRepresentation (Q := Q)).map_one
+  map_mul' x y := by
+    apply DFunLike.ext
+    intro m
+    simpa [pinIsometryEquiv_apply, QuadraticMap.IsometryEquiv.mul_apply, LinearEquiv.mul_apply] using
+      congrArg (fun e : M ≃ₗ[R] M => e m) ((pinLinearRepresentation (Q := Q)).map_mul x y)
+
+@[simp]
+theorem pinIsometryRepresentation_apply (x : pinGroup Q) :
+    pinIsometryRepresentation (Q := Q) x = pinIsometryEquiv (Q := Q) x := rfl
+
+@[simp]
+theorem pinIsometryRepresentation_toLinearEquiv (x : pinGroup Q) :
+    ((pinIsometryRepresentation (Q := Q) x : Q.IsometryEquiv Q) : M ≃ₗ[R] M) =
+      pinLinearRepresentation (Q := Q) x := rfl
 
 /-- Conjugation by a spin element as an algebra automorphism of the Clifford algebra. -/
 noncomputable def spinConjAlgEquiv (x : spinGroup Q) : CliffordAlgebra Q ≃ₐ[R] CliffordAlgebra Q :=
@@ -363,27 +553,39 @@ theorem spinIsometryRepresentation_toLinearEquiv (x : spinGroup Q) :
     ((spinIsometryRepresentation (Q := Q) x : Q.IsometryEquiv Q) : M ≃ₗ[R] M) =
       spinLinearRepresentation (Q := Q) x := rfl
 
+@[simp]
+theorem pinLinearRepresentation_spinGroupToPinGroup (x : spinGroup Q) :
+    pinLinearRepresentation (Q := Q) (spinGroupToPinGroup (Q := Q) x) =
+      spinLinearRepresentation (Q := Q) x := by
+  ext m
+  apply cliffordIota_injective (Q := Q)
+  have hUnits : pinGroup.toUnits (spinGroupToPinGroup (Q := Q) x) = spinGroup.toUnits x := by
+    ext
+    rfl
+  rw [pinLinearRepresentation_apply, spinLinearRepresentation_apply,
+    pinLinearEquiv_ι, spinLinearEquiv_ι, hUnits]
+
+@[simp]
+theorem pinIsometryRepresentation_comp_spinGroupToPinGroup :
+    (pinIsometryRepresentation (Q := Q)).comp (spinGroupToPinGroup (Q := Q)) =
+      spinIsometryRepresentation (Q := Q) := by
+  ext x m
+  exact congrArg (fun e : M ≃ₗ[R] M => e m)
+    (pinLinearRepresentation_spinGroupToPinGroup (Q := Q) x)
+
 section SpecialOrthogonal
-
-variable [Module.Free R M] [Module.Finite R M]
-
-/-- Any determinant-one proof for the ambient spin action upgrades the corresponding isometry to a
-point of the packaged special orthogonal subgroup. -/
-theorem spinIsometryRepresentation_mem_specialOrthogonalGroup
-    (hdet : ∀ x : spinGroup Q, LinearEquiv.det (spinLinearRepresentation (Q := Q) x) = 1)
-    (x : spinGroup Q) :
-    spinIsometryRepresentation (Q := Q) x ∈ Q.specialOrthogonalGroup := by
-  simpa [QuadraticForm.mem_specialOrthogonalGroup_iff, spinIsometryRepresentation_toLinearEquiv]
-    using hdet x
 
 /-- Once the determinant-one step is established, the ambient spin-to-isometry map factors through
 the packaged special orthogonal subgroup. This isolates the remaining determinant/surjectivity gap
 in the roadmap's double-cover statement. -/
 noncomputable def spinSpecialOrthogonalRepresentation
+    [Module.Free R M] [Module.Finite R M]
     (hdet : ∀ x : spinGroup Q, LinearEquiv.det (spinLinearRepresentation (Q := Q) x) = 1) :
     spinGroup Q →* Q.specialOrthogonalGroup where
   toFun x := ⟨spinIsometryRepresentation (Q := Q) x,
-    spinIsometryRepresentation_mem_specialOrthogonalGroup (Q := Q) hdet x⟩
+    by
+      simpa [QuadraticForm.mem_specialOrthogonalGroup_iff, spinIsometryRepresentation_toLinearEquiv]
+        using hdet x⟩
   map_one' := by
     apply Subtype.ext
     exact (spinIsometryRepresentation (Q := Q)).map_one
@@ -393,6 +595,7 @@ noncomputable def spinSpecialOrthogonalRepresentation
 
 @[simp]
 theorem coe_spinSpecialOrthogonalRepresentation
+    [Module.Free R M] [Module.Finite R M]
     (hdet : ∀ x : spinGroup Q, LinearEquiv.det (spinLinearRepresentation (Q := Q) x) = 1)
     (x : spinGroup Q) :
     ↑(spinSpecialOrthogonalRepresentation (Q := Q) hdet x) =
@@ -400,6 +603,7 @@ theorem coe_spinSpecialOrthogonalRepresentation
 
 @[simp]
 theorem spinSpecialOrthogonalRepresentation_comp_subtype
+    [Module.Free R M] [Module.Finite R M]
     (hdet : ∀ x : spinGroup Q, LinearEquiv.det (spinLinearRepresentation (Q := Q) x) = 1) :
     (Q.specialOrthogonalGroup.subtype).comp
         (spinSpecialOrthogonalRepresentation (Q := Q) hdet) =
