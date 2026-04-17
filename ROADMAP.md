@@ -239,11 +239,15 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinLinearRepresentation_det_eq_one`
   - [x] factor the ambient action through that target as
     `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional`
+  - [x] identify the finite-dimensional nondegenerate kernel as `{1, -1}` via
+    `Spinor.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one`
   - [ ] Remaining gap: package the surjective double-cover statement
-- [ ] Kernel of the ambient spin-to-isometry map is `{1, -1}`
-  - done in the finite-dimensional split/hyperbolic setting on the canonical chosen-model API via
-    `splitSpinorCoveringKernel_eq_one_or_neg_one`; the fully general / surjective double-cover
-    packaging remains open
+- [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
+  nondegenerate rank
+  - done on the ambient API by
+    `Spinor.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one`, extending the earlier
+    split/hyperbolic chosen-model theorem `splitSpinorCoveringKernel_eq_one_or_neg_one`
+  - the remaining open part of the covering-map package is surjectivity / double-cover packaging
 - [ ] The spin representation does NOT factor through the ambient isometry representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
     `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`
