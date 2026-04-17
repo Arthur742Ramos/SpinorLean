@@ -1183,6 +1183,86 @@ theorem pinLinearRepresentation_restrict_span_singleton_eq_id_of_quadratic_eq_ne
     congrArg (fun m => c • m)
       (pinLinearRepresentation_apply_iota_of_quadratic_eq_neg_one_self (Q := Q) a hq)
 
+section DualProd
+
+variable {K : Type*} [CommRing K]
+variable {W : Type*} [AddCommGroup W] [Module K W]
+variable [Invertible (2 : K)]
+
+/-- On the split hyperbolic form `W* × W`, the reflection attached to a norm-`-1` vector
+`(-f, w)` with `f(w) = 1` has an explicit coordinate formula. -/
+theorem pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one
+    (f : Module.Dual K W) (w : W) (hf : f w = 1)
+    (d : Module.Dual K W) (u : W) :
+    pinLinearRepresentation (Q := QuadraticForm.dualProd K W)
+        (pinIotaOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K W) (-f, w)
+          (by simp [QuadraticForm.dualProd, hf]))
+        (d, u) =
+      (((d w - f u) : K) • f - d, -((d w - f u) : K) • w - u) := by
+  have hraw :
+      pinLinearRepresentation (Q := QuadraticForm.dualProd K W)
+          (pinIotaOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K W) (-f, w)
+            (by simp [QuadraticForm.dualProd, hf]))
+          (d, u) =
+        (-d + -((f w + (f u + (-f w + -d w))) • f),
+          -u + (f w + (f u + (-f w + -d w))) • w) := by
+    simpa [pinIotaOfQuadraticEqNegOne, QuadraticMap.polar, QuadraticForm.dualProd,
+        sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using
+      pinLinearRepresentation_apply_iota_of_quadratic_eq_neg_one
+      (Q := QuadraticForm.dualProd K W) (-f, w) (d, u)
+      (by simp [QuadraticForm.dualProd, hf])
+  have hcoef : f w + (f u + (-f w + -d w)) = f u - d w := by
+    ring
+  have hcoef' : -((f u - d w) : K) = d w - f u := by
+    ring
+  have hcoef'' : f u - d w = -((d w - f u) : K) := by
+    ring
+  calc
+    pinLinearRepresentation (Q := QuadraticForm.dualProd K W)
+        (pinIotaOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K W) (-f, w)
+          (by simp [QuadraticForm.dualProd, hf]))
+        (d, u) =
+      (-d + -((f w + (f u + (-f w + -d w))) • f),
+        -u + (f w + (f u + (-f w + -d w))) • w) := hraw
+    _ = (-d + -((f u - d w) • f), -u + (f u - d w) • w) := by
+      simp [hcoef]
+    _ = (-d + ((d w - f u) : K) • f, -u + (f u - d w) • w) := by
+      have hneg : -((f u - d w) • f) = ((d w - f u) : K) • f := by
+        rw [show -((f u - d w) • f) = (-(f u - d w) : K) • f by
+          simpa using (neg_smul (f u - d w) f).symm]
+        rw [hcoef']
+      simp [hneg]
+    _ = (((d w - f u) : K) • f - d, -((d w - f u) : K) • w - u) := by
+      simp [hcoef'', sub_eq_add_neg, add_comm]
+
+/-- The split reflection attached to `(-f, w)` swaps the primal vector `(0, w)` with the dual
+vector `(-f, 0)`. -/
+theorem pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one_primal
+    (f : Module.Dual K W) (w : W) (hf : f w = 1) :
+    pinLinearRepresentation (Q := QuadraticForm.dualProd K W)
+        (pinIotaOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K W) (-f, w)
+          (by simp [QuadraticForm.dualProd, hf]))
+        (0, w) =
+      (-f, 0) := by
+  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one (f := f) (w := w) hf
+    (d := 0) (u := w)]
+  ext <;> simp [hf]
+
+/-- The split reflection attached to `(-f, w)` also swaps the dual vector `(-f, 0)` back to the
+primal vector `(0, w)`. -/
+theorem pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one_dual
+    (f : Module.Dual K W) (w : W) (hf : f w = 1) :
+    pinLinearRepresentation (Q := QuadraticForm.dualProd K W)
+        (pinIotaOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K W) (-f, w)
+          (by simp [QuadraticForm.dualProd, hf]))
+        (-f, 0) =
+      (0, w) := by
+  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one (f := f) (w := w) hf
+    (d := -f) (u := 0)]
+  ext <;> simp [hf]
+
+end DualProd
+
 section Field
 
 variable {K : Type*} [Field K]
@@ -1576,6 +1656,52 @@ theorem spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_of_pairG
       (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q)))).2
       (spinSpecialOrthogonalPairGeneratorSet_subset_range (Q := Q))
   exact MonoidHom.range_eq_top.mp hrange
+
+section DualProd
+
+variable {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
+
+/-- In the split hyperbolic form, the pair generator built from `(-(f + δ), w)` and `(-f, w)`
+acts on the primal vector `(0, w)` by adding the dual correction `-δ`. This is the basic
+hyperbolic transvection pattern behind the remaining split-rank surjectivity theorem. -/
+theorem spinSpecialOrthogonalPairGenerator_apply_dualProd_primal_transvection
+    (f δ : Module.Dual K W) (w : W) (hf : f w = 1) (hδ : δ w = 0) :
+    (spinSpecialOrthogonalPairGenerator (Q := QuadraticForm.dualProd K W)
+        (-(f + δ), w) (-f, w)
+        (by simp [QuadraticForm.dualProd, hf, hδ])
+        (by simp [QuadraticForm.dualProd, hf])).1
+        (0, w) =
+      (-δ, w) := by
+  have hsum : (f + δ) w = 1 := by
+    simp [hf, hδ]
+  rw [coe_spinSpecialOrthogonalPairGenerator, QuadraticMap.IsometryEquiv.mul_apply,
+    pinIsometryRepresentation_apply, pinIsometryEquiv_apply,
+    pinIsometryRepresentation_apply, pinIsometryEquiv_apply]
+  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one_primal (f := f) (w := w) hf]
+  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one
+    (f := f + δ) (w := w) hsum (d := -f) (u := 0)]
+  ext <;> simp [hf]
+
+/-- The same split pair generator sends the dual vector `(-f, 0)` to the shifted dual vector
+`(-(f + δ), 0)`. -/
+theorem spinSpecialOrthogonalPairGenerator_apply_dualProd_dual_transvection
+    (f δ : Module.Dual K W) (w : W) (hf : f w = 1) (hδ : δ w = 0) :
+    (spinSpecialOrthogonalPairGenerator (Q := QuadraticForm.dualProd K W)
+        (-(f + δ), w) (-f, w)
+        (by simp [QuadraticForm.dualProd, hf, hδ])
+        (by simp [QuadraticForm.dualProd, hf])).1
+        (-f, 0) =
+      (-(f + δ), 0) := by
+  have hsum : (f + δ) w = 1 := by
+    simp [hf, hδ]
+  rw [coe_spinSpecialOrthogonalPairGenerator, QuadraticMap.IsometryEquiv.mul_apply,
+    pinIsometryRepresentation_apply, pinIsometryEquiv_apply,
+    pinIsometryRepresentation_apply, pinIsometryEquiv_apply]
+  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one_dual (f := f) (w := w) hf]
+  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one_primal
+    (f := f + δ) (w := w) hsum]
+
+end DualProd
 
 end Field
 
