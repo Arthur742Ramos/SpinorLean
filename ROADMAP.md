@@ -241,7 +241,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional`
   - [x] identify the finite-dimensional nondegenerate kernel as `{1, -1}` via
     `Spinor.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one`
-  - [ ] Remaining gap: package the surjective double-cover statement
+  - [x] reduce surjectivity to a concrete generator theorem via
+    `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_of_pairGeneratorClosure_eq_top`
+  - [ ] Remaining gap: prove the canonical two-reflection lifts
+    `Spinor.spinSpecialOrthogonalPairGeneratorSet` generate `SO(V,Q)`
 - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
   - done on the ambient API by

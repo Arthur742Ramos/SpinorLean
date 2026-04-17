@@ -51,6 +51,12 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
   `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional` — the ambient isometry
   representation factors through `QuadraticForm.specialOrthogonalGroup Q`, either from an external
   determinant hypothesis or canonically in the finite-dimensional field setting.
+* `Spinor.pinIotaOfQuadraticEqNegOne`, `Spinor.spinIotaPairOfQuadraticEqNegOne`,
+  `Spinor.spinSpecialOrthogonalPairGenerator` — canonical pin/spin lifts of norm-`-1` vector
+  reflections and their paired special-orthogonal images.
+* `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_of_pairGeneratorClosure_eq_top`
+  — surjectivity of the ambient spin covering map reduces to showing those paired generators span
+  `SO(V,Q)`.
 * `Spinor.spinRepresentation_not_factor_through_isometry_of_kernel_witness`,
   `Spinor.spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one` —
   the spin representation does not factor through the ambient isometry representation when
@@ -1040,6 +1046,35 @@ theorem iota_mem_pinGroup_of_quadratic_eq_neg_one (m : M) (hq : Q m = -1) :
   rw [← hu]
   exact huPin
 
+omit [Invertible (2 : R)] in
+/-- The canonical pin element attached to a vector of quadratic norm `-1`. -/
+noncomputable def pinIotaOfQuadraticEqNegOne (m : M) (hq : Q m = -1) : pinGroup Q :=
+  ⟨CliffordAlgebra.ι Q m, iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := Q) m hq⟩
+
+omit [Invertible (2 : R)] in
+@[simp] theorem coe_pinIotaOfQuadraticEqNegOne (m : M) (hq : Q m = -1) :
+    ((pinIotaOfQuadraticEqNegOne (Q := Q) m hq : pinGroup Q) : CliffordAlgebra Q) =
+      CliffordAlgebra.ι Q m :=
+  rfl
+
+omit [Invertible (2 : R)] in
+/-- The canonical spin element attached to a pair of vectors of quadratic norm `-1`. -/
+noncomputable def spinIotaPairOfQuadraticEqNegOne (a b : M) (ha : Q a = -1) (hb : Q b = -1) :
+    spinGroup Q := by
+  refine ⟨CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b, ?_⟩
+  rw [spinGroup.mem_iff]
+  constructor
+  · exact (pinGroup Q).mul_mem
+      (iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := Q) a ha)
+      (iota_mem_pinGroup_of_quadratic_eq_neg_one (Q := Q) b hb)
+  · simpa [CliffordAlgebra.even] using CliffordAlgebra.ι_mul_ι_mem_evenOdd_zero (Q := Q) a b
+
+omit [Invertible (2 : R)] in
+@[simp] theorem coe_spinIotaPairOfQuadraticEqNegOne (a b : M) (ha : Q a = -1) (hb : Q b = -1) :
+    ((spinIotaPairOfQuadraticEqNegOne (Q := Q) a b ha hb : spinGroup Q) : CliffordAlgebra Q) =
+      CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b :=
+  rfl
+
 /-- The ambient pin action of a norm-`-1` vector is the explicit conjugation formula
 `b ↦ (⅟(Q a) * polar_Q(a,b)) • a - b`, specialized to `Q a = -1`. -/
 theorem pinLinearRepresentation_apply_iota_of_quadratic_eq_neg_one
@@ -1455,6 +1490,92 @@ theorem spinSpecialOrthogonalRepresentationFiniteDimensional_comp_subtype :
       spinIsometryRepresentation (Q := Q) := by
   ext x
   rfl
+
+omit [Invertible (2 : K)] [FiniteDimensional K V] in
+@[simp]
+theorem spinGroupToPinGroup_spinIotaPairOfQuadraticEqNegOne
+    (a b : V) (ha : Q a = -1) (hb : Q b = -1) :
+    spinGroupToPinGroup (Q := Q) (spinIotaPairOfQuadraticEqNegOne (Q := Q) a b ha hb) =
+      pinIotaOfQuadraticEqNegOne (Q := Q) a ha * pinIotaOfQuadraticEqNegOne (Q := Q) b hb := by
+  apply Subtype.ext
+  rfl
+
+omit [FiniteDimensional K V] in
+theorem spinIsometryRepresentation_spinIotaPairOfQuadraticEqNegOne
+    (a b : V) (ha : Q a = -1) (hb : Q b = -1) :
+    spinIsometryRepresentation (Q := Q) (spinIotaPairOfQuadraticEqNegOne (Q := Q) a b ha hb) =
+      pinIsometryRepresentation (Q := Q) (pinIotaOfQuadraticEqNegOne (Q := Q) a ha) *
+        pinIsometryRepresentation (Q := Q) (pinIotaOfQuadraticEqNegOne (Q := Q) b hb) := by
+  calc
+    spinIsometryRepresentation (Q := Q) (spinIotaPairOfQuadraticEqNegOne (Q := Q) a b ha hb) =
+        pinIsometryRepresentation (Q := Q)
+          ((pinIotaOfQuadraticEqNegOne (Q := Q) a ha) *
+            (pinIotaOfQuadraticEqNegOne (Q := Q) b hb)) := by
+          ext m
+          have hlin :
+              pinLinearRepresentation (Q := Q)
+                  ((pinIotaOfQuadraticEqNegOne (Q := Q) a ha) *
+                    (pinIotaOfQuadraticEqNegOne (Q := Q) b hb)) =
+                spinLinearRepresentation (Q := Q)
+                  (spinIotaPairOfQuadraticEqNegOne (Q := Q) a b ha hb) := by
+            calc
+              pinLinearRepresentation (Q := Q)
+                  ((pinIotaOfQuadraticEqNegOne (Q := Q) a ha) *
+                    (pinIotaOfQuadraticEqNegOne (Q := Q) b hb)) =
+                  pinLinearRepresentation (Q := Q)
+                    (spinGroupToPinGroup (Q := Q)
+                      (spinIotaPairOfQuadraticEqNegOne (Q := Q) a b ha hb)) := by
+                        rw [spinGroupToPinGroup_spinIotaPairOfQuadraticEqNegOne (Q := Q)]
+              _ = spinLinearRepresentation (Q := Q)
+                    (spinIotaPairOfQuadraticEqNegOne (Q := Q) a b ha hb) := by
+                      simpa using pinLinearRepresentation_spinGroupToPinGroup (Q := Q)
+                        (spinIotaPairOfQuadraticEqNegOne (Q := Q) a b ha hb)
+          exact congrArg (fun e : V ≃ₗ[K] V => e m) hlin.symm
+    _ = pinIsometryRepresentation (Q := Q) (pinIotaOfQuadraticEqNegOne (Q := Q) a ha) *
+          pinIsometryRepresentation (Q := Q) (pinIotaOfQuadraticEqNegOne (Q := Q) b hb) := by
+          rw [(pinIsometryRepresentation (Q := Q)).map_mul]
+
+/-- A packaged pair-reflection lift in the special orthogonal target. Proving these generators span
+`SO(V,Q)` is the remaining surjectivity gap for the ambient covering map. -/
+noncomputable def spinSpecialOrthogonalPairGenerator
+    (a b : V) (ha : Q a = -1) (hb : Q b = -1) : Q.specialOrthogonalGroup :=
+  spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q)
+    (spinIotaPairOfQuadraticEqNegOne (Q := Q) a b ha hb)
+
+@[simp]
+theorem coe_spinSpecialOrthogonalPairGenerator
+    (a b : V) (ha : Q a = -1) (hb : Q b = -1) :
+    ↑(spinSpecialOrthogonalPairGenerator (Q := Q) a b ha hb) =
+      pinIsometryRepresentation (Q := Q) (pinIotaOfQuadraticEqNegOne (Q := Q) a ha) *
+        pinIsometryRepresentation (Q := Q) (pinIotaOfQuadraticEqNegOne (Q := Q) b hb) := by
+  simpa [spinSpecialOrthogonalPairGenerator] using
+    spinIsometryRepresentation_spinIotaPairOfQuadraticEqNegOne (Q := Q) a b ha hb
+
+/-- The set of canonical two-reflection lifts whose generation would imply surjectivity of the
+ambient spin covering map. -/
+def spinSpecialOrthogonalPairGeneratorSet : Set (Q.specialOrthogonalGroup) :=
+  Set.range fun p : {ab : V × V // Q ab.1 = -1 ∧ Q ab.2 = -1} =>
+    spinSpecialOrthogonalPairGenerator (Q := Q) p.1.1 p.1.2 p.2.1 p.2.2
+
+theorem spinSpecialOrthogonalPairGeneratorSet_subset_range :
+    spinSpecialOrthogonalPairGeneratorSet (Q := Q) ⊆
+      MonoidHom.range (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q)) := by
+  rintro _ ⟨p, rfl⟩
+  exact ⟨_, rfl⟩
+
+/-- Surjectivity of the ambient spin covering map reduces to showing that the canonical
+two-reflection lifts generate `SO(V,Q)`. -/
+theorem spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_of_pairGeneratorClosure_eq_top
+    (hgen : Subgroup.closure (spinSpecialOrthogonalPairGeneratorSet (Q := Q)) = ⊤) :
+    Function.Surjective (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q)) := by
+  have hrange :
+      MonoidHom.range (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q)) = ⊤ := by
+    apply top_unique
+    rw [← hgen]
+    exact (Subgroup.closure_le (K := MonoidHom.range
+      (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q)))).2
+      (spinSpecialOrthogonalPairGeneratorSet_subset_range (Q := Q))
+  exact MonoidHom.range_eq_top.mp hrange
 
 end Field
 
