@@ -1662,6 +1662,42 @@ section DualProd
 variable {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
 
 /-- In the split hyperbolic form, the pair generator built from `(-(f + δ), w)` and `(-f, w)`
+has an explicit coordinate action on arbitrary `(d, u)`. This packages the basic hyperbolic
+transvection pattern behind the remaining split-rank surjectivity theorem. -/
+theorem spinSpecialOrthogonalPairGenerator_apply_dualProd
+    (f δ : Module.Dual K W) (w : W) (hf : f w = 1) (hδ : δ w = 0)
+    (d : Module.Dual K W) (u : W) :
+    (spinSpecialOrthogonalPairGenerator (Q := QuadraticForm.dualProd K W)
+        (-(f + δ), w) (-f, w)
+        (by simp [QuadraticForm.dualProd, hf, hδ])
+        (by simp [QuadraticForm.dualProd, hf])).1
+        (d, u) =
+      (d + ((d w - f u) : K) • δ + (δ u : K) • (f + δ), u - (δ u : K) • w) := by
+  have hsum : (f + δ) w = 1 := by
+    simp [hf, hδ]
+  rw [coe_spinSpecialOrthogonalPairGenerator, QuadraticMap.IsometryEquiv.mul_apply,
+    pinIsometryRepresentation_apply, pinIsometryEquiv_apply,
+    pinIsometryRepresentation_apply, pinIsometryEquiv_apply]
+  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one (f := f) (w := w) hf
+    (d := d) (u := u)]
+  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one
+    (f := f + δ) (w := w) hsum
+    (d := ((d w - f u : K) • f - d)) (u := (-(d w - f u : K) • w - u))]
+  apply Prod.ext
+  · ext x
+    simp [hf, hδ, sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
+    ring
+  · have hcoef : (f u + (-δ u + -d w) : K) - (f u + -d w) = -(δ u) := by
+      ring
+    simp [hf, hδ, sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
+    calc
+      (f u + (-δ u + -d w)) • w + -((f u + -d w) • w)
+          = ((f u + (-δ u + -d w) : K) - (f u + -d w)) • w := by
+              simp [sub_eq_add_neg, add_smul]
+      _ = -(δ u) • w := by rw [hcoef]
+      _ = -(δ u • w) := by simp
+
+/-- In the split hyperbolic form, the pair generator built from `(-(f + δ), w)` and `(-f, w)`
 acts on the primal vector `(0, w)` by adding the dual correction `-δ`. This is the basic
 hyperbolic transvection pattern behind the remaining split-rank surjectivity theorem. -/
 theorem spinSpecialOrthogonalPairGenerator_apply_dualProd_primal_transvection
@@ -1672,15 +1708,9 @@ theorem spinSpecialOrthogonalPairGenerator_apply_dualProd_primal_transvection
         (by simp [QuadraticForm.dualProd, hf])).1
         (0, w) =
       (-δ, w) := by
-  have hsum : (f + δ) w = 1 := by
-    simp [hf, hδ]
-  rw [coe_spinSpecialOrthogonalPairGenerator, QuadraticMap.IsometryEquiv.mul_apply,
-    pinIsometryRepresentation_apply, pinIsometryEquiv_apply,
-    pinIsometryRepresentation_apply, pinIsometryEquiv_apply]
-  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one_primal (f := f) (w := w) hf]
-  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one
-    (f := f + δ) (w := w) hsum (d := -f) (u := 0)]
-  ext <;> simp [hf]
+  rw [spinSpecialOrthogonalPairGenerator_apply_dualProd
+    (f := f) (δ := δ) (w := w) hf hδ (d := 0) (u := w)]
+  ext <;> simp [hf, hδ]
 
 /-- The same split pair generator sends the dual vector `(-f, 0)` to the shifted dual vector
 `(-(f + δ), 0)`. -/
@@ -1692,14 +1722,9 @@ theorem spinSpecialOrthogonalPairGenerator_apply_dualProd_dual_transvection
         (by simp [QuadraticForm.dualProd, hf])).1
         (-f, 0) =
       (-(f + δ), 0) := by
-  have hsum : (f + δ) w = 1 := by
-    simp [hf, hδ]
-  rw [coe_spinSpecialOrthogonalPairGenerator, QuadraticMap.IsometryEquiv.mul_apply,
-    pinIsometryRepresentation_apply, pinIsometryEquiv_apply,
-    pinIsometryRepresentation_apply, pinIsometryEquiv_apply]
-  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one_dual (f := f) (w := w) hf]
-  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one_primal
-    (f := f + δ) (w := w) hsum]
+  rw [spinSpecialOrthogonalPairGenerator_apply_dualProd
+    (f := f) (δ := δ) (w := w) hf hδ (d := -f) (u := 0)]
+  ext <;> simp [hf, add_comm]
 
 end DualProd
 
