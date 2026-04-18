@@ -468,6 +468,534 @@ noncomputable def dualProdLineEvenCliffordEquivProd :
             ((Matrix.reindexAlgEquiv K K e).trans
               (Matrix.uniqueAlgEquiv (R := K) (A := K) (m := Unit))))))
 
+private noncomputable def dualProdLineTopCoord : Module.Dual K (⊤ : Submodule K K) :=
+  { toFun := fun x => x.1
+    map_add' := by simp
+    map_smul' := by simp }
+
+private noncomputable def dualProdLineTopPrimal : (⊤ : Submodule K K) := ⟨1, by simp⟩
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineTopIsometry_apply_dual :
+    dualProdLineTopIsometry (K := K) ((show Module.Dual K K from LinearMap.id), 0) =
+      (dualProdLineTopCoord (K := K), 0) := by
+  apply Prod.ext
+  · change Submodule.topEquiv.dualMap (LinearMap.id : Module.Dual K K) =
+      dualProdLineTopCoord (K := K)
+    ext x
+    simp [dualProdLineTopCoord, LinearEquiv.dualMap_apply]
+  · rfl
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineTopIsometry_apply_primal :
+    dualProdLineTopIsometry (K := K) (0, (1 : K)) =
+      (0, dualProdLineTopPrimal (K := K)) := by
+  apply Prod.ext
+  · rfl
+  · change Submodule.topEquiv.symm (1 : K) = dualProdLineTopPrimal (K := K)
+    rfl
+
+private noncomputable def dualProdLineTopEvenUnit :
+    evenExteriorSubmodule (K := K) (⊤ : Submodule K K) := ⟨1, by
+  refine (mem_evenExteriorSubmodule_of_mem_exteriorPower (K := K)
+    (W := (⊤ : Submodule K K)) (n := 0)
+    (x := (1 : IsotropicExteriorModel (K := K) (⊤ : Submodule K K)))) ?_ (by simp)
+  change (1 : IsotropicExteriorModel (K := K) (⊤ : Submodule K K)) ∈
+    (LinearMap.range (ExteriorAlgebra.ι K : (⊤ : Submodule K K) →ₗ[K]
+      IsotropicExteriorModel (K := K) (⊤ : Submodule K K)) ^ 0)
+  simp⟩
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineTopEvenUnit_ne :
+    dualProdLineTopEvenUnit (K := K) ≠ 0 := by
+  intro h
+  have h' :
+      ((dualProdLineTopEvenUnit (K := K) :
+        evenExteriorSubmodule (K := K) (⊤ : Submodule K K)) :
+        IsotropicExteriorModel (K := K) (⊤ : Submodule K K)) = 0 :=
+    congrArg Subtype.val h
+  exact one_ne_zero h'
+
+private noncomputable def dualProdLineTopOddUnit :
+    oddExteriorSubmodule (K := K) (⊤ : Submodule K K) :=
+  ⟨ExteriorAlgebra.ι K (dualProdLineTopPrimal (K := K)), by
+    refine (mem_oddExteriorSubmodule_of_mem_exteriorPower (K := K)
+      (W := (⊤ : Submodule K K)) (n := 1)
+      (x := ExteriorAlgebra.ι K (dualProdLineTopPrimal (K := K)))) ?_ (by simp)
+    change ExteriorAlgebra.ι K (dualProdLineTopPrimal (K := K)) ∈
+      (LinearMap.range (ExteriorAlgebra.ι K : (⊤ : Submodule K K) →ₗ[K]
+        IsotropicExteriorModel (K := K) (⊤ : Submodule K K)) ^ 1)
+    rw [pow_one]
+    exact LinearMap.mem_range_self _ _⟩
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineTopOddUnit_ne :
+    dualProdLineTopOddUnit (K := K) ≠ 0 := by
+  intro h
+  have h' :
+      ((dualProdLineTopOddUnit (K := K) :
+        oddExteriorSubmodule (K := K) (⊤ : Submodule K K)) :
+        IsotropicExteriorModel (K := K) (⊤ : Submodule K K)) = 0 :=
+    congrArg Subtype.val h
+  have hw_ne : dualProdLineTopPrimal (K := K) ≠ 0 := by
+    intro hw
+    have hval : ((dualProdLineTopPrimal (K := K) : (⊤ : Submodule K K)) : K) = 0 :=
+      congrArg Subtype.val hw
+    exact one_ne_zero hval
+  exact hw_ne
+    ((ExteriorAlgebra.ι_eq_zero_iff (R := K) (x := dualProdLineTopPrimal (K := K))).mp h')
+
+private noncomputable def dualProdLineTopDualGenerator :
+    CliffordAlgebra (QuadraticForm.dualProd K (⊤ : Submodule K K)) :=
+  CliffordAlgebra.ι _ (dualProdLineTopCoord (K := K), 0)
+
+private noncomputable def dualProdLineTopPrimalGenerator :
+    CliffordAlgebra (QuadraticForm.dualProd K (⊤ : Submodule K K)) :=
+  CliffordAlgebra.ι _ (0, dualProdLineTopPrimal (K := K))
+
+private noncomputable def dualProdLineTopProjectorLeft :
+    CliffordAlgebra.even (QuadraticForm.dualProd K (⊤ : Submodule K K)) :=
+  ⟨dualProdLineTopDualGenerator (K := K) * dualProdLineTopPrimalGenerator (K := K),
+    CliffordAlgebra.ι_mul_ι_mem_evenOdd_zero
+      (Q := QuadraticForm.dualProd K (⊤ : Submodule K K))
+      (dualProdLineTopCoord (K := K), 0) (0, dualProdLineTopPrimal (K := K))⟩
+
+private theorem dualProdLineTopProjectorLeft_blocks :
+    evenSplitCliffordActionProd (K := K) (W := (⊤ : Submodule K K))
+      (dualProdLineTopProjectorLeft (K := K)) = (1, 0) := by
+  have hEven :
+      evenSplitCliffordAction (K := K) (W := (⊤ : Submodule K K))
+        (dualProdLineTopProjectorLeft (K := K)) = 1 := by
+    let u := evenSplitCliffordAction (K := K) (W := (⊤ : Submodule K K))
+      (dualProdLineTopProjectorLeft (K := K))
+    obtain ⟨c, hc, -⟩ := LinearMap.existsUnique_eq_smul_id_of_finrank_eq_one
+      ((finrank_evenOddDualProdLineExterior (K := K)).1) u
+    have hEval : u (dualProdLineTopEvenUnit (K := K)) = c • dualProdLineTopEvenUnit (K := K) := by
+      rw [hc]
+      simp
+    have hone_eval :
+        u (dualProdLineTopEvenUnit (K := K)) = dualProdLineTopEvenUnit (K := K) := by
+      simpa [u] using (show
+        evenSplitCliffordAction (K := K) (W := (⊤ : Submodule K K))
+            (dualProdLineTopProjectorLeft (K := K)) (dualProdLineTopEvenUnit (K := K)) =
+          dualProdLineTopEvenUnit (K := K) by
+        ext
+        simp [dualProdLineTopProjectorLeft, dualProdLineTopDualGenerator,
+          dualProdLineTopPrimalGenerator, dualProdLineTopEvenUnit, dualProdLineTopPrimal,
+          dualProdLineTopCoord, evenSplitCliffordAction, splitCliffordAction_apply_ι,
+          splitGeneratorAction, wedgeAction_apply, contractionAction_ι])
+    rw [hone_eval] at hEval
+    have hc1 : c = 1 := by
+      apply smul_left_injective K (dualProdLineTopEvenUnit_ne (K := K))
+      simpa [one_smul] using hEval.symm
+    simpa [u, hc1] using hc
+  have hOdd :
+      oddSplitCliffordAction (K := K) (W := (⊤ : Submodule K K))
+        (dualProdLineTopProjectorLeft (K := K)) = 0 := by
+    let u := oddSplitCliffordAction (K := K) (W := (⊤ : Submodule K K))
+      (dualProdLineTopProjectorLeft (K := K))
+    obtain ⟨c, hc, -⟩ := LinearMap.existsUnique_eq_smul_id_of_finrank_eq_one
+      ((finrank_evenOddDualProdLineExterior (K := K)).2) u
+    have hEval : u (dualProdLineTopOddUnit (K := K)) = c • dualProdLineTopOddUnit (K := K) := by
+      rw [hc]
+      simp
+    have hodd_eval : u (dualProdLineTopOddUnit (K := K)) = 0 := by
+      simpa [u] using (show
+        oddSplitCliffordAction (K := K) (W := (⊤ : Submodule K K))
+            (dualProdLineTopProjectorLeft (K := K)) (dualProdLineTopOddUnit (K := K)) = 0 by
+        ext
+        simp [dualProdLineTopProjectorLeft, dualProdLineTopDualGenerator,
+          dualProdLineTopPrimalGenerator, dualProdLineTopOddUnit, dualProdLineTopPrimal,
+          dualProdLineTopCoord, oddSplitCliffordAction, splitCliffordAction_apply_ι,
+          splitGeneratorAction, wedgeAction_apply])
+    rw [hodd_eval] at hEval
+    have hc0 : c = 0 := by
+      apply smul_left_injective K (dualProdLineTopOddUnit_ne (K := K))
+      simpa using hEval.symm
+    simpa [u, hc0] using hc
+  ext <;> simp [evenSplitCliffordActionProd, hEven, hOdd]
+
+private noncomputable def dualProdLineAmbientDualGenerator :
+    CliffordAlgebra (QuadraticForm.dualProd K K) :=
+  CliffordAlgebra.ι (QuadraticForm.dualProd K K) ((show Module.Dual K K from LinearMap.id), 0)
+
+private noncomputable def dualProdLineAmbientPrimalGenerator :
+    CliffordAlgebra (QuadraticForm.dualProd K K) :=
+  CliffordAlgebra.ι (QuadraticForm.dualProd K K) (0, (1 : K))
+
+private noncomputable def dualProdLineAmbientProjectorLeft :
+    CliffordAlgebra.even (QuadraticForm.dualProd K K) :=
+  ⟨dualProdLineAmbientDualGenerator (K := K) * dualProdLineAmbientPrimalGenerator (K := K),
+    CliffordAlgebra.ι_mul_ι_mem_evenOdd_zero (Q := QuadraticForm.dualProd K K)
+      ((show Module.Dual K K from LinearMap.id), 0) (0, (1 : K))⟩
+
+private theorem dualProdLineEvenCliffordEquivProd_projectorLeft :
+    dualProdLineEvenCliffordEquivProd (K := K) (dualProdLineAmbientProjectorLeft (K := K)) =
+      (1, 0) := by
+  let bTop := Module.finBasis K (⊤ : Submodule K K)
+  letI : FiniteDimensional K (IsotropicExteriorModel (K := K) (⊤ : Submodule K K)) :=
+    bTop.ExteriorAlgebra.finiteDimensional_of_finite
+  unfold dualProdLineEvenCliffordEquivProd
+  simp [dualProdLineEvenCliffordMap, dualProdLineAmbientProjectorLeft,
+    dualProdLineAmbientDualGenerator, dualProdLineAmbientPrimalGenerator,
+    dualProdLineTopIsometry_apply_dual, dualProdLineTopIsometry_apply_primal]
+  change Prod.map
+      ((⇑Matrix.uniqueAlgEquiv ∘ ⇑(Matrix.reindexAlgEquiv K K finOneEquiv)) ∘
+        ⇑(LinearMap.toMatrixAlgEquiv
+          (Module.finBasisOfFinrankEq K ↥(evenExteriorSubmodule (⊤ : Submodule K K))
+            ((finrank_evenOddDualProdLineExterior (K := K)).1))))
+      ((⇑Matrix.uniqueAlgEquiv ∘ ⇑(Matrix.reindexAlgEquiv K K finOneEquiv)) ∘
+        ⇑(LinearMap.toMatrixAlgEquiv
+          (Module.finBasisOfFinrankEq K ↥(oddExteriorSubmodule (⊤ : Submodule K K))
+            ((finrank_evenOddDualProdLineExterior (K := K)).2))))
+      ((evenSplitCliffordActionProd (K := K) (W := (⊤ : Submodule K K)))
+        (dualProdLineTopProjectorLeft (K := K))) = (1, 0)
+  rw [dualProdLineTopProjectorLeft_blocks]
+  simp
+
+private noncomputable def dualProdLineAmbientProjectorRight :
+    CliffordAlgebra.even (QuadraticForm.dualProd K K) :=
+  ⟨dualProdLineAmbientPrimalGenerator (K := K) * dualProdLineAmbientDualGenerator (K := K),
+    CliffordAlgebra.ι_mul_ι_mem_evenOdd_zero (Q := QuadraticForm.dualProd K K)
+      (0, (1 : K)) ((show Module.Dual K K from LinearMap.id), 0)⟩
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineAmbientProjector_sum :
+    dualProdLineAmbientProjectorLeft (K := K) + dualProdLineAmbientProjectorRight (K := K) =
+      (1 : CliffordAlgebra.even (QuadraticForm.dualProd K K)) := by
+  apply Subtype.ext
+  change dualProdLineAmbientDualGenerator (K := K) * dualProdLineAmbientPrimalGenerator (K := K) +
+      dualProdLineAmbientPrimalGenerator (K := K) * dualProdLineAmbientDualGenerator (K := K) = 1
+  unfold dualProdLineAmbientDualGenerator dualProdLineAmbientPrimalGenerator
+  rw [CliffordAlgebra.ι_mul_ι_add_swap]
+  simpa [dualProdLineAmbientDualGenerator, dualProdLineAmbientPrimalGenerator,
+    QuadraticMap.polar, QuadraticForm.dualProd] using
+      (show algebraMap K (CliffordAlgebra (QuadraticForm.dualProd K K)) (1 : K) = 1 by simp)
+
+private theorem dualProdLineEvenCliffordEquivProd_projectorRight :
+    dualProdLineEvenCliffordEquivProd (K := K) (dualProdLineAmbientProjectorRight (K := K)) =
+      (0, 1) := by
+  have hsum := congrArg (dualProdLineEvenCliffordEquivProd (K := K))
+    (dualProdLineAmbientProjector_sum (K := K))
+  have hfst := congrArg Prod.fst hsum
+  have hsnd := congrArg Prod.snd hsum
+  simp [dualProdLineEvenCliffordEquivProd_projectorLeft] at hfst hsnd
+  exact Prod.ext hfst hsnd
+
+private theorem dualProdLineEvenCliffordEquivProd_symm_eq
+    (a b : K) :
+    (dualProdLineEvenCliffordEquivProd (K := K)).symm (a, b) =
+      a • dualProdLineAmbientProjectorLeft (K := K) +
+        b • dualProdLineAmbientProjectorRight (K := K) := by
+  apply (dualProdLineEvenCliffordEquivProd (K := K)).injective
+  simp [dualProdLineEvenCliffordEquivProd_projectorLeft,
+    dualProdLineEvenCliffordEquivProd_projectorRight, add_comm]
+
+private theorem dualProdLineEvenCliffordEquivProd_decompose
+    (x : CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+    x = (dualProdLineEvenCliffordEquivProd (K := K) x).1 •
+          dualProdLineAmbientProjectorLeft (K := K) +
+        (dualProdLineEvenCliffordEquivProd (K := K) x).2 •
+          dualProdLineAmbientProjectorRight (K := K) := by
+  simpa using
+    (dualProdLineEvenCliffordEquivProd_symm_eq (K := K)
+      (dualProdLineEvenCliffordEquivProd (K := K) x).1
+      (dualProdLineEvenCliffordEquivProd (K := K) x).2)
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineAmbientPrimal_sq_zero :
+    dualProdLineAmbientPrimalGenerator (K := K) * dualProdLineAmbientPrimalGenerator (K := K) = 0 := by
+  rw [dualProdLineAmbientPrimalGenerator, CliffordAlgebra.ι_sq_scalar]
+  simpa [QuadraticForm.dualProd] using
+    (show algebraMap K (CliffordAlgebra (QuadraticForm.dualProd K K)) (0 : K) = 0 by simp)
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineAmbientPrimal_mul_dual :
+    dualProdLineAmbientPrimalGenerator (K := K) * dualProdLineAmbientDualGenerator (K := K) =
+      1 - dualProdLineAmbientDualGenerator (K := K) * dualProdLineAmbientPrimalGenerator (K := K) := by
+  exact eq_sub_of_add_eq (by
+    simpa [add_comm] using congrArg Subtype.val (dualProdLineAmbientProjector_sum (K := K)))
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineAmbientProjectorLeft_mul_primal_zero :
+    (dualProdLineAmbientProjectorLeft (K := K) :
+        CliffordAlgebra (QuadraticForm.dualProd K K)) *
+      dualProdLineAmbientPrimalGenerator (K := K) = 0 := by
+  rw [dualProdLineAmbientProjectorLeft, mul_assoc, dualProdLineAmbientPrimal_sq_zero, mul_zero]
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineAmbientProjectorRight_mul_primal_eq_primal :
+    (dualProdLineAmbientProjectorRight (K := K) :
+        CliffordAlgebra (QuadraticForm.dualProd K K)) *
+      dualProdLineAmbientPrimalGenerator (K := K) =
+      dualProdLineAmbientPrimalGenerator (K := K) := by
+  calc
+    (dualProdLineAmbientProjectorRight (K := K) :
+        CliffordAlgebra (QuadraticForm.dualProd K K)) *
+        dualProdLineAmbientPrimalGenerator (K := K) =
+      (dualProdLineAmbientPrimalGenerator (K := K) *
+          dualProdLineAmbientDualGenerator (K := K)) *
+        dualProdLineAmbientPrimalGenerator (K := K) := by
+          rfl
+    _ =
+      (1 - dualProdLineAmbientDualGenerator (K := K) *
+          dualProdLineAmbientPrimalGenerator (K := K)) *
+        dualProdLineAmbientPrimalGenerator (K := K) := by
+          rw [dualProdLineAmbientPrimal_mul_dual]
+    _ = dualProdLineAmbientPrimalGenerator (K := K) := by
+          rw [sub_mul, one_mul, mul_assoc, dualProdLineAmbientPrimal_sq_zero, mul_zero, sub_zero]
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineAmbientPrimal_mul_projectorRight_zero :
+    dualProdLineAmbientPrimalGenerator (K := K) *
+      (dualProdLineAmbientProjectorRight (K := K) :
+        CliffordAlgebra (QuadraticForm.dualProd K K)) = 0 := by
+  rw [dualProdLineAmbientProjectorRight, ← mul_assoc,
+    dualProdLineAmbientPrimal_sq_zero, zero_mul]
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineAmbientPrimal_mul_projectorLeft_eq_primal :
+    dualProdLineAmbientPrimalGenerator (K := K) *
+      (dualProdLineAmbientProjectorLeft (K := K) :
+        CliffordAlgebra (QuadraticForm.dualProd K K)) =
+      dualProdLineAmbientPrimalGenerator (K := K) := by
+  calc
+    dualProdLineAmbientPrimalGenerator (K := K) *
+        (dualProdLineAmbientProjectorLeft (K := K) :
+          CliffordAlgebra (QuadraticForm.dualProd K K)) =
+      dualProdLineAmbientPrimalGenerator (K := K) *
+        (dualProdLineAmbientDualGenerator (K := K) *
+          dualProdLineAmbientPrimalGenerator (K := K)) := by
+          rfl
+    _ =
+      (dualProdLineAmbientPrimalGenerator (K := K) *
+          dualProdLineAmbientDualGenerator (K := K)) *
+        dualProdLineAmbientPrimalGenerator (K := K) := by
+          rw [mul_assoc]
+    _ =
+      (1 - dualProdLineAmbientDualGenerator (K := K) *
+          dualProdLineAmbientPrimalGenerator (K := K)) *
+        dualProdLineAmbientPrimalGenerator (K := K) := by
+          rw [dualProdLineAmbientPrimal_mul_dual]
+    _ = dualProdLineAmbientPrimalGenerator (K := K) := by
+          rw [sub_mul, one_mul, mul_assoc, dualProdLineAmbientPrimal_sq_zero, mul_zero, sub_zero]
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineAmbientProjectorLeft_star :
+    star ((dualProdLineAmbientProjectorLeft (K := K) :
+      CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+        CliffordAlgebra (QuadraticForm.dualProd K K)) =
+      dualProdLineAmbientProjectorRight (K := K) := by
+  simp [dualProdLineAmbientProjectorLeft, dualProdLineAmbientProjectorRight,
+    dualProdLineAmbientDualGenerator, dualProdLineAmbientPrimalGenerator,
+    CliffordAlgebra.star_ι]
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineAmbientProjectorRight_star :
+    star ((dualProdLineAmbientProjectorRight (K := K) :
+      CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+        CliffordAlgebra (QuadraticForm.dualProd K K)) =
+      dualProdLineAmbientProjectorLeft (K := K) := by
+  simp [dualProdLineAmbientProjectorLeft, dualProdLineAmbientProjectorRight,
+    dualProdLineAmbientDualGenerator, dualProdLineAmbientPrimalGenerator,
+    CliffordAlgebra.star_ι]
+
+omit [Invertible (2 : K)] in
+private theorem dualProdLineStar_mem_even
+    {x : CliffordAlgebra (QuadraticForm.dualProd K K)}
+    (hx : x ∈ CliffordAlgebra.evenOdd (QuadraticForm.dualProd K K) 0) :
+    star x ∈ CliffordAlgebra.evenOdd (QuadraticForm.dualProd K K) 0 := by
+  simpa [star_def] using
+    ((CliffordAlgebra.reverse_mem_evenOdd_iff (Q := QuadraticForm.dualProd K K)).2
+      ((CliffordAlgebra.involute_mem_evenOdd_iff (Q := QuadraticForm.dualProd K K)).2 hx))
+
+/-- The split-line ambient spin image is exactly the square-scaling subgroup. -/
+theorem spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup :
+    MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := QuadraticForm.dualProd K K)) =
+      dualProdLineSquareScalingSubgroup (K := K) := by
+  have hsubset :
+      MonoidHom.range
+          (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := QuadraticForm.dualProd K K)) ≤
+        dualProdLineSquareScalingSubgroup (K := K) := by
+    rintro g ⟨x, rfl⟩
+    let xe : CliffordAlgebra.even (QuadraticForm.dualProd K K) :=
+      ⟨(x : CliffordAlgebra (QuadraticForm.dualProd K K)), spinGroup.mem_even x.prop⟩
+    let a := (dualProdLineEvenCliffordEquivProd (K := K) xe).1
+    let b := (dualProdLineEvenCliffordEquivProd (K := K) xe).2
+    let starxe : CliffordAlgebra.even (QuadraticForm.dualProd K K) :=
+      ⟨star ((xe : CliffordAlgebra (QuadraticForm.dualProd K K))),
+        dualProdLineStar_mem_even (K := K) xe.2⟩
+    have hstar_eq :
+        starxe = (dualProdLineEvenCliffordEquivProd (K := K)).symm (b, a) := by
+      apply Subtype.ext
+      rw [dualProdLineEvenCliffordEquivProd_symm_eq]
+      have hxe_val' := congrArg star
+        (congrArg Subtype.val (dualProdLineEvenCliffordEquivProd_decompose (K := K) xe))
+      calc
+        star (xe : CliffordAlgebra (QuadraticForm.dualProd K K)) =
+            star
+              (a • ((dualProdLineAmbientProjectorLeft (K := K) :
+                CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+                  CliffordAlgebra (QuadraticForm.dualProd K K)) +
+                b • ((dualProdLineAmbientProjectorRight (K := K) :
+                  CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+                    CliffordAlgebra (QuadraticForm.dualProd K K))) := hxe_val'
+        _ =
+            ((a • dualProdLineAmbientProjectorRight (K := K) +
+              b • dualProdLineAmbientProjectorLeft (K := K) :
+                CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+              CliffordAlgebra (QuadraticForm.dualProd K K)) := by
+              simp [dualProdLineAmbientProjectorLeft_star,
+                dualProdLineAmbientProjectorRight_star]
+        _ =
+            (b • ((dualProdLineAmbientProjectorLeft (K := K) :
+              CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+                CliffordAlgebra (QuadraticForm.dualProd K K)) +
+            a • ((dualProdLineAmbientProjectorRight (K := K) :
+              CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+                CliffordAlgebra (QuadraticForm.dualProd K K))) := by
+              simp [add_comm]
+    have hstar :
+        dualProdLineEvenCliffordEquivProd (K := K) starxe = (b, a) := by
+      rw [hstar_eq]
+      simp
+    have hunit :
+        (b, a) * (a, b) = (1 : K × K) := by
+      have hxeq : starxe * xe = (1 : CliffordAlgebra.even (QuadraticForm.dualProd K K)) := by
+        apply Subtype.ext
+        simpa [xe, starxe] using spinGroup.coe_star_mul_self (Q := QuadraticForm.dualProd K K) x
+      calc
+        (b, a) * (a, b) =
+            dualProdLineEvenCliffordEquivProd (K := K) (starxe * xe) := by
+              rw [map_mul, hstar]
+        _ = 1 := by simpa [hxeq]
+    have hab : a * b = 1 := by
+      exact congrArg Prod.snd hunit
+    have hb_ne : b ≠ 0 := by
+      intro hb
+      have : (0 : K) = 1 := by simpa [hb] using hab
+      exact zero_ne_one this
+    have hxe_val :
+        (xe : CliffordAlgebra (QuadraticForm.dualProd K K)) =
+          a • ((dualProdLineAmbientProjectorLeft (K := K) :
+            CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+              CliffordAlgebra (QuadraticForm.dualProd K K)) +
+          b • ((dualProdLineAmbientProjectorRight (K := K) :
+            CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+              CliffordAlgebra (QuadraticForm.dualProd K K)) := by
+      exact congrArg Subtype.val (dualProdLineEvenCliffordEquivProd_decompose (K := K) xe)
+    have hxq :
+        (xe : CliffordAlgebra (QuadraticForm.dualProd K K)) *
+            dualProdLineAmbientPrimalGenerator (K := K) =
+          b • dualProdLineAmbientPrimalGenerator (K := K) := by
+      rw [hxe_val, add_mul, smul_mul_assoc, smul_mul_assoc,
+        dualProdLineAmbientProjectorLeft_mul_primal_zero,
+        dualProdLineAmbientProjectorRight_mul_primal_eq_primal]
+      simp
+    have hstarxe_symm :
+        starxe = (dualProdLineEvenCliffordEquivProd (K := K)).symm (b, a) := by
+      exact hstar_eq
+    have hstarxe_val :
+        (starxe : CliffordAlgebra (QuadraticForm.dualProd K K)) =
+          b • ((dualProdLineAmbientProjectorLeft (K := K) :
+            CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+              CliffordAlgebra (QuadraticForm.dualProd K K)) +
+          a • ((dualProdLineAmbientProjectorRight (K := K) :
+            CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+              CliffordAlgebra (QuadraticForm.dualProd K K)) := by
+      have hstarxe_even :
+          starxe =
+            b • dualProdLineAmbientProjectorLeft (K := K) +
+            a • dualProdLineAmbientProjectorRight (K := K) := by
+        rw [hstarxe_symm, dualProdLineEvenCliffordEquivProd_symm_eq]
+      exact congrArg Subtype.val hstarxe_even
+    have hqstar :
+        dualProdLineAmbientPrimalGenerator (K := K) *
+            star (xe : CliffordAlgebra (QuadraticForm.dualProd K K)) =
+          b • dualProdLineAmbientPrimalGenerator (K := K) := by
+      calc
+        dualProdLineAmbientPrimalGenerator (K := K) *
+            star (xe : CliffordAlgebra (QuadraticForm.dualProd K K)) =
+          dualProdLineAmbientPrimalGenerator (K := K) *
+            (starxe : CliffordAlgebra (QuadraticForm.dualProd K K)) := by
+              rfl
+        _ = dualProdLineAmbientPrimalGenerator (K := K) *
+              (b • ((dualProdLineAmbientProjectorLeft (K := K) :
+                CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+                  CliffordAlgebra (QuadraticForm.dualProd K K)) +
+                a • ((dualProdLineAmbientProjectorRight (K := K) :
+                  CliffordAlgebra.even (QuadraticForm.dualProd K K)) :
+                    CliffordAlgebra (QuadraticForm.dualProd K K))) := by
+                rw [hstarxe_val]
+        _ = b • dualProdLineAmbientPrimalGenerator (K := K) := by
+              rw [mul_add, mul_smul_comm, mul_smul_comm,
+                dualProdLineAmbientPrimal_mul_projectorLeft_eq_primal,
+                dualProdLineAmbientPrimal_mul_projectorRight_zero]
+              simp
+    have hprimal :
+        (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := QuadraticForm.dualProd K K) x).1
+            (0, (1 : K)) =
+          (0, b ^ 2) := by
+      have hxq' :
+          (x : CliffordAlgebra (QuadraticForm.dualProd K K)) *
+              dualProdLineAmbientPrimalGenerator (K := K) =
+            b • dualProdLineAmbientPrimalGenerator (K := K) := by
+        simpa [xe] using hxq
+      have hqstar' :
+          dualProdLineAmbientPrimalGenerator (K := K) * star x =
+            b • dualProdLineAmbientPrimalGenerator (K := K) := by
+        simpa [xe] using hqstar
+      apply cliffordIota_injective (Q := QuadraticForm.dualProd K K)
+      rw [coe_spinSpecialOrthogonalRepresentationFiniteDimensional (Q := QuadraticForm.dualProd K K),
+        spinIsometryRepresentation_apply, spinIsometryEquiv_apply, spinLinearRepresentation_apply,
+        spinLinearEquiv_ι]
+      calc
+        ConjAct.toConjAct (spinGroup.toUnits x) • dualProdLineAmbientPrimalGenerator (K := K) =
+            (x : CliffordAlgebra (QuadraticForm.dualProd K K)) *
+              dualProdLineAmbientPrimalGenerator (K := K) * star x := by
+                simp [ConjAct.units_smul_def, ConjAct.ofConjAct_toConjAct, spinGroup.star_eq_inv,
+                  mul_assoc]
+        _ = (b • dualProdLineAmbientPrimalGenerator (K := K)) * star x := by
+              rw [hxq']
+        _ = b • (dualProdLineAmbientPrimalGenerator (K := K) * star x) := by
+              rw [smul_mul_assoc]
+        _ = b • (b • dualProdLineAmbientPrimalGenerator (K := K)) := by
+              rw [hqstar']
+        _ = (b ^ 2) • dualProdLineAmbientPrimalGenerator (K := K) := by
+              simp [pow_two, smul_smul]
+        _ = CliffordAlgebra.ι (QuadraticForm.dualProd K K) (0, b ^ 2) := by
+              symm
+              rw [dualProdLineAmbientPrimalGenerator, ← map_smul]
+              congr
+              · apply LinearMap.ext
+                intro y
+                simp [pow_two]
+              · simp [pow_two]
+    let g := spinSpecialOrthogonalRepresentationFiniteDimensional (Q := QuadraticForm.dualProd K K) x
+    obtain ⟨t, ht⟩ := dualProdLineScalingHom_surjective (K := K) g
+    let u : Kˣ := Units.mk0 b hb_ne
+    have ht_val : (t : K) = (u ^ 2 : Kˣ) := by
+      have h_eval := congrArg (fun h : (QuadraticForm.dualProd K K).specialOrthogonalGroup =>
+          Prod.snd (h.1 (0, (1 : K)))) ht
+      have hprimal_g : g.1 (0, (1 : K)) = (0, b ^ 2) := by
+        simpa [g] using hprimal
+      have h_eval' :
+          Prod.snd ((dualProdLineScalingHom (K := K) t).1 (0, (1 : K))) = b ^ 2 := by
+        simpa [hprimal_g] using h_eval
+      change Prod.snd ((dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := K)
+        (LinearEquiv.smulOfUnit t)).1 (0, (1 : K))) = b ^ 2 at h_eval'
+      rw [dualProdSpecialOrthogonalOfLinearEquiv_apply_smulOfUnit
+        (K := K) (a := t) (d := (0 : Module.Dual K K)) (u := (1 : K))] at h_eval'
+      simpa [u, pow_two] using h_eval'
+    have ht_eq : t = u ^ 2 := Units.ext ht_val
+    exact ⟨u, by
+      simpa [dualProdLineSquareScalingSubgroup, MonoidHom.comp_apply, ht_eq] using ht⟩
+  refine le_antisymm hsubset ?_
+  rw [← spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_squareScalingSubgroup (K := K)]
+  rw [Subgroup.closure_le]
+  exact spinSpecialOrthogonalPairGeneratorSet_subset_range (Q := QuadraticForm.dualProd K K)
+
 end DualProdLine
 
 end Spinor

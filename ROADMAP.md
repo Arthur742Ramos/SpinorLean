@@ -257,6 +257,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinSpecialOrthogonalPairGenerator_eq_squareScaling_of_dualProd_line`,
     `Spinor.dualProdLineSquareScalingSubgroup`, and
     `Spinor.spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_ne_top_of_exists_nonsquare_unit`
+  - [x] package the exact ambient split-line spin image as
+    `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup`,
+    showing the image inside `SO(1,1)` is precisely the square-scaling subgroup
   - [x] also package the exact split-line salvage under the opposite hypothesis: if the square map on
     `Kˣ` is surjective, then
     `Spinor.spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_top_of_square_surjective`
@@ -270,13 +273,13 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - unconditional surjectivity now requires a different generator theorem or additional field
     hypotheses; the packaged covering theorem is intentionally left conditional on the closure
     hypothesis above
-- [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
+  - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
   - done on the ambient API by
     `Spinor.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one`, extending the earlier
     split/hyperbolic chosen-model theorem `splitSpinorCoveringKernel_eq_one_or_neg_one`
   - the remaining open part of the covering-map package is unrestricted surjectivity / double-cover
-    packaging beyond the split-line square-surjective case
+    packaging beyond the fully analyzed split-line case (exact image + square-surjective salvage)
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
     `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`
