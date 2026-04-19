@@ -249,10 +249,61 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     via `Spinor.spinSpecialOrthogonalPairGenerator_apply_dualProd`,
     `Spinor.spinSpecialOrthogonalPairGenerator_apply_dualProd_primal_transvection`, and
     `Spinor.spinSpecialOrthogonalPairGenerator_apply_dualProd_dual_transvection`
+  - [x] in the split hyperbolic model `dualProd K W`, package the explicit unipotent Clifford lift of
+    a hyperbolic transvection via `Spinor.dualProdTransvectionCliffordUnit`,
+    `Spinor.star_coe_dualProdTransvectionCliffordUnit`,
+    `Spinor.dualProdTransvectionCliffordUnit_mem_unitary`,
+    `Spinor.dualProdTransvectionCliffordUnit_mem_even`, and
+    `Spinor.dualProdTransvectionCliffordUnit_conjAct_eq_transvection`
   - [x] in the split hyperbolic model `dualProd K W`, package the determinant-one transport
     `GL(W) → SO(W* × W)` via `Spinor.dualProdIsometry_det_eq_one`,
     `Spinor.dualProdIsometry_mem_specialOrthogonalGroup`, and
     `Spinor.dualProdSpecialOrthogonalOfLinearEquiv`
+  - [x] upgrade that transport to a faithful group embedding via
+    `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_apply`,
+    `Spinor.dualProdSpecialOrthogonalOfLinearEquivHom`, and
+    `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_injective`
+  - [x] package the corresponding split Levi subgroup inside `SO(W* × W)` via
+    `Spinor.dualProdLeviSubgroup` and the canonical multiplicative equivalence
+    `Spinor.dualProdLeviSubgroupEquivLinearEquiv : GL(W) ≃ dualProdLeviSubgroup`
+  - [x] in the split hyperbolic model `dualProd K W`, package square scalings on any chosen split
+    line via `Spinor.lineScalingLinearEquiv`,
+    `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_apply_lineScalingLinearEquiv`,
+    `Spinor.spinSpecialOrthogonalPairGenerator_eq_lineScalingLinearEquiv`, and
+    `Spinor.dualProdSpecialOrthogonalOf_lineScalingLinearEquiv_sq_mem_range`
+  - [x] in the split hyperbolic model `dualProd K W`, package the one-line unipotent/torus
+    structure via `Spinor.dualProdTransvectionCliffordUnit_mul`,
+    `Spinor.transvection_mul_transvection_eq_transvection_add`,
+    `Spinor.dualProdSpecialOrthogonalOf_transvection_mul_transvection_eq_transvection_add`, and
+    `Spinor.dualProdSpecialOrthogonalOf_lineScalingLinearEquiv_mul_transvection_mul_inv_eq`
+  - [x] in the split hyperbolic model `dualProd K W`, package the internal Clifford-level torus
+    action on the explicit transvection lifts via
+    `Spinor.spinIotaPairOfQuadraticEqNegOne_conj_dualProdTransvectionCliffordUnit`
+  - [x] on the chosen split exterior model `⋀W`, package the structural Levi action theorem via
+    `Spinor.splitCliffordAction_eq_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq`
+  - [x] in the split hyperbolic model `dualProd K W`, package the basis-free two-line
+    determinant-one factorization of complementary line scalings into four transvections via
+    `Spinor.complementaryLineScalings_eq_transvection_four` and
+    `Spinor.dualProdSpecialOrthogonalOf_complementaryLineScalings_eq_transvection_four`
+  - [x] package the canonical basis-diagonal `2 × 2` determinant-one blocks via
+    `Spinor.basisScalingLinearEquiv`, `Spinor.basisScalingLinearEquiv_two_update_eq_transvection_four`,
+    and `Spinor.dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_two_update_eq_transvection_four`
+  - [x] package the global basis-dependent determinant-one diagonal factorization via
+    `Spinor.basisScalingLinearEquiv_eq_noncommProd_two_update_of_prod_eq_one` and
+    `Spinor.dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_eq_noncommProd_two_update_of_prod_eq_one`
+  - [x] package the square-determinant basis-scaling reduction via
+    `Spinor.basisScalingLinearEquiv_eq_lineScalingLinearEquiv_mul_noncommProd_two_update_of_prod_eq_sq`
+    and
+    `Spinor.dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_eq_lineScalingLinearEquiv_mul_noncommProd_two_update_of_prod_eq_sq`,
+    splitting any basis scaling with square total determinant into one square line scaling times the
+    determinant-one diagonal factorization
+  - [x] package the full higher-rank square-determinant Levi factorization via
+    `Spinor.linearEquiv_eq_list_basisTransvection_mul_basisScalingLinearEquiv_mul_list_basisTransvection_of_det_eq_sq`,
+    `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_eq_list_basisTransvection_mul_basisScalingLinearEquiv_mul_list_basisTransvection_of_det_eq_sq`,
+    and
+    `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_eq_list_basisTransvection_mul_lineScalingLinearEquiv_mul_noncommProd_two_update_mul_list_basisTransvection_of_det_eq_sq`,
+    expressing any square-determinant Levi element as basis transvections together with one
+    chosen-line square scaling and the canonical determinant-one `2 \times 2` diagonal blocks
   - [x] in split rank 1, formalize the square-scaling obstruction on `dualProd K K` via
     `Spinor.spinSpecialOrthogonalPairGenerator_eq_squareScaling_of_dualProd_line`,
     `Spinor.dualProdLineSquareScalingSubgroup`, and

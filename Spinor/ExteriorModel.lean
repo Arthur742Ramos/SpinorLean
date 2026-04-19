@@ -4,6 +4,7 @@
 
 import Spinor.Basic
 import Mathlib.Algebra.Algebra.Prod
+import Mathlib.LinearAlgebra.Determinant
 import Mathlib.LinearAlgebra.Prod
 import Mathlib.LinearAlgebra.Projection
 
@@ -38,6 +39,33 @@ chosen-model spinor data.
   for `contractionAction`.
 -/
 
+namespace AlternatingMap
+
+variable {R : Type*} [CommRing R]
+variable {M : Type*} [AddCommGroup M] [Module R M]
+variable {N : Type*} [AddCommGroup N] [Module R N]
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+
+/-- Any alternating map on a finite free module is determined by its value on a basis. -/
+theorem eq_smulRight_basis_det (e : Module.Basis ι R M) (f : M [⋀^ι]→ₗ[R] N) :
+    f = e.det.smulRight (f e) := by
+  refine Module.Basis.ext_alternating e ?_
+  intro v hv
+  let σ : Equiv.Perm ι := Equiv.ofBijective v (Finite.injective_iff_bijective.1 hv)
+  change f (e ∘ σ) = (e.det.smulRight (f e)) (e ∘ σ)
+  have hperm : f (e ∘ σ) = ((((Equiv.Perm.sign σ : Units ℤ) : ℤ) : R)) • f e := by
+    simpa [σ, Units.smul_def, Int.cast_smul_eq_zsmul R] using
+      (AlternatingMap.map_perm (g := f) (v := e) σ)
+  have hdet : e.det (e ∘ σ) = (((Equiv.Perm.sign σ : Units ℤ) : ℤ) : R) := by
+    simpa [σ, Module.Basis.det_self, Units.smul_def, Int.cast_smul_eq_zsmul R] using
+      (AlternatingMap.map_perm (g := e.det) (v := e) σ)
+  calc
+    f (e ∘ σ) = ((((Equiv.Perm.sign σ : Units ℤ) : ℤ) : R)) • f e := hperm
+    _ = e.det (e ∘ σ) • f e := by rw [hdet]
+    _ = (e.det.smulRight (f e)) (e ∘ σ) := rfl
+
+end AlternatingMap
+
 namespace ExteriorAlgebra
 
 open Classical
@@ -58,6 +86,35 @@ theorem finrank_eq_two_pow :
       Module.finrank_eq_card_basis b.ExteriorAlgebra
     _ = 2 ^ Fintype.card I := Fintype.card_finset
     _ = 2 ^ Module.finrank K M := by rw [Module.finrank_eq_card_basis b]
+
+/-- The top-degree exterior product of the canonical finite basis. -/
+noncomputable abbrev topExteriorGenerator : ExteriorAlgebra K M :=
+  ιMulti K (Module.finrank K M) (Module.finBasis K M)
+
+/-- The exterior action of a linear automorphism on the top exterior line is multiplication by its
+determinant. -/
+theorem map_topExteriorGenerator (f : M ≃ₗ[K] M) :
+    map (f : M →ₗ[K] M) (topExteriorGenerator (K := K) (M := M)) =
+      ↑(LinearEquiv.det f) • topExteriorGenerator (K := K) (M := M) := by
+  let n := Module.finrank K M
+  let b := Module.finBasis K M
+  have h :=
+    congrArg
+      (fun F : M [⋀^Fin n]→ₗ[K] ExteriorAlgebra K M => F ((f : M →ₗ[K] M) ∘ b))
+      (AlternatingMap.eq_smulRight_basis_det
+        (e := b) (f := ExteriorAlgebra.ιMulti K n (M := M)))
+  have h' :
+      map (f : M →ₗ[K] M) (topExteriorGenerator (K := K) (M := M)) =
+        b.det ((f : M →ₗ[K] M) ∘ b) • topExteriorGenerator (K := K) (M := M) := by
+    simpa [topExteriorGenerator, n, b] using h
+  have hdet : b.det ((f : M →ₗ[K] M) ∘ b) = ↑(LinearEquiv.det f) := by
+    calc
+      b.det ((f : M →ₗ[K] M) ∘ b) = LinearMap.det (f : M →ₗ[K] M) * b.det b := by
+        simpa using (Module.Basis.det_comp (e := b) (f := (f : M →ₗ[K] M)) (v := b))
+      _ = LinearMap.det (f : M →ₗ[K] M) := by rw [Module.Basis.det_self, mul_one]
+      _ = ↑(LinearEquiv.det f) := by rw [← LinearEquiv.coe_det]
+  rw [hdet] at h'
+  simpa [← LinearEquiv.coe_det] using h'
 
 end ExteriorAlgebra
 
@@ -828,6 +885,107 @@ theorem basisMembershipProjectorElem_apply_basis
   rw [basisMembershipProjectorElem, basisMembershipProjectorElemAux_eq]
   simpa [basisMembershipProjector] using
     basisMembershipProjector_apply_basis (K := K) (W := W) b s t
+
+theorem eq_algebraMap_repr_empty_of_forall_basisContraction_eq_zero
+    {W : Submodule K V} [Fintype I] (b : Module.Basis I K W)
+    {x : IsotropicExteriorModel (K := K) W}
+    (hx : ∀ i, contractionAction (K := K) W (b.coord i) x = 0) :
+    x = algebraMap K _ ((b.ExteriorAlgebra.repr x) ∅) := by
+  apply (b.ExteriorAlgebra).ext_elem
+  intro s
+  let m : IsotropicExteriorModel (K := K) W →ₗ[K] K :=
+    (Finsupp.lapply s).comp (b.ExteriorAlgebra.repr).toLinearMap
+  by_cases hs : s = ∅
+  · subst hs
+    have h1empty :
+        (b.ExteriorAlgebra.repr (1 : IsotropicExteriorModel (K := K) W)) ∅ = 1 := by
+      rw [show (1 : IsotropicExteriorModel (K := K) W) = b.ExteriorAlgebra ∅ by simp [basis_empty]]
+      simpa using congrArg (fun f => f ∅) (b.ExteriorAlgebra.repr_self ∅)
+    change m x = m (algebraMap K _ ((b.ExteriorAlgebra.repr x) ∅))
+    rw [Algebra.algebraMap_eq_smul_one]
+    simp [m, h1empty]
+  · have hsne : s.Nonempty := Finset.nonempty_iff_ne_empty.mpr hs
+    obtain ⟨i, hi⟩ := hsne
+    let p : Module.End K (IsotropicExteriorModel (K := K) W) :=
+      basisMembershipProjectorOp (K := K) (W := W) b ({i} : Finset I) i
+    have hp : p x = 0 := by
+      simp [p, basisMembershipProjectorOp, hx i]
+    have hmp : m.comp p = m := by
+      apply (b.ExteriorAlgebra).ext
+      intro t
+      by_cases hit : i ∈ t
+      · simp [m, p, basisMembershipProjectorOp_apply_basis, hit]
+      · have hts : t ≠ s := by
+          intro hts
+          exact hit (hts ▸ hi)
+        simp [m, p, basisMembershipProjectorOp_apply_basis, hit, hts]
+    have hm : m x = 0 := by
+      have hm0 : m (p x) = 0 := by simpa [m] using congrArg (fun y => m y) hp
+      have hmpx : m (p x) = m x := by
+        simpa [LinearMap.comp_apply] using congrArg (fun f => f x) hmp
+      exact hmpx ▸ hm0
+    have h1s :
+        (b.ExteriorAlgebra.repr (1 : IsotropicExteriorModel (K := K) W)) s = 0 := by
+      rw [show (1 : IsotropicExteriorModel (K := K) W) = b.ExteriorAlgebra ∅ by simp [basis_empty]]
+      simpa [hs] using congrArg (fun f => f s) (b.ExteriorAlgebra.repr_self ∅)
+    change m x = m (algebraMap K _ ((b.ExteriorAlgebra.repr x) ∅))
+    refine hm.trans ?_
+    rw [Algebra.algebraMap_eq_smul_one]
+    simp [m, h1s]
+
+theorem eq_algebraMap_of_forall_contractionAction_eq_zero
+    {W : Submodule K V} [FiniteDimensional K W]
+    {x : IsotropicExteriorModel (K := K) W}
+    (hx : ∀ d : Module.Dual K W, contractionAction (K := K) W d x = 0) :
+    ∃ c : K, x = algebraMap K _ c := by
+  let b := Module.finBasis K W
+  refine ⟨(b.ExteriorAlgebra.repr x) ∅, ?_⟩
+  exact eq_algebraMap_repr_empty_of_forall_basisContraction_eq_zero
+    (K := K) (V := V) (W := W) b (fun i => hx (b.coord i))
+
+omit [Invertible (2 : K)] in
+theorem eq_smul_exteriorMap_of_map_one_and_wedgeAction
+    {W : Submodule K V} (b : Module.Basis I K W) (g : W →ₗ[K] W)
+    (φ : IsotropicExteriorModel (K := K) W →ₗ[K] IsotropicExteriorModel (K := K) W)
+    (c : K)
+    (h1 : φ 1 = algebraMap K _ c)
+    (hι : ∀ w x, φ (wedgeAction (K := K) W w x) =
+        wedgeAction (K := K) W (g w) (φ x)) :
+    φ = c • (ExteriorAlgebra.map g).toLinearMap := by
+  apply (b.ExteriorAlgebra).ext
+  intro s
+  induction s using Finset.induction_on with
+  | empty =>
+      simpa [basis_empty, Algebra.smul_def] using h1
+  | @insert i s hi ih =>
+      rcases basis_eq_unit_smul_wedge_basis_erase (K := K) (W := W) (b := b)
+          (i := i) (s := insert i s) (by simp) with ⟨u, hu2, hu⟩
+      have hmap :
+          ExteriorAlgebra.map g (b.ExteriorAlgebra (insert i s)) =
+            u • wedgeAction (K := K) W (g (b i))
+              (ExteriorAlgebra.map g (b.ExteriorAlgebra s)) := by
+        calc
+          ExteriorAlgebra.map g (b.ExteriorAlgebra (insert i s))
+              = ExteriorAlgebra.map g
+                  (u • ((ExteriorAlgebra.ι K (b i)) * b.ExteriorAlgebra s)) := by
+                    simpa [hi] using congrArg (ExteriorAlgebra.map g) hu
+          _ = u • wedgeAction (K := K) W (g (b i))
+                (ExteriorAlgebra.map g (b.ExteriorAlgebra s)) := by
+                  simp [wedgeAction_apply, map_mul]
+      calc
+        φ (b.ExteriorAlgebra (insert i s))
+            = u • φ (wedgeAction (K := K) W (b i) (b.ExteriorAlgebra s)) := by
+                rw [hu, map_smul]
+                simp [hi, wedgeAction_apply]
+        _ = u • wedgeAction (K := K) W (g (b i)) (φ (b.ExteriorAlgebra s)) := by
+              rw [hι]
+        _ = u • wedgeAction (K := K) W (g (b i))
+              (c • ExteriorAlgebra.map g (b.ExteriorAlgebra s)) := by
+                simpa using congrArg
+                  (fun y => u • wedgeAction (K := K) W (g (b i)) y) ih
+        _ = c • ExteriorAlgebra.map g (b.ExteriorAlgebra (insert i s)) := by
+              rw [hmap]
+              simp [smul_smul, mul_comm]
 
 theorem exists_splitCliffordAction_contract_basis
     {W : Submodule K V} (b : Module.Basis I K W) {i : I} {s : Finset I} (hi : i ∈ s) :

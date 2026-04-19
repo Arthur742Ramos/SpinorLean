@@ -7,6 +7,7 @@
 -/
 
 import Spinor.ExteriorModel
+import Spinor.OrthogonalAction
 
 /-!
 # Transport of the chosen `⋀W` model along an explicit hyperbolic isometry
@@ -794,6 +795,186 @@ theorem hyperbolicSpinRepresentationOfIsCompl_mem_oddExteriorSubmodule
     (e := QuadraticForm.splitIsometryEquivOfIsCompl
       (K := K) (Q := Q) (W := W) (U := U) hQ hW hsplit hWU)
     hx
+
+/-- On the split exterior model `⋀W`, any spin lift of the Levi copy of `GL(W)` acts by a scalar
+multiple of the natural exterior action of the underlying linear automorphism. -/
+theorem splitCliffordAction_eq_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq
+    {W : Submodule K V} [FiniteDimensional K W]
+    (s : spinGroup (QuadraticForm.dualProd K W)) (g : W ≃ₗ[K] W)
+    (hs : spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W) s =
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K) g) :
+    ∃ c : K,
+      splitCliffordAction (K := K) W (s : CliffordAlgebra (QuadraticForm.dualProd K W)) =
+        c • (ExteriorAlgebra.map (g : W →ₗ[K] W)).toLinearMap := by
+  let Qd : QuadraticForm K (Module.Dual K W × W) := QuadraticForm.dualProd K W
+  let A : Module.End K (IsotropicExteriorModel (K := K) W) :=
+    splitCliffordAction (K := K) W (s : CliffordAlgebra Qd)
+  have hmul (a : CliffordAlgebra Qd) :
+      spinConjAlgEquiv (Q := Qd) s a * (s : CliffordAlgebra Qd) =
+        (s : CliffordAlgebra Qd) * a := by
+    rw [spinConjAlgEquiv_apply, ConjAct.units_smul_def, ConjAct.ofConjAct_toConjAct]
+    have hunit :
+        (((↑((spinGroup.toUnits s)⁻¹) : (CliffordAlgebra Qd)ˣ) : CliffordAlgebra Qd) *
+          (s : CliffordAlgebra Qd)) = 1 := by
+      change
+        ((((spinGroup.toUnits s)⁻¹) * spinGroup.toUnits s : (CliffordAlgebra Qd)ˣ) :
+          CliffordAlgebra Qd) = 1
+      simp
+    calc
+      (s : CliffordAlgebra Qd) * a *
+            ((↑((spinGroup.toUnits s)⁻¹) : (CliffordAlgebra Qd)ˣ) : CliffordAlgebra Qd) *
+              (s : CliffordAlgebra Qd)
+          = (s : CliffordAlgebra Qd) * a *
+              ((((↑((spinGroup.toUnits s)⁻¹) : (CliffordAlgebra Qd)ˣ) : CliffordAlgebra Qd) *
+                (s : CliffordAlgebra Qd))) := by
+                  rw [mul_assoc]
+      _ = (s : CliffordAlgebra Qd) * a * 1 := by rw [hunit]
+      _ = (s : CliffordAlgebra Qd) * a := by simp
+  have hsplitdual (d : Module.Dual K W) (y : IsotropicExteriorModel (K := K) W) :
+      splitCliffordAction (K := K) W (CliffordAlgebra.ι Qd (d, (0 : W))) y =
+        contractionAction (K := K) W d y := by
+    simpa [Qd, splitGeneratorAction] using
+      (splitCliffordAction_apply_ι (K := K) (W := W) (x := (d, (0 : W))) (y := y))
+  have hsplitprimal (w : W) (y : IsotropicExteriorModel (K := K) W) :
+      splitCliffordAction (K := K) W (CliffordAlgebra.ι Qd ((0 : Module.Dual K W), w)) y =
+        wedgeAction (K := K) W w y := by
+    simpa [Qd, splitGeneratorAction] using
+      (splitCliffordAction_apply_ι (K := K) (W := W) (x := ((0 : Module.Dual K W), w)) (y := y))
+  have hdual :
+      ∀ d : Module.Dual K W, contractionAction (K := K) W d (A 1) = 0 := by
+    intro d
+    have hd_aux :
+        (dualProdSpecialOrthogonalOfLinearEquiv (K := K) g).1 (g.dualMap d, (0 : W)) = (d, 0) := by
+      rw [dualProdSpecialOrthogonalOfLinearEquiv_apply]
+      apply Prod.ext
+      · ext x
+        simp
+      · simp
+    have hd :
+        spinLinearRepresentation (Q := Qd) s (g.dualMap d, (0 : W)) = (d, 0) := by
+      have h :=
+        congrArg (fun e : Qd.specialOrthogonalGroup => e.1 (g.dualMap d, (0 : W))) hs
+      simpa [Qd, spinLinearRepresentation_apply,
+        coe_spinSpecialOrthogonalRepresentationFiniteDimensional,
+        spinIsometryRepresentation_apply, spinIsometryEquiv_apply] using h.trans hd_aux
+    have hιd :
+        spinConjAlgEquiv (Q := Qd) s
+            (CliffordAlgebra.ι Qd (g.dualMap d, (0 : W))) =
+          CliffordAlgebra.ι Qd (d, (0 : W)) := by
+      rw [spinConjAlgEquiv_apply,
+        ← spinLinearEquiv_ι (Q := Qd) s (g.dualMap d, (0 : W)),
+        ← spinLinearRepresentation_apply (Q := Qd) s, hd]
+    calc
+      contractionAction (K := K) W d (A 1)
+          = splitCliffordAction (K := K) W
+              (CliffordAlgebra.ι Qd (d, (0 : W))) (A 1) := by
+                rw [hsplitdual]
+      _ = splitCliffordAction (K := K) W
+            (spinConjAlgEquiv (Q := Qd) s
+              (CliffordAlgebra.ι Qd (g.dualMap d, (0 : W)))) (A 1) := by
+              rw [hιd]
+      _ = splitCliffordAction (K := K) W
+            (spinConjAlgEquiv (Q := Qd) s
+                (CliffordAlgebra.ι Qd (g.dualMap d, (0 : W))) *
+              (s : CliffordAlgebra Qd)) 1 := by
+              simp [A, map_mul]
+      _ = splitCliffordAction (K := K) W
+            ((s : CliffordAlgebra Qd) *
+              CliffordAlgebra.ι Qd (g.dualMap d, (0 : W))) 1 := by
+              rw [hmul]
+      _ = A (splitCliffordAction (K := K) W
+            (CliffordAlgebra.ι Qd (g.dualMap d, (0 : W))) 1) := by
+              simp [A, map_mul]
+      _ = 0 := by
+              rw [hsplitdual]
+              simpa using congrArg A
+                (contractionAction_algebraMap (K := K) (W := W) (d := g.dualMap d)
+                  (r := (1 : K)))
+  obtain ⟨c, hc⟩ :=
+    eq_algebraMap_of_forall_contractionAction_eq_zero
+      (K := K) (V := V) (W := W) (x := A 1) hdual
+  have hwedge :
+      ∀ w x,
+        A (wedgeAction (K := K) W w x) =
+          wedgeAction (K := K) W (g w) (A x) := by
+    intro w x
+    have hw_aux :
+        (dualProdSpecialOrthogonalOfLinearEquiv (K := K) g).1
+          ((0 : Module.Dual K W), w) = (0, g w) := by
+      rw [dualProdSpecialOrthogonalOfLinearEquiv_apply]
+      simp
+    have hw :
+        spinLinearRepresentation (Q := Qd) s ((0 : Module.Dual K W), w) = (0, g w) := by
+      have h :=
+        congrArg (fun e : Qd.specialOrthogonalGroup => e.1 ((0 : Module.Dual K W), w)) hs
+      simpa [Qd, spinLinearRepresentation_apply,
+        coe_spinSpecialOrthogonalRepresentationFiniteDimensional,
+        spinIsometryRepresentation_apply, spinIsometryEquiv_apply] using h.trans hw_aux
+    have hιw :
+        spinConjAlgEquiv (Q := Qd) s
+            (CliffordAlgebra.ι Qd ((0 : Module.Dual K W), w)) =
+          CliffordAlgebra.ι Qd (0, g w) := by
+      rw [spinConjAlgEquiv_apply,
+        ← spinLinearEquiv_ι (Q := Qd) s ((0 : Module.Dual K W), w),
+        ← spinLinearRepresentation_apply (Q := Qd) s, hw]
+    calc
+      A (wedgeAction (K := K) W w x)
+          = splitCliffordAction (K := K) W
+              ((s : CliffordAlgebra Qd) *
+                CliffordAlgebra.ι Qd ((0 : Module.Dual K W), w)) x := by
+                  rw [← hsplitprimal]
+                  simp [A, map_mul]
+      _ = splitCliffordAction (K := K) W
+            (spinConjAlgEquiv (Q := Qd) s
+                (CliffordAlgebra.ι Qd ((0 : Module.Dual K W), w)) *
+              (s : CliffordAlgebra Qd)) x := by
+              rw [hmul]
+      _ = wedgeAction (K := K) W (g w) (A x) := by
+              rw [hιw]
+              rw [← hsplitprimal]
+              simp [A, map_mul]
+  let b := Module.finBasis K W
+  refine ⟨c, ?_⟩
+  exact eq_smul_exteriorMap_of_map_one_and_wedgeAction
+    (K := K) (V := V) (W := W) b (g : W →ₗ[K] W) A c hc hwedge
+
+/-- For a Levi spin lift, the same scalar controls the action on the bottom and top exterior
+lines, and the top-line eigenvalue differs by `det g`. -/
+theorem splitCliffordAction_apply_one_and_topExteriorGenerator_of
+    {W : Submodule K V} [FiniteDimensional K W]
+    (s : spinGroup (QuadraticForm.dualProd K W)) (g : W ≃ₗ[K] W)
+    (hs : spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W) s =
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K) g) :
+    ∃ c : K,
+      splitCliffordAction (K := K) W (s : CliffordAlgebra (QuadraticForm.dualProd K W)) 1 =
+        c • (1 : IsotropicExteriorModel (K := K) W) ∧
+      splitCliffordAction (K := K) W (s : CliffordAlgebra (QuadraticForm.dualProd K W))
+          (ExteriorAlgebra.topExteriorGenerator (K := K) (M := W)) =
+        (c * ↑(LinearEquiv.det g)) •
+          ExteriorAlgebra.topExteriorGenerator (K := K) (M := W) := by
+  obtain ⟨c, hc⟩ :=
+    splitCliffordAction_eq_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq
+      (K := K) (V := V) s g hs
+  refine ⟨c, ?_, ?_⟩
+  · simpa using congrArg (fun f : Module.End K (IsotropicExteriorModel (K := K) W) => f 1) hc
+  · calc
+      splitCliffordAction (K := K) W (s : CliffordAlgebra (QuadraticForm.dualProd K W))
+          (ExteriorAlgebra.topExteriorGenerator (K := K) (M := W))
+        = c • ExteriorAlgebra.map (g : W →ₗ[K] W)
+            (ExteriorAlgebra.topExteriorGenerator (K := K) (M := W)) := by
+              simpa using
+                congrArg
+                  (fun f : Module.End K (IsotropicExteriorModel (K := K) W) =>
+                    f (ExteriorAlgebra.topExteriorGenerator (K := K) (M := W)))
+                  hc
+      _ = c • (↑(LinearEquiv.det g) •
+            ExteriorAlgebra.topExteriorGenerator (K := K) (M := W)) := by
+              rw [ExteriorAlgebra.map_topExteriorGenerator]
+      _ = (c * ↑(LinearEquiv.det g)) •
+            ExteriorAlgebra.topExteriorGenerator (K := K) (M := W) := by
+              simpa [Units.smul_def, smul_smul, mul_comm]
 
 end SplitTransport
 

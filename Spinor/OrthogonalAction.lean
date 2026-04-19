@@ -3,8 +3,12 @@
 -/
 
 import Spinor.SpinRep
+import Mathlib.Algebra.Group.Subgroup.Ker
+import Mathlib.Data.Finset.NoncommProd
 import Mathlib.LinearAlgebra.Basis.Fin
 import Mathlib.LinearAlgebra.Determinant
+import Mathlib.LinearAlgebra.Matrix.Transvection
+import Mathlib.LinearAlgebra.Pi
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.LinearAlgebra.Transvection.Basic
 
@@ -1708,6 +1712,155 @@ theorem coe_dualProdSpecialOrthogonalOfLinearEquiv (e : W ≃ₗ[K] W) :
       QuadraticForm.dualProdIsometry (R := K) e := rfl
 
 omit [Invertible (2 : K)] in
+/-- The split special-orthogonal transport acts by the inverse dual map on the dual coordinate and
+by the original linear automorphism on the primal coordinate. -/
+@[simp]
+theorem dualProdSpecialOrthogonalOfLinearEquiv_apply (e : W ≃ₗ[K] W)
+    (d : Module.Dual K W) (u : W) :
+    (dualProdSpecialOrthogonalOfLinearEquiv (K := K) e).1 (d, u) =
+      (e.dualMap.symm d, e u) := rfl
+
+omit [Invertible (2 : K)] in
+/-- The linear automorphism that scales the distinguished line `K ∙ w` by `t` and fixes
+`ker f`, under the normalization `f w = 1`. -/
+def lineScalingLinearEquiv (f : Module.Dual K W) (w : W) (hf : f w = 1) (t : Kˣ) :
+    W ≃ₗ[K] W where
+  toFun u := u + ((((t : K) - 1) * f u) : K) • w
+  invFun u := u + ((((t : K)⁻¹ - 1) * f u) : K) • w
+  map_add' u v := by
+    simp [mul_add, add_smul, add_assoc, add_left_comm, add_comm]
+  map_smul' c u := by
+    simp [mul_assoc, smul_add, smul_smul, mul_left_comm, mul_comm]
+  left_inv u := by
+    have hfu :
+        f (u + ((((t : K) - 1) * f u) : K) • w) = (t : K) * f u := by
+      rw [map_add, map_smul]
+      simp [hf]
+      ring
+    change
+      u + ((((t : K) - 1) * f u) : K) • w +
+          ((((t : K)⁻¹ - 1) * f (u + ((((t : K) - 1) * f u) : K) • w)) : K) • w = u
+    rw [hfu, add_assoc, ← add_smul]
+    have hcoef : (((t : K) - 1) * f u) + (((t : K)⁻¹ - 1) * ((t : K) * f u)) = 0 := by
+      field_simp [t.ne_zero]
+      ring
+    rw [hcoef, zero_smul, add_zero]
+  right_inv u := by
+    have hfu :
+        f (u + ((((t : K)⁻¹ - 1) * f u) : K) • w) = ((t : K)⁻¹) * f u := by
+      rw [map_add, map_smul]
+      simp [hf]
+      ring
+    change
+      u + ((((t : K)⁻¹ - 1) * f u) : K) • w +
+          ((((t : K) - 1) * f (u + ((((t : K)⁻¹ - 1) * f u) : K) • w)) : K) • w = u
+    rw [hfu, add_assoc, ← add_smul]
+    have hcoef : (((t : K)⁻¹ - 1) * f u) + (((t : K) - 1) * (((t : K)⁻¹) * f u)) = 0 := by
+      field_simp [t.ne_zero]
+      ring
+    rw [hcoef, zero_smul, add_zero]
+
+omit [Invertible (2 : K)] in
+@[simp]
+theorem lineScalingLinearEquiv_apply (f : Module.Dual K W) (w : W) (hf : f w = 1) (t : Kˣ)
+    (u : W) :
+    lineScalingLinearEquiv (f := f) (w := w) hf t u =
+      u + ((((t : K) - 1) * f u) : K) • w := rfl
+
+omit [Invertible (2 : K)] in
+@[simp]
+theorem lineScalingLinearEquiv_symm_apply (f : Module.Dual K W) (w : W) (hf : f w = 1) (t : Kˣ)
+    (u : W) :
+    (lineScalingLinearEquiv (f := f) (w := w) hf t).symm u =
+      u + ((((t : K)⁻¹ - 1) * f u) : K) • w := rfl
+
+omit [Invertible (2 : K)] in
+/-- Transporting the line-scaling automorphism to the split special orthogonal group rescales the
+primal line `K ∙ w` by `t` and the dual line `K ∙ f` by `t⁻¹`, fixing the complementary kernels. -/
+@[simp]
+theorem dualProdSpecialOrthogonalOfLinearEquiv_apply_lineScalingLinearEquiv
+    (f : Module.Dual K W) (w : W) (hf : f w = 1) (t : Kˣ)
+    (d : Module.Dual K W) (u : W) :
+    (dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (lineScalingLinearEquiv (f := f) (w := w) hf t)).1 (d, u) =
+      (d + ((((t : K)⁻¹ - 1) * d w) : K) • f,
+        u + ((((t : K) - 1) * f u) : K) • w) := by
+  rw [coe_dualProdSpecialOrthogonalOfLinearEquiv]
+  change
+      (((lineScalingLinearEquiv (f := f) (w := w) hf t).dualMap.symm d),
+        lineScalingLinearEquiv (f := f) (w := w) hf t u) =
+      (d + ((((t : K)⁻¹ - 1) * d w) : K) • f,
+        u + ((((t : K) - 1) * f u) : K) • w)
+  apply Prod.ext
+  · apply LinearMap.ext
+    intro x
+    rw [show ((lineScalingLinearEquiv (f := f) (w := w) hf t).dualMap.symm d) x =
+        d ((lineScalingLinearEquiv (f := f) (w := w) hf t).symm x) by rfl]
+    rw [lineScalingLinearEquiv_symm_apply]
+    simp [smul_eq_mul, mul_assoc, mul_left_comm, mul_comm]
+  · rfl
+
+omit [Invertible (2 : K)] in
+/-- The determinant-one transport of `GL(W)` into `SO(W* × W)` is multiplicative. -/
+noncomputable def dualProdSpecialOrthogonalOfLinearEquivHom :
+    (W ≃ₗ[K] W) →* (QuadraticForm.dualProd K W).specialOrthogonalGroup where
+  toFun e := dualProdSpecialOrthogonalOfLinearEquiv (K := K) e
+  map_one' := by
+    apply Subtype.ext
+    rfl
+  map_mul' e f := by
+    apply Subtype.ext
+    rfl
+
+omit [Invertible (2 : K)] in
+@[simp]
+theorem dualProdSpecialOrthogonalOfLinearEquivHom_apply (e : W ≃ₗ[K] W) :
+    dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W) e =
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K) e := rfl
+
+omit [Invertible (2 : K)] in
+/-- The split special-orthogonal transport remembers the underlying linear automorphism of `W`. -/
+theorem dualProdSpecialOrthogonalOfLinearEquiv_injective :
+    Function.Injective (dualProdSpecialOrthogonalOfLinearEquiv (K := K) (W := W)) := by
+  intro e f h
+  ext u
+  have h' := congrArg
+    (fun g : (QuadraticForm.dualProd K W).specialOrthogonalGroup =>
+      Prod.snd (g.1 (0, u))) h
+  simpa [dualProdSpecialOrthogonalOfLinearEquiv_apply] using h'
+
+omit [Invertible (2 : K)] in
+theorem dualProdSpecialOrthogonalOfLinearEquivHom_injective :
+    Function.Injective (dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W)) :=
+  dualProdSpecialOrthogonalOfLinearEquiv_injective (K := K) (W := W)
+
+omit [Invertible (2 : K)] in
+/-- The canonical `GL(W)` copy inside the split special orthogonal group of `W* × W`. -/
+noncomputable def dualProdLeviSubgroup :
+    Subgroup ((QuadraticForm.dualProd K W).specialOrthogonalGroup) :=
+  (dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W)).range
+
+omit [Invertible (2 : K)] in
+/-- The split Levi subgroup is canonically isomorphic to `GL(W)`. -/
+noncomputable def dualProdLeviSubgroupEquivLinearEquiv :
+    (W ≃ₗ[K] W) ≃* dualProdLeviSubgroup (K := K) (W := W) :=
+  MonoidHom.ofInjective
+    (f := dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W))
+    (dualProdSpecialOrthogonalOfLinearEquivHom_injective (K := K) (W := W))
+
+omit [Invertible (2 : K)] in
+@[simp]
+theorem dualProdLeviSubgroupEquivLinearEquiv_apply (e : W ≃ₗ[K] W) :
+    dualProdLeviSubgroupEquivLinearEquiv (K := K) (W := W) e =
+      ⟨dualProdSpecialOrthogonalOfLinearEquiv (K := K) e, ⟨e, rfl⟩⟩ := by
+  apply Subtype.ext
+  simpa [dualProdLeviSubgroup, dualProdLeviSubgroupEquivLinearEquiv] using
+    (MonoidHom.ofInjective_apply
+      (f := dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W))
+      (hf := dualProdSpecialOrthogonalOfLinearEquivHom_injective (K := K) (W := W))
+      (x := e))
+
+omit [Invertible (2 : K)] in
 /-- The split special-orthogonal transport of a primal transvection has the expected block
 coordinate formula on `W* × W`. -/
 theorem dualProdSpecialOrthogonalOfLinearEquiv_apply_transvection
@@ -1727,6 +1880,1705 @@ theorem dualProdSpecialOrthogonalOfLinearEquiv_apply_transvection
     simp [mul_comm]
   · change e u = u - (δ u : K) • w
     simp [e, LinearMap.transvection.apply, sub_eq_add_neg]
+
+/-- The explicit Clifford-algebra unit whose conjugation acts as the transported hyperbolic
+transvection attached to `(δ,w)` when `δ w = 0`. This is the unipotent candidate for lifting
+Levi transvections into the spin image. -/
+noncomputable def dualProdTransvectionCliffordUnit
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0) :
+    (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ where
+  val := 1 + CliffordAlgebra.ι (QuadraticForm.dualProd K W) (δ, 0) *
+      CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, w)
+  inv := 1 - CliffordAlgebra.ι (QuadraticForm.dualProd K W) (δ, 0) *
+      CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, w)
+  val_inv := by
+    let Qd : QuadraticForm K (Module.Dual K W × W) := QuadraticForm.dualProd K W
+    let a : Module.Dual K W × W := (δ, 0)
+    let b : Module.Dual K W × W := (0, w)
+    let n : CliffordAlgebra Qd := CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b
+    have hbab : CliffordAlgebra.ι Qd b * CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b = 0 := by
+      rw [CliffordAlgebra.ι_mul_ι_mul_ι]
+      rw [show QuadraticMap.polar Qd b a = δ w by simp [QuadraticMap.polar, Qd, a, b]]
+      rw [hδ]
+      simp [Qd, a, b]
+    have hnil : n * n = 0 := by
+      calc
+        n * n = CliffordAlgebra.ι Qd a *
+            (CliffordAlgebra.ι Qd b * CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b) := by
+              dsimp [n]
+              simp [mul_assoc]
+        _ = 0 := by rw [hbab]; simp
+    have hnil_assoc :
+        CliffordAlgebra.ι Qd a *
+            (CliffordAlgebra.ι Qd b * (CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b)) = 0 := by
+      simpa [n, mul_assoc] using hnil
+    simpa [n, sub_eq_add_neg, add_mul, mul_add, mul_assoc, hnil_assoc,
+      add_assoc, add_left_comm, add_comm]
+  inv_val := by
+    let Qd : QuadraticForm K (Module.Dual K W × W) := QuadraticForm.dualProd K W
+    let a : Module.Dual K W × W := (δ, 0)
+    let b : Module.Dual K W × W := (0, w)
+    let n : CliffordAlgebra Qd := CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b
+    have hbab : CliffordAlgebra.ι Qd b * CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b = 0 := by
+      rw [CliffordAlgebra.ι_mul_ι_mul_ι]
+      rw [show QuadraticMap.polar Qd b a = δ w by simp [QuadraticMap.polar, Qd, a, b]]
+      rw [hδ]
+      simp [Qd, a, b]
+    have hnil : n * n = 0 := by
+      calc
+        n * n = CliffordAlgebra.ι Qd a *
+            (CliffordAlgebra.ι Qd b * CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b) := by
+              dsimp [n]
+              simp [mul_assoc]
+        _ = 0 := by rw [hbab]; simp
+    have hnil_assoc :
+        CliffordAlgebra.ι Qd a *
+            (CliffordAlgebra.ι Qd b * (CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b)) = 0 := by
+      simpa [n, mul_assoc] using hnil
+    simpa [n, sub_eq_add_neg, add_mul, mul_add, mul_assoc, hnil_assoc,
+      add_assoc, add_left_comm, add_comm]
+
+omit [Invertible (2 : K)] in
+@[simp]
+theorem coe_dualProdTransvectionCliffordUnit
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0) :
+    ((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ :
+        (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+      CliffordAlgebra (QuadraticForm.dualProd K W)) =
+      1 + CliffordAlgebra.ι (QuadraticForm.dualProd K W) (δ, 0) *
+        CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, w) := rfl
+
+omit [Invertible (2 : K)] in
+@[simp]
+theorem coe_inv_dualProdTransvectionCliffordUnit
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0) :
+    (((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ)⁻¹ :
+        (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+      CliffordAlgebra (QuadraticForm.dualProd K W)) =
+      1 - CliffordAlgebra.ι (QuadraticForm.dualProd K W) (δ, 0) *
+        CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, w) := rfl
+
+omit [Invertible (2 : K)] in
+@[simp]
+theorem dualProdTransvectionCliffordUnit_inv_eq
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0) :
+    (dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ)⁻¹ =
+      dualProdTransvectionCliffordUnit (K := K) (W := W) (-δ) w (by simpa using hδ) := by
+  ext
+  change 1 -
+      CliffordAlgebra.ι (QuadraticForm.dualProd K W) (δ, 0) *
+        CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, w) =
+    1 + CliffordAlgebra.ι (QuadraticForm.dualProd K W) (-δ, 0) *
+      CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, w)
+  have hneg :
+      CliffordAlgebra.ι (QuadraticForm.dualProd K W) (-δ, 0) *
+          CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, w) =
+        -(CliffordAlgebra.ι (QuadraticForm.dualProd K W) (δ, 0) *
+          CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, w)) := by
+    have hpair : ((-δ, 0) : Module.Dual K W × W) = -(δ, 0) := by
+      ext <;> simp
+    rw [hpair, map_neg]
+    simp [neg_mul]
+  rw [hneg]
+  simp [sub_eq_add_neg]
+
+omit [Invertible (2 : K)] in
+@[simp]
+theorem star_coe_dualProdTransvectionCliffordUnit
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0) :
+    star (((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ :
+        (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+      CliffordAlgebra (QuadraticForm.dualProd K W))) =
+      (((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ)⁻¹ :
+          (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+        CliffordAlgebra (QuadraticForm.dualProd K W)) := by
+  let Qd : QuadraticForm K (Module.Dual K W × W) := QuadraticForm.dualProd K W
+  let a : Module.Dual K W × W := (δ, 0)
+  let b : Module.Dual K W × W := (0, w)
+  rw [coe_dualProdTransvectionCliffordUnit, coe_inv_dualProdTransvectionCliffordUnit]
+  change star (1 + CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b) =
+      1 - CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b
+  simp [CliffordAlgebra.star_ι]
+  rw [CliffordAlgebra.ι_mul_ι_comm (Q := Qd) b a]
+  rw [show QuadraticMap.polar Qd b a = δ w by simp [QuadraticMap.polar, Qd, a, b]]
+  rw [hδ]
+  simpa [sub_eq_add_neg]
+
+omit [Invertible (2 : K)] in
+/-- The explicit transvection unit is unitary: its Clifford star is its inverse. -/
+theorem dualProdTransvectionCliffordUnit_mem_unitary
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0) :
+    (((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ :
+        (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+      CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+        unitary (CliffordAlgebra (QuadraticForm.dualProd K W)) := by
+  let x : CliffordAlgebra (QuadraticForm.dualProd K W) :=
+    ((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ :
+        (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+      CliffordAlgebra (QuadraticForm.dualProd K W))
+  have hx : IsUnit x := (dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ).isUnit
+  rw [hx.mem_unitary_iff_star_mul_self]
+  rw [show x =
+      (((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ :
+          (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+        CliffordAlgebra (QuadraticForm.dualProd K W))) by rfl]
+  rw [star_coe_dualProdTransvectionCliffordUnit]
+  simpa using
+    (dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ).inv_val
+
+omit [Invertible (2 : K)] in
+/-- The explicit transvection unit lies in the even Clifford subalgebra. -/
+theorem dualProdTransvectionCliffordUnit_mem_even
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0) :
+    (((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ :
+        (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+      CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+        CliffordAlgebra.even (QuadraticForm.dualProd K W) := by
+  refine (CliffordAlgebra.even (QuadraticForm.dualProd K W)).add_mem ?_ ?_
+  · exact (CliffordAlgebra.even (QuadraticForm.dualProd K W)).one_mem
+  · change CliffordAlgebra.ι (QuadraticForm.dualProd K W) (δ, 0) *
+        CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, w) ∈
+          Subalgebra.toSubmodule (CliffordAlgebra.even (QuadraticForm.dualProd K W))
+    simpa [CliffordAlgebra.even_toSubmodule] using
+      (CliffordAlgebra.ι_mul_ι_mem_evenOdd_zero
+        (QuadraticForm.dualProd K W) (δ, 0) (0, w))
+
+omit [Invertible (2 : K)] in
+/-- Conjugation by the explicit unipotent Clifford unit `1 + ι(δ,0)ι(0,w)` realizes the transported
+hyperbolic transvection on vectors. The remaining gap to a genuine spin-image theorem is showing
+that this unit belongs to `spinGroup`; Mathlib currently lacks the needed converse Lipschitz
+criterion. -/
+theorem dualProdTransvectionCliffordUnit_conjAct_ι
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0)
+    (d : Module.Dual K W) (u : W) :
+    ConjAct.toConjAct
+        (dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ) •
+          CliffordAlgebra.ι (QuadraticForm.dualProd K W) (d, u) =
+      CliffordAlgebra.ι (QuadraticForm.dualProd K W) (d + (d w : K) • δ, u - (δ u : K) • w) := by
+  let Qd : QuadraticForm K (Module.Dual K W × W) := QuadraticForm.dualProd K W
+  let a : Module.Dual K W × W := (δ, 0)
+  let b : Module.Dual K W × W := (0, w)
+  let z : Module.Dual K W × W := (d, u)
+  let n : CliffordAlgebra Qd := CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b
+  have hn_left :
+      n * CliffordAlgebra.ι Qd z =
+        (d w : K) • CliffordAlgebra.ι Qd a -
+          CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd z * CliffordAlgebra.ι Qd b := by
+    dsimp [n]
+    calc
+      CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b * CliffordAlgebra.ι Qd z =
+          CliffordAlgebra.ι Qd a *
+            (algebraMap K (CliffordAlgebra Qd) (d w) -
+              CliffordAlgebra.ι Qd z * CliffordAlgebra.ι Qd b) := by
+                rw [mul_assoc, CliffordAlgebra.ι_mul_ι_comm (Q := Qd) b z]
+                rw [show QuadraticMap.polar Qd b z = d w by
+                  simp [QuadraticMap.polar, Qd, b, z]]
+      _ = (d w : K) • CliffordAlgebra.ι Qd a -
+          CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd z * CliffordAlgebra.ι Qd b := by
+            rw [mul_sub]
+            rw [show
+              CliffordAlgebra.ι Qd a * algebraMap K (CliffordAlgebra Qd) (d w) =
+                algebraMap K (CliffordAlgebra Qd) (d w) * CliffordAlgebra.ι Qd a by
+                  exact (Algebra.commutes (A := CliffordAlgebra Qd) (d w)
+                    (CliffordAlgebra.ι Qd a)).symm]
+            rw [← Algebra.smul_def, mul_assoc]
+  have hn_right :
+      CliffordAlgebra.ι Qd z * n =
+        (δ u : K) • CliffordAlgebra.ι Qd b -
+          CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd z * CliffordAlgebra.ι Qd b := by
+    dsimp [n]
+    calc
+      CliffordAlgebra.ι Qd z * (CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b) =
+          (algebraMap K (CliffordAlgebra Qd) (δ u) -
+            CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd z) * CliffordAlgebra.ι Qd b := by
+              rw [← mul_assoc, CliffordAlgebra.ι_mul_ι_comm (Q := Qd) z a]
+              rw [show QuadraticMap.polar Qd z a = δ u by
+                simp [QuadraticMap.polar, Qd, z, a]]
+      _ = (δ u : K) • CliffordAlgebra.ι Qd b -
+          CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd z * CliffordAlgebra.ι Qd b := by
+            rw [sub_mul, ← Algebra.smul_def, mul_assoc]
+  have hnzn : n * CliffordAlgebra.ι Qd z * n = 0 := by
+    have hleft :
+        ((d w : K) • CliffordAlgebra.ι Qd a) * n = 0 := by
+      calc
+        ((d w : K) • CliffordAlgebra.ι Qd a) * n =
+            (d w : K) • ((CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd a) *
+              CliffordAlgebra.ι Qd b) := by
+                dsimp [n]
+                rw [smul_mul_assoc, mul_assoc]
+        _ = 0 := by
+          rw [CliffordAlgebra.ι_sq_scalar]
+          simp [Qd, a]
+    have hright :
+        (CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd z * CliffordAlgebra.ι Qd b) * n = 0 := by
+      calc
+        (CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd z * CliffordAlgebra.ι Qd b) * n =
+            CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd z *
+              (CliffordAlgebra.ι Qd b * CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd b) := by
+                dsimp [n]
+                simp [mul_assoc]
+        _ = 0 := by
+          rw [CliffordAlgebra.ι_mul_ι_mul_ι]
+          rw [show QuadraticMap.polar Qd b a = δ w by simp [QuadraticMap.polar, Qd, a, b]]
+          rw [hδ]
+          simp [Qd, a, b]
+    rw [hn_left, sub_mul, hleft, hright]
+    simp
+  rw [ConjAct.units_smul_def, ConjAct.ofConjAct_toConjAct]
+  change (1 + n) * CliffordAlgebra.ι Qd z * (1 - n) =
+    CliffordAlgebra.ι Qd (d + (d w : K) • δ, u - (δ u : K) • w)
+  have hexpand :
+      (1 + n) * CliffordAlgebra.ι Qd z * (1 - n) =
+        CliffordAlgebra.ι Qd z + (n * CliffordAlgebra.ι Qd z - CliffordAlgebra.ι Qd z * n) -
+          n * CliffordAlgebra.ι Qd z * n := by
+    calc
+      (1 + n) * CliffordAlgebra.ι Qd z * (1 - n) =
+          ((1 + n) * CliffordAlgebra.ι Qd z) * (1 - n) := by
+            rw [mul_assoc]
+      _ = (CliffordAlgebra.ι Qd z + n * CliffordAlgebra.ι Qd z) * (1 - n) := by
+            rw [add_mul, one_mul]
+      _ = (CliffordAlgebra.ι Qd z + n * CliffordAlgebra.ι Qd z) * 1 -
+          (CliffordAlgebra.ι Qd z + n * CliffordAlgebra.ι Qd z) * n := by
+            rw [mul_sub]
+      _ = CliffordAlgebra.ι Qd z + n * CliffordAlgebra.ι Qd z -
+          (CliffordAlgebra.ι Qd z * n + n * CliffordAlgebra.ι Qd z * n) := by
+            rw [mul_one, add_mul, mul_assoc]
+      _ = CliffordAlgebra.ι Qd z + (n * CliffordAlgebra.ι Qd z - CliffordAlgebra.ι Qd z * n) -
+          n * CliffordAlgebra.ι Qd z * n := by
+            abel
+  have hcomm :
+      n * CliffordAlgebra.ι Qd z - CliffordAlgebra.ι Qd z * n =
+        (d w : K) • CliffordAlgebra.ι Qd a - (δ u : K) • CliffordAlgebra.ι Qd b := by
+    rw [hn_left, hn_right]
+    simpa using sub_sub_sub_cancel_right
+      ((d w : K) • CliffordAlgebra.ι Qd a)
+      ((δ u : K) • CliffordAlgebra.ι Qd b)
+      (CliffordAlgebra.ι Qd a * CliffordAlgebra.ι Qd z * CliffordAlgebra.ι Qd b)
+  calc
+    (1 + n) * CliffordAlgebra.ι Qd z * (1 - n) =
+        CliffordAlgebra.ι Qd z + (n * CliffordAlgebra.ι Qd z - CliffordAlgebra.ι Qd z * n) -
+          n * CliffordAlgebra.ι Qd z * n := hexpand
+    _ = CliffordAlgebra.ι Qd z + ((d w : K) • CliffordAlgebra.ι Qd a - (δ u : K) • CliffordAlgebra.ι Qd b) := by
+      rw [hcomm, hnzn]
+      simp
+    _ = CliffordAlgebra.ι Qd (d + (d w : K) • δ, u - (δ u : K) • w) := by
+      have hzsum : z + (d w : K) • a - (δ u : K) • b = (d + (d w : K) • δ, u - (δ u : K) • w) := by
+        ext <;> simp [a, b, z, sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
+      rw [← hzsum]
+      rw [map_sub, map_add, map_smul, map_smul]
+      rw [sub_eq_add_neg]
+      conv_rhs => rw [sub_eq_add_neg]
+      simpa [add_assoc]
+
+omit [Invertible (2 : K)] in
+/-- The explicit unipotent Clifford unit acts on vectors by the transported hyperbolic
+transvection coming from `LinearEquiv.transvection (f := -δ) (v := w)`. -/
+theorem dualProdTransvectionCliffordUnit_conjAct_eq_transvection
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0)
+    (d : Module.Dual K W) (u : W) :
+    ConjAct.toConjAct
+        (dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ) •
+          CliffordAlgebra.ι (QuadraticForm.dualProd K W) (d, u) =
+      CliffordAlgebra.ι (QuadraticForm.dualProd K W)
+        (((dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+            (LinearEquiv.transvection (f := -δ) (v := w) (by simpa using hδ))).1) (d, u)) := by
+  rw [dualProdTransvectionCliffordUnit_conjAct_ι,
+    dualProdSpecialOrthogonalOfLinearEquiv_apply_transvection (K := K) (W := W)
+      (δ := δ) (w := w) hδ]
+
+omit [Invertible (2 : K)] in
+/-- In particular, the explicit transvection unit sends each Clifford vector back into the vector
+copy `ι(Q)(W* × W)`. -/
+theorem dualProdTransvectionCliffordUnit_conjAct_ι_mem_range_ι
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0)
+    (d : Module.Dual K W) (u : W) :
+    ConjAct.toConjAct
+        (dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ) •
+          CliffordAlgebra.ι (QuadraticForm.dualProd K W) (d, u) ∈
+        LinearMap.range (CliffordAlgebra.ι (QuadraticForm.dualProd K W)) := by
+  rw [dualProdTransvectionCliffordUnit_conjAct_ι]
+  exact LinearMap.mem_range_self _ _
+
+omit [Invertible (2 : K)] in
+/-- On a fixed split line, the explicit Clifford lifts of hyperbolic transvections multiply by adding
+their dual parameters. -/
+theorem dualProdTransvectionCliffordUnit_mul
+    (δ η : Module.Dual K W) (w : W) (hδ : δ w = 0) (hη : η w = 0) :
+    dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ *
+        dualProdTransvectionCliffordUnit (K := K) (W := W) η w hη =
+      dualProdTransvectionCliffordUnit (K := K) (W := W) (δ + η) w (by simpa [hδ, hη]) := by
+  ext
+  let Qd : QuadraticForm K (Module.Dual K W × W) := QuadraticForm.dualProd K W
+  let aδ : Module.Dual K W × W := (δ, 0)
+  let aη : Module.Dual K W × W := (η, 0)
+  let b : Module.Dual K W × W := (0, w)
+  have hb_sq : CliffordAlgebra.ι Qd b * CliffordAlgebra.ι Qd b = 0 := by
+    rw [CliffordAlgebra.ι_sq_scalar]
+    simp [Qd, b]
+  have hcross :
+      (CliffordAlgebra.ι Qd aδ * CliffordAlgebra.ι Qd b) *
+          (CliffordAlgebra.ι Qd aη * CliffordAlgebra.ι Qd b) = 0 := by
+    calc
+      (CliffordAlgebra.ι Qd aδ * CliffordAlgebra.ι Qd b) *
+          (CliffordAlgebra.ι Qd aη * CliffordAlgebra.ι Qd b) =
+          CliffordAlgebra.ι Qd aδ *
+            ((CliffordAlgebra.ι Qd b * CliffordAlgebra.ι Qd aη) *
+              CliffordAlgebra.ι Qd b) := by
+                simp [mul_assoc]
+      _ = CliffordAlgebra.ι Qd aδ *
+            ((-CliffordAlgebra.ι Qd aη * CliffordAlgebra.ι Qd b) *
+              CliffordAlgebra.ι Qd b) := by
+                rw [CliffordAlgebra.ι_mul_ι_comm (Q := Qd) b aη]
+                rw [show QuadraticMap.polar Qd b aη = η w by
+                  simp [QuadraticMap.polar, Qd, b, aη]]
+                rw [hη]
+                simp
+      _ = -(CliffordAlgebra.ι Qd aδ * CliffordAlgebra.ι Qd aη) *
+            (CliffordAlgebra.ι Qd b * CliffordAlgebra.ι Qd b) := by
+              simp [mul_assoc]
+      _ = 0 := by rw [hb_sq]; simp
+  change
+      (1 + CliffordAlgebra.ι Qd aδ * CliffordAlgebra.ι Qd b) *
+          (1 + CliffordAlgebra.ι Qd aη * CliffordAlgebra.ι Qd b) =
+        1 + CliffordAlgebra.ι Qd ((δ + η), 0) * CliffordAlgebra.ι Qd b
+  simp [add_mul, mul_add, hcross, mul_assoc, add_assoc, add_left_comm, add_comm]
+  have hsum :
+      CliffordAlgebra.ι Qd aδ * CliffordAlgebra.ι Qd b +
+          CliffordAlgebra.ι Qd aη * CliffordAlgebra.ι Qd b =
+        CliffordAlgebra.ι Qd ((δ + η), 0) * CliffordAlgebra.ι Qd b := by
+    rw [← add_mul]
+    have hpair : aδ + aη = ((δ + η), 0) := by
+      ext <;> simp [aδ, aη]
+    rw [← hpair, map_add]
+  exact hsum
+
+omit [Invertible (2 : K)] in
+/-- Transvections along a fixed split line form an additive subgroup on their dual parameters. -/
+theorem transvection_mul_transvection_eq_transvection_add
+    (δ η : Module.Dual K W) (w : W) (hδ : δ w = 0) (hη : η w = 0) :
+    LinearEquiv.transvection (f := -δ) (v := w) (by simpa using hδ) *
+        LinearEquiv.transvection (f := -η) (v := w) (by simpa using hη) =
+      LinearEquiv.transvection (f := -(δ + η)) (v := w) (by simpa [hδ, hη]) := by
+  ext u
+  simp [LinearMap.transvection.apply, hδ, hη, sub_eq_add_neg, add_smul,
+    add_assoc, add_left_comm, add_comm]
+
+omit [Invertible (2 : K)] in
+/-- Conjugating a fixed-line transvection by a chosen line scaling rescales its dual parameter by
+the same scalar. -/
+theorem lineScalingLinearEquiv_mul_transvection_mul_symm_eq
+    (f : Module.Dual K W) (w : W) (hf : f w = 1) (t : Kˣ)
+    (δ : Module.Dual K W) (hδ : δ w = 0) :
+    lineScalingLinearEquiv (f := f) (w := w) hf t *
+        LinearEquiv.transvection (f := -δ) (v := w) (by simpa using hδ) *
+        (lineScalingLinearEquiv (f := f) (w := w) hf t).symm =
+      LinearEquiv.transvection (f := -(((t : K) • δ))) (v := w)
+        (by simpa [smul_eq_mul] using hδ) := by
+  ext u
+  let e := lineScalingLinearEquiv (f := f) (w := w) hf t
+  change e ((LinearEquiv.transvection (f := -δ) (v := w) (by simpa using hδ)) (e.symm u)) =
+    LinearEquiv.transvection (f := -(((t : K) • δ))) (v := w)
+      (by simpa [smul_eq_mul] using hδ) u
+  have hδe : δ (e.symm u) = δ u := by
+    rw [lineScalingLinearEquiv_symm_apply]
+    simp [hδ]
+  have hew : e w = (t : K) • w := by
+    rw [lineScalingLinearEquiv_apply]
+    calc
+      w + ((((t : K) - 1) * f w) : K) • w = w + (((t : K) - 1) : K) • w := by
+        rw [hf, mul_one]
+      _ = (((1 : K) + ((t : K) - 1)) : K) • w := by
+        rw [add_smul, one_smul]
+      _ = (t : K) • w := by simp
+  calc
+    e ((LinearEquiv.transvection (f := -δ) (v := w) (by simpa using hδ)) (e.symm u)) =
+      e (e.symm u - (δ (e.symm u) : K) • w) := by
+        simp [LinearMap.transvection.apply, sub_eq_add_neg]
+    _ = e (e.symm u) - (δ (e.symm u) : K) • e w := by
+        simp [map_sub, map_smul]
+    _ = u - (δ u : K) • ((t : K) • w) := by rw [e.apply_symm_apply, hδe, hew]
+    _ = u - (((t : K) * δ u) : K) • w := by
+        simp [smul_smul, mul_assoc, mul_left_comm, mul_comm]
+    _ = LinearEquiv.transvection (f := -(((t : K) • δ))) (v := w)
+          (by simpa [smul_eq_mul] using hδ) u := by
+        simp [LinearMap.transvection.apply, sub_eq_add_neg, smul_eq_mul, mul_assoc, mul_comm]
+
+omit [Invertible (2 : K)] in
+/-- Transporting the fixed-line transvection subgroup to `SO(W* × W)` preserves its additive law. -/
+theorem dualProdSpecialOrthogonalOf_transvection_mul_transvection_eq_transvection_add
+    (δ η : Module.Dual K W) (w : W) (hδ : δ w = 0) (hη : η w = 0) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -δ) (v := w) (by simpa using hδ)) *
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -η) (v := w) (by simpa using hη)) =
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -(δ + η)) (v := w) (by simpa [hδ, hη])) := by
+  have h :=
+    congrArg (dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W))
+      (transvection_mul_transvection_eq_transvection_add (K := K) (W := W)
+        (δ := δ) (η := η) (w := w) hδ hη)
+  simpa [dualProdSpecialOrthogonalOfLinearEquivHom_apply, map_mul] using h
+
+omit [Invertible (2 : K)] in
+/-- The chosen line-scaling torus acts on the transported fixed-line transvection subgroup with the
+expected weight-one action on `W`, hence weight-two on the induced square torus in `SO(W* × W)`. -/
+theorem dualProdSpecialOrthogonalOf_lineScalingLinearEquiv_mul_transvection_mul_inv_eq
+    (f : Module.Dual K W) (w : W) (hf : f w = 1) (t : Kˣ)
+    (δ : Module.Dual K W) (hδ : δ w = 0) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (lineScalingLinearEquiv (f := f) (w := w) hf t) *
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -δ) (v := w) (by simpa using hδ)) *
+      (dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (lineScalingLinearEquiv (f := f) (w := w) hf t))⁻¹ =
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -(((t : K) • δ))) (v := w)
+          (by simpa [smul_eq_mul] using hδ)) := by
+  have h :=
+    congrArg (dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W))
+      (lineScalingLinearEquiv_mul_transvection_mul_symm_eq (K := K) (W := W)
+        (f := f) (w := w) hf (t := t) (δ := δ) hδ)
+  simpa [dualProdSpecialOrthogonalOfLinearEquivHom_apply, map_mul, map_inv] using h
+
+omit [Invertible (2 : K)] in
+/-- Two complementary line scalings with inverse parameters factor as four linear transvections.
+This is the basis-free two-line diagonal block identity used later in determinant-one Levi
+factorizations. -/
+theorem complementaryLineScalings_eq_transvection_four
+    (f g : Module.Dual K W) (w u : W)
+    (hf : f w = 1) (hg : g u = 1) (hfu : f u = 0) (hgw : g w = 0)
+    (a : Kˣ) :
+    lineScalingLinearEquiv (f := f) (w := w) hf a *
+        lineScalingLinearEquiv (f := g) (w := u) hg a⁻¹ =
+      LinearEquiv.transvection (f := -g) (v := (((1 : K) - (a : K)) • w))
+        (by simp [hgw]) *
+      LinearEquiv.transvection (f := -f) (v := ((-1 : K) • u))
+        (by simp [hfu]) *
+      LinearEquiv.transvection (f := -g) (v := (((1 : K) - (a : K)⁻¹) • w))
+        (by simp [hgw]) *
+      LinearEquiv.transvection (f := -f) (v := ((a : K) • u))
+        (by simp [hfu]) := by
+  ext x
+  let eL : W ≃ₗ[K] W :=
+    lineScalingLinearEquiv (f := f) (w := w) hf a *
+      lineScalingLinearEquiv (f := g) (w := u) hg a⁻¹
+  let t1 : W ≃ₗ[K] W :=
+    LinearEquiv.transvection (f := -g) (v := (((1 : K) - (a : K)) • w))
+      (by simp [hgw])
+  let t2 : W ≃ₗ[K] W :=
+    LinearEquiv.transvection (f := -f) (v := ((-1 : K) • u))
+      (by simp [hfu])
+  let t3 : W ≃ₗ[K] W :=
+    LinearEquiv.transvection (f := -g) (v := (((1 : K) - (a : K)⁻¹) • w))
+      (by simp [hgw])
+  let t4 : W ≃ₗ[K] W :=
+    LinearEquiv.transvection (f := -f) (v := ((a : K) • u))
+      (by simp [hfu])
+  let eR : W ≃ₗ[K] W := t1 * t2 * t3 * t4
+  change eL x = eR x
+  let z : W := x - (f x : K) • w - (g x : K) • u
+  have hx : x = (f x : K) • w + (g x : K) • u + z := by
+    dsimp [z]
+    abel
+  have hfz : f z = 0 := by
+    dsimp [z]
+    simp [hf, hfu]
+  have hgz : g z = 0 := by
+    dsimp [z]
+    simp [hg, hgw]
+  have hz_left : eL z = z := by
+    dsimp [eL]
+    simp [lineScalingLinearEquiv_apply, hfz, hgz]
+  have hw_left : eL w = (a : K) • w := by
+    dsimp [eL]
+    simp [lineScalingLinearEquiv_apply, hf, hg, hfu, hgw, smul_smul,
+      mul_assoc, mul_left_comm, mul_comm]
+    calc
+      w + (((a : K) - 1 : K) • w) = (((1 : K) + ((a : K) - 1)) : K) • w := by
+        rw [add_smul, one_smul]
+      _ = (a : K) • w := by
+        congr 1
+        ring
+  have hu_left : eL u = ((a : K)⁻¹) • u := by
+    dsimp [eL]
+    simp [lineScalingLinearEquiv_apply, hf, hg, hfu, hgw, smul_smul,
+      mul_assoc, mul_left_comm, mul_comm]
+    calc
+      u + ((((a : K)⁻¹) - 1 : K) • u) = (((1 : K) + (((a : K)⁻¹) - 1)) : K) • u := by
+        rw [add_smul, one_smul]
+      _ = ((a : K)⁻¹) • u := by
+        congr 1
+        ring
+  have hz_right : eR z = z := by
+    dsimp [eR, t1, t2, t3, t4]
+    simp [LinearEquiv.mul_apply, LinearMap.transvection.apply, hfz, hgz, sub_eq_add_neg]
+  have ht4w : t4 w = w - (a : K) • u := by
+    dsimp [t4]
+    simp [LinearMap.transvection.apply, hf, hfu, sub_eq_add_neg, smul_smul, mul_assoc, mul_comm]
+  have ht3w : t3 (t4 w) = (a : K) • w - (a : K) • u := by
+    rw [ht4w]
+    dsimp [t3]
+    have hg_t4w : g (w - (a : K) • u) = -(a : K) := by
+      simp [hg, hgw]
+    rw [LinearMap.transvection.apply, show (-g) (w - (a : K) • u) = (a : K) by simpa [hg_t4w]]
+    have hwcoeff : w + (a : K) • ((((1 : K) - (a : K)⁻¹) : K) • w) = (a : K) • w := by
+      rw [smul_smul]
+      calc
+        w + (((a : K) * (((1 : K) - (a : K)⁻¹) : K)) : K) • w =
+            (((1 : K) + (a : K) * (((1 : K) - (a : K)⁻¹) : K)) : K) • w := by
+              rw [add_smul, one_smul]
+        _ = (a : K) • w := by
+          field_simp [a.ne_zero]
+          ring
+    calc
+      w - (a : K) • u + (a : K) • ((((1 : K) - (a : K)⁻¹) : K) • w) =
+          (w + (a : K) • ((((1 : K) - (a : K)⁻¹) : K) • w)) - (a : K) • u := by
+            abel
+      _ = (a : K) • w - (a : K) • u := by rw [hwcoeff]
+  have ht2w : t2 (t3 (t4 w)) = (a : K) • w := by
+    rw [ht3w]
+    dsimp [t2]
+    have hf_t3w : f ((a : K) • w - (a : K) • u) = (a : K) := by
+      simp [hf, hfu]
+    rw [LinearMap.transvection.apply,
+      show (-f) ((a : K) • w - (a : K) • u) = -(a : K) by simpa [hf_t3w]]
+    simp [sub_eq_add_neg, smul_smul, mul_assoc, mul_comm, mul_left_comm]
+  have hw_right : eR w = (a : K) • w := by
+    dsimp [eR]
+    rw [ht2w]
+    dsimp [t1]
+    simp [LinearMap.transvection.apply, hgw]
+  have ht4u : t4 u = u := by
+    dsimp [t4]
+    simp [LinearMap.transvection.apply, hfu]
+  have ht3u : t3 (t4 u) = u + ((((a : K)⁻¹) - 1 : K) • w) := by
+    rw [ht4u]
+    dsimp [t3]
+    rw [LinearMap.transvection.apply]
+    simp [hg, hgw, sub_eq_add_neg, smul_smul, mul_assoc, mul_left_comm, mul_comm]
+  have ht2u :
+      t2 (t3 (t4 u)) = ((a : K)⁻¹) • u + ((((a : K)⁻¹) - 1 : K) • w) := by
+    rw [ht3u]
+    dsimp [t2]
+    have hf_t3u : f (u + ((((a : K)⁻¹) - 1 : K) • w) ) = ((a : K)⁻¹) - 1 := by
+      simp [hf, hfu]
+    rw [LinearMap.transvection.apply,
+      show (-f) (u + ((((a : K)⁻¹) - 1 : K) • w)) = -(((a : K)⁻¹) - 1) by
+        simpa [hf_t3u]]
+    have hsmul :
+        (-(((a : K)⁻¹) - 1) : K) • ((-1 : K) • u) = (((a : K)⁻¹) - 1 : K) • u := by
+      rw [smul_smul]
+      congr 1
+      ring
+    calc
+      u + ((((a : K)⁻¹) - 1 : K) • w) + (-(((a : K)⁻¹) - 1) : K) • ((-1 : K) • u) =
+          u + ((((a : K)⁻¹) - 1 : K) • w) + ((((a : K)⁻¹) - 1 : K) • u) := by
+            rw [hsmul]
+      _ = ((a : K)⁻¹) • u + ((((a : K)⁻¹) - 1 : K) • w) := by
+        calc
+          u + ((((a : K)⁻¹) - 1 : K) • w) + ((((a : K)⁻¹) - 1 : K) • u) =
+          u + ((((a : K)⁻¹) - 1 : K) • u) + ((((a : K)⁻¹) - 1 : K) • w) := by
+                abel
+          _ = ((((1 : K) + (((a : K)⁻¹) - 1)) : K) • u) +
+                ((((a : K)⁻¹) - 1 : K) • w) := by
+                  rw [add_smul, one_smul]
+          _ = ((a : K)⁻¹) • u + ((((a : K)⁻¹) - 1 : K) • w) := by
+                congr 1
+                ring
+  have hu_right : eR u = ((a : K)⁻¹) • u := by
+    dsimp [eR]
+    rw [ht2u]
+    dsimp [t1]
+    have hg_t2u :
+        g (((a : K)⁻¹) • u + ((((a : K)⁻¹) - 1 : K) • w)) = (a : K)⁻¹ := by
+      simp [hg, hgw]
+    rw [LinearMap.transvection.apply,
+      show (-g) (((a : K)⁻¹) • u + ((((a : K)⁻¹) - 1 : K) • w)) = -((a : K)⁻¹) by
+        simpa [hg_t2u]]
+    calc
+      ((a : K)⁻¹) • u + ((((a : K)⁻¹) - 1 : K) • w) +
+          (-((a : K)⁻¹) : K) • ((((1 : K) - (a : K)) : K) • w) =
+            ((a : K)⁻¹) • u +
+              (((((a : K)⁻¹) - 1) + (-((a : K)⁻¹)) * (((1 : K) - (a : K)) : K)) : K) • w := by
+                simpa [add_smul, smul_smul, add_assoc]
+      _ = ((a : K)⁻¹) • u := by
+        have hcoef :
+            ((((a : K)⁻¹) - 1) + (-((a : K)⁻¹)) * (((1 : K) - (a : K)) : K) : K) = 0 := by
+          field_simp [a.ne_zero]
+          ring
+        rw [hcoef, zero_smul, add_zero]
+  have hleft :
+      eL x = (((a : K) * f x) : K) • w + ((((a : K)⁻¹) * g x) : K) • u + z := by
+    calc
+      eL x = eL ((f x : K) • w + (g x : K) • u + z) := by
+        conv_lhs => rw [hx]
+      _ = (f x : K) • eL w + (g x : K) • eL u + eL z := by
+        simp [map_add, map_smul]
+      _ = (f x : K) • ((a : K) • w) + (g x : K) • (((a : K)⁻¹) • u) + z := by
+        rw [hw_left, hu_left, hz_left]
+      _ = (((a : K) * f x) : K) • w + ((((a : K)⁻¹) * g x) : K) • u + z := by
+        simp [smul_smul, mul_assoc, mul_left_comm, mul_comm, add_assoc, add_left_comm, add_comm]
+  have hright :
+      eR x = (((a : K) * f x) : K) • w + ((((a : K)⁻¹) * g x) : K) • u + z := by
+    calc
+      eR x = eR ((f x : K) • w + (g x : K) • u + z) := by
+        conv_lhs => rw [hx]
+      _ = (f x : K) • eR w + (g x : K) • eR u + eR z := by
+        simp [map_add, map_smul]
+      _ = (f x : K) • ((a : K) • w) + (g x : K) • (((a : K)⁻¹) • u) + z := by
+        rw [hw_right, hu_right, hz_right]
+      _ = (((a : K) * f x) : K) • w + ((((a : K)⁻¹) * g x) : K) • u + z := by
+        simp [smul_smul, mul_assoc, mul_left_comm, mul_comm, add_assoc, add_left_comm, add_comm]
+  exact hleft.trans hright.symm
+
+omit [Invertible (2 : K)] in
+/-- Transporting the complementary two-line scaling identity to `SO(W* × W)` gives an explicit
+four-transvection factorization in the orthogonal action. -/
+theorem dualProdSpecialOrthogonalOf_complementaryLineScalings_eq_transvection_four
+    (f g : Module.Dual K W) (w u : W)
+    (hf : f w = 1) (hg : g u = 1) (hfu : f u = 0) (hgw : g w = 0)
+    (a : Kˣ) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (lineScalingLinearEquiv (f := f) (w := w) hf a *
+          lineScalingLinearEquiv (f := g) (w := u) hg a⁻¹) =
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -g) (v := (((1 : K) - (a : K)) • w))
+          (by simp [hgw])) *
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -f) (v := ((-1 : K) • u))
+          (by simp [hfu])) *
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -g) (v := (((1 : K) - (a : K)⁻¹) • w))
+          (by simp [hgw])) *
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -f) (v := ((a : K) • u))
+          (by simp [hfu])) := by
+  have h :=
+    congrArg (dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W))
+      (complementaryLineScalings_eq_transvection_four (K := K) (W := W)
+        (f := f) (g := g) (w := w) (u := u) hf hg hfu hgw a)
+  simpa [dualProdSpecialOrthogonalOfLinearEquivHom_apply, map_mul] using h
+
+section BasisScaling
+
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+
+omit [Invertible (2 : K)] in
+/-- The basis transvection attached to a matrix transvection structure. It sends the distinguished
+basis line `b t.j` to itself plus `t.c` times `b t.i`, fixing the remaining basis lines. -/
+noncomputable def basisTransvectionLinearEquiv
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K) : W ≃ₗ[K] W :=
+  LinearEquiv.transvection (f := (t.c : K) • b.coord t.j) (v := b t.i) (by
+    simp [Module.Basis.coord_apply, t.hij])
+
+omit [Invertible (2 : K)] in
+@[simp] theorem basisTransvectionLinearEquiv_toMatrix
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K) :
+    LinearMap.toMatrix b b
+        ((basisTransvectionLinearEquiv (K := K) (W := W) b t : W ≃ₗ[K] W) : W →ₗ[K] W) =
+      t.toMatrix := by
+  ext i j
+  rw [LinearMap.toMatrix_apply, Matrix.TransvectionStruct.toMatrix, Matrix.transvection]
+  by_cases hij : i = t.i
+  · subst hij
+    by_cases hjj : j = t.j
+    · subst hjj
+      simp [basisTransvectionLinearEquiv, LinearMap.transvection.apply, Module.Basis.coord_apply,
+        t.hij]
+    · by_cases hji : j = t.i
+      · subst hji
+        have hneq : t.j ≠ t.i := by
+          intro h
+          exact t.hij h.symm
+        simpa [basisTransvectionLinearEquiv, LinearMap.transvection.apply,
+          Module.Basis.coord_apply, Matrix.single_apply, Finsupp.single_apply, hneq, t.hij]
+      · simpa [basisTransvectionLinearEquiv, LinearMap.transvection.apply,
+          Module.Basis.coord_apply, Matrix.one_apply, Matrix.single_apply, Finsupp.single_apply,
+          hjj, hji, eq_comm]
+  · by_cases hjj : j = t.j
+    · subst hjj
+      simpa [basisTransvectionLinearEquiv, LinearMap.transvection.apply,
+        Module.Basis.coord_apply, Matrix.one_apply, Matrix.single_apply, Finsupp.single_apply,
+        hij, eq_comm]
+    · simpa [basisTransvectionLinearEquiv, LinearMap.transvection.apply,
+        Module.Basis.coord_apply, Matrix.one_apply, Matrix.single_apply, Finsupp.single_apply,
+        hij, hjj, eq_comm]
+
+omit [Invertible (2 : K)] in
+@[simp] theorem dualProdSpecialOrthogonalOfLinearEquiv_apply_basisTransvectionLinearEquiv
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K)
+    (d : Module.Dual K W) (u : W) :
+    (dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisTransvectionLinearEquiv (K := K) (W := W) b t)).1 (d, u) =
+      (d - (d (b t.i) : K) • ((t.c : K) • b.coord t.j),
+        u + (((t.c : K) • b.coord t.j) u : K) • b t.i) := by
+  simpa [basisTransvectionLinearEquiv, sub_eq_add_neg] using
+    (dualProdSpecialOrthogonalOfLinearEquiv_apply_transvection (K := K) (W := W)
+      (δ := -((t.c : K) • b.coord t.j)) (w := b t.i) (by
+        simp [Module.Basis.coord_apply, t.hij]) d u)
+
+omit [Invertible (2 : K)] in
+/-- The explicit Clifford unit candidate attached to a basis transvection. Its conjugation realizes
+the transported basis transvection on `W* × W`. -/
+noncomputable def basisTransvectionCliffordUnit
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K) :
+    (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ :=
+  dualProdTransvectionCliffordUnit (K := K) (W := W) (-((t.c : K) • b.coord t.j)) (b t.i) (by
+    simp [Module.Basis.coord_apply, t.hij])
+
+omit [Invertible (2 : K)] in
+@[simp] theorem coe_basisTransvectionCliffordUnit
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K) :
+    ((basisTransvectionCliffordUnit (K := K) (W := W) b t :
+        (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+      CliffordAlgebra (QuadraticForm.dualProd K W)) =
+      1 - CliffordAlgebra.ι (QuadraticForm.dualProd K W) (((t.c : K) • b.coord t.j), 0) *
+        CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, b t.i) := by
+  rw [basisTransvectionCliffordUnit, coe_dualProdTransvectionCliffordUnit]
+  have hpair :
+      ((-((t.c : K) • b.coord t.j), 0) : Module.Dual K W × W) =
+        -((((t.c : K) • b.coord t.j), 0) : Module.Dual K W × W) := by
+    ext <;> simp
+  rw [hpair, map_neg]
+  simp [sub_eq_add_neg, neg_mul]
+
+omit [Invertible (2 : K)] in
+theorem basisTransvectionCliffordUnit_mem_unitary
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K) :
+    (((basisTransvectionCliffordUnit (K := K) (W := W) b t :
+        (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+      CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+        unitary (CliffordAlgebra (QuadraticForm.dualProd K W)) := by
+  simpa [basisTransvectionCliffordUnit] using
+    (dualProdTransvectionCliffordUnit_mem_unitary (K := K) (W := W)
+      (-((t.c : K) • b.coord t.j)) (b t.i) (by simp [Module.Basis.coord_apply, t.hij]))
+
+omit [Invertible (2 : K)] in
+theorem basisTransvectionCliffordUnit_mem_even
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K) :
+    (((basisTransvectionCliffordUnit (K := K) (W := W) b t :
+        (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+      CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+        CliffordAlgebra.even (QuadraticForm.dualProd K W) := by
+  simpa [basisTransvectionCliffordUnit] using
+    (dualProdTransvectionCliffordUnit_mem_even (K := K) (W := W)
+      (-((t.c : K) • b.coord t.j)) (b t.i) (by simp [Module.Basis.coord_apply, t.hij]))
+
+omit [Invertible (2 : K)] in
+theorem basisTransvectionCliffordUnit_conjAct_eq_basisTransvectionLinearEquiv
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K)
+    (d : Module.Dual K W) (u : W) :
+    ConjAct.toConjAct (basisTransvectionCliffordUnit (K := K) (W := W) b t) •
+        CliffordAlgebra.ι (QuadraticForm.dualProd K W) (d, u) =
+      CliffordAlgebra.ι (QuadraticForm.dualProd K W)
+        (((dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+            (basisTransvectionLinearEquiv (K := K) (W := W) b t)).1) (d, u)) := by
+  unfold basisTransvectionCliffordUnit
+  simpa [basisTransvectionLinearEquiv] using
+    (dualProdTransvectionCliffordUnit_conjAct_eq_transvection (K := K) (W := W)
+      (-((t.c : K) • b.coord t.j)) (b t.i) (by simp [Module.Basis.coord_apply, t.hij]) d u)
+
+/-- The linear equivalence that rescales each basis vector `b i` by the unit `t i`. -/
+noncomputable def basisScalingLinearEquiv (b : Module.Basis ι K W) (t : ι → Kˣ) : W ≃ₗ[K] W :=
+  ((b.equivFun).trans (LinearEquiv.piCongrRight fun i => LinearEquiv.smulOfUnit (t i))).trans
+    b.equivFun.symm
+
+omit [Invertible (2 : K)] in
+@[simp] theorem basisScalingLinearEquiv_apply_basis
+    (b : Module.Basis ι K W) (t : ι → Kˣ) (i : ι) :
+    basisScalingLinearEquiv (K := K) (W := W) b t (b i) = (t i : K) • b i := by
+  classical
+  change b.equivFun.symm
+      ((LinearEquiv.piCongrRight fun j => LinearEquiv.smulOfUnit (t j)) (b.equivFun (b i))) =
+    (t i : K) • b i
+  rw [Module.Basis.equivFun_symm_apply]
+  rw [Finset.sum_eq_single i]
+  · simpa [LinearEquiv.smulOfUnit, Units.smul_def]
+  · intro j hj hji
+    simp [Finsupp.single_apply, hji, LinearEquiv.smulOfUnit, Units.smul_def]
+  · intro hi
+    exact (hi (Finset.mem_univ i)).elim
+
+omit [Invertible (2 : K)] in
+@[simp] theorem basisScalingLinearEquiv_toMatrix
+    (b : Module.Basis ι K W) (t : ι → Kˣ) :
+    LinearMap.toMatrix b b
+        ((basisScalingLinearEquiv (K := K) (W := W) b t : W ≃ₗ[K] W) : W →ₗ[K] W) =
+      Matrix.diagonal fun i => (t i : K) := by
+  ext i j
+  by_cases hij : i = j
+  · subst hij
+    simpa [LinearMap.toMatrix_apply, Matrix.diagonal, Finsupp.single_apply, eq_comm] using
+      congrArg (fun x => b.coord j x)
+        (basisScalingLinearEquiv_apply_basis (K := K) (W := W) (b := b) (t := t) (i := j))
+  · simpa [LinearMap.toMatrix_apply, Matrix.diagonal, Finsupp.single_apply, hij, eq_comm] using
+      congrArg (fun x => b.coord i x)
+        (basisScalingLinearEquiv_apply_basis (K := K) (W := W) (b := b) (t := t) (i := j))
+
+omit [Invertible (2 : K)] in
+@[simp] theorem list_prod_basisTransvectionLinearEquiv_toMatrix
+    (b : Module.Basis ι K W) (L : List (Matrix.TransvectionStruct ι K)) :
+    LinearMap.toMatrix b b
+        (((L.map (basisTransvectionLinearEquiv (K := K) (W := W) b)).prod : W ≃ₗ[K] W) :
+          W →ₗ[K] W) =
+      (L.map Matrix.TransvectionStruct.toMatrix).prod := by
+  induction L with
+  | nil => simp
+  | cons t L IH =>
+      simp [LinearMap.toMatrix_mul, IH]
+
+omit [Invertible (2 : K)] in
+@[simp] theorem basisScalingLinearEquiv_one
+    (b : Module.Basis ι K W) :
+    basisScalingLinearEquiv (K := K) (W := W) b (1 : ι → Kˣ) = 1 := by
+  apply b.ext'
+  intro i
+  rw [basisScalingLinearEquiv_apply_basis]
+  simp
+
+omit [Invertible (2 : K)] in
+@[simp] theorem basisScalingLinearEquiv_mul
+    (b : Module.Basis ι K W) (t s : ι → Kˣ) :
+    basisScalingLinearEquiv (K := K) (W := W) b (t * s) =
+      basisScalingLinearEquiv (K := K) (W := W) b t *
+        basisScalingLinearEquiv (K := K) (W := W) b s := by
+  apply b.ext'
+  intro i
+  rw [LinearEquiv.mul_apply, basisScalingLinearEquiv_apply_basis, basisScalingLinearEquiv_apply_basis]
+  rw [map_smul, basisScalingLinearEquiv_apply_basis]
+  simpa [Pi.mul_apply, smul_smul] using
+    congrArg (fun c : K => c • b i) (mul_comm (t i : K) (s i : K))
+
+omit [Invertible (2 : K)] in
+theorem basisScalingLinearEquiv_update_eq_lineScalingLinearEquiv
+    (b : Module.Basis ι K W) (i : ι) (a : Kˣ) :
+    basisScalingLinearEquiv (K := K) (W := W) b (Function.update (1 : ι → Kˣ) i a) =
+      lineScalingLinearEquiv (f := b.coord i) (w := b i)
+        (by simp [Module.Basis.coord_apply]) a := by
+  apply b.ext'
+  intro k
+  by_cases hki : k = i
+  · subst hki
+    rw [basisScalingLinearEquiv_apply_basis]
+    simp [lineScalingLinearEquiv_apply, Module.Basis.coord_apply]
+    symm
+    calc
+      b k + (((a : K) - 1 : K) • b k) = (((1 : K) + ((a : K) - 1)) : K) • b k := by
+        rw [add_smul, one_smul]
+      _ = (a : K) • b k := by
+        congr 1
+        ring
+  · rw [basisScalingLinearEquiv_apply_basis]
+    simp [lineScalingLinearEquiv_apply, Module.Basis.coord_apply, hki]
+
+omit [Invertible (2 : K)] in
+noncomputable def basisScalingLinearEquivHom
+    (b : Module.Basis ι K W) :
+    (ι → Kˣ) →* (W ≃ₗ[K] W) where
+  toFun t := basisScalingLinearEquiv (K := K) (W := W) b t
+  map_one' := basisScalingLinearEquiv_one (K := K) (W := W) b
+  map_mul' t s := basisScalingLinearEquiv_mul (K := K) (W := W) b t s
+
+omit [Invertible (2 : K)] in
+/-- A basis-diagonal block with entries `a` and `a⁻¹` on complementary basis lines is exactly the
+product of the corresponding two line scalings. -/
+theorem basisScalingLinearEquiv_two_update
+    (b : Module.Basis ι K W) {i j : ι} (hij : i ≠ j) (a : Kˣ) :
+    basisScalingLinearEquiv (K := K) (W := W) b
+        (Function.update (Function.update (fun _ => (1 : Kˣ)) i a) j a⁻¹) =
+      lineScalingLinearEquiv (f := b.coord i) (w := b i)
+          (by simp [Module.Basis.coord_apply]) a *
+        lineScalingLinearEquiv (f := b.coord j) (w := b j)
+          (by simp [Module.Basis.coord_apply]) a⁻¹ := by
+  apply b.ext'
+  intro k
+  by_cases hki : k = i
+  · subst hki
+    rw [basisScalingLinearEquiv_apply_basis]
+    simp [lineScalingLinearEquiv_apply, Module.Basis.coord_apply, hij]
+    symm
+    calc
+      b k + (((a : K) - 1 : K) • b k) = (((1 : K) + ((a : K) - 1)) : K) • b k := by
+        rw [add_smul, one_smul]
+      _ = (a : K) • b k := by
+        congr 1
+        ring
+  · by_cases hkj : k = j
+    · subst hkj
+      rw [basisScalingLinearEquiv_apply_basis]
+      simp [lineScalingLinearEquiv_apply, Module.Basis.coord_apply, hij, hki]
+      symm
+      calc
+        b k + ((((a : K)⁻¹) - 1 : K) • b k) =
+            (((1 : K) + (((a : K)⁻¹) - 1)) : K) • b k := by
+              rw [add_smul, one_smul]
+        _ = ((a : K)⁻¹) • b k := by
+              congr 1
+              ring
+    · rw [basisScalingLinearEquiv_apply_basis]
+      simp [lineScalingLinearEquiv_apply, Module.Basis.coord_apply, hij, hki, hkj]
+
+omit [Invertible (2 : K)] in
+theorem twoUpdateScaling_pairwise
+    (i : ι) (t : ι → Kˣ) :
+    (Finset.univ.erase i : Set ι).Pairwise fun j k =>
+      Commute
+        (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹)
+        (Function.update (Function.update (1 : ι → Kˣ) k (t k)) i (t k)⁻¹) := by
+  intro j _ k _ _
+  exact Commute.all _ _
+
+omit [Invertible (2 : K)] in
+theorem twoUpdateScaling_prod_eq_of_base
+    (i : ι) (t : ι → Kˣ)
+    (hbase : t i = (Finset.univ.erase i).prod fun j => (t j)⁻¹) :
+    ((Finset.univ.erase i).prod fun j =>
+        Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹) = t := by
+  funext k
+  apply Units.ext
+  by_cases hki : k = i
+  · subst k
+    have hval :
+        ((Finset.univ.erase i).prod fun j =>
+            (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹) i) =
+          (Finset.univ.erase i).prod fun j => (t j)⁻¹ := by
+      apply Finset.prod_congr rfl
+      intro j hj
+      have hji : j ≠ i := (Finset.mem_erase.mp hj).1
+      simp [Function.update, hji]
+    simpa [hval] using congrArg (fun u : Kˣ => (u : K)) hbase.symm
+  · have hk : k ∈ Finset.univ.erase i := by simp [hki]
+    have hsingle :
+        ((Finset.univ.erase i).prod fun j =>
+          (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹) k) =
+            (Function.update (Function.update (1 : ι → Kˣ) k (t k)) i (t k)⁻¹) k := by
+      apply Finset.prod_eq_single_of_mem k hk
+      intro j hj hjk
+      have hji : j ≠ i := (Finset.mem_erase.mp hj).1
+      have hkj : k ≠ j := fun h => hjk h.symm
+      simp [Function.update, hki, hji, hkj]
+    simpa [hsingle, Function.update, hki]
+
+omit [Invertible (2 : K)] in
+theorem basisScalingLinearEquiv_two_update_pairwise
+    (b : Module.Basis ι K W) (i : ι) (t : ι → Kˣ) :
+    (Finset.univ.erase i : Set ι).Pairwise fun j k =>
+      Commute
+        (basisScalingLinearEquiv (K := K) (W := W) b
+          (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹))
+        (basisScalingLinearEquiv (K := K) (W := W) b
+          (Function.update (Function.update (1 : ι → Kˣ) k (t k)) i (t k)⁻¹)) := by
+  intro j hj k hk hjk
+  exact
+    (Commute.all
+      (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹)
+      (Function.update (Function.update (1 : ι → Kˣ) k (t k)) i (t k)⁻¹)).map
+      (basisScalingLinearEquivHom (K := K) (W := W) b)
+
+omit [Invertible (2 : K)] in
+/-- If the scaling on a distinguished basis line equals the inverse product of the remaining basis
+scalings, then the whole basis scaling factors as the noncommutative product of the corresponding
+canonical `2×2` determinant-one blocks. -/
+theorem basisScalingLinearEquiv_eq_noncommProd_two_update_of_base
+    (b : Module.Basis ι K W) (i : ι) (t : ι → Kˣ)
+    (hbase : t i = (Finset.univ.erase i).prod fun j => (t j)⁻¹) :
+    basisScalingLinearEquiv (K := K) (W := W) b t =
+      (Finset.univ.erase i).noncommProd
+        (fun j =>
+          basisScalingLinearEquiv (K := K) (W := W) b
+            (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹))
+        (basisScalingLinearEquiv_two_update_pairwise (K := K) (W := W) (b := b) (i := i) (t := t)) := by
+  let u : ι → ι → Kˣ := fun j =>
+    Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹
+  have hprod : ((Finset.univ.erase i).prod u) = t := by
+    simpa [u] using twoUpdateScaling_prod_eq_of_base (K := K) (i := i) (t := t) hbase
+  have hcomm : (Finset.univ.erase i : Set ι).Pairwise fun j k => Commute (u j) (u k) := by
+    simpa [u] using twoUpdateScaling_pairwise (K := K) (i := i) (t := t)
+  calc
+    basisScalingLinearEquiv (K := K) (W := W) b t =
+        basisScalingLinearEquivHom (K := K) (W := W) b
+          ((Finset.univ.erase i).noncommProd u hcomm) := by
+            rw [Finset.noncommProd_eq_prod, hprod]
+            rfl
+    _ = (Finset.univ.erase i).noncommProd
+          (fun j =>
+            basisScalingLinearEquiv (K := K) (W := W) b
+              (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹))
+          (basisScalingLinearEquiv_two_update_pairwise
+            (K := K) (W := W) (b := b) (i := i) (t := t)) := by
+              simpa [u] using
+                (Finset.map_noncommProd (s := Finset.univ.erase i) (f := u) hcomm
+                  (g := basisScalingLinearEquivHom (K := K) (W := W) b))
+
+omit [Invertible (2 : K)] in
+/-- Transporting the basis-diagonal factorization to `SO(W* × W)` factors the corresponding Levi
+element into canonical determinant-one `2×2` blocks. -/
+theorem dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_eq_noncommProd_two_update_of_base
+    (b : Module.Basis ι K W) (i : ι) (t : ι → Kˣ)
+    (hbase : t i = (Finset.univ.erase i).prod fun j => (t j)⁻¹) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisScalingLinearEquiv (K := K) (W := W) b t) =
+      (Finset.univ.erase i).noncommProd
+        (fun j =>
+          dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+            (basisScalingLinearEquiv (K := K) (W := W) b
+              (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹)))
+        (by
+          intro j hj k hk hjk
+          exact
+            (basisScalingLinearEquiv_two_update_pairwise
+              (K := K) (W := W) (b := b) (i := i) (t := t) hj hk hjk).map
+              (dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W))) := by
+  rw [basisScalingLinearEquiv_eq_noncommProd_two_update_of_base
+    (K := K) (W := W) (b := b) (i := i) (t := t) hbase]
+  simpa [dualProdSpecialOrthogonalOfLinearEquivHom_apply] using
+    (Finset.map_noncommProd (s := Finset.univ.erase i)
+      (f := fun j =>
+        basisScalingLinearEquiv (K := K) (W := W) b
+          (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹))
+      (basisScalingLinearEquiv_two_update_pairwise
+        (K := K) (W := W) (b := b) (i := i) (t := t))
+      (g := dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W)))
+
+omit [Invertible (2 : K)] in
+/-- A determinant-one basis scaling factors as the noncommutative product of the canonical `2×2`
+determinant-one blocks supported on a distinguished basis line and each other basis line. -/
+theorem basisScalingLinearEquiv_eq_noncommProd_two_update_of_prod_eq_one
+    (b : Module.Basis ι K W) (i : ι) (t : ι → Kˣ)
+    (hprod : (∏ j, t j) = 1) :
+    basisScalingLinearEquiv (K := K) (W := W) b t =
+      (Finset.univ.erase i).noncommProd
+        (fun j =>
+          basisScalingLinearEquiv (K := K) (W := W) b
+            (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹))
+        (basisScalingLinearEquiv_two_update_pairwise (K := K) (W := W) (b := b) (i := i) (t := t)) := by
+  have hi : i ∈ (Finset.univ : Finset ι) := Finset.mem_univ i
+  have hmul :
+      t i * ((Finset.univ.erase i).prod fun j => t j) = ∏ j, t j := by
+    simpa using (Finset.mul_prod_erase (s := Finset.univ) (f := t) hi)
+  have hmul_one :
+      t i * ((Finset.univ.erase i).prod fun j => t j) = 1 := by
+    simpa [hprod] using hmul
+  have hbase : t i = (Finset.univ.erase i).prod fun j => (t j)⁻¹ := by
+    have hbase' : t i = ((Finset.univ.erase i).prod fun j => t j)⁻¹ :=
+      (mul_eq_one_iff_eq_inv).mp hmul_one
+    simpa [Finset.prod_inv_distrib] using hbase'
+  exact basisScalingLinearEquiv_eq_noncommProd_two_update_of_base
+    (K := K) (W := W) (b := b) (i := i) (t := t) hbase
+
+omit [Invertible (2 : K)] in
+/-- Transporting the determinant-one diagonal factorization to `SO(W* × W)` factors the
+corresponding Levi element into canonical `2×2` determinant-one blocks. -/
+theorem dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_eq_noncommProd_two_update_of_prod_eq_one
+    (b : Module.Basis ι K W) (i : ι) (t : ι → Kˣ)
+    (hprod : (∏ j, t j) = 1) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisScalingLinearEquiv (K := K) (W := W) b t) =
+      (Finset.univ.erase i).noncommProd
+        (fun j =>
+          dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+            (basisScalingLinearEquiv (K := K) (W := W) b
+              (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹)))
+        (by
+          intro j hj k hk hjk
+          exact
+            (basisScalingLinearEquiv_two_update_pairwise
+              (K := K) (W := W) (b := b) (i := i) (t := t) hj hk hjk).map
+              (dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W))) := by
+  exact dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_eq_noncommProd_two_update_of_base
+    (K := K) (W := W) (b := b) (i := i) (t := t)
+    ((by
+      have hi : i ∈ (Finset.univ : Finset ι) := Finset.mem_univ i
+      have hmul :
+          t i * ((Finset.univ.erase i).prod fun j => t j) = ∏ j, t j := by
+        simpa using (Finset.mul_prod_erase (s := Finset.univ) (f := t) hi)
+      have hmul_one :
+          t i * ((Finset.univ.erase i).prod fun j => t j) = 1 := by
+        simpa [hprod] using hmul
+      have hbase' : t i = ((Finset.univ.erase i).prod fun j => t j)⁻¹ :=
+        (mul_eq_one_iff_eq_inv).mp hmul_one
+      simpa [Finset.prod_inv_distrib] using hbase') : _)
+
+omit [Invertible (2 : K)] in
+/-- If the total basis scaling is a square, split it as a square line scaling on a distinguished
+basis line times a determinant-one diagonal factorization. -/
+theorem basisScalingLinearEquiv_eq_lineScalingLinearEquiv_mul_noncommProd_two_update_of_prod_eq_sq
+    (b : Module.Basis ι K W) (i : ι) (t : ι → Kˣ) (u : Kˣ)
+    (hprod : (∏ j, t j) = u ^ 2) :
+    basisScalingLinearEquiv (K := K) (W := W) b t =
+      lineScalingLinearEquiv (f := b.coord i) (w := b i)
+          (by simp [Module.Basis.coord_apply]) (u ^ 2) *
+        (Finset.univ.erase i).noncommProd
+          (fun j =>
+            basisScalingLinearEquiv (K := K) (W := W) b
+              (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹))
+          (basisScalingLinearEquiv_two_update_pairwise (K := K) (W := W) (b := b) (i := i) (t := t)) := by
+  let s : ι → Kˣ := Function.update t i (t i / u ^ 2)
+  have hsprod : (∏ j, s j) = 1 := by
+    have hi : i ∈ (Finset.univ : Finset ι) := Finset.mem_univ i
+    have hsupdate :
+        (∏ j, s j) = (t i / u ^ 2) * (Finset.univ.erase i).prod fun j => t j := by
+      simpa only [s, Finset.erase_eq] using
+        (Finset.prod_update_of_mem (s := Finset.univ) (i := i) hi t (t i / u ^ 2))
+    calc
+      (∏ j, s j) = (t i / u ^ 2) * (Finset.univ.erase i).prod fun j => t j := hsupdate
+      _ = (t i / u ^ 2) * ((∏ j, t j) / t i) := by
+        rw [Finset.prod_erase_eq_div (s := Finset.univ) (f := t) hi]
+      _ = 1 := by
+        rw [hprod]
+        simp [div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm]
+  have hsplit : t = (Function.update (1 : ι → Kˣ) i (u ^ 2)) * s := by
+    funext k
+    apply Units.ext
+    by_cases hki : k = i
+    · subst hki
+      simp [s, Function.update, div_eq_mul_inv, pow_two, mul_assoc, mul_left_comm, mul_comm]
+    · simp [s, Function.update, hki]
+  have hsblocks :
+      (Finset.univ.erase i).noncommProd
+          (fun j =>
+            basisScalingLinearEquiv (K := K) (W := W) b
+              (Function.update (Function.update (1 : ι → Kˣ) j (s j)) i (s j)⁻¹))
+          (basisScalingLinearEquiv_two_update_pairwise (K := K) (W := W) (b := b) (i := i) (t := s)) =
+        (Finset.univ.erase i).noncommProd
+          (fun j =>
+            basisScalingLinearEquiv (K := K) (W := W) b
+              (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹))
+          (basisScalingLinearEquiv_two_update_pairwise (K := K) (W := W) (b := b) (i := i) (t := t)) := by
+    refine Finset.noncommProd_congr rfl ?_
+      (basisScalingLinearEquiv_two_update_pairwise (K := K) (W := W) (b := b) (i := i) (t := s))
+    · intro j hj
+      have hji : j ≠ i := (Finset.mem_erase.mp hj).1
+      simp [s, Function.update, hji]
+  calc
+    basisScalingLinearEquiv (K := K) (W := W) b t =
+        basisScalingLinearEquiv (K := K) (W := W) b
+          ((Function.update (1 : ι → Kˣ) i (u ^ 2)) * s) := by
+            rw [hsplit]
+    _ = basisScalingLinearEquiv (K := K) (W := W) b (Function.update (1 : ι → Kˣ) i (u ^ 2)) *
+          basisScalingLinearEquiv (K := K) (W := W) b s := by
+            rw [basisScalingLinearEquiv_mul]
+    _ = lineScalingLinearEquiv (f := b.coord i) (w := b i)
+          (by simp [Module.Basis.coord_apply]) (u ^ 2) *
+          basisScalingLinearEquiv (K := K) (W := W) b s := by
+            rw [basisScalingLinearEquiv_update_eq_lineScalingLinearEquiv]
+    _ = lineScalingLinearEquiv (f := b.coord i) (w := b i)
+          (by simp [Module.Basis.coord_apply]) (u ^ 2) *
+          (Finset.univ.erase i).noncommProd
+            (fun j =>
+              basisScalingLinearEquiv (K := K) (W := W) b
+                (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹))
+            (basisScalingLinearEquiv_two_update_pairwise
+              (K := K) (W := W) (b := b) (i := i) (t := t)) := by
+              rw [basisScalingLinearEquiv_eq_noncommProd_two_update_of_prod_eq_one
+                    (K := K) (W := W) (b := b) (i := i) (t := s) hsprod,
+                  hsblocks]
+
+omit [Invertible (2 : K)] in
+/-- Transporting a square-determinant basis scaling to `SO(W* × W)` splits it into a square line
+scaling on a distinguished basis line times the determinant-one diagonal factorization. -/
+theorem dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_eq_lineScalingLinearEquiv_mul_noncommProd_two_update_of_prod_eq_sq
+    (b : Module.Basis ι K W) (i : ι) (t : ι → Kˣ) (u : Kˣ)
+    (hprod : (∏ j, t j) = u ^ 2) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisScalingLinearEquiv (K := K) (W := W) b t) =
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (lineScalingLinearEquiv (f := b.coord i) (w := b i)
+          (by simp [Module.Basis.coord_apply]) (u ^ 2)) *
+        (Finset.univ.erase i).noncommProd
+          (fun j =>
+            dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+              (basisScalingLinearEquiv (K := K) (W := W) b
+                (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹)))
+          (by
+            intro j hj k hk hjk
+            exact
+              (basisScalingLinearEquiv_two_update_pairwise
+                (K := K) (W := W) (b := b) (i := i) (t := t) hj hk hjk).map
+                (dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W))) := by
+  let H := dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W)
+  have hpair :=
+    basisScalingLinearEquiv_two_update_pairwise (K := K) (W := W) (b := b) (i := i) (t := t)
+  calc
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisScalingLinearEquiv (K := K) (W := W) b t) =
+      H (basisScalingLinearEquiv (K := K) (W := W) b t) := by rfl
+    _ = H
+          (lineScalingLinearEquiv (f := b.coord i) (w := b i)
+            (by simp [Module.Basis.coord_apply]) (u ^ 2) *
+            (Finset.univ.erase i).noncommProd
+              (fun j =>
+                basisScalingLinearEquiv (K := K) (W := W) b
+                  (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹))
+              hpair) := by
+                rw [basisScalingLinearEquiv_eq_lineScalingLinearEquiv_mul_noncommProd_two_update_of_prod_eq_sq
+                  (K := K) (W := W) (b := b) (i := i) (t := t) (u := u) hprod]
+    _ = H (lineScalingLinearEquiv (f := b.coord i) (w := b i)
+            (by simp [Module.Basis.coord_apply]) (u ^ 2)) *
+          H ((Finset.univ.erase i).noncommProd
+              (fun j =>
+                basisScalingLinearEquiv (K := K) (W := W) b
+                  (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹))
+              hpair) := by
+                rw [MonoidHom.map_mul]
+    _ = dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+          (lineScalingLinearEquiv (f := b.coord i) (w := b i)
+            (by simp [Module.Basis.coord_apply]) (u ^ 2)) *
+          (Finset.univ.erase i).noncommProd
+            (fun j =>
+              dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+                (basisScalingLinearEquiv (K := K) (W := W) b
+                  (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹)))
+            (by
+              intro j hj k hk hjk
+              exact (hpair hj hk hjk).map H) := by
+                simpa [H, dualProdSpecialOrthogonalOfLinearEquivHom_apply] using
+                  (Finset.map_noncommProd (s := Finset.univ.erase i)
+                    (f := fun j =>
+                      basisScalingLinearEquiv (K := K) (W := W) b
+                        (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹))
+                    hpair (g := H))
+
+omit [Invertible (2 : K)] in
+/-- Relative to a chosen basis, any linear equivalence with square determinant factors as basis
+transvections, a basis scaling with the same square determinant, and basis transvections. -/
+theorem linearEquiv_eq_list_basisTransvection_mul_basisScalingLinearEquiv_mul_list_basisTransvection_of_det_eq_sq
+    (b : Module.Basis ι K W) (e : W ≃ₗ[K] W) (u : Kˣ)
+    (hdet : LinearEquiv.det e = u ^ 2) :
+    ∃ (L L' : List (Matrix.TransvectionStruct ι K)) (t : ι → Kˣ),
+      (∏ j, t j) = u ^ 2 ∧
+      e =
+        (L.map (basisTransvectionLinearEquiv (K := K) (W := W) b)).prod *
+          basisScalingLinearEquiv (K := K) (W := W) b t *
+          (L'.map (basisTransvectionLinearEquiv (K := K) (W := W) b)).prod := by
+  let M : Matrix ι ι K := LinearMap.toMatrix b b (e : W →ₗ[K] W)
+  rcases Matrix.Pivot.exists_list_transvec_mul_diagonal_mul_list_transvec M with
+    ⟨L, L', D, hM⟩
+  have hMdet : Matrix.det M = (u : K) ^ 2 := by
+    calc
+      Matrix.det M = LinearMap.det (e : W →ₗ[K] W) := by
+        simpa [M] using (LinearMap.det_toMatrix b (e : W →ₗ[K] W))
+      _ = (u : K) ^ 2 := by
+        simpa [LinearEquiv.coe_det] using congrArg (fun z : Kˣ => (z : K)) hdet
+  have hdiagdet : Matrix.det (Matrix.diagonal D) = (u : K) ^ 2 := by
+    rw [hM, Matrix.det_mul, Matrix.det_mul, Matrix.TransvectionStruct.det_toMatrix_prod,
+      Matrix.TransvectionStruct.det_toMatrix_prod, one_mul] at hMdet
+    simpa using hMdet
+  have hdiagdet_ne_zero : Matrix.det (Matrix.diagonal D) ≠ 0 := by
+    rw [hdiagdet]
+    exact pow_ne_zero 2 u.ne_zero
+  have hDne : ∀ j, D j ≠ 0 := by
+    intro j hj
+    apply hdiagdet_ne_zero
+    rw [Matrix.det_diagonal, Finset.prod_eq_zero_iff]
+    exact ⟨j, Finset.mem_univ j, hj⟩
+  let t : ι → Kˣ := fun j => Units.mk0 (D j) (hDne j)
+  have htprod : (∏ j, t j) = u ^ 2 := by
+    apply Units.ext
+    simpa [t, Matrix.det_diagonal] using hdiagdet
+  refine ⟨L, L', t, htprod, ?_⟩
+  apply LinearEquiv.toLinearMap_injective
+  apply (LinearMap.toMatrix b b).injective
+  calc
+    LinearMap.toMatrix b b (e : W →ₗ[K] W) = M := by rfl
+    _ = (L.map Matrix.TransvectionStruct.toMatrix).prod * Matrix.diagonal D *
+          (L'.map Matrix.TransvectionStruct.toMatrix).prod := hM
+    _ = LinearMap.toMatrix b b
+          ((((L.map (basisTransvectionLinearEquiv (K := K) (W := W) b)).prod : W ≃ₗ[K] W) *
+              basisScalingLinearEquiv (K := K) (W := W) b t *
+              ((L'.map (basisTransvectionLinearEquiv (K := K) (W := W) b)).prod : W ≃ₗ[K] W)) :
+            W ≃ₗ[K] W) := by
+          have hdiag :
+              LinearMap.toMatrix b b
+                  ((basisScalingLinearEquiv (K := K) (W := W) b t : W ≃ₗ[K] W) : W →ₗ[K] W) =
+                Matrix.diagonal D := by
+            rw [basisScalingLinearEquiv_toMatrix]
+            ext i j
+            by_cases hij : i = j
+            · subst hij
+              simp [Matrix.diagonal, t]
+            · simp [Matrix.diagonal, hij, t]
+          simpa [LinearMap.toMatrix_mul,
+            list_prod_basisTransvectionLinearEquiv_toMatrix (K := K) (W := W) (b := b),
+            hdiag, Matrix.mul_assoc]
+
+omit [Invertible (2 : K)] in
+/-- Transporting the higher-rank square-determinant factorization to `SO(W* × W)` expresses any
+such Levi element as basis transvections, a square-determinant basis scaling, and basis
+transvections. -/
+theorem dualProdSpecialOrthogonalOfLinearEquiv_eq_list_basisTransvection_mul_basisScalingLinearEquiv_mul_list_basisTransvection_of_det_eq_sq
+    (b : Module.Basis ι K W) (e : W ≃ₗ[K] W) (u : Kˣ)
+    (hdet : LinearEquiv.det e = u ^ 2) :
+    ∃ (L L' : List (Matrix.TransvectionStruct ι K)) (t : ι → Kˣ),
+      (∏ j, t j) = u ^ 2 ∧
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K) e =
+        (L.map (fun s =>
+          dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+            (basisTransvectionLinearEquiv (K := K) (W := W) b s))).prod *
+          dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+            (basisScalingLinearEquiv (K := K) (W := W) b t) *
+          (L'.map (fun s =>
+            dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+              (basisTransvectionLinearEquiv (K := K) (W := W) b s))).prod := by
+  rcases
+      linearEquiv_eq_list_basisTransvection_mul_basisScalingLinearEquiv_mul_list_basisTransvection_of_det_eq_sq
+        (K := K) (W := W) (b := b) (e := e) (u := u) hdet with
+    ⟨L, L', t, htprod, he⟩
+  let H := dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W)
+  refine ⟨L, L', t, htprod, ?_⟩
+  rw [he]
+  change H
+      (((L.map (basisTransvectionLinearEquiv (K := K) (W := W) b)).prod : W ≃ₗ[K] W) *
+        basisScalingLinearEquiv (K := K) (W := W) b t *
+        ((L'.map (basisTransvectionLinearEquiv (K := K) (W := W) b)).prod : W ≃ₗ[K] W)) =
+    (L.map (fun s =>
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisTransvectionLinearEquiv (K := K) (W := W) b s))).prod *
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisScalingLinearEquiv (K := K) (W := W) b t) *
+      (L'.map (fun s =>
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+          (basisTransvectionLinearEquiv (K := K) (W := W) b s))).prod
+  have hmapLprod :
+      (List.map (⇑H) (List.map (basisTransvectionLinearEquiv (K := K) (W := W) b) L)).prod =
+        (List.map (fun s =>
+          dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+            (basisTransvectionLinearEquiv (K := K) (W := W) b s)) L).prod := by
+    simpa [Function.comp_def, H, dualProdSpecialOrthogonalOfLinearEquivHom_apply] using
+      congrArg List.prod
+        (List.map_map (⇑H) (basisTransvectionLinearEquiv (K := K) (W := W) b) L)
+  have hmapL'prod :
+      (List.map (⇑H) (List.map (basisTransvectionLinearEquiv (K := K) (W := W) b) L')).prod =
+        (List.map (fun s =>
+          dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+            (basisTransvectionLinearEquiv (K := K) (W := W) b s)) L').prod := by
+    simpa [Function.comp_def, H, dualProdSpecialOrthogonalOfLinearEquivHom_apply] using
+      congrArg List.prod
+        (List.map_map (⇑H) (basisTransvectionLinearEquiv (K := K) (W := W) b) L')
+  rw [map_mul, map_mul, map_list_prod, map_list_prod, hmapLprod, hmapL'prod]
+  rfl
+
+omit [Invertible (2 : K)] in
+/-- Combining the higher-rank matrix/transvection reduction with the square-determinant diagonal
+reduction expresses any square-determinant Levi element in `SO(W* × W)` as basis transvections,
+one chosen square line scaling, the canonical determinant-one `2 × 2` blocks, and basis
+transvections. -/
+theorem dualProdSpecialOrthogonalOfLinearEquiv_eq_list_basisTransvection_mul_lineScalingLinearEquiv_mul_noncommProd_two_update_mul_list_basisTransvection_of_det_eq_sq
+    (b : Module.Basis ι K W) (i : ι) (e : W ≃ₗ[K] W) (u : Kˣ)
+    (hdet : LinearEquiv.det e = u ^ 2) :
+    ∃ (L L' : List (Matrix.TransvectionStruct ι K)) (t : ι → Kˣ),
+      (∏ j, t j) = u ^ 2 ∧
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K) e =
+        (L.map (fun s =>
+          dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+            (basisTransvectionLinearEquiv (K := K) (W := W) b s))).prod *
+          dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+            (lineScalingLinearEquiv (f := b.coord i) (w := b i)
+              (by simp [Module.Basis.coord_apply]) (u ^ 2)) *
+          (Finset.univ.erase i).noncommProd
+            (fun j =>
+              dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+                (basisScalingLinearEquiv (K := K) (W := W) b
+                  (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹)))
+            (by
+              intro j hj k hk hjk
+              exact
+                (basisScalingLinearEquiv_two_update_pairwise
+                  (K := K) (W := W) (b := b) (i := i) (t := t) hj hk hjk).map
+                  (dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W))) *
+          (L'.map (fun s =>
+            dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+              (basisTransvectionLinearEquiv (K := K) (W := W) b s))).prod := by
+  rcases
+      dualProdSpecialOrthogonalOfLinearEquiv_eq_list_basisTransvection_mul_basisScalingLinearEquiv_mul_list_basisTransvection_of_det_eq_sq
+        (K := K) (W := W) (b := b) (e := e) (u := u) hdet with
+    ⟨L, L', t, htprod, he⟩
+  refine ⟨L, L', t, htprod, ?_⟩
+  rw [he,
+    dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_eq_lineScalingLinearEquiv_mul_noncommProd_two_update_of_prod_eq_sq
+      (K := K) (W := W) (b := b) (i := i) (t := t) (u := u) htprod]
+  simp [mul_assoc]
+
+omit [Invertible (2 : K)] in
+/-- The canonical basis-diagonal `2 × 2` determinant-one block factors as four transvections. -/
+theorem basisScalingLinearEquiv_two_update_eq_transvection_four
+    (b : Module.Basis ι K W) {i j : ι} (hij : i ≠ j) (a : Kˣ) :
+    basisScalingLinearEquiv (K := K) (W := W) b
+        (Function.update (Function.update (fun _ => (1 : Kˣ)) i a) j a⁻¹) =
+      LinearEquiv.transvection (f := -(b.coord j)) (v := (((1 : K) - (a : K)) • b i))
+        (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij]) *
+      LinearEquiv.transvection (f := -(b.coord i)) (v := ((-1 : K) • b j))
+        (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij]) *
+      LinearEquiv.transvection (f := -(b.coord j)) (v := (((1 : K) - (a : K)⁻¹) • b i))
+        (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij]) *
+      LinearEquiv.transvection (f := -(b.coord i)) (v := ((a : K) • b j))
+        (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij]) := by
+  rw [basisScalingLinearEquiv_two_update (K := K) (W := W) (b := b) hij a]
+  simpa [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij] using
+    complementaryLineScalings_eq_transvection_four (K := K) (W := W)
+      (f := b.coord i) (g := b.coord j) (w := b i) (u := b j)
+      (by simp [Module.Basis.coord_apply])
+      (by simp [Module.Basis.coord_apply])
+      (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij])
+      (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij]) a
+
+omit [Invertible (2 : K)] in
+/-- Transporting the canonical basis-diagonal `2 × 2` block to `SO(W* × W)` yields the matching
+four-transvection factorization in the orthogonal action. -/
+theorem dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_two_update_eq_transvection_four
+    (b : Module.Basis ι K W) {i j : ι} (hij : i ≠ j) (a : Kˣ) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisScalingLinearEquiv (K := K) (W := W) b
+          (Function.update (Function.update (fun _ => (1 : Kˣ)) i a) j a⁻¹)) =
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -(b.coord j)) (v := (((1 : K) - (a : K)) • b i))
+          (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij])) *
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -(b.coord i)) (v := ((-1 : K) • b j))
+          (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij])) *
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -(b.coord j)) (v := (((1 : K) - (a : K)⁻¹) • b i))
+          (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij])) *
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -(b.coord i)) (v := ((a : K) • b j))
+          (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij])) := by
+  rw [basisScalingLinearEquiv_two_update (K := K) (W := W) (b := b) hij a]
+  simpa [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij] using
+    dualProdSpecialOrthogonalOf_complementaryLineScalings_eq_transvection_four
+      (K := K) (W := W)
+      (f := b.coord i) (g := b.coord j) (w := b i) (u := b j)
+      (by simp [Module.Basis.coord_apply])
+      (by simp [Module.Basis.coord_apply])
+      (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij])
+      (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij]) a
+
+end BasisScaling
+
+/-- On a chosen split line inside `W* × W`, the reflection attached to
+`(-c⁻¹ f, c w)` has an explicit coordinate formula. -/
+theorem pinLinearRepresentation_apply_iota_of_dualProd_scaled_neg_dual_eq_one
+    (f : Module.Dual K W) (w : W) (hf : f w = 1) (c : Kˣ)
+    (d : Module.Dual K W) (u : W) :
+    pinLinearRepresentation (Q := QuadraticForm.dualProd K W)
+        (pinIotaOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K W)
+          (-(((c : K)⁻¹) • f), (c : K) • w)
+          (by simp [QuadraticForm.dualProd, hf]))
+        (d, u) =
+      (((d w - f u / ((c : K) ^ 2) : K) • f - d),
+        -((((c : K) ^ 2) * d w - f u) : K) • w - u) := by
+  rw [pinLinearRepresentation_apply_iota_of_dualProd_neg_dual_eq_one
+    (K := K) (W := W) (f := ((c : K)⁻¹) • f) (w := (c : K) • w)
+    (by simp [hf]) (d := d) (u := u)]
+  apply Prod.ext
+  · ext x
+    simp [smul_eq_mul, div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm]
+    field_simp [c.ne_zero]
+  · simp [smul_eq_mul, div_eq_mul_inv, hf, mul_assoc, mul_left_comm, mul_comm]
+    rw [smul_smul]
+    congr 1
+    field_simp [c.ne_zero]
+
+/-- Two reflections coming from the same split line act as a square scaling on that line and fix
+the complementary kernels. -/
+theorem spinSpecialOrthogonalPairGenerator_apply_dualProd_lineScaling
+    (f : Module.Dual K W) (w : W) (hf : f w = 1) (a b : Kˣ)
+    (d : Module.Dual K W) (u : W) :
+    (spinSpecialOrthogonalPairGenerator (Q := QuadraticForm.dualProd K W)
+        (-(((a : K)⁻¹) • f), (a : K) • w)
+        (-(((b : K)⁻¹) • f), (b : K) • w)
+        (by simp [QuadraticForm.dualProd, hf])
+        (by simp [QuadraticForm.dualProd, hf])).1 (d, u) =
+      (d + ((((b : K) / a) ^ 2 - 1) * d w : K) • f,
+        u + ((((a : K) / b) ^ 2 - 1) * f u : K) • w) := by
+  rw [coe_spinSpecialOrthogonalPairGenerator, QuadraticMap.IsometryEquiv.mul_apply,
+    pinIsometryRepresentation_apply, pinIsometryEquiv_apply]
+  have hfirst :
+      ((pinIsometryRepresentation (Q := QuadraticForm.dualProd K W))
+          (pinIotaOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K W)
+            (-(((b : K)⁻¹) • f), (b : K) • w)
+            (by simp [QuadraticForm.dualProd, hf]))) (d, u) =
+        (((d w - f u / ((b : K) ^ 2) : K) • f - d),
+          -((((b : K) ^ 2) * d w - f u) : K) • w - u) := by
+    simpa [pinIsometryRepresentation_apply, pinIsometryEquiv_apply] using
+      (pinLinearRepresentation_apply_iota_of_dualProd_scaled_neg_dual_eq_one
+        (K := K) (W := W) (f := f) (w := w) hf (c := b) (d := d) (u := u))
+  rw [hfirst]
+  rw [pinLinearRepresentation_apply_iota_of_dualProd_scaled_neg_dual_eq_one
+    (K := K) (W := W) (f := f) (w := w) hf (c := a)
+    (d := ((d w - f u / ((b : K) ^ 2) : K) • f - d))
+    (u := -((((b : K) ^ 2) * d w - f u) : K) • w - u)]
+  apply Prod.ext
+  · ext x
+    simp [smul_eq_mul, div_eq_mul_inv, hf, sub_eq_add_neg,
+      mul_assoc, mul_left_comm, mul_comm]
+    field_simp [a.ne_zero, b.ne_zero]
+    ring
+  · simp [smul_eq_mul, div_eq_mul_inv, hf, sub_eq_add_neg]
+    let p : K := -(((b : K) ^ 2) * d w) + ((a : K) ^ 2) * (f u * (((b : K) ^ 2)⁻¹))
+    let q : K := f u + -(((b : K) ^ 2) * d w)
+    change p • w + (u + -(q • w)) = u + ((((a : K) * (b : K)⁻¹) ^ 2 + -1) * f u : K) • w
+    have hcoef : p - q = ((((a : K) * (b : K)⁻¹) ^ 2 + -1) * f u : K) := by
+      simp [p, q, pow_two, mul_assoc, mul_left_comm, mul_comm]
+      field_simp [a.ne_zero, b.ne_zero]
+      ring
+    calc
+      p • w + (u + -(q • w)) = u + (p - q) • w := by
+        simp [sub_eq_add_neg, add_smul, add_assoc, add_left_comm, add_comm]
+      _ = u + ((((a : K) * (b : K)⁻¹) ^ 2 + -1) * f u : K) • w := by rw [hcoef]
+
+/-- The pair generator built from two norm-`-1` vectors on a chosen split line is exactly the
+transport of the corresponding square line scaling in `GL(W)`. -/
+theorem spinSpecialOrthogonalPairGenerator_eq_lineScalingLinearEquiv
+    (f : Module.Dual K W) (w : W) (hf : f w = 1) (a b : Kˣ) :
+    spinSpecialOrthogonalPairGenerator (Q := QuadraticForm.dualProd K W)
+        (-(((a : K)⁻¹) • f), (a : K) • w)
+        (-(((b : K)⁻¹) • f), (b : K) • w)
+        (by simp [QuadraticForm.dualProd, hf])
+        (by simp [QuadraticForm.dualProd, hf]) =
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (lineScalingLinearEquiv (f := f) (w := w) hf ((a / b) ^ 2)) := by
+  apply Subtype.ext
+  apply DFunLike.ext
+  intro x
+  rcases x with ⟨d, u⟩
+  rw [spinSpecialOrthogonalPairGenerator_apply_dualProd_lineScaling
+    (K := K) (W := W) (f := f) (w := w) hf (a := a) (b := b) (d := d) (u := u)]
+  rw [dualProdSpecialOrthogonalOfLinearEquiv_apply_lineScalingLinearEquiv
+    (K := K) (W := W) (f := f) (w := w) hf (t := (a / b) ^ 2) (d := d) (u := u)]
+  apply Prod.ext
+  · ext y
+    simp [smul_eq_mul, div_eq_mul_inv, pow_two, mul_assoc, mul_left_comm, mul_comm]
+  · simp [smul_eq_mul, div_eq_mul_inv, pow_two, mul_assoc, mul_left_comm, mul_comm]
+
+/-- Every square line scaling on a chosen split line already lies in the ambient spin image. -/
+theorem dualProdSpecialOrthogonalOf_lineScalingLinearEquiv_sq_mem_range
+    (f : Module.Dual K W) (w : W) (hf : f w = 1) (t : Kˣ) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (lineScalingLinearEquiv (f := f) (w := w) hf (t ^ 2)) ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := QuadraticForm.dualProd K W)) := by
+  have hpair :
+      spinSpecialOrthogonalPairGenerator (Q := QuadraticForm.dualProd K W)
+          (-(((t : K)⁻¹) • f), (t : K) • w)
+          (-f, w)
+          (by simp [QuadraticForm.dualProd, hf])
+          (by simp [QuadraticForm.dualProd, hf]) ∈
+        MonoidHom.range
+          (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := QuadraticForm.dualProd K W)) := by
+    exact spinSpecialOrthogonalPairGeneratorSet_subset_range (Q := QuadraticForm.dualProd K W)
+      ⟨⟨((-(((t : K)⁻¹) • f), (t : K) • w), (-f, w)),
+          by simp [QuadraticForm.dualProd, hf]⟩, rfl⟩
+  have hEq :
+      spinSpecialOrthogonalPairGenerator (Q := QuadraticForm.dualProd K W)
+          (-(((t : K)⁻¹) • f), (t : K) • w)
+          (-f, w)
+          (by simp [QuadraticForm.dualProd, hf])
+          (by simp [QuadraticForm.dualProd, hf]) =
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+          (lineScalingLinearEquiv (f := f) (w := w) hf (t ^ 2)) := by
+    simpa using
+      (spinSpecialOrthogonalPairGenerator_eq_lineScalingLinearEquiv
+        (K := K) (W := W) (f := f) (w := w) hf (a := t) (b := (1 : Kˣ)))
+  exact hEq ▸ hpair
+
+/-- Conjugating the explicit transvection unit by the chosen square-scaling spin element rescales the
+transvection parameter by the square torus weight. This is the internal Clifford-algebra version of
+the chosen-line torus action. -/
+theorem spinIotaPairOfQuadraticEqNegOne_conj_dualProdTransvectionCliffordUnit
+    (f : Module.Dual K W) (w : W) (hf : f w = 1) (t : Kˣ)
+    (δ : Module.Dual K W) (hδ : δ w = 0) :
+    let Qd : QuadraticForm K (Module.Dual K W × W) := QuadraticForm.dualProd K W
+    let s : spinGroup Qd :=
+      spinIotaPairOfQuadraticEqNegOne (Q := Qd)
+        (-(((t : K)⁻¹) • f), (t : K) • w) (-f, w)
+        (by simpa [Qd, QuadraticForm.dualProd, hf])
+        (by simpa [Qd, QuadraticForm.dualProd, hf])
+    spinConjAlgEquiv (Q := Qd) s
+        (((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ :
+            (CliffordAlgebra Qd)ˣ) : CliffordAlgebra Qd)) =
+      (((dualProdTransvectionCliffordUnit (K := K) (W := W) (((t : K) ^ 2) • δ) w
+          (by simpa [smul_eq_mul, hδ]) : (CliffordAlgebra Qd)ˣ) : CliffordAlgebra Qd)) := by
+  let Qd : QuadraticForm K (Module.Dual K W × W) := QuadraticForm.dualProd K W
+  let s : spinGroup Qd :=
+    spinIotaPairOfQuadraticEqNegOne (Q := Qd)
+      (-(((t : K)⁻¹) • f), (t : K) • w) (-f, w)
+      (by simpa [Qd, QuadraticForm.dualProd, hf])
+      (by simpa [Qd, QuadraticForm.dualProd, hf])
+  let aδ : Module.Dual K W × W := (δ, 0)
+  let b : Module.Dual K W × W := (0, w)
+  have hs_eq :
+      spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Qd) s =
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+          (lineScalingLinearEquiv (f := f) (w := w) hf (t ^ 2)) := by
+    simpa [Qd, s, spinSpecialOrthogonalPairGenerator] using
+      (spinSpecialOrthogonalPairGenerator_eq_lineScalingLinearEquiv
+        (K := K) (W := W) (f := f) (w := w) hf (a := t) (b := (1 : Kˣ)))
+  have haδ :
+      (dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (lineScalingLinearEquiv (f := f) (w := w) hf (t ^ 2))).1 aδ = aδ := by
+    rw [dualProdSpecialOrthogonalOfLinearEquiv_apply_lineScalingLinearEquiv
+      (K := K) (W := W) (f := f) (w := w) hf (t := t ^ 2) (d := δ) (u := 0)]
+    apply Prod.ext
+    · ext x
+      simp [aδ, hδ]
+    · simp [aδ]
+  have hb :
+      (dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (lineScalingLinearEquiv (f := f) (w := w) hf (t ^ 2))).1 b =
+          (0, ((t : K) ^ 2) • w) := by
+    rw [dualProdSpecialOrthogonalOfLinearEquiv_apply_lineScalingLinearEquiv
+      (K := K) (W := W) (f := f) (w := w) hf (t := t ^ 2) (d := 0) (u := w)]
+    have hw :
+        ((0 : Module.Dual K W), w + ((((↑(t ^ 2) : K) - 1) * f w) : K) • w) =
+          (0, ((t : K) ^ 2) • w) := by
+      apply Prod.ext
+      · ext x
+        simp
+      · calc
+          w + ((((↑(t ^ 2) : K) - 1) * f w) : K) • w = w + (((↑(t ^ 2) : K) - 1) : K) • w := by
+            rw [hf, mul_one]
+          _ = (((1 : K) + ((↑(t ^ 2) : K) - 1)) : K) • w := by
+            rw [add_smul, one_smul]
+          _ = ((t : K) ^ 2) • w := by simp
+    simpa [b, hf] using hw
+  have hδfixed :
+      spinLinearRepresentation (Q := Qd) s aδ = aδ := by
+    have h :=
+      congrArg (fun e : Qd.specialOrthogonalGroup => e.1 aδ) hs_eq
+    simpa [Qd, aδ, spinLinearRepresentation_apply,
+      coe_spinSpecialOrthogonalRepresentationFiniteDimensional,
+      spinIsometryRepresentation_apply, spinIsometryEquiv_apply] using h.trans haδ
+  have hwscaled :
+      spinLinearRepresentation (Q := Qd) s b = (0, ((t : K) ^ 2) • w) := by
+    have h :=
+      congrArg (fun e : Qd.specialOrthogonalGroup => e.1 b) hs_eq
+    simpa [Qd, b, spinLinearRepresentation_apply,
+      coe_spinSpecialOrthogonalRepresentationFiniteDimensional,
+      spinIsometryRepresentation_apply, spinIsometryEquiv_apply] using h.trans hb
+  have hιδ :
+      spinConjAlgEquiv (Q := Qd) s (CliffordAlgebra.ι Qd aδ) =
+        CliffordAlgebra.ι Qd aδ := by
+    rw [spinConjAlgEquiv_apply, ← spinLinearEquiv_ι (Q := Qd) s aδ,
+      ← spinLinearRepresentation_apply (Q := Qd) s, hδfixed]
+  have hιw :
+      spinConjAlgEquiv (Q := Qd) s (CliffordAlgebra.ι Qd b) =
+        CliffordAlgebra.ι Qd (0, ((t : K) ^ 2) • w) := by
+    rw [spinConjAlgEquiv_apply, ← spinLinearEquiv_ι (Q := Qd) s b,
+      ← spinLinearRepresentation_apply (Q := Qd) s, hwscaled]
+  rw [coe_dualProdTransvectionCliffordUnit, coe_dualProdTransvectionCliffordUnit]
+  calc
+    spinConjAlgEquiv (Q := Qd) s (1 + CliffordAlgebra.ι Qd aδ * CliffordAlgebra.ι Qd b) =
+        1 + CliffordAlgebra.ι Qd aδ * CliffordAlgebra.ι Qd (0, ((t : K) ^ 2) • w) := by
+          rw [map_add, map_one, map_mul, hιδ, hιw]
+    _ = 1 + CliffordAlgebra.ι Qd ((((t : K) ^ 2) • δ), 0) * CliffordAlgebra.ι Qd b := by
+      have ha :
+          ((((t : K) ^ 2) • δ), (0 : W)) = ((t : K) ^ 2) • aδ := by
+        ext <;> simp [aδ]
+      have hb :
+          ((0 : Module.Dual K W), ((t : K) ^ 2) • w) = ((t : K) ^ 2) • b := by
+        ext <;> simp [b]
+      rw [ha, hb, map_smul, map_smul]
+      simp [smul_eq_mul, mul_assoc, mul_left_comm, mul_comm]
 
 /-- In the split hyperbolic form, the pair generator built from `(-(f + δ), w)` and `(-f, w)`
 has an explicit coordinate action on arbitrary `(d, u)`. This packages the basic hyperbolic

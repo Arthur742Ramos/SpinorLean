@@ -5,11 +5,16 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{amsmath,amssymb,amsthm}
+\usepackage{array}
 \usepackage{mathtools}
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
+\usepackage{tabularx}
 \usepackage{url}
+\usepackage{xurl}
 \usepackage{xspace}
+\urlstyle{tt}
+\setlength{\emergencystretch}{2em}
 
 % --- Theorem environments -------------------------------------------------
 \theoremstyle{plain}
@@ -38,548 +43,1195 @@
 \newcommand{\SpinorLean}{\textsc{SpinorLean}\xspace}
 \newcommand{\Lean}{Lean~4\xspace}
 \newcommand{\Mathlib}{\textsc{Mathlib}\xspace}
-\newcommand{\code}[1]{\texttt{#1}}
+\DeclareRobustCommand{\code}[1]{\ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 
 % --- Metadata -------------------------------------------------------------
-\title{Formalizing Spinor Representations from Clifford Algebras in
-       \Lean\ and \Mathlib}
-\author{%
-  Author One\\\small Affiliation One\\\small \texttt{author.one@example.org}
-  \and
-  Author Two\\\small Affiliation Two\\\small \texttt{author.two@example.org}
-}
-\date{\today}
+\title{Formalized Exterior-Model Spinors in Split Rank:\\
+       Levi Actions, Non-Descent, and the Exact Split-Line Image}
+\author{Anonymous Authors}
+\date{}
 
 \begin{document}
 \maketitle
 
 % --- Abstract -------------------------------------------------------------
 \begin{abstract}
-We present \SpinorLean, the first formalization of spinor representations
-from Clifford algebras in a proof assistant. Building on \Mathlib's existing
-\code{CliffordAlgebra}, \code{ExteriorAlgebra}, and \code{spinGroup}
-libraries, we construct the spinor module as the exterior algebra
-$\wedgeW$ of a maximal totally isotropic subspace $W \le V$, equipped with
-its natural $\Cl(V,Q)$-action via wedge and contraction. The formalization
-is organized around a hyperbolic-presentation pattern: an explicit isometry
-$Q \simeq \dualProd_K W$ is packaged as first-class data that transports the
-chosen $\wedgeW$ model, its Clifford action, its $\Spin(Q)$-action, its
-parity splitting, and its simplicity and non-factorization results from the
-concrete split model to arbitrary quadratic forms that admit such a
-presentation. The resulting library includes faithful Clifford actions,
-half-spin (Weyl) simplicity and inequivalence, the algebra equivalences
-$\Cl(Q) \simeq \End(\wedgeW)$ and $\Cl^+(Q) \simeq
-\End(\wedgeEven) \times \End(\wedgeOdd)$, matrix models over $\mathbb{C}$
-and split real signatures (including $\Cl(n,n) \simeq \Mat_{2^n}(\mathbb{R})$),
-explicit low-dimensional identifications including
-$\Spin(2) \simeq U(1)$, $\Spin(3) \simeq SU(2)$, and
-$\Spin(4) \simeq SU(2) \times SU(2)$, built from the
-explicit equivalence $\Cl^+(0,4) \simeq \mathbb{H} \times \mathbb{H}$ and
-explicit diagonal and anti-diagonal-circle subgroup constructions. The
-library builds cleanly with zero
-\code{sorry}/\code{admit}.
+We formalize in \Lean/\Mathlib the exterior-model spinor construction for split
+quadratic spaces over fields $K$ with $2\in K^\times$. The development packages
+explicit hyperbolic and split-Witt presentations as first-class data carrying
+the chosen model $\bigwedge W$, its chiral halves, and the transported Clifford
+and spin actions. Classical endomorphism-algebra and half-spin statements are
+included as infrastructure, but the paper's focus is the field-sensitive
+covering theory that this chosen-model interface makes available at theorem
+level.
+
+The headline formalized results are these. In positive split rank, the kernel
+of $\Spin(V,Q)\to\SO(V,Q)$ is $\{\pm1\}$, so the exterior-model spin action is
+projective but not linear on the orthogonal image. In the hyperbolic model we
+construct explicit Clifford lifts of hyperbolic transvections and chosen-line
+square scalings and prove their weight-$2$ torus law. Using those lifts, we
+show that any split Levi lift acts projectively as the natural exterior action,
+prove an exact split-line image theorem identifying the image with the
+square-scaling subgroup, and in higher rank prove a square-determinant Levi
+factorization in the orthogonal action. The artifact comprises $20$ Lean source
+files totaling $14{,}093$ lines with no \texttt{sorry}.
 \end{abstract}
 
 % --- 1. Introduction -----------------------------------------------------
 \section{Introduction}
 \label{sec:intro}
 
-Spinors sit at the centre of twentieth-century mathematics and physics.
-Algebraically, they are the ``square roots of geometry'': the irreducible
-modules over a Clifford algebra $\Cl(V,Q)$ on which the spin group
-$\Spin(V,Q)$ acts. Through Atiyah--Bott--Shapiro, they power real
-$K$-theory and Bott periodicity; through Dirac operators, they describe
-fermionic matter fields; through twistors and pure spinors, they appear
-throughout modern geometry. Any foundational library of geometry in a proof
-assistant eventually needs them.
+For Clifford algebraists, the exterior-model construction of spinors is
+classical: after choosing a maximal totally isotropic subspace $W$ inside a
+hyperbolic space, the spinor module is $\bigwedge W$, Clifford generators act
+by wedge and contraction, and the even part produces the chiral halves. What is
+less stable over general fields is the bookkeeping of the chosen splitting and
+the exact scope of the spin covering map when nonsquare units are present.
 
-Despite this, no proof assistant has previously formalized the spinor
-representation in the precise sense: a $\Cl(V,Q)$-module $S$ carrying, by
-restriction, a representation of $\Spin(V,Q)$, with dimension $2^{n/2}$
-and the expected simplicity and chirality properties. \Mathlib~\cite{Mathlib}
-already contains substantial Clifford-algebra infrastructure --
-\code{CliffordAlgebra}, \code{ExteriorAlgebra}, \code{spinGroup},
-\code{pinGroup}, and (via Wieser~\cite{Wieser2022Clifford}) their universal
-properties and gradings -- but the Clifford \emph{module} that connects
-$\Cl(V,Q)$ and $\Spin(V,Q)$ to linear algebra was missing. The earlier
-\code{lean-ga} library~\cite{LeanGA} concentrated on computational geometric
-algebra in \Lean~3 and did not reach the representation-theoretic
-content.
+The point of the present treatment is therefore not to reintroduce
+$\bigwedge W$, but to keep that chosen-model construction explicit while making
+the covering/image statements field-sensitive and theorem-level.
 
-\SpinorLean fills this gap. Given a quadratic space $(V,Q)$ over a field
-$K$ of characteristic not two, we construct the exterior model
-$\wedgeW$ attached to a maximal totally isotropic subspace $W \le V$,
-equip it with a $\Cl(V,Q)$-action, restrict to a
-$\Spin(V,Q)$-representation, split off the chiral (Weyl) halves, and prove
-the corresponding simplicity, faithfulness, inequivalence, and
-matrix-classification theorems. In finite-dimensional split rank the
-representation has dimension $2^{n/2}$ and the even and odd halves each
-have dimension $2^{n/2-1}$. All results are machine-checked in \Lean,
-with a clean \code{lake build} and zero \code{sorry}/\code{admit}.
+The paper develops the classical construction of a spinor
+module $S=\bigwedge W$ attached to an explicit hyperbolic presentation
+$Q \simeq \dualProd_K W$, transports it through Witt-style reformulations, and
+obtains the induced $\Spin(V,Q)$-action. A crucial point throughout is that the
+paper's spinor module is \emph{not} the ambient exterior algebra on $V$, but
+the exterior model $\bigwedge W$ supplied by a hyperbolic or split-Witt
+presentation, because that is the object with the classical spin dimension and
+chiral decomposition.
 
-The main conceptual contribution is architectural rather than
-mathematical: we isolate the \emph{hyperbolic presentation}
-$Q \simeq \dualProd_K W$ as the primitive piece of data and thread a
-chosen $\wedgeW$ model through it. This keeps every theorem concrete
-enough to prove on the split model and generic enough to apply to any
-quadratic form admitting such a presentation.
+From the formalization point of view, the paper's claim is that this
+chosen-model, field-sensitive covering package can be carried out in
+\Lean/\Mathlib all the way to explicit theorem-level image statements. The main
+difficulty is that the exterior model depends on transported hyperbolic or Witt
+data, while the orthogonal-action statements depend on explicit Clifford
+calculations inside that chosen model. The payoff is that the Levi-action
+bridge, the exact split-line image theorem, and the higher-rank
+square-determinant Levi factorization become machine-checked results rather than
+informal consequences of the abstract theory.
 
-% --- 2. Related Work -----------------------------------------------------
-\section{Related Work}
+\paragraph{Contributions.}
+From a formalization-venue perspective, the contribution is a reusable
+chosen-model interface that transports Clifford and spin actions from explicit
+hyperbolic/Witt data to theorem-level covering statements. The two centerpiece
+mathematical outputs are the structural Levi-action theorem and the exact
+split-line image theorem. Supporting these are the positive split-rank
+kernel/projective-descent package, the explicit hyperbolic transvection and
+chosen-line square-scaling lifts with their weight-$2$ torus laws, and the
+higher-rank square-determinant Levi factorization in the orthogonal action. The
+classical chosen-model equivalence and half-spin package is included as
+infrastructure on which these field-sensitive theorems rest. The detailed
+theorem list appears below in ``New results at a glance''.
+
+\paragraph{Standing conventions.}
+Unless explicitly specialized to $\mathbb{R}$ or $\mathbb{C}$, the paper works
+over a field $K$ with $2\in K^\times$. The notation $\dualProd_K W$ always
+denotes the standard hyperbolic form on $W^* \times W$. Chosen-model theorems
+are stated either for an explicit hyperbolic presentation
+$e:Q \simeq \dualProd_K W$ or, in the split-rank reformulation obtained from a
+chosen Witt decomposition, for a
+finite-dimensional nondegenerate form $Q$ with
+$\dim V = 2\,\mathrm{wittIndex}(Q)$. Statements about the negative half-spin
+module beyond its formal zero-rank occurrence, and statements about equal
+half-spin dimensions, additionally assume positive split rank.
+We write $\tilde x$ for Clifford conjugation (grade involution followed by
+reversion), so $\tilde v=-v$ for vectors and $\widetilde{vw}=-vw$ for
+orthogonal vectors $v,w$. The group $\Spin(V,Q)$ is the even subgroup of the
+Clifford units generated by products of unit vectors; in particular, any
+product of two vectors of square $\pm1$ lies in $\Spin(V,Q)$, and every
+$x\in \Spin(V,Q)$ satisfies $x\tilde x=1$.
+All statements about the map $\Spin(V,Q)\to\SO(V,Q)$ concern the corresponding
+groups of $K$-points; no stronger scheme-theoretic claim is intended.
+
+The split line is the smallest test case. When $\dim W=1$, the exact image
+theorem shows that $\Spin(H(W)) \to \SO(H(W))$ hits precisely the
+square-scaling subgroup, so the usual split-line double-cover slogan is correct
+only under square-surjectivity hypotheses on $K^\times$. The higher-rank
+results proved below should be read as the structural extension of that
+field-sensitive rank-$1$ picture.
+
+% --- 2. Context -----------------------------------------------------------
+\section{Context}
 \label{sec:related}
 
-\paragraph{Mathlib.} The Clifford-algebra infrastructure we build on is
-extensive. \Mathlib provides \code{CliffordAlgebra Q} with its universal
-property, the exterior-algebra equivalence
-\code{CliffordAlgebra.equivExterior} in characteristic not two, the even
-subalgebra and $\mathbb{Z}/2$-grading via \code{evenOdd}, and the groups
-\code{spinGroup Q} and \code{pinGroup Q} together with their conjugation
-actions. Wieser's work on the Clifford algebra
-design~\cite{Wieser2022Clifford} underlies much of this API. What was
-missing -- and what \SpinorLean adds -- is the Clifford \emph{module}
-structure: a concrete $\Cl(V,Q)$-module realizing the spinor
-representation, together with its simplicity, half-spin decomposition,
-and matrix-algebra classifications.
-
-\paragraph{lean-ga.} The \code{lean-ga} project~\cite{LeanGA}, developed
-largely in \Lean~3, explored geometric algebra with a strong emphasis on
-computational and basis-level constructions. It predates much of the
-current \Mathlib Clifford stack and does not target spinor modules or
-their representation theory; our work is complementary, focusing on the
-algebraic representation-theoretic side in \Lean~4 over the modern
-\Mathlib API.
-
-\paragraph{Mathematics background.} Our development follows the classical
+\paragraph{Mathematical background.} Our treatment follows the classical
 presentations of Lawson--Michelsohn~\cite{LawsonMichelsohn1989},
 Chevalley~\cite{Chevalley1996}, Atiyah--Bott--Shapiro~\cite{AtiyahBottShapiro1964},
-and Lounesto~\cite{Lounesto2001}, with the low-dimensional octonionic
-and quaternionic incidences drawn from Baez~\cite{Baez2002}. The
-hyperbolic-presentation pattern can be seen as a proof-engineering
-refinement of the standard ``choose a maximal isotropic and an exterior
-model'' construction in those references.
+and Lounesto~\cite{Lounesto2001}, with the low-dimensional octonionic and
+quaternionic incidences drawn from Baez~\cite{Baez2002}. The underlying
+``choose a maximal isotropic and use $\bigwedge W$'' construction is classical;
+the point here is to keep the choice data explicit and stable under transport.
 
-% --- 3. Formalization Architecture ---------------------------------------
-\section{Formalization Architecture}
+\paragraph{Formalization context and prior work.}
+\Mathlib already provides the ambient Clifford and exterior algebra libraries,
+including \code{CliffordAlgebra}, \code{ExteriorAlgebra}, \code{pinGroup}, and
+\code{spinGroup}~\cite{Mathlib,MathlibCommunity2020}. Wieser and Song's Lean
+geometric-algebra formalization~\cite{Wieser2022Clifford} and the earlier
+\Lean~3 \texttt{lean-ga} library~\cite{LeanGA} supplied important precursor
+infrastructure for Clifford-style reasoning, but not a theorem-level
+chosen-model spinor package over the current \Lean~4/\Mathlib stack. The present
+development adds exactly that layer: first-class hyperbolic/Witt presentations,
+transported exterior-model spin actions, explicit root/torus elements in the
+split model, and field-sensitive covering/image theorems stated directly on the
+resulting chosen model. What we do not know in the literature is a single
+formalized package over general fields that combines these transported spinor
+actions with the Levi-projective theorem, the exact split-line image theorem,
+and the higher-rank square-determinant factorization proved here.
+
+\paragraph{Novelty boundary.} We do not claim novelty for the exterior-model
+realization $\Cl(Q)\simeq\End(\bigwedge W)$, the parity split, or the basic
+chosen-model reconstruction of spinors. The nonclassical content begins when the
+covering/image behavior is made field-sensitive in that chosen model: the
+positive split-rank linear/projective dichotomy; the explicit transvection and
+chosen-line square-scaling lifts; their internal and orthogonal weight-$2$
+semidirect structure; the theorem that split Levi lifts act projectively as the
+natural exterior action; the higher-rank square-determinant Levi consequence;
+and the exact split-line image theorem. The point is not abstract generation by
+itself, but a concrete chosen-model realization of a root subgroup, its square
+torus, and the resulting square-class obstruction.
+
+\paragraph{New results at a glance.}
+For readers interested mainly in the venue-facing content, the nonclassical
+theorem package of this paper is as follows. Logically, the story runs from
+explicit root/torus lifts to the structural Levi-action theorem, and from there
+to the higher-rank and split-line image consequences.
+
+From the paper-facing point of view, however, the headline outputs are the Levi
+bridge and the exact split-line image theorem; the supporting lift and
+descent statements are listed afterward.
+\begin{enumerate}
+\item the structural Levi-action theorem
+  (Theorem~\ref{thm:levi-projective-exterior}), which identifies any split Levi
+  lift projectively with the natural exterior action;
+\item the exact split-line image theorem of
+  Proposition~\ref{prop:split-line-square}.
+\item the higher-rank square-determinant Levi factorization of
+  Theorem~\ref{thm:square-det-levi};
+\item the explicit hyperbolic transvection lift
+  $x_{\delta,w}=1+\iota(\delta,0)\iota(0,w)$ from
+  Proposition~\ref{prop:transvection-unit} together with the explicit chosen-line
+  square-scaling lift of Proposition~\ref{prop:chosen-line-square}, its internal
+  Clifford-level torus conjugation law
+  (Corollary~\ref{cor:internal-clifford-torus}), and the corresponding
+  orthogonal semidirect package
+  (Corollaries~\ref{cor:torus-transvection} and
+  \ref{cor:one-line-semidirect});
+\item the positive split-rank kernel/nonfactorization/projective-descent package
+  from Theorem~\ref{thm:kernel-nonfactor-split-line} and
+  Proposition~\ref{prop:projective-descent}.
+\end{enumerate}
+The exterior-model equivalences and half-spin decomposition theorems serve as
+the classical theorem-facing foundation on which these field-sensitive
+covering-image statements are built.
+
+% --- Artifact overview -------------------------------------------------------
+\section*{Artifact overview}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}lY@{}}
+Repository & blinded for review; public URL restored in the final version \\
+Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
+\Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
+Build command & \code{lake build} \\
+Lean files under \code{Spinor/} & $20$ \\
+Lean LOC under \code{Spinor/} & $14{,}093$ \\
+\code{sorry} occurrences under \code{Spinor/} & $0$
+\end{tabularx}
+\end{center}
+
+At the time of writing, the full repository rebuilds with \code{lake build}.
+
+The files most directly supporting the present paper are
+\code{ExteriorModel.lean}, \code{HyperbolicAction.lean},
+\code{OrthogonalAction.lean}, and \code{OddClassification.lean}; together
+they package the chosen-model vacuum-line lemmas, the structural Levi-action
+theorem, the explicit transvection and square-scaling lifts with their
+conjugation laws, the higher-rank square-determinant Levi factorization, and
+the exact split-line image theorem.
+
+The reusable interface is organized around the chosen-model transport story.
+\texttt{Presentation.lean} packages explicit hyperbolic presentations as
+first-class data carrying the chosen model $\bigwedge W$, its even/odd halves,
+the transported Clifford and spin actions, and the corresponding Witt-index
+facts. On top of that layer, \texttt{CliffordAction.lean},
+\texttt{SpinRep.lean}, and \texttt{Chiral.lean} expose the transported actions
+and parity pieces as reusable algebra/module structures, while
+\texttt{OrthogonalAction.lean} packages the spin-to-isometry homomorphism and
+the explicit root/torus elements used in the later covering statements. This is
+how the Lean architecture mirrors the paper: the same chosen-model object is
+reused from the algebraic foundation all the way to the field-sensitive image
+theorems. Subsequent developments can therefore import the chosen-model and
+orthogonal-action APIs directly, without reopening the basis-level
+wedge/contraction construction each time a new covering or representation
+statement is needed.
+
+\paragraph{What the formalization contributes.}
+For venue purposes, the reusable payoff can be summarized in three layers.
+
+\paragraph{Chosen-model transport.}
+Lean interface: \code{Presentation.lean}, \code{CliffordAction.lean}, and
+\code{SpinRep.lean}. Later developments can state spinor theorems directly on a
+distinguished exterior model without redoing the split-model construction.
+
+\paragraph{Levi-projective exterior action.}
+Lean interface:
+\code{eq_algebraMap_of_forall_contractionAction_eq_zero} and
+\code{splitCliffordAction_eq_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq}.
+This provides a reusable bridge from spin lifts to \code{ExteriorAlgebra.map},
+which is the key interface for comparing Clifford actions with linear algebra.
+
+\paragraph{Exact split-line image and higher-rank factorization.}
+Lean interface:
+\code{spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup}
+together with the factorization theorems in \code{OrthogonalAction.lean}. This
+exposes theorem-level covering/image results and explicit root/torus generators
+that future work can reuse when extending from structural consequences to exact
+higher-rank image theorems.
+
+\paragraph{Downstream reuse already present in the repository.}
+The interface is already reused beyond the core covering-map story in the
+low-dimensional identification layer: \code{LowDimensional.lean} packages
+\code{realSpin02EquivUnitaryComplex} and
+\code{realSpin03EquivUnitaryQuaternion}, while
+\code{Cl03QuaternionProd.lean} packages
+\code{realSpin04EquivUnitaryQuaternionPair}. These results are not analyzed in
+the present paper, but they show that the chosen-model and orthogonal-action
+APIs are already sufficient for later formal developments connecting the
+split-model infrastructure to classical compact spin identifications.
+
+\paragraph{What the base libraries did not already provide.}
+The ambient \Mathlib Clifford/exterior infrastructure is essential, but by
+itself it does not supply a distinguished exterior-model spinor module attached
+to a chosen maximal isotropic, nor does it transport that chosen model through
+Witt data to theorem-level covering statements. The main mechanized obstacle
+overcome here is precisely that interface gap: the Levi-projective theorem and
+the exact split-line image theorem both require one to compare Clifford
+conjugation, contraction/wedge operators, and orthogonal actions on the same
+transported exterior model. They do not follow from the abstract
+\code{spinGroup}/\code{pinGroup} API alone, because their content is about a
+specific chosen-model realization of spinors and the field-sensitive image data
+visible there.
+
+From a proof-engineering point of view, the hard obligations are likewise
+structural rather than computational. In \code{ExteriorModel.lean}, the
+vacuum-line criterion had to be stated and proved in a form stable under later
+transport: if every contraction kills a vector, then that vector lies on the
+vacuum line, and any endomorphism sending the vacuum to a scalar while
+intertwining wedge operators is already a scalar multiple of the exterior functor.
+In \code{OddClassification.lean}, the exact split-line image theorem requires
+an explicit even-part description of $\Cl^+(H(K))$ and a direct conjugation
+calculation inside that basis. In \code{OrthogonalAction.lean}, the
+higher-rank factorization bridges Mathlib's matrix theorem
+\code{Matrix.Pivot.exists_list_transvec_mul_diagonal_mul_list_transvec}
+to transported basis transvections and the canonical determinant-one
+$2\times2$ blocks. These are precisely the points where the formalization does
+more than simply replay textbook algebra: it packages the transport and
+covering-map arguments into reusable Lean interfaces.
+
+% --- 3. Chosen-model interface -------------------------------------------
+\section{Chosen-model interface}
 \label{sec:arch}
 
-\paragraph{File layout.} The library is organized into a small number of
-\code{Spinor/\ldots} files, each with a single responsibility: Mathlib
-imports and notation; isotropic subspaces and Witt decomposition
-(\code{Isotropic.lean}, \code{WittDecomp.lean}); the chosen exterior model
-and its wedge/contraction operators (\code{ExteriorModel.lean}); the
-concrete split Clifford and spin actions (\code{HyperbolicAction.lean}); the
-first-class presentation API (\code{Presentation.lean}); the transport of
-all Clifford/spin structure onto the chosen exterior model
-(\code{CliffordAction.lean}, \code{SpinRep.lean}, \code{Chiral.lean}); the
-orthogonal/covering-map layer (\code{OrthogonalAction.lean}); and the
-doubled form (\code{ProdNeg.lean}). Classification results live in
-\code{ComplexClassification.lean}, \code{RealClassification.lean}, and
-\code{LowDimensional.lean}.
+This section records the classical chosen-model infrastructure used later, but
+it also highlights the formal interfaces through which the Lean development
+reuses that setup. Readers interested primarily in the field-sensitive covering
+statements can skim to Section~\ref{sec:results} and return here for the
+transported hyperbolic/Witt layer.
 
-\paragraph{The hyperbolic-presentation pattern.} The central organizing
-idea is to isolate the data
+\begin{definition}[Hyperbolic presentation and chosen spinor model]
+A hyperbolic presentation of a finite-dimensional quadratic form $Q$ over $K$
+is an isometry $Q \simeq \dualProd_K W$ with $W$ finite-dimensional, where
+$\dualProd_K W$ denotes the standard hyperbolic form on $W^* \times W$. The
+associated chosen spinor model is $S(W)=\bigwedge W$, with parity pieces
+$S^\pm(W)=\bigwedge^{\mathrm{even}/\mathrm{odd}} W$.
+\end{definition}
+
+\paragraph{Hyperbolic presentation and transport.} The central organizing idea is
+to isolate the data
 \[
   Q \simeq \dualProd_K W
   \qquad (W \text{ a maximal totally isotropic subspace})
 \]
-as a \Lean{} structure,
-\code{HyperbolicPresentation Q}, carrying a subspace $W$ and an isometry
-equivalence to the standard hyperbolic form \code{dualProd K W}. This
-structure is promoted to a first-class object: it carries a chosen
-$\wedgeW$ model (\code{spinorModule}), chosen even and odd halves
-(\code{evenSpinorModule}, \code{oddSpinorModule}), the transported maximal
-totally isotropic subspace, the Witt-index theorem
-(\code{wittIndex\_eq\_finrank}), the transported
-\code{Cl(Q) \ensuremath{\to} End(\ensuremath{\wedgeW})} action, and the
-restricted \code{spinGroup Q} action as actual \Lean{} \code{Module} and
-\code{MulAction} instances. Theorems about the ambient $(V,Q)$ are then
-proved \emph{on} this presentation and reused whenever one is available.
+as a specified choice of maximal isotropic subspace together with an isometry to
+the standard hyperbolic form. From that single piece of data one obtains the
+chosen exterior model $\bigwedge W$, its even and odd halves, the transported
+Clifford action $\Cl(Q)\to\End(\bigwedge W)$, and the restricted spin-group
+action. The decisive point is that the paper's ``spinor module'' is not the
+ambient regular module on $V$, but a distinguished exterior model carried along
+with the presentation data that justifies it.
 
-\paragraph{Four transport layers.} Concretely, the chosen $\wedgeW$ model
-is threaded through four layers that sit above each other:
-\begin{enumerate}
-  \item \textbf{The split model.} All hard work happens over
-        $\Cl(W^* \times W, \dualProd)$ acting on $\wedgeW$ by wedge on
-        the $W$ factor and interior product by the $W^*$ factor
-        (\code{HyperbolicAction.lean}). The Clifford relation is verified
-        directly; the resulting map is proved to be an algebra equivalence
-        $\Cl(W^* \times W, \dualProd) \simeq \End(\wedgeW)$ by explicit
-        basis projectors.
-  \item \textbf{Explicit hyperbolic presentations
-        $Q \simeq \dualProd_K W$.} Any such presentation transports the
-        split action to $\Cl(V,Q) \to \End(\wedgeW)$ and to the restricted
-        $\Spin(V,Q)$-representation, together with parity, Witt-index,
-        simplicity, faithfulness, and non-factorization statements
-        (\code{Presentation.lean}, \code{CliffordAction.lean},
-        \code{SpinRep.lean}, \code{Chiral.lean}).
-  \item \textbf{The Witt presentation API.} The genuine Witt decomposition
-        $V \simeq W \oplus W^* \oplus V_0$, obtained from a totally
-        isotropic subspace plus a chosen complement, yields both a linear
-        decomposition and a quadratic splitting
-        $Q \simeq \dualProd_K W \oplus Q_0$ (\code{wittIsometryEquiv}).
-        Its hyperbolic factor is exposed as
-        \code{HyperbolicPresentation.canonicalWittFactor} and feeds back
-        into layer~2.
-  \item \textbf{The split-rank canonical model.} When $V_0$ vanishes
-        (split rank), the canonical Witt subspace
-        \code{Q.wittSubspace} chooses its complement internally, yielding
-        \code{splitWittPresentation} and \code{splitSpinorModule}, together
-        with the top-level capstone theorems (dimensions, simplicity,
-        faithfulness, and non-factorization) that require no explicit
-        isometry argument.
-\end{enumerate}
-A fifth specialized layer handles the nondegenerate doubled case
-$(Q \oplus -Q)$ through the canonical diagonal isotropic subspace, via
-\Mathlib's \code{QuadraticForm.toDualProd}, upgraded here to an
-isometry equivalence and packaged as a reusable
-\code{HyperbolicPresentation}.
+The construction then proceeds in three steps. First, the split model on
+$W^* \times W$ is handled concretely, with wedge and contraction giving the
+Clifford action and explicit basis projectors giving
+$\Cl(W^* \times W,\dualProd)\simeq\End(\bigwedge W)$. Second, any hyperbolic
+presentation transports that concrete result to the target quadratic space and
+its spin action. Third, Witt decomposition and the split-rank reformulation recover
+top-level statements that no longer require users to carry an explicit isometry
+argument. In this way, each substantive theorem is proved once on the concrete
+model and then reused at the levels where classification and orthogonal-action
+results are stated.
 
-\paragraph{Threading the chosen model.} The effect of this architecture is
-that every theorem is proved once on the concrete $\wedgeW$ model, then
-lifted verbatim through the presentation APIs. For example, full-module
-simplicity is proved in \code{HyperbolicAction} for the split model and
-then surfaces on \code{HyperbolicPresentation}, \code{WittPresentation},
-and the top-level split-rank aliases with no additional mathematical work
--- only bookkeeping via the transported isomorphisms.
+\paragraph{Representative Lean declarations.}
+The paper's main theorems are mirrored directly by reusable Lean declarations.
+For example, the vacuum-line lemma, the Levi-action bridge, and the exact
+split-line image theorem appear in the development as:
+\begin{quote}\small
+\code{theorem eq_algebraMap_of_forall_contractionAction_eq_zero}\\
+\code{  (hx : ∀ d : Module.Dual K W, contractionAction (K := K) W d x = 0) :}\\
+\code{  ∃ c : K, x = algebraMap K _ c}
+
+\medskip
+\code{theorem splitCliffordAction_eq_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq}\\
+\code{  (s : spinGroup (QuadraticForm.dualProd K W)) (g : W ≃ₗ[K] W) ... :}\\
+\code{  ∃ c : K, splitCliffordAction (K := K) W (s : CliffordAlgebra ...)}\\
+\code{    = c • (ExteriorAlgebra.map (g : W →ₗ[K] W)).toLinearMap}
+
+\medskip
+\code{theorem spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup :}\\
+\code{  MonoidHom.range (spinSpecialOrthogonalRepresentationFiniteDimensional}\\
+\code{    (Q := QuadraticForm.dualProd K K)) = dualProdLineSquareScalingSubgroup (K := K)}
+\end{quote}
+These declarations are representative of the paper's design goal: theorem-level
+covering statements are exposed directly at the Lean interface, not only as
+consequences hidden behind a large background equivalence.
 
 % --- 4. Main Results -----------------------------------------------------
 \section{Main Results}
 \label{sec:results}
 
-The following catalog summarises the capstone theorems present in the
-current library.
+Throughout this section, $K$ is a field with $2\in K^\times$ and $Q$ is a
+finite-dimensional quadratic form. The algebra equivalences are first stated
+for an explicit hyperbolic presentation $e:Q \simeq \dualProd_K W$ with
+$W$ finite-dimensional; their split-rank reformulations additionally assume
+that $Q$ is nondegenerate and $\dim V = 2\,\mathrm{wittIndex}(Q)$. Statements
+involving a nontrivial negative half or the equal-dimension formulas
+additionally assume $\dim W>0$ (equivalently positive split rank in the
+split-rank reformulation). The kernel theorem uses the finite-dimensional
+nondegenerate split-rank setting.
 
-\paragraph{Foundations.}
-\begin{itemize}
-  \item Totally isotropic subspaces, existence of maximal totally
-        isotropic subspaces over finite-dimensional spaces over fields,
-        and \code{wittIndex} as the maximal dimension of such a subspace.
-  \item The general linear Witt decomposition
-        $V \simeq W \oplus W^* \oplus V_0$ from a chosen complement
-        (\code{wittLinearDecompositionOfIsCompl}) and the corresponding
-        quadratic splitting \code{wittIsometryEquivOfIsCompl}.
-\end{itemize}
+\subsection*{Classical chosen-model foundation}
 
-\paragraph{The chosen exterior model.}
-\begin{itemize}
-  \item $\dim(\wedgeW) = 2^{\,\mathrm{wittIndex}\,Q}$ and, under an
-        explicit hyperbolic presentation,
-        $\dim(\wedgeW) = 2^{\,\dim V / 2}$. At the theorem-facing
-        split-rank layer these appear as
-        \code{splitSpinorModule\_finrank},
-        \code{positiveHalfSpinorModule\_finrank}, and
-        \code{negativeHalfSpinorModule\_finrank}.
-  \item Parity splitting $\wedgeW = \wedgeEven \oplus \wedgeOdd$, with
-        explicit wedge and contraction operators that flip parity; in
-        positive split rank, each half has dimension $2^{\dim V/2 - 1}$.
-\end{itemize}
+The first theorem packages the standard exterior-model material that the later
+covering and image statements use. It is included as setup for the new
+field-sensitive theorems, not as the venue-facing novelty claim.
 
-\paragraph{Clifford and spin actions.}
-\begin{itemize}
-  \item Split hyperbolic action $\Cl(W^* \times W, \dualProd) \to
-        \End(\wedgeW)$ satisfying the Clifford relation; the canonical
-        split-rank wrapper exposes the vector identity as
-        \code{splitSpinorCliffordAction\_sq\_apply}.
-  \item Transport to $\Cl(V,Q) \to \End(\wedgeW)$ along any explicit
-        hyperbolic presentation, and its restriction to
-        \code{spinGroup Q} as a genuine \code{MulAction}.
-  \item Faithful Clifford action on the chosen model in the explicit
-        hyperbolic, Witt, and split-Witt settings, packaged as an algebra
-        equivalence $\Cl(Q) \simeq \End(\wedgeW)$; on the canonical API
-        this is surfaced by \code{splitSpinorCliffordAction\_injective}
-        and the matrix-algebra model \code{splitWittCliffordEquivMatrix}.
-\end{itemize}
+\begin{theorem}[Exterior-model spinor theorem]
+\label{thm:chosen-spinor-package}
+Assume $K$ is a field with $2\in K^\times$, let
+$e:Q \simeq \dualProd_K W$ be an explicit hyperbolic presentation, and set
+$S=\bigwedge W$, $S^+=\wedgeEven$, and $S^-=\wedgeOdd$. Then the following hold.
+\begin{enumerate}
+\item For the explicit hyperbolic presentation, the Clifford action on $S$ by
+  wedge and contraction yields
+  \[
+    \Cl(Q)\simeq \End(S).
+  \]
+  If $\dim W>0$, then the even action yields
+  \[
+    \Cl^+(Q)\simeq \End(S^+) \times \End(S^-);
+  \]
+  if $\dim W=0$, then $\Cl^+(Q)=K=\End(S^+)$ and $S^-=0$.
+\item If $\dim W=n$, then $\dim S = 2^n$; if $n>0$, then
+  $\dim S^+ = \dim S^- = 2^{n-1}$.
+\item For finite-dimensional nondegenerate split-rank $Q$ with
+  $\dim V = 2\,\mathrm{wittIndex}(Q)$, any chosen Witt decomposition produces a
+  hyperbolic presentation and hence a spinor model with the preceding
+  properties. For each such choice, the positive half-spin module is simple. If
+  the split rank is positive, then the negative half-spin module is simple and
+  the two half-spin modules are inequivalent as modules over the even Clifford
+  algebra; if the split rank is $0$, then $S^+=K$ and $S^-=0$.
+\end{enumerate}
+\end{theorem}
 
-\paragraph{Chirality / half-spin.}
-\begin{itemize}
-  \item Chosen-model chiral decomposition with \code{spinGroup} preserving
-        each half, and identification of the zero-form chiral pieces with
-        the exterior even/odd summands. The bridge to the ambient chiral
-        notation is packaged by
-        \code{positiveHalfSpinorModule\_eq\_ambient\_positiveChiral},
-        \code{negativeHalfSpinorModule\_eq\_ambient\_negativeChiral}, and
-        the bundled \code{splitSpinor\_chiral\_correspondence}.
-  \item $\Cl^+(Q) \simeq \End(\wedgeEven) \times \End(\wedgeOdd)$ through
-        the presentation APIs; in positive split rank, the concrete
-        product-of-matrices form of size $2^{\dim V/2 - 1}$.
-\end{itemize}
+\begin{proof}[Proof provenance]
+The explicit-presentation statement is obtained in
+Section~\ref{sec:highlights} by transporting the split-model matrix-unit
+calculation (Theorem~\ref{thm:matrix-units-split}) and its parity corollary
+(Corollary~\ref{cor:even-half-spin}) along
+Proposition~\ref{prop:transport-split}. The dimension formulas are the standard
+binomial counts for $\bigwedge W$, and the split-rank formulation follows by
+choosing a Witt decomposition and applying the same transported package. We
+state the result here because the later covering and image theorems are all
+built on this chosen-model interface.
+\end{proof}
 
-\paragraph{Simplicity, faithfulness, and covering-map statements.}
-\begin{itemize}
-  \item The full chosen Clifford module $\wedgeW$ is simple in the split
-        model; this is transported to the hyperbolic, Witt, and
-        split-Witt presentations.
-  \item Each chosen half $\wedgeEven$, $\wedgeOdd$ is simple under the
-        even Clifford algebra (positive split rank for the odd half),
-        and the two halves are inequivalent as modules over $\Cl^+$.
-  \item The ambient vector action
-        \code{spinLinearRepresentation} preserves $Q$; each spin element
-        is packaged as a genuine \code{Q.IsometryEquiv Q}, and the whole
-        map is a homomorphism
-        \code{spinIsometryRepresentation :\,spinGroup\,Q \ensuremath{\to^{*}}
-        Q.IsometryEquiv\,Q}.
-  \item On the split-rank chosen-model API, the ambient
-        spin-to-isometry kernel is proved to be exactly
-        $\{\pm 1\}$, and the spin representation is proved not to
-        factor through the ambient isometry representation whenever
-        $Q$ represents $-1$ and $-1 \neq 1$.
-\end{itemize}
+The paper deliberately separates the presentation-dependent and split-rank
+versions of these results. The endomorphism-algebra equivalences are
+first proved from an explicit hyperbolic presentation, where no separate
+nondegeneracy hypothesis is needed; the nondegenerate split-rank assumptions
+enter when the explicit isometry data are suppressed and the chosen model is
+recast through a Witt construction.
 
-\paragraph{Classification.}
-\begin{itemize}
-  \item Over $\mathbb{C}$: $\Cl(2n,\mathbb{C}) \simeq
-        \Mat_{2^n}(\mathbb{C})$ and
-        $\Cl(2n{+}1,\mathbb{C}) \simeq
-        \Mat_{2^n}(\mathbb{C}) \times \Mat_{2^n}(\mathbb{C})$ on the
-        standard sum-of-squares forms, packaged as
-        \code{complexEvenCliffordEquivMatrix} and
-        \code{complexOddCliffordEquivProdMatrix}.
-  \item Over $\mathbb{R}$ (split signature):
-        $\Cl(n,n) \simeq \Mat_{2^n}(\mathbb{R})$ and
-        $\Cl^+(n,n) \simeq \Mat_{2^{n-1}}(\mathbb{R}) \times
-        \Mat_{2^{n-1}}(\mathbb{R})$, packaged as
-        \code{realSplitCliffordEquivMatrix} and
-        \code{realSplitEvenCliffordEquivProdMatrix}.
-  \item Explicit low-dimensional identifications, including
-        $\Cl(1,\mathbb{C})$, $\Cl(2,\mathbb{C})$, $\Cl(3,\mathbb{C})$,
-        $\Cl(4,\mathbb{C})$, $\Cl(0,1) \simeq \mathbb{C}$,
-        $\Cl(0,2) \simeq \mathbb{H}$, $\Cl(0,3) \simeq
-        \mathbb{H} \times \mathbb{H}$, $\Cl^+(0,4) \simeq
-        \mathbb{H} \times \mathbb{H}$, $\Cl^+(2,0) \simeq \mathbb{C}$,
-        $\Cl^+(3,0) \simeq \mathbb{H}$, $\Cl(1,1) \simeq
-        \Mat_2(\mathbb{R})$, and $\Cl^+(2,2) \simeq \Mat_2(\mathbb{R})
-        \times \Mat_2(\mathbb{R})$ via
-        \code{RealClassification.cl\_0\_1\_equivComplex},
-        \code{RealClassification.cl\_0\_2\_equivQuaternion},
-        \code{Cl03QuaternionProd.realCl03EquivQuaternionProd}, and
-        \code{realEvenCl04EquivQuaternionProd}.
-  \item The compact group identification
-        $\Spin(2) \simeq U(1)$, packaged as
-        \code{realSpin02EquivUnitaryComplex}, and the quaternionic compact
-        identification $\Spin(3) \simeq SU(2)$, packaged as
-        \code{realSpin03EquivUnitaryQuaternion}.
-  \item The next compact step, the equivalence
-        $\Spin(4) \simeq SU(2) \times SU(2)$, is packaged as
-        \code{realSpin04EquivUnitaryQuaternionPair}; its forward map
-        \code{spinGroupRealCl04ToUnitaryQuaternionPair} sits on top of the algebra
-        equivalence \code{realEvenCl04EquivQuaternionProd : Cl^+(0,4) \simeq
-        \mathbb{H} \times \mathbb{H}}; the diagonal compact subgroup is
-        constructed explicitly through
-        \code{unitaryQuaternionToSpinGroupRealCl04Diagonal}, the full
-        anti-diagonal subgroup through
-        \code{unitaryQuaternionToSpinGroupRealCl04Antidiagonal}, and arbitrary
-        pairs are lifted by
-        \code{spinGroupRealCl04ToUnitaryQuaternionPair_apply_preimage}.
-\end{itemize}
+At split rank $0$, one simply has $W=0$, $S^+=K$, and $S^-=0$. Positive-rank
+hypotheses first enter when one asks for a nontrivial negative half-spin module,
+for the equal half-spin dimension formula, or for the two-factor even-part
+decomposition.
 
-% --- 5. Key Proof Highlights ---------------------------------------------
-\section{Key Proof Highlights}
+This theorem is the algebraic engine behind the paper, but it is still
+classical chosen-model setup. The new theorem-level payoffs begin with the
+field-sensitive covering and image statements stated next.
+
+\subsection*{New field-sensitive covering and image package}
+
+\begin{theorem}[Positive split-rank kernel, spinorial descent, and exact split-line image]
+\label{thm:kernel-nonfactor-split-line}
+Assume $K$ is a field with $2\in K^\times$. If $Q$ is finite-dimensional,
+nondegenerate, and of positive split rank
+\[
+  0<\dim V = 2\,\mathrm{wittIndex}(Q),
+\]
+then the kernel of the spin-to-isometry map
+\[
+  \Spin(V,Q) \to \SO(V,Q)
+\]
+is exactly $\{\pm1\}$. If $S=\bigwedge W$ is the exterior-model spinor module
+attached to any chosen Witt decomposition of $Q$, then the resulting spin
+representation
+\[
+  \Spin(V,Q) \to \operatorname{GL}(S)
+\]
+does not factor through $\SO(V,Q)$: there is no group homomorphism
+$\rho:\SO(V,Q)\to \operatorname{GL}(S)$ whose composite with
+$\Spin(V,Q)\to\SO(V,Q)$ is the given spin action on $S$. The same is true for
+each nonzero half-spin piece $S^\pm$. However, the induced action on the
+projective spaces $\mathbb{P}(S)$ and $\mathbb{P}(S^\pm)$ depends only on the
+image of $\Spin(V,Q)\to\SO(V,Q)$ and therefore defines an action of that image
+subgroup. For the split line $Q=\dualProd_K K$, the image inside $\SO(Q)$ is
+exactly the square-scaling subgroup, i.e.\ the subgroup of maps
+\[
+  (x,y)\longmapsto (a x, a^{-1} y)
+  \qquad (a\in (K^\times)^2).
+\]
+Consequently, the expected double-cover statement on the split line is recovered only under
+square-surjectivity of $K^\times$, and no unrestricted higher-rank
+surjectivity theorem is claimed here.
+\end{theorem}
+
+\begin{proof}[Proof provenance]
+Section~\ref{sec:highlights} proves the kernel calculation
+(Proposition~\ref{prop:kernel-from-matrix}), non-factorization
+(Proposition~\ref{prop:nonfactorization}), projective descent
+(Proposition~\ref{prop:projective-descent}), and the exact split-line image
+statement (Proposition~\ref{prop:split-line-square}). The final split-line
+clause is exact because every element of $\SO(\dualProd_K K)$ is a reciprocal
+scaling and Proposition~\ref{prop:split-line-square} identifies precisely which
+such scalings lie in the spin image.
+\end{proof}
+
+The next two statements are the paper's further headline results. Their proofs
+are deferred to the later section, after the explicit root and torus
+constructions needed for the argument have been set up.
+
+\begin{theorem}[Levi lifts act projectively as the exterior action]
+\label{thm:levi-projective-exterior}
+Let $Q=\dualProd_K W$ and let $S=\bigwedge W$ be the chosen exterior model.
+Suppose $s\in \Spin(Q)$ projects to the transported Levi element
+\[
+  \Lambda(g)=(g^{-{\vee}},g)\in \SO(Q)
+\]
+for some $g\in \operatorname{GL}(W)$. Then there exists $c\in K^\times$ such that
+\[
+  \rho_S(s)=c\,(\bigwedge g)
+\]
+as endomorphisms of $S$. In particular the projective action of a split Levi
+lift on $S$ depends only on its Levi coordinate $g$.
+\end{theorem}
+
+\begin{theorem}[Square-determinant Levi factorization in the orthogonal action]
+\label{thm:square-det-levi}
+Assume $\dim W\ge 2$, and let
+\[
+  \Lambda:\operatorname{GL}(W)\hookrightarrow \SO(\dualProd_K W)
+\]
+denote the transported Levi embedding $\Lambda(g)=(g^{-{\vee}},g)$. If
+$g\in \operatorname{GL}(W)$ has $\det(g)\in (K^\times)^2$, then after choosing a
+basis of $W$ and a distinguished basis line, $\Lambda(g)$ factors in
+$\SO(\dualProd_K W)$ as
+\[
+  \begin{aligned}
+  \Lambda(g) ={}&
+    \text{(transported basis transvections)} \\
+    &\cdot\, \text{(one chosen-line square scaling)} \\
+    &\cdot\, \text{(canonical determinant-one $2\times 2$ diagonal blocks)} \\
+    &\cdot\, \text{(transported basis transvections)}.
+  \end{aligned}
+\]
+In particular, because each canonical $2\times2$ block is itself a product of
+transported hyperbolic transvections, $\Lambda(g)$ is a product of transported
+hyperbolic transvections and one chosen-line square scaling. Equivalently, the
+square-determinant part of the Levi subgroup admits explicit Clifford
+representatives implementing this factorization on $W^*\oplus W$. In
+particular, $\Lambda(\operatorname{SL}(W))$ is contained in the subgroup of
+$\SO(\dualProd_K W)$ generated by the transported hyperbolic transvections.
+\end{theorem}
+
+Together, Theorems~\ref{thm:chosen-spinor-package},
+\ref{thm:kernel-nonfactor-split-line},
+\ref{thm:levi-projective-exterior}, and
+\ref{thm:square-det-levi} capture the paper's main theorem-level arc: a
+classical chosen-model foundation, a field-sensitive covering package, a
+structural Levi bridge, and a higher-rank factorization consequence. The next
+section proves these statements and the supporting explicit calculations.
+
+% --- 5. Mechanized proof ingredients ---------------------------------------
+\section{Mechanized proof ingredients}
 \label{sec:highlights}
 
-\paragraph{From exterior basis combinatorics to matrix units.}
-The split-model proofs in \code{ExteriorModel.lean} work against the
-explicit exterior basis \code{b.ExteriorAlgebra s} indexed by finite
-subsets \code{s}. The theorem
-\code{basisMembershipProjectorElem\_apply\_basis} constructs Clifford
-elements acting as coordinate projectors on this basis, while
-\code{exists\_splitCliffordAction\_contract\_basis},
-\code{exists\_splitCliffordAction\_wedge\_basis}, and the bundled
-\code{exists\_splitCliffordAction\_basis\_transfer} remove, insert, and
-move basis indices. Together these operators behave as matrix units for
-the chosen \code{splitCliffordAction}; they are the concrete engine
-behind surjectivity and later parity arguments, not a black-box appeal to
-abstract semisimplicity.
+This section isolates the split-model calculations, transport lemmas, and
+explicit orthogonal-action formulas that underlie the theorem statements of
+Section~\ref{sec:results}. In the Lean development these are the reusable
+interfaces exported by the chosen-model and orthogonal-action files, so we
+present them here as the mechanized proof architecture rather than as a second
+main-results section.
 
-\paragraph{Simplicity of $\wedgeEven$ under $\Cl^+$.}
-Half-spin simplicity is the technical heart of the development. In the
-split model $\Cl(W^* \times W, \dualProd)$ acting on $\wedgeW$ by
-wedge and contraction, we exhibit explicit basis projectors witnessing
-that every non-zero element of $\wedgeEven$ can be mapped to any other
-by an element of the even Clifford algebra. The parity idempotent
-\code{exists\_evenSplitCliffordParityProjector} (transported as
-\code{exists\_evenHyperbolicCliffordParityProjector}) isolates the even
-summand inside $\wedgeW$, and the matrix-unit operators above then show
-that any non-zero vector generates all of it. This yields
-\code{evenHyperbolicCliffordAction\_isSimpleModule}; in positive split
-rank the same argument gives
-\code{oddHyperbolicCliffordAction\_isSimpleModule}. The whole statement
-is transported through the \code{HyperbolicPresentation},
-\code{WittPresentation}, and \code{splitWittPresentation} layers with no
-additional mathematical work.
+Fix the split hyperbolic form $Q=\dualProd_K W$, choose a basis
+$e_1,\dots,e_n$ of $W$ with dual basis $e^1,\dots,e^n$, and write
+$e_I$ for the exterior basis vector indexed by a subset
+$I\subseteq \{1,\dots,n\}$. Let $L_i(x)=e_i\wedge x$ and
+$D_i(x)=\iota_{e^i}(x)$ be wedge and contraction. These operators satisfy the
+split Clifford relations
+\[
+  L_i^2=D_i^2=0,
+  \qquad
+  L_iD_j+D_jL_i=\delta_{ij}.
+\]
 
-\paragraph{Equivalence $\Cl(Q) \simeq \End(\wedgeW)$.}
-Surjectivity and injectivity of
-\code{splitCliffordAction :
-  Cl(W^* \times W, dualProd) \ensuremath{\to} End(\ensuremath{\wedgeW})}
-are the algebra-side counterpart of simplicity. Surjectivity is proved by
-realizing every basis endomorphism as a Clifford element built from the
-same transfer operators; injectivity
-(\code{splitCliffordAction\_injective}, hence
-\code{hyperbolicCliffordAction\_injective} and the theorem-facing
-\code{splitSpinorCliffordAction\_injective}) follows because the split
-action is already faithful on the exterior basis. Transport along any
-hyperbolic presentation then yields the algebra equivalence
-$\Cl(Q) \simeq \End(\wedgeW)$ and, in split rank, the concrete
-$\Cl(Q) \simeq \Mat_{2^{\dim V/2}}(K)$ realization through
-\code{splitWittCliffordEquivMatrix}. The same machinery, applied to
-$\Cl^+$, yields
-$\Cl^+(Q) \simeq \End(\wedgeEven) \times \End(\wedgeOdd)$, while the
-top-level identity \code{splitSpinorCliffordAction\_sq\_apply} keeps the
-Clifford relation visible on the canonical chosen model.
+\begin{lemma}[Projector factors on the exterior basis]
+For a basis vector $e_J$ and an index $i$, one has
+\[
+  L_iD_i(e_J)=
+  \begin{cases}
+    e_J,& i\in J,\\
+    0,& i\notin J,
+  \end{cases}
+  \qquad
+  D_iL_i(e_J)=
+  \begin{cases}
+    e_J,& i\notin J,\\
+    0,& i\in J.
+  \end{cases}
+\]
+Moreover, for distinct indices these operators commute on the exterior basis.
+\end{lemma}
+
+\begin{proof}
+If $i\in J$, then $D_i(e_J)$ removes the basis vector $e_i$ from $e_J$ up to
+the usual Koszul sign, and wedging again by $e_i$ restores $e_J$ with the same
+sign. If $i\notin J$, then $D_i(e_J)=0$. This proves the formula for $L_iD_i$;
+the formula for $D_iL_i$ is identical, with ``insert then remove'' replacing
+``remove then insert.'' For distinct indices, the operators merely test
+membership of different basis vectors, so applying them in either order to any
+basis vector either reproduces that vector or kills it. Hence they commute on
+the exterior basis, and therefore on all of $\bigwedge W$.
+\end{proof}
+
+\begin{theorem}[Matrix units in the split model]
+\label{thm:matrix-units-split}
+For the split hyperbolic form $Q=\dualProd_K W$, define for each subset
+$I\subseteq \{1,\dots,n\}$
+\[
+  P_I=\prod_{i\in I} L_iD_i \prod_{j\notin I} D_jL_j .
+\]
+In this formula, and in the one below, all products are taken from left to
+right in increasing index order. Then $P_I(e_J)=0$ for $J\neq I$ and
+$P_I(e_I)=e_I$. For subsets $I,J$, let
+\[
+  T_{I,J}=
+    \varepsilon_{I,J}
+    \Bigl(\prod_{i\in I\setminus J} L_i\Bigr)
+    \Bigl(\prod_{j\in J\setminus I} D_j\Bigr)
+    P_J,
+\]
+where $\varepsilon_{I,J}\in\{\pm 1\}$ is the unique sign making
+$T_{I,J}(e_J)=e_I$. Then
+\[
+  T_{I,J}(e_{J'})=\delta_{J,J'} e_I.
+\]
+Consequently the image of the split Clifford action contains every matrix unit
+$E_{I,J}$ of $\End(\bigwedge W)$. Hence the split Clifford action is
+surjective, and since both source and target have dimension $2^{2n}$, one obtains
+\[
+  \Cl(Q)\simeq \End(\bigwedge W).
+\]
+\end{theorem}
+
+\begin{proof}
+The preceding lemma shows that each factor in $P_I$ either fixes or kills a
+basis vector according to whether the corresponding index belongs to that basis
+vector. Since the factors commute on the exterior basis, the product $P_I$
+annihilates every $e_J$ with $J\neq I$ and fixes $e_I$. Thus $P_I$ projects
+onto the line $Ke_I$.
+
+Now fix $J$. The operator $P_J$ kills every basis vector except $e_J$. On the
+vector $e_J$, the contraction factors indexed by $J\setminus I$ are applied in
+increasing order and remove exactly the basis elements that must disappear; the
+result is the basis vector $e_{J\cap I}$ up to the corresponding Koszul sign.
+The wedge factors indexed by $I\setminus J$, again in increasing order, insert
+exactly the missing basis elements, producing $e_I$ up to a second Koszul sign.
+Because $(J\setminus I)\cap(I\setminus J)=\varnothing$, none of these steps
+kills the intermediate vector. With the chosen order, the total sign is the
+single scalar $\varepsilon_{I,J}$ built into the definition of $T_{I,J}$.
+Hence $T_{I,J}(e_{J'})=0$ for $J'\neq J$ and $T_{I,J}(e_J)=e_I$, so
+$T_{I,J}=E_{I,J}$.
+
+The image of the split Clifford action therefore contains all matrix units of
+$\End(\bigwedge W)$ and is surjective. Finally,
+$\dim \Cl(Q)=2^{\dim(W^*\oplus W)}=2^{2n}$ and
+$\dim \End(\bigwedge W)=(2^n)^2=2^{2n}$, so the surjective map is an
+isomorphism.
+\end{proof}
+
+\begin{corollary}[Even part and half-spin consequences]
+\label{cor:even-half-spin}
+For the same split hyperbolic form $Q=\dualProd_K W$, the even Clifford image
+preserves the parity decomposition
+$\bigwedge W=\wedgeEven\oplus\wedgeOdd$. On each parity block it contains all
+matrix units between basis vectors of the same parity. If $\dim W>0$, then
+\[
+  \Cl^+(Q)\simeq \End(\wedgeEven)\times \End(\wedgeOdd).
+\]
+If $\dim W=0$, then $\Cl^+(Q)=K=\End(\wedgeEven)$ and $\wedgeOdd=0$. Moreover,
+$\wedgeEven$ is simple as a $\Cl^+(Q)$-module, and if $\dim W>0$ then
+$\wedgeOdd$ is simple as well. When $\dim W>0$ the two parity pieces are
+inequivalent.
+\end{corollary}
+
+\begin{proof}
+Each $L_i$ and $D_i$ changes degree by $\pm 1$, so even words preserve parity.
+If $|I|\equiv |J|\pmod 2$, then the operator $T_{I,J}$ above contains an even
+number of wedge/contraction steps and belongs to the even Clifford image.
+Restricting to basis vectors of fixed parity therefore yields every block matrix
+unit on $\wedgeEven$ and on $\wedgeOdd$. If $\dim W>0$, this gives a surjective
+homomorphism
+\[
+  \Cl^+(Q)\twoheadrightarrow \End(\wedgeEven)\times \End(\wedgeOdd).
+\]
+Now
+\[
+  \begin{aligned}
+  \dim \Cl^+(Q) &= 2^{2n-1}, \\
+  \dim \End(\wedgeEven)+\dim \End(\wedgeOdd)
+    &= 2(2^{n-1})^2 = 2^{2n-1}.
+  \end{aligned}
+\]
+so the surjection is an isomorphism. If $\dim W=0$, then $\wedgeEven=K$,
+$\wedgeOdd=0$, and the even Clifford algebra is just $K$.
+
+The same blockwise matrix units show that any nonzero vector in $\wedgeEven$
+generates the whole even half, and similarly for $\wedgeOdd$ when $n>0$.
+When $n>0$, any $\Cl^+(Q)$-linear map $\wedgeEven\to\wedgeOdd$ is annihilated by
+$0\times \End(\wedgeOdd)$ on the source and acted on faithfully by that factor
+on the target, so it must vanish.
+\end{proof}
+
+\begin{proposition}[Transport to hyperbolic presentations and split rank]
+\label{prop:transport-split}
+If $e:Q \simeq \dualProd_K W$ is an explicit hyperbolic presentation, then
+conjugating the split-model operators above by the linear identification
+induced from $e$ transports the matrix-unit theorem and its parity corollary to
+the Clifford action attached to $Q$. If $Q$ is finite-dimensional,
+nondegenerate, and of split rank (equivalently maximal Witt index), a Witt decomposition provides
+such an $e$, so the same proof gives the split-rank statements without keeping
+the isometry as part of the final formulation.
+\end{proposition}
+
+\begin{proof}
+Let $\rho_{\mathrm{hyp}}$ denote the split-model Clifford action on
+$\bigwedge W$, and let
+\[
+  \phi_e:\Cl(Q)\xrightarrow{\ \simeq\ }\Cl(\dualProd_K W)
+\]
+be the algebra isomorphism induced by the hyperbolic presentation $e$.
+Transporting the action simply means defining
+\[
+  \rho_e(a)=\rho_{\mathrm{hyp}}(\phi_e(a))
+  \qquad (a\in \Cl(Q)).
+\]
+For a vector $v\in V$, this says
+\(\rho_e(\iota_Q(v)) = (\rho_{\mathrm{hyp}}\circ \iota_{\dualProd}\circ e)(v)\),
+so the transported action is obtained by writing the split-model
+wedge/contraction formulas in the coordinates supplied by $e$.
+Because $\phi_e$ is an algebra isomorphism, the transported wedge/contraction
+operators satisfy the same Clifford relations as the split ones. The
+projectors $P_I$ and transfer operators $T_{I,J}$ are algebraic expressions in
+those operators, so the entire matrix-unit construction survives unchanged
+under transport. This gives the explicit-presentation version of both
+Theorem~\ref{thm:matrix-units-split} and
+Corollary~\ref{cor:even-half-spin}.
+
+Now suppose $Q$ is finite-dimensional, nondegenerate, and of split rank
+(equivalently maximal Witt index). Choose a maximal totally isotropic subspace $W\subset V$ and an
+isotropic complement $W'$. Witt decomposition gives
+$V=W'\oplus W$, and the bilinear pairing between $W'$ and $W$ identifies
+$W'$ with $W^*$, producing a hyperbolic presentation
+$Q\simeq \dualProd_K W$. Applying the preceding transport to that presentation
+yields the split-rank statements. The final theorems depend only on the
+existence of such a Witt decomposition, not on retaining a particular choice in
+the statement.
+\end{proof}
 
 \paragraph{Identifying Weyl spinors without confusing them with the ambient
 regular module.}
-One subtle point in the library is that the ambient regular module
-\code{SpinorModule (R := K) (M := V) Q = ExteriorAlgebra K V} has
-dimension $2^{\dim V}$, whereas the chosen spinor model in split rank,
-\code{splitSpinorModule Q = ExteriorAlgebra K Q.wittSubspace}, has the
-expected dimension $2^{\dim V/2}$. The half-spin theorems therefore
-cannot be literal ambient submodules of the former. Instead,
-\code{positiveHalfSpinorModule\_eq\_ambient\_positiveChiral},
-\code{negativeHalfSpinorModule\_eq\_ambient\_negativeChiral},
-\code{positiveHalfSpinorModule\_eq\_evenWittExterior},
-\code{negativeHalfSpinorModule\_eq\_oddWittExterior}, and the bundled
-\code{splitSpinor\_chiral\_correspondence} identify the canonical
-chosen-model halves with the ambient chiral construction applied to the
-zero-form regular module on \code{Q.wittSubspace}. This is the formal
-content of the slogan
+One subtle point is that the ambient regular module on $V$ has dimension
+$2^{\dim V}$, whereas the chosen spinor model in split rank has the expected
+dimension $2^{\dim V/2}$. The half-spin theorems therefore cannot literally be
+statements about ambient submodules of the regular representation. Instead,
+bridge results identify the canonical chosen-model halves with the even and odd
+parts of the exterior model built on the maximal isotropic space. This is the
+formal content of the slogan
 $S^{\pm} = \bigwedge^{\mathrm{even}/\mathrm{odd}} W$.
 
-\paragraph{Split-rank covering-map fragments.}
-The covering map $\Spin(V,Q) \to \SO(V,Q)$ is not yet formalized in full
-generality, but its key algebraic ingredients are. We show that every
-element of the kernel of the spin-to-isometry representation acts
-trivially on the whole Clifford algebra by conjugation, hence commutes
-with every Clifford element. In \code{OrthogonalAction.lean} this is
-spelled out through
-\code{spinConjAlgEquiv\_eq\_refl\_of\_spinIsometryRepresentation\_eq\_one},
-\code{commute\_of\_spinIsometryRepresentation\_eq\_one}, and
-\code{spinIsometryRepresentation\_eq\_one\_iff\_coe\_eq\_one\_or\_neg\_one\_of\_kernel\_scalars},
-which isolates the remaining task to showing that kernel elements are
-scalar. In the finite-dimensional hyperbolic setting, the chosen-model
-equivalence $\Cl(Q) \simeq \End(\wedgeW)$ supplies exactly that
-scalarity, yielding on the canonical split-rank API the exact kernel
-$\{\pm 1\}$ via
-\code{splitSpinorCoveringKernel\_eq\_one\_or\_neg\_one}. Combined with
-\code{spinRepresentation\_not\_factor\_through\_isometry\_of\_exists\_quadratic\_eq\_neg\_one},
-this produces the canonical non-factorization result
-\code{splitSpinorRepresentation\_not\_factor\_through\_isometry}
-whenever $Q$ represents $-1$ and $-1 \neq 1$.
+\paragraph{Covering-map progress: exact kernel, spinorial descent, explicit transvections, chosen-line square scaling, and exact split-line image.}
+The covering map $\Spin(V,Q) \to \SO(V,Q)$ is not yet treated in full
+generality here, but the present manuscript already isolates the pieces that a
+complete proof must control. All of these statements live under the standing
+$2\in K^\times$ hypothesis. In the split-rank setting treated here, if an
+element lies in the kernel of the spin-to-isometry representation, then its
+conjugation action is trivial on the Clifford generators, hence on the whole
+Clifford algebra. The matrix model then forces such an element to be scalar,
+and the spin norm reduces the scalar possibilities to $\pm1$.
 
-% --- 6. Lessons Learned --------------------------------------------------
-\section{Lessons Learned}
-\label{sec:lessons}
+\begin{proposition}[Kernel calculation from the matrix model]
+\label{prop:kernel-from-matrix}
+Assume $Q$ is finite-dimensional, nondegenerate, and hyperbolic. If
+$x\in \Spin(Q)$ acts trivially on $V$ under the spin-to-isometry map, then
+$x=\pm1$.
+\end{proposition}
 
-\paragraph{Gaps found in \Mathlib.} The inventory in
-\code{Spinor/Inventory.lean} records three concrete gaps that \SpinorLean
-had to bridge, but the implementation experience sharpened them further.
-First, \code{QuadraticForm.WittDecomp} was effectively absent: the
-existence of maximal totally isotropic subspaces over finite-dimensional
-vector spaces, the Witt index as the maximal such dimension, and the
-linear/quadratic Witt decomposition $V \simeq W \oplus W^* \oplus V_0$
-had to be built from primitive pieces and are now exposed as
-\code{wittLinearDecompositionOfIsCompl},
-\code{wittIsometryEquivOfIsCompl}, and finally the reusable
-\code{HyperbolicPresentation} packaging. Second, exterior-algebra support
-was present only at a low level: \Mathlib already had
-\code{ExteriorAlgebra.\ensuremath{\iota}} and
-\code{CliffordAlgebra.contractLeft}, but the spinor construction needed
-degree-lowering/parity-flipping lemmas, basis insert/remove formulas, and
-even-Clifford parity projectors such as
-\code{exists\_evenSplitCliffordParityProjector}; these now live in
-\code{ExteriorModel.lean}. Third, the representation-theoretic layer was
-entirely missing: there was no theorem-facing API for a chosen Clifford
-module, no packaged even-Clifford action on half-spin modules, and no
-bridge from \code{spinGroup Q} to \code{Q.IsometryEquiv Q}. Files
-\code{CliffordAction.lean}, \code{SpinRep.lean},
-\code{HyperbolicAction.lean}, and \code{OrthogonalAction.lean} fill that
-gap.
+\begin{proof}
+Triviality of the orthogonal action means $xvx^{-1}=v$ for every $v\in V$, so
+$xv=vx$. Since $V$ generates $\Cl(Q)$, the element $x$ is central in
+$\Cl(Q)$. Under the matrix-model isomorphism
+$\Cl(Q)\simeq \End(\bigwedge W)$, central elements correspond to the center of a
+full matrix algebra, hence to scalars. Thus $x=\lambda$ for some
+$\lambda\in K^\times$. The defining spin norm relation then gives
+$1=x\tilde x=\lambda^2$, so $\lambda=\pm1$. Transporting this argument through
+the split-Witt reformulation gives the positive split-rank kernel theorem used in the
+main results.
+\end{proof}
 
-\paragraph{The ambient exterior algebra is not the spinor module.}
-A recurrent proof-engineering trap was to treat
-\code{ExteriorAlgebra K V} as if it were already the spinor
-representation. It is the regular Clifford module, and in split rank it
-has dimension $2^{\dim V}$ rather than the spin dimension
-$2^{\dim V/2}$ proved by \code{splitSpinorModule\_finrank}. The project
-became much cleaner once the chosen-model objects
-\code{splitSpinorModule}, \code{positiveHalfSpinorModule}, and
-\code{negativeHalfSpinorModule} were kept separate from the ambient
-regular module, with explicit bridge theorems such as
-\code{splitSpinor\_chiral\_correspondence}. In retrospect this
-distinction should be stated early and often in the paper.
+\begin{proposition}[Positive split-rank non-factorization]
+\label{prop:nonfactorization}
+Assume $Q$ is finite-dimensional, nondegenerate, and of positive split rank,
+and let $S=\bigwedge W$ be the exterior-model spinor module attached to a
+chosen Witt decomposition of $Q$. Then the spin representation
+\[
+  \Spin(V,Q)\to \operatorname{GL}(S)
+\]
+does not factor through $\SO(V,Q)$. The same is true for the induced
+representations on the nonzero half-spin modules $S^+$ and $S^-$.
+\end{proposition}
 
-\paragraph{Design choices.} The hyperbolic-presentation pattern emerged
-from two failed drafts in which the chosen model was threaded either too
-concretely (forcing every consumer to carry a subspace and isometry by
-hand) or too abstractly (losing access to the explicit basis projectors
-needed for simplicity proofs). Packaging the isometry and its chosen
-model as a single \Lean{} structure, and duplicating exactly the API
-needed at each transport layer, gave us both reusable theorems and
-manageable proof obligations. A recurring theme was the benefit of
-proving each hard statement once on the split model and letting the
-transport layer handle the rest -- the four-layer stack has paid back
-that investment many times over. A useful by-product was a small stock of
-grade-aware transport lemmas such as \code{cliffordMap\_mem\_evenOdd\_zero},
-\code{cliffordMap\_mem\_evenOdd\_one}, and
-\code{evenCliffordEquivOfIsometry}; classification files can now consume
-the same \code{cliffordEquivEnd}/\code{cliffordEquivMatrix} interface as
-the spin-representation files instead of reopening the construction of
-$\wedgeW$.
+\begin{proof}
+Choose a nonzero $w\in W$ and a dual vector $f\in W^*$ with $f(w)=1$. In the
+transported hyperbolic model, the vector
+\[
+  u=(-f,w)\in W^*\oplus W
+\]
+satisfies
+\[
+  Q(u)=(-f)(w)=-1,
+\]
+hence $u^2=-1$. Therefore
+\[
+  -1=u^2
+\]
+is a product of two unit vectors, so $-1\in \Spin(V,Q)$. Being scalar, it acts
+trivially on $V$ by conjugation, so its image in $\SO(V,Q)$ is the identity.
+On the spinor module $S=\bigwedge W$, however, the Clifford action of the
+scalar $-1$ is just $-\mathrm{id}_S$, which is nontrivial because
+$(-1)\cdot 1=-1\neq 1$ in $S$. Since scalar multiplication preserves parity,
+the same operator restricts to $-\mathrm{id}$ on each half-spin piece. The
+positive half contains $1$, and the negative half is nonzero because
+$w\in W\subset \bigwedge^1 W$. Thus the action of $-1$ is nontrivial on $S$,
+$S^+$, and $S^-$. Therefore none of these representations can factor through
+$\SO(V,Q)$.
+\end{proof}
 
-% --- 7. Future Work ------------------------------------------------------
-\section{Future Work}
-\label{sec:future}
+\begin{proposition}[Positive split-rank projective descent]
+\label{prop:projective-descent}
+Assume $Q$ is finite-dimensional, nondegenerate, and of positive split rank,
+and let $S=\bigwedge W$ be the exterior-model spinor module attached to a
+chosen Witt decomposition of $Q$. Then the induced action of $\Spin(V,Q)$ on
+the projective space $\mathbb{P}(S)$ of one-dimensional subspaces depends only
+on the image of $\Spin(V,Q)\to\SO(V,Q)$ and therefore defines an action of
+that image subgroup. The same is true for the projective spaces of the nonzero
+half-spin modules $S^+$ and $S^-$.
+\end{proposition}
 
-Within the scope of the current library, several natural extensions
-remain.
+\begin{proof}
+Suppose $x,y\in \Spin(V,Q)$ have the same image in $\SO(V,Q)$. Then
+$y^{-1}x$ acts trivially on $V$, so by the kernel calculation above one has
+$y^{-1}x=\pm1$. On $S$, and likewise on each half-spin piece, the scalars
+$\pm1$ act by scalar multiplication and therefore fix every one-dimensional
+subspace. Thus $x$ and $y$ induce the same transformation on
+$\mathbb{P}(S)$, $\mathbb{P}(S^+)$, and $\mathbb{P}(S^-)$. Hence these
+projective actions depend only on the image in $\SO(V,Q)$ and therefore define
+actions of the image subgroup of $\Spin(V,Q)\to\SO(V,Q)$.
+\end{proof}
 
-\paragraph{Completing the covering map.}
-\code{OrthogonalAction.lean} already packages
-\code{spinIsometryRepresentation : spinGroup Q \ensuremath{\to^{*}}
-Q.IsometryEquiv Q}, and \code{Presentation.lean} proves
-\code{splitSpinorCoveringKernel\_eq\_one\_or\_neg\_one} on the canonical
-split model. What remains is the full ambient double-cover theorem:
-identifying the correct special-orthogonal target, proving surjectivity,
-and replacing the current split-rank scalarity argument by a
-presentation-free center/kernel argument.
+\begin{proposition}[Explicit hyperbolic transvection lift]
+\label{prop:transvection-unit}
+Let $Q=\dualProd_K W$. If $\delta\in W^*$ and $w\in W$ satisfy $\delta(w)=0$,
+set \(a=(\delta,0)\), \(b=(0,w)\), and
+\(x_{\delta,w}=1+\iota(a)\iota(b)\in \Cl(Q)\).
+Then $x_{\delta,w}$ is an even Clifford unit with
+\[
+  x_{\delta,w}^{-1}=1-\iota(a)\iota(b),
+\]
+and for every $(d,u)\in W^*\oplus W$ one has
+\[
+  x_{\delta,w}\,\iota(d,u)\,x_{\delta,w}^{-1}
+  =
+  \iota\bigl(d+d(w)\delta,\ u-\delta(u)w\bigr).
+\]
+Equivalently, conjugation by $x_{\delta,w}$ realizes the transported hyperbolic
+transvection attached to $(\delta,w)$.
+\end{proposition}
 
-\paragraph{Completing the real classification table.}
-\code{RealClassification.lean} now packages the split row via
-\code{realSplitCliffordEquivMatrix} and
-\code{realSplitEvenCliffordEquivProdMatrix}, plus the low-signature
-entries \code{RealClassification.cl\_0\_1\_equivComplex} and
-\code{RealClassification.cl\_0\_2\_equivQuaternion}.
-\code{Cl03QuaternionProd.lean} extends this with
-\code{realCl03EquivQuaternionProd} and
-\code{realEvenCl04EquivQuaternionProd}. A natural next step is to turn
-these isolated equivalences into a systematic formal real-classification
-table and the signature-shift equivalences behind Bott periodicity.
+\begin{proof}
+Write $n=\iota(a)\iota(b)$. Because $Q(a)=Q(b)=0$ and
+$\langle a,b\rangle=\delta(w)=0$, one has $n^2=0$. Hence
+\[
+  (1+n)(1-n)=1=(1-n)(1+n),
+\]
+so $x_{\delta,w}^{-1}=1-n$. The element $n$ is a product of two vectors, hence
+lies in the even Clifford part, and therefore so does $x_{\delta,w}$.
 
-\paragraph{From low-dimensional algebras to low-dimensional spin groups.}
-The group-level picture has now reached the first two compact cases.
-\code{LowDimensional.lean} already gives
-\code{realSpin02EquivUnitaryComplex} and
-\code{realSpin03EquivUnitaryQuaternion}, while
-\code{Cl03QuaternionProd.lean} and the low-dimensional even-Clifford
-equivalences package the algebraic identifications
-\code{realCl03EquivQuaternionProd} and
-\code{realEvenCl04EquivQuaternionProd}. The resulting group-level capstone is
-now packaged as
-\code{realSpin04EquivUnitaryQuaternionPair}, identifying $\Spin(4)$ with pairs
-of unit quaternions. This clears the remaining compact low-dimensional
-quaternionic gap and shifts the next natural targets to $\Spin(5)$ and
-$\Spin(6)$.
+Now let $z=(d,u)$. Using the Clifford anticommutation relation in the
+hyperbolic form,
+\[
+  \iota(b)\iota(z)+\iota(z)\iota(b)=\langle b,z\rangle=d(w),
+  \qquad
+  \iota(z)\iota(a)+\iota(a)\iota(z)=\langle z,a\rangle=\delta(u),
+\]
+one obtains
+\[
+  n\,\iota(z)=d(w)\iota(a)-\iota(a)\iota(z)\iota(b),
+  \qquad
+  \iota(z)\,n=\delta(u)\iota(b)-\iota(a)\iota(z)\iota(b).
+\]
+Since $n^2=0$, also $n\,\iota(z)\,n=0$, and therefore
+\[
+  \begin{aligned}
+  x_{\delta,w}\,\iota(z)\,x_{\delta,w}^{-1}
+    &= (1+n)\iota(z)(1-n) \\
+    &= \iota(z)+\bigl(n\iota(z)-\iota(z)n\bigr) \\
+    &= \iota\bigl(d+d(w)\delta,\ u-\delta(u)w\bigr).
+  \end{aligned}
+\]
+This is exactly the displayed transvection formula.
+\end{proof}
 
-\paragraph{Geometric lift.}
-Beyond the current algebraic scope, the \code{ROADMAP.md} non-goals
-section still accurately lists \emph{spinor bundles},
-\emph{Dirac operators}, and the associated differential-geometric
-content as out of scope for the present paper, awaiting a more mature
-\Mathlib manifold and connection theory. Even so, the current
-\code{HyperbolicPresentation} API is already close to the fiberwise
-algebra one would want in a bundle formalization, so the present
-development should serve as substrate for those extensions rather than be
-discarded in favour of a separate implementation.
+\paragraph{Unipotent and semisimple directions in the hyperbolic model.}
+Proposition~\ref{prop:transvection-unit} gives an explicit Clifford lift of the
+unipotent root-subgroup direction in the hyperbolic Levi picture. The next
+proposition provides the complementary semisimple direction along a chosen split
+line.
+
+\begin{proposition}[Chosen-line square scaling in the hyperbolic model]
+\label{prop:chosen-line-square}
+Let $Q=\dualProd_K W$. Choose $w\in W$ and $f\in W^*$ with $f(w)=1$. For
+$t\in K^\times$, define
+\[
+  \lambda_t(d,u)=\bigl(d+(t^{-2}-1)d(w)f,\ u+(t^2-1)f(u)w\bigr).
+\]
+Then $\lambda_t$ scales the line $Kw$ by $t^2$, scales the dual line $Kf$ by
+$t^{-2}$, fixes $\ker(f)\subset W$ and $\ker(\operatorname{ev}_w)\subset W^*$,
+and lies in the image of $\Spin(Q)\to \SO(Q)$. More precisely, if
+\[
+  u_t=(-t^{-1}f,tw),
+  \qquad
+  v=(-f,w),
+\]
+then $Q(u_t)=Q(v)=-1$ and the spin element $u_t v$ acts on $W^*\oplus W$ as
+$\lambda_t$.
+\end{proposition}
+
+\begin{proof}
+Because $f(w)=1$,
+\[
+  Q(u_t)=(-t^{-1}f)(tw)=-1,
+  \qquad
+  Q(v)=(-f)(w)=-1,
+\]
+so $u_t$ and $v$ are vectors of square $-1$, hence $u_t v\in \Spin(Q)$. A
+direct reflection calculation gives, for any $c\in K^\times$,
+\[
+  r_{(-c^{-1}f,cw)}(d,u)
+  =\bigl((d(w)-c^{-2}f(u))f-d,\ -(c^2d(w)-f(u))w-u\bigr).
+\]
+Applying first the reflection with $c=1$ and then the reflection with $c=t$
+yields
+\[
+  (d,u)\longmapsto
+  \bigl(d+(t^{-2}-1)d(w)f,\ u+(t^2-1)f(u)w\bigr)=\lambda_t(d,u).
+\]
+The displayed formula makes the scaling and fixed-kernel claims immediate, so
+$\lambda_t$ is a square scaling along the chosen split line and lies in the
+spin image.
+\end{proof}
+
+\begin{corollary}[Chosen-line torus control of the transvection parameter]
+\label{cor:torus-transvection}
+Fix $w\in W$ and $f\in W^*$ with $f(w)=1$. Let $\lambda_t$ be the square-scaling
+map from Proposition~\ref{prop:chosen-line-square}, and for $\delta(w)=0$ let
+$T_{\delta,w}$ denote the transvection from
+Proposition~\ref{prop:transvection-unit},
+\[
+  T_{\delta,w}(d,u)=\bigl(d+d(w)\delta,\ u-\delta(u)w\bigr).
+\]
+Then
+\[
+  \lambda_t\,T_{\delta,w}\,\lambda_t^{-1}=T_{t^2\delta,w}.
+\]
+Consequently the explicit lifts in
+Propositions~\ref{prop:transvection-unit} and~\ref{prop:chosen-line-square}
+control both the unipotent root subgroup
+\[
+  U_w=\{\,T_{\delta,w} : \delta(w)=0\,\}
+\]
+and the square torus generated by the $\lambda_t$, with the expected weight-$2$
+conjugation action.
+\end{corollary}
+
+\begin{proof}
+Write $d=d_0+d(w)f$ with $d_0(w)=0$ and $u=u_0+f(u)w$ with $f(u_0)=0$. Then
+\[
+  \lambda_t(d,u)=\bigl(d_0+t^{-2}d(w)f,\ u_0+t^2f(u)w\bigr),
+\]
+so $\lambda_t^{-1}$ is obtained by replacing $t$ with $t^{-1}$. If
+$\delta(w)=0$, then $\lambda_t$ fixes $\delta$ and scales $w$ by $t^2$. Applying
+$\lambda_t^{-1}$, then $T_{\delta,w}$, and then $\lambda_t$ gives
+\[
+  (d,u)\longmapsto \bigl(d+t^2d(w)\delta,\ u-t^2\delta(u)w\bigr)
+  = T_{t^2\delta,w}(d,u),
+\]
+which is the displayed conjugation formula. The final claim is just a
+reformulation: the manuscript now gives explicit Clifford lifts of both the
+unipotent subgroup $U_w$ and the semisimple square torus acting on it.
+\end{proof}
+
+\begin{corollary}[Internal Clifford-level torus action]
+\label{cor:internal-clifford-torus}
+Fix $w\in W$ and $f\in W^*$ with $f(w)=1$, and let
+\[
+  s_t = \iota(-t^{-1}f,tw)\,\iota(-f,w)\in \Spin(\dualProd_K W)
+\]
+be the explicit chosen-line square-scaling lift from
+Proposition~\ref{prop:chosen-line-square}. For $\delta(w)=0$, the explicit
+transvection units satisfy
+\[
+  s_t\,x_{\delta,w}\,s_t^{-1}=x_{t^2\delta,w}.
+\]
+Thus the weight-$2$ torus action already holds inside the explicit Clifford
+representatives, not only after passing to the orthogonal action.
+\end{corollary}
+
+\begin{proof}
+By Proposition~\ref{prop:chosen-line-square}, conjugation by $s_t$ fixes the
+vector $(\delta,0)$ and sends $(0,w)$ to $(0,t^2w)$. Therefore
+\[
+  s_t\,x_{\delta,w}\,s_t^{-1}
+  = 1 + \iota(\delta,0)\,\iota(0,t^2w).
+\]
+Because $\iota$ is $K$-linear and scalars are central in the Clifford algebra,
+\[
+  \iota(\delta,0)\,\iota(0,t^2w)
+  = \iota(\delta,0)\,t^2\iota(0,w)
+  = \iota(t^2\delta,0)\,\iota(0,w),
+\]
+so the right-hand side is exactly $x_{t^2\delta,w}$.
+\end{proof}
+
+\begin{corollary}[Semidirect product along a chosen split line]
+\label{cor:one-line-semidirect}
+For fixed $w\in W$ and $f\in W^*$ with $f(w)=1$, the maps $T_{\delta,w}$ with
+$\delta(w)=0$ satisfy
+\[
+  T_{\delta,w}\,T_{\eta,w}=T_{\delta+\eta,w}
+  \qquad
+  (\delta(w)=\eta(w)=0),
+\]
+so they form an additive subgroup naturally identified with
+$\ker(\operatorname{ev}_w)\subset W^*$. Together with the square scalings
+$\lambda_t$, the manuscript therefore produces the semidirect-product package
+\[
+  \ker(\operatorname{ev}_w)\rtimes K^\times,
+  \qquad
+  t\cdot \delta = t^2\delta,
+\]
+inside the orthogonal action along the chosen line $Kw$.
+\end{corollary}
+
+\begin{proof}
+Apply the explicit formula for $T_{\eta,w}$ first:
+\[
+  (d,u)\longmapsto \bigl(d+d(w)\eta,\ u-\eta(u)w\bigr).
+\]
+Because $\eta(w)=0$, the scalar $d(w)$ is unchanged on the dual side, and
+$\delta(u-\eta(u)w)=\delta(u)$ because $\delta(w)=0$. Therefore
+\[
+  T_{\delta,w}T_{\eta,w}(d,u)
+  =
+  \bigl(d+d(w)(\delta+\eta),\ u-(\delta(u)+\eta(u))w\bigr)
+  =
+  T_{\delta+\eta,w}(d,u).
+\]
+This proves the additive subgroup law. The semidirect-product statement is then
+the combination of this identity with
+Corollary~\ref{cor:torus-transvection}, which shows
+$\lambda_t T_{\delta,w}\lambda_t^{-1}=T_{t^2\delta,w}$.
+\end{proof}
+
+The previous results supply the explicit root and torus directions. We now
+prove the structural Levi-action theorem from
+Section~\ref{sec:results}.
+
+\begin{proof}[Proof of Theorem~\ref{thm:levi-projective-exterior}]
+Let $v=\rho_S(s)1\in S$. For any $d\in W^*$, because $s$ projects to
+$\Lambda(g)$, conjugation carries the dual generator $\iota(g^{\vee}d,0)$ to
+$\iota(d,0)$. Applying both sides to $1$ gives
+\[
+  \iota(d,0)\,v
+  =
+  \rho_S(s)\bigl(\iota(g^{\vee}d,0)\cdot 1\bigr)
+  =0,
+\]
+since dual generators act on $S$ by contraction and annihilate the vacuum
+vector $1$. Thus every contraction operator kills $v$, and the vacuum-line
+criterion from Section~\ref{sec:arch} (formalized as
+\code{eq_algebraMap_of_forall_contractionAction_eq_zero}) gives
+$v=c\cdot 1$ for some $c\in K$.
+
+Similarly, for every $w\in W$, conjugation carries $\iota(0,w)$ to
+$\iota(0,gw)$, so $\rho_S(s)$ intertwines exterior multiplication by $w$ with
+exterior multiplication by $gw$. Starting from $\rho_S(s)1=c$ and inducting on
+exterior monomials yields
+\[
+  \rho_S(s)=c\,(\bigwedge g).
+\]
+Because both $\rho_S(s)$ and $\bigwedge g$ are invertible, necessarily
+$c\ne 0$.
+\end{proof}
+
+The previous theorem is structural: it identifies the chosen-model action of
+any split Levi lift up to scalar. We now prove the corresponding higher-rank
+factorization theorem from Section~\ref{sec:results}.
+
+\begin{proof}[Proof of Theorem~\ref{thm:square-det-levi}]
+Choose a basis of $W$ and write the matrix of $g$ in that basis. The classical
+transvection reduction for invertible matrices in dimension at least
+$2$~\cite[Ch.~IX, \S8, Thm.~8.1]{HoffmanKunze1971} then writes $g$ as basis
+transvections, a diagonal basis scaling, and basis transvections. Because
+$\det(g)$ is a square, the middle diagonal factor has square total determinant.
+The basis-diagonal square-determinant theorem proved in the formal development
+therefore splits that middle factor as one chosen-line square scaling together
+with the canonical determinant-one $2\times2$ diagonal blocks supported on the
+distinguished basis line and each remaining basis line.
+
+Transporting to $\SO(\dualProd_K W)$ yields exactly the displayed basis-dependent
+factorization of $\Lambda(g)$. Each transported basis transvection is realized
+by the explicit Clifford unit from Proposition~\ref{prop:transvection-unit},
+while each canonical $2\times2$ block factors further as four transported
+hyperbolic transvections. Hence $\Lambda(g)$ is indeed a product of transported
+hyperbolic transvections and one chosen-line square scaling, and every factor is
+implemented by the explicit Clifford formulas already constructed above. This is
+the claimed square-determinant Levi factorization.
+\end{proof}
+
+\paragraph{A concrete rank-$2$ shear.}
+If $W=K^2$ with basis $e_1,e_2$, take $w=e_1$, $f=e_1^*$, and
+$\delta=e_2^*$. Then Proposition~\ref{prop:transvection-unit} gives the
+explicit higher-rank shear
+\[
+  (d_1,d_2,u_1,u_2)\longmapsto (d_1,d_2+d_1,\ u_1-u_2,\ u_2).
+\]
+Corollary~\ref{cor:torus-transvection} says that the chosen-line square
+scalings rescale this shear parameter by $t^2$, exhibiting the standard
+root-group / torus interaction already inside the explicit Clifford formulas.
+
+\begin{proposition}[Split-line square-scaling calculation]
+\label{prop:split-line-square}
+Let $Q=\dualProd_K K$, and choose isotropic generators $p$ and $q$ with
+\(p^2=q^2=0\) and \(pq+qp=1\). Every even Clifford element can then be written
+as \(x=a\,pq+b\,qp\). If \(x\in \Spin(Q)\), the defining norm condition forces
+\(ab=1\), and an explicit conjugation calculation gives
+\[
+  x p x^{-1}=a^2 p,
+  \qquad
+  x q x^{-1}=a^{-2} q.
+\]
+Hence the image of $\Spin(Q)\to \SO(Q)$ is exactly the square-scaling subgroup.
+\end{proposition}
+
+\begin{proof}
+Because the even part is spanned by $pq$ and $qp$, every even element has the
+stated form. Using the relations $p^2=q^2=0$ and $pq+qp=1$, one has
+\[
+  (pq)^2=pq,\qquad (qp)^2=qp,\qquad pq\,qp=qp\,pq=0,\qquad \widetilde{pq}=qp.
+\]
+Hence
+\[
+  \tilde x = a\,qp+b\,pq,
+\]
+so
+\[
+  x\tilde x
+  =(a\,pq+b\,qp)(a\,qp+b\,pq)
+  =ab(pq+qp)
+  =ab.
+\]
+Thus the spin condition $x\tilde x=1$ is equivalent to $ab=1$, and in that case
+$x^{-1}=\tilde x$. Moreover,
+\[
+  xp=(a\,pq+b\,qp)p=a\,p,\qquad xq=(a\,pq+b\,qp)q=b\,q,
+\]
+because $pqp=p$, $qpp=0$, $pqq=0$, and $qpq=q$. Therefore
+\[
+  xpx^{-1}=a\,p(a\,qp+b\,pq)=a^2p,
+  \qquad
+  xqx^{-1}=b\,q(a\,qp+b\,pq)=b^2q=a^{-2}q.
+\]
+So the induced orthogonal action rescales the two isotropic lines by
+reciprocal squares, so the image is contained in the square-scaling subgroup.
+Conversely, Proposition~\ref{prop:chosen-line-square} specializes to the split
+line and shows that every square-scaling occurs in the image. This is exactly
+the square-scaling subgroup.
+\end{proof}
+
+This shows that naive surjectivity is false over fields with nonsquare units,
+and it pinpoints the extra hypothesis needed to recover the expected statement:
+if the square map on $K^\times$ is surjective, then one recovers the full
+split-line double cover. Combined with the positive split-rank
+linear/projective descent picture, it shows that the exterior-model spin action
+has a sharp two-level structure over a general field: projectively it depends
+only on the orthogonal image in every positive split rank, while linearly it
+remembers the scalar kernel element $-1$; in rank $1$, the image can
+additionally miss nonsquare reciprocal scalings.
+
+% --- 6. Conclusion --------------------------------------------------------
+\section{Conclusion}
+\label{sec:conclusion}
+
+The paper uses the classical exterior-model construction only as the foundation
+for a sharper field-sensitive covering/image package. Its conceptual hinge is
+the theorem that split Levi lifts act projectively as the natural exterior
+action on $\bigwedge W$; the explicit transvection and chosen-line square-scaling
+lifts feed into that bridge, and the higher-rank square-determinant
+factorization together with the exact split-line image theorem are its main
+consequences. Read that way, the paper is less about rederiving $\bigwedge W$
+and more about identifying how much of the split Levi picture is already
+visible inside $\Spin$ over a general field. The next mathematical frontier is
+to replace the present higher-rank factorization theorem by an exact
+higher-rank image theorem, ideally phrased in terms of the subgroup generated by
+the explicit root/torus elements or, more conceptually, by the corresponding
+spinor-norm condition. On the formalization side, that next step would also
+require strengthening the current Clifford/orthogonal-action infrastructure in
+\Mathlib so that the image theorem can be stated and reused as cleanly as the
+split-line square-scaling result.
 
 % --- Bibliography --------------------------------------------------------
 \bibliographystyle{alpha}
