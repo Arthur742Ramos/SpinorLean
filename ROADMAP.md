@@ -267,14 +267,19 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.dualProdLeviSubgroup` and the canonical multiplicative equivalence
     `Spinor.dualProdLeviSubgroupEquivLinearEquiv : GL(W) ≃ dualProdLeviSubgroup`
   - [x] in the split hyperbolic model `dualProd K W`, package square scalings on any chosen split
-    line via `Spinor.lineScalingLinearEquiv`,
-    `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_apply_lineScalingLinearEquiv`,
-    `Spinor.spinSpecialOrthogonalPairGenerator_eq_lineScalingLinearEquiv`, and
-    `Spinor.dualProdSpecialOrthogonalOf_lineScalingLinearEquiv_sq_mem_range`
+     line via `Spinor.lineScalingLinearEquiv`,
+     `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_apply_lineScalingLinearEquiv`,
+     `Spinor.spinSpecialOrthogonalPairGenerator_eq_lineScalingLinearEquiv`, and
+     `Spinor.dualProdSpecialOrthogonalOf_lineScalingLinearEquiv_sq_mem_range`
+  - [x] on the split exterior model `⋀W`, normalize the chosen-line square-scaling lift via
+    `Spinor.splitCliffordAction_spinIotaPairOfQuadraticEqNegOne_apply_one_lineScaling` and
+    `Spinor.splitCliffordAction_spinIotaPairOfQuadraticEqNegOne_eq_smul_exteriorMap_lineScaling`,
+    showing the explicit torus lift acts exactly as `-(b / a)` times the exterior action of the
+    corresponding line scaling
   - [x] in the split hyperbolic model `dualProd K W`, package the one-line unipotent/torus
-    structure via `Spinor.dualProdTransvectionCliffordUnit_mul`,
-    `Spinor.transvection_mul_transvection_eq_transvection_add`,
-    `Spinor.dualProdSpecialOrthogonalOf_transvection_mul_transvection_eq_transvection_add`, and
+     structure via `Spinor.dualProdTransvectionCliffordUnit_mul`,
+     `Spinor.transvection_mul_transvection_eq_transvection_add`,
+     `Spinor.dualProdSpecialOrthogonalOf_transvection_mul_transvection_eq_transvection_add`, and
     `Spinor.dualProdSpecialOrthogonalOf_lineScalingLinearEquiv_mul_transvection_mul_inv_eq`
   - [x] in the split hyperbolic model `dualProd K W`, package the internal Clifford-level torus
     action on the explicit transvection lifts via
@@ -304,6 +309,13 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_eq_list_basisTransvection_mul_lineScalingLinearEquiv_mul_noncommProd_two_update_mul_list_basisTransvection_of_det_eq_sq`,
     expressing any square-determinant Levi element as basis transvections together with one
     chosen-line square scaling and the canonical determinant-one `2 \times 2` diagonal blocks
+  - [x] package the corresponding higher-rank chosen-model lift via
+    `Spinor.exists_list_prod_basisTransvectionCliffordUnit_eq_exteriorMap_prod`,
+    `Spinor.exists_basisScalingLinearEquivCliffordUnit_eq_exteriorMap_of_prod_eq_one`,
+    `Spinor.exists_basisScalingLinearEquivCliffordUnit_eq_smul_exteriorMap_of_prod_eq_sq`,
+    and `Spinor.exists_linearEquivCliffordUnit_eq_smul_exteriorMap_of_det_eq_sq`,
+    showing that any square-determinant Levi coordinate admits an explicit even unitary Clifford
+    unit whose split action is `-(1 / u)` times the exterior action for a chosen square root `u`
   - [x] in split rank 1, formalize the square-scaling obstruction on `dualProd K K` via
     `Spinor.spinSpecialOrthogonalPairGenerator_eq_squareScaling_of_dualProd_line`,
     `Spinor.dualProdLineSquareScalingSubgroup`, and
@@ -362,7 +374,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [x] Zero `sorry` / `admit` sweep
 - style/lint polish remains ongoing, but the repository now has a green `lake build`, zero
   `sorry`/`admit`, and Mathlib-style module documentation throughout
-- [x] Module documentation (Mathlib-style `/-! # ... -/` blocks on all 19 `Spinor/*.lean` files)
+- [x] Module documentation (Mathlib-style `/-! # ... -/` blocks on all 20 `Spinor/*.lean` files)
 
 ### 5.3 Submission
 - [x] Target: CPP 2027 (deadline ~Sep 2026) or ITP 2027

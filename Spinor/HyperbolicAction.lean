@@ -796,6 +796,79 @@ theorem hyperbolicSpinRepresentationOfIsCompl_mem_oddExteriorSubmodule
       (K := K) (Q := Q) (W := W) (U := U) hQ hW hsplit hWU)
     hx
 
+omit [FiniteDimensional K V] in
+/-- On the split exterior model `⋀W`, any invertible Clifford element whose conjugation sends each
+primal generator `(0,w)` to the Levi image of `g w` acts by a scalar multiple of the natural
+exterior action of `g`, with the scalar determined by the vacuum vector. -/
+theorem splitCliffordAction_eq_smul_exteriorMap_of_unit_conj_primal_eq
+    {W : Submodule K V} [FiniteDimensional K W]
+    (x : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) (g : W ≃ₗ[K] W) (c : K)
+    (hprimal : ∀ w : W,
+        ConjAct.toConjAct x •
+            CliffordAlgebra.ι (QuadraticForm.dualProd K W) ((0 : Module.Dual K W), w) =
+          CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, g w))
+    (h1 : splitCliffordAction (K := K) W
+          (x : CliffordAlgebra (QuadraticForm.dualProd K W)) 1 =
+        algebraMap K (IsotropicExteriorModel (K := K) W) c) :
+    splitCliffordAction (K := K) W (x : CliffordAlgebra (QuadraticForm.dualProd K W)) =
+      c • (ExteriorAlgebra.map (g : W →ₗ[K] W)).toLinearMap := by
+  let Qd : QuadraticForm K (Module.Dual K W × W) := QuadraticForm.dualProd K W
+  let A : Module.End K (IsotropicExteriorModel (K := K) W) :=
+    splitCliffordAction (K := K) W (x : CliffordAlgebra Qd)
+  have hmul (a : CliffordAlgebra Qd) :
+      ConjAct.toConjAct x • a * (x : CliffordAlgebra Qd) =
+        (x : CliffordAlgebra Qd) * a := by
+    rw [ConjAct.units_smul_def, ConjAct.ofConjAct_toConjAct]
+    have hunit :
+        (((↑(x⁻¹) : (CliffordAlgebra Qd)ˣ) : CliffordAlgebra Qd) *
+          (x : CliffordAlgebra Qd)) = 1 := by
+      change (((x⁻¹) * x : (CliffordAlgebra Qd)ˣ) : CliffordAlgebra Qd) = 1
+      simp
+    calc
+      (x : CliffordAlgebra Qd) * a *
+            ((↑(x⁻¹) : (CliffordAlgebra Qd)ˣ) : CliffordAlgebra Qd) *
+          (x : CliffordAlgebra Qd)
+          = (x : CliffordAlgebra Qd) * a *
+              ((((↑(x⁻¹) : (CliffordAlgebra Qd)ˣ) : CliffordAlgebra Qd) *
+                (x : CliffordAlgebra Qd))) := by
+                  rw [mul_assoc]
+      _ = (x : CliffordAlgebra Qd) * a * 1 := by rw [hunit]
+      _ = (x : CliffordAlgebra Qd) * a := by simp
+  have hsplitprimal (w : W) (y : IsotropicExteriorModel (K := K) W) :
+      splitCliffordAction (K := K) W
+          (CliffordAlgebra.ι Qd ((0 : Module.Dual K W), w)) y =
+        wedgeAction (K := K) W w y := by
+    simpa [Qd, splitGeneratorAction] using
+      (splitCliffordAction_apply_ι (K := K) (W := W)
+        (x := ((0 : Module.Dual K W), w)) (y := y))
+  have hwedge :
+      ∀ w y,
+        A (wedgeAction (K := K) W w y) =
+          wedgeAction (K := K) W (g w) (A y) := by
+    intro w y
+    have hιw :
+        ConjAct.toConjAct x •
+            CliffordAlgebra.ι Qd ((0 : Module.Dual K W), w) =
+          CliffordAlgebra.ι Qd (0, g w) := by
+      simpa [Qd] using hprimal w
+    calc
+      A (wedgeAction (K := K) W w y)
+          = splitCliffordAction (K := K) W
+              ((x : CliffordAlgebra Qd) *
+                CliffordAlgebra.ι Qd ((0 : Module.Dual K W), w)) y := by
+                  rw [← hsplitprimal]
+                  simp [A, map_mul]
+      _ = splitCliffordAction (K := K) W
+            (ConjAct.toConjAct x • CliffordAlgebra.ι Qd ((0 : Module.Dual K W), w) *
+              (x : CliffordAlgebra Qd)) y := by
+              rw [hmul]
+      _ = wedgeAction (K := K) W (g w) (A y) := by
+            rw [hιw, ← hsplitprimal]
+            simp [A, map_mul]
+  let b := Module.finBasis K W
+  exact eq_smul_exteriorMap_of_map_one_and_wedgeAction
+    (K := K) (V := V) (W := W) b (g : W →ₗ[K] W) A c h1 hwedge
+
 /-- On the split exterior model `⋀W`, any spin lift of the Levi copy of `GL(W)` acts by a scalar
 multiple of the natural exterior action of the underlying linear automorphism. -/
 theorem splitCliffordAction_eq_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq
@@ -975,6 +1048,751 @@ theorem splitCliffordAction_apply_one_and_topExteriorGenerator_of
       _ = (c * ↑(LinearEquiv.det g)) •
             ExteriorAlgebra.topExteriorGenerator (K := K) (M := W) := by
               simpa [Units.smul_def, smul_smul, mul_comm]
+
+omit [FiniteDimensional K V] in
+/-- The explicit hyperbolic transvection Clifford unit acts exactly as the corresponding linear
+transvection on the split exterior model. -/
+theorem splitCliffordAction_dualProdTransvectionCliffordUnit_eq_exteriorMap_transvection
+    {W : Submodule K V} [FiniteDimensional K W]
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0) :
+    splitCliffordAction (K := K) W
+        ((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ :
+            (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+          CliffordAlgebra (QuadraticForm.dualProd K W)) =
+      (ExteriorAlgebra.map
+        ((LinearEquiv.transvection (f := -δ) (v := w) (by simpa using hδ)) : W →ₗ[K] W)).toLinearMap := by
+  let x : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ :=
+    dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ
+  let g : W ≃ₗ[K] W := LinearEquiv.transvection (f := -δ) (v := w) (by simpa using hδ)
+  have hprimal :
+      ∀ u : W,
+        ConjAct.toConjAct x •
+            CliffordAlgebra.ι (QuadraticForm.dualProd K W) ((0 : Module.Dual K W), u) =
+          CliffordAlgebra.ι (QuadraticForm.dualProd K W) (0, g u) := by
+    intro u
+    simpa [x, g] using
+      (dualProdTransvectionCliffordUnit_conjAct_eq_transvection
+        (K := K) (W := W) (δ := δ) (w := w) hδ
+        (d := (0 : Module.Dual K W)) (u := u))
+  have h1 :
+      splitCliffordAction (K := K) W
+          ((x : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+            CliffordAlgebra (QuadraticForm.dualProd K W)) 1 =
+        algebraMap K (IsotropicExteriorModel (K := K) W) (1 : K) := by
+    rw [show ((x : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+        CliffordAlgebra (QuadraticForm.dualProd K W)) =
+          ((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ :
+            (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+              CliffordAlgebra (QuadraticForm.dualProd K W)) by rfl]
+    rw [coe_dualProdTransvectionCliffordUnit]
+    simp [map_add, map_mul, splitCliffordAction_apply_ι, splitGeneratorAction,
+      wedgeAction_apply, contractionAction_ι, hδ]
+  simpa [x, g] using
+    (splitCliffordAction_eq_smul_exteriorMap_of_unit_conj_primal_eq
+      (K := K) (V := V) (x := x) (g := g) (c := (1 : K)) hprimal h1)
+
+omit [FiniteDimensional K V] in
+/-- The basis-transvection Clifford unit acts exactly as the matching basis transvection on the split
+exterior model. -/
+theorem splitCliffordAction_basisTransvectionCliffordUnit_eq_exteriorMap
+    {ι : Type*} {W : Submodule K V} [FiniteDimensional K W]
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K) :
+    splitCliffordAction (K := K) W
+        ((basisTransvectionCliffordUnit (K := K) (W := W) b t :
+            (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+          CliffordAlgebra (QuadraticForm.dualProd K W)) =
+      (ExteriorAlgebra.map
+        ((basisTransvectionLinearEquiv (K := K) (W := W) b t : W ≃ₗ[K] W) : W →ₗ[K] W)).toLinearMap := by
+  simpa [basisTransvectionLinearEquiv] using
+    (splitCliffordAction_dualProdTransvectionCliffordUnit_eq_exteriorMap_transvection
+      (K := K) (V := V) (W := W) (-((t.c : K) • b.coord t.j)) (b t.i)
+      (by simp [Module.Basis.coord_apply, t.hij]))
+
+omit [FiniteDimensional K V] in
+/-- A product of basis-transvection Clifford units acts exactly as the natural exterior action of
+the corresponding product of basis transvections. -/
+theorem splitCliffordAction_list_prod_unit_eq_exteriorMap_prod_of_forall
+    {α : Type*} {W : Submodule K V} [FiniteDimensional K W]
+    (L : List α)
+    (x : α → (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ)
+    (e : α → W ≃ₗ[K] W)
+    (hx : ∀ a,
+      splitCliffordAction (K := K) W
+          ((x a : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+            CliffordAlgebra (QuadraticForm.dualProd K W)) =
+        (ExteriorAlgebra.map ((e a : W →ₗ[K] W))).toLinearMap) :
+    splitCliffordAction (K := K) W
+        ((((L.map x).prod : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+          CliffordAlgebra (QuadraticForm.dualProd K W))) =
+      (ExteriorAlgebra.map
+        ((((L.map e).prod : W ≃ₗ[K] W) : W →ₗ[K] W))).toLinearMap := by
+  induction L with
+  | nil =>
+      ext x
+      simp [ExteriorAlgebra.map_id]
+  | cons a L ih =>
+      simp only [List.map_cons, List.prod_cons]
+      simp only [Units.val_mul]
+      rw [map_mul, hx, ih]
+      let eL : W ≃ₗ[K] W := (L.map e).prod
+      let ea : W ≃ₗ[K] W := e a
+      change
+        (ExteriorAlgebra.map (ea : W →ₗ[K] W)).toLinearMap.comp
+            (ExteriorAlgebra.map (eL : W →ₗ[K] W)).toLinearMap =
+          (ExteriorAlgebra.map ((eL ≪≫ₗ ea : W ≃ₗ[K] W) : W →ₗ[K] W)).toLinearMap
+      apply LinearMap.ext
+      intro y
+      change
+        (AlgHom.comp
+          (ExteriorAlgebra.map (ea : W →ₗ[K] W))
+          (ExteriorAlgebra.map (eL : W →ₗ[K] W))) y =
+        (ExteriorAlgebra.map ((eL ≪≫ₗ ea : W ≃ₗ[K] W) : W →ₗ[K] W)) y
+      rw [ExteriorAlgebra.map_comp_map]
+      have hcomp :
+          LinearMap.comp (ea : W →ₗ[K] W) (eL : W →ₗ[K] W) =
+            ((eL ≪≫ₗ ea : W ≃ₗ[K] W) : W →ₗ[K] W) := rfl
+      rw [hcomp]
+
+omit [FiniteDimensional K V] in
+/-- Multiplying two Clifford operators whose split actions are scalar multiples of exterior maps
+multiplies both the scalars and the underlying linear equivalences. -/
+theorem splitCliffordAction_mul_eq_smul_exteriorMap_mul_of_eq_smul_exteriorMap
+    {W : Submodule K V} [FiniteDimensional K W]
+    {x y : CliffordAlgebra (QuadraticForm.dualProd K W)} {c d : K}
+    {e f : W ≃ₗ[K] W}
+    (hx : splitCliffordAction (K := K) W x =
+      c • (ExteriorAlgebra.map ((e : W →ₗ[K] W))).toLinearMap)
+    (hy : splitCliffordAction (K := K) W y =
+      d • (ExteriorAlgebra.map ((f : W →ₗ[K] W))).toLinearMap) :
+    splitCliffordAction (K := K) W (x * y) =
+      (c * d) •
+        (ExteriorAlgebra.map (((e * f : W ≃ₗ[K] W) : W →ₗ[K] W))).toLinearMap := by
+  ext z
+  rw [map_mul, Module.End.mul_eq_comp, hx, hy]
+  simpa [LinearMap.comp_apply, LinearMap.smul_apply, smul_smul, mul_comm, Function.comp_def]
+
+omit [FiniteDimensional K V] in
+/-- A product of basis-transvection Clifford units acts exactly as the natural exterior action of
+the corresponding product of basis transvections. -/
+theorem splitCliffordAction_list_prod_basisTransvectionCliffordUnit_eq_exteriorMap_prod
+    {ι : Type*} {W : Submodule K V} [FiniteDimensional K W]
+    (b : Module.Basis ι K W) (L : List (Matrix.TransvectionStruct ι K)) :
+    splitCliffordAction (K := K) W
+        ((((L.map (basisTransvectionCliffordUnit (K := K) (W := W) b)).prod :
+            (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+          CliffordAlgebra (QuadraticForm.dualProd K W))) =
+      (ExteriorAlgebra.map
+        ((((L.map (basisTransvectionLinearEquiv (K := K) (W := W) b)).prod :
+            W ≃ₗ[K] W) : W →ₗ[K] W))).toLinearMap := by
+  simpa using
+    (splitCliffordAction_list_prod_unit_eq_exteriorMap_prod_of_forall
+      (K := K) (V := V) (W := W) L
+      (basisTransvectionCliffordUnit (K := K) (W := W) b)
+      (basisTransvectionLinearEquiv (K := K) (W := W) b)
+      (fun t => splitCliffordAction_basisTransvectionCliffordUnit_eq_exteriorMap
+        (K := K) (V := V) (W := W) b t))
+
+omit [FiniteDimensional K V] in
+/-- The canonical determinant-one `2 × 2` basis scaling block admits an explicit even unitary
+Clifford lift whose split action is exactly the natural exterior action of the block. -/
+theorem exists_basisScalingLinearEquiv_two_updateCliffordUnit_eq_exteriorMap
+    {ι : Type*} {W : Submodule K V} [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) {i j : ι} (hij : i ≠ j) (a : Kˣ) :
+    ∃ x : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ,
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          unitary (CliffordAlgebra (QuadraticForm.dualProd K W)) ∧
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          CliffordAlgebra.even (QuadraticForm.dualProd K W) ∧
+      splitCliffordAction (K := K) W
+          (x : CliffordAlgebra (QuadraticForm.dualProd K W)) =
+        (ExteriorAlgebra.map
+          ((basisScalingLinearEquiv (K := K) (W := W) b
+              (Function.update (Function.update (fun _ => (1 : Kˣ)) i a) j a⁻¹) :
+              W ≃ₗ[K] W) : W →ₗ[K] W)).toLinearMap := by
+  let t1 : Matrix.TransvectionStruct ι K := ⟨i, j, hij, (a : K) - 1⟩
+  let t2 : Matrix.TransvectionStruct ι K := ⟨j, i, hij.symm, (1 : K)⟩
+  let t3 : Matrix.TransvectionStruct ι K := ⟨i, j, hij, (a : K)⁻¹ - 1⟩
+  let t4 : Matrix.TransvectionStruct ι K := ⟨j, i, hij.symm, -((a : K))⟩
+  let L : List (Matrix.TransvectionStruct ι K) := [t1, t2, t3, t4]
+  let x : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ :=
+    basisTransvectionCliffordUnit (K := K) (W := W) b t1 *
+      basisTransvectionCliffordUnit (K := K) (W := W) b t2 *
+      basisTransvectionCliffordUnit (K := K) (W := W) b t3 *
+      basisTransvectionCliffordUnit (K := K) (W := W) b t4
+  refine ⟨x, ?_, ?_, ?_⟩
+  · change
+      (((basisTransvectionCliffordUnit (K := K) (W := W) b t1 *
+          basisTransvectionCliffordUnit (K := K) (W := W) b t2 *
+          basisTransvectionCliffordUnit (K := K) (W := W) b t3 *
+          basisTransvectionCliffordUnit (K := K) (W := W) b t4 :
+          (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+        CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+        unitary (CliffordAlgebra (QuadraticForm.dualProd K W))
+    simpa [x, Units.val_mul, mul_assoc] using
+      (Submonoid.mul_mem
+        (unitary (CliffordAlgebra (QuadraticForm.dualProd K W)))
+        (basisTransvectionCliffordUnit_mem_unitary (K := K) (W := W) b t1)
+        (Submonoid.mul_mem
+          (unitary (CliffordAlgebra (QuadraticForm.dualProd K W)))
+          (basisTransvectionCliffordUnit_mem_unitary (K := K) (W := W) b t2)
+          (Submonoid.mul_mem
+            (unitary (CliffordAlgebra (QuadraticForm.dualProd K W)))
+            (basisTransvectionCliffordUnit_mem_unitary (K := K) (W := W) b t3)
+            (basisTransvectionCliffordUnit_mem_unitary (K := K) (W := W) b t4))))
+  · change
+      (((basisTransvectionCliffordUnit (K := K) (W := W) b t1 *
+          basisTransvectionCliffordUnit (K := K) (W := W) b t2 *
+          basisTransvectionCliffordUnit (K := K) (W := W) b t3 *
+          basisTransvectionCliffordUnit (K := K) (W := W) b t4 :
+          (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+        CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+        CliffordAlgebra.even (QuadraticForm.dualProd K W)
+    simpa [x, Units.val_mul, mul_assoc] using
+      ((CliffordAlgebra.even (QuadraticForm.dualProd K W)).mul_mem
+        (basisTransvectionCliffordUnit_mem_even (K := K) (W := W) b t1)
+        ((CliffordAlgebra.even (QuadraticForm.dualProd K W)).mul_mem
+          (basisTransvectionCliffordUnit_mem_even (K := K) (W := W) b t2)
+          ((CliffordAlgebra.even (QuadraticForm.dualProd K W)).mul_mem
+            (basisTransvectionCliffordUnit_mem_even (K := K) (W := W) b t3)
+            (basisTransvectionCliffordUnit_mem_even (K := K) (W := W) b t4))))
+  · have ht1 :
+        basisTransvectionLinearEquiv (K := K) (W := W) b t1 =
+          LinearEquiv.transvection (f := -(b.coord j)) (v := (((1 : K) - (a : K)) • b i))
+            (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij]) := by
+      ext x
+      simp [t1, basisTransvectionLinearEquiv, LinearMap.transvection.apply, sub_eq_add_neg,
+        smul_smul, mul_assoc, mul_left_comm, mul_comm]
+      rw [← neg_smul]
+      congr 1
+      ring
+    have ht2 :
+        basisTransvectionLinearEquiv (K := K) (W := W) b t2 =
+          LinearEquiv.transvection (f := -(b.coord i)) (v := ((-1 : K) • b j))
+            (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij]) := by
+      ext x
+      simp [t2, basisTransvectionLinearEquiv, LinearMap.transvection.apply, sub_eq_add_neg,
+        smul_smul, mul_assoc, mul_left_comm, mul_comm]
+    have ht3 :
+        basisTransvectionLinearEquiv (K := K) (W := W) b t3 =
+          LinearEquiv.transvection (f := -(b.coord j)) (v := (((1 : K) - (a : K)⁻¹) • b i))
+            (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij]) := by
+      ext x
+      simp [t3, basisTransvectionLinearEquiv, LinearMap.transvection.apply, sub_eq_add_neg,
+        smul_smul, mul_assoc, mul_left_comm, mul_comm]
+      rw [← neg_smul]
+      congr 1
+      ring
+    have ht4 :
+        basisTransvectionLinearEquiv (K := K) (W := W) b t4 =
+          LinearEquiv.transvection (f := -(b.coord i)) (v := ((a : K) • b j))
+            (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij]) := by
+      ext x
+      simp [t4, basisTransvectionLinearEquiv, LinearMap.transvection.apply, sub_eq_add_neg,
+        smul_smul, mul_assoc, mul_left_comm, mul_comm]
+    have hL :
+        (L.map (basisTransvectionLinearEquiv (K := K) (W := W) b)).prod =
+          basisScalingLinearEquiv (K := K) (W := W) b
+            (Function.update (Function.update (fun _ => (1 : Kˣ)) i a) j a⁻¹) := by
+      rw [show L = [t1, t2, t3, t4] by rfl]
+      rw [basisScalingLinearEquiv_two_update_eq_transvection_four
+        (K := K) (W := W) (b := b) (i := i) (j := j) hij a]
+      simpa [ht1, ht2, ht3, ht4, mul_assoc]
+    have hx :
+        x = (L.map (basisTransvectionCliffordUnit (K := K) (W := W) b)).prod := by
+      simp [x, L, mul_assoc]
+    rw [hx]
+    rw [splitCliffordAction_list_prod_basisTransvectionCliffordUnit_eq_exteriorMap_prod
+      (K := K) (V := V) (W := W) b L]
+    simpa [hL]
+
+omit [FiniteDimensional K V] in
+/-- A list of basis-transvection Clifford units gives an explicit even unitary lift whose split
+action is exactly the exterior action of the corresponding transvection product. -/
+theorem exists_list_prod_basisTransvectionCliffordUnit_eq_exteriorMap_prod
+    {ι : Type*} {W : Submodule K V} [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (L : List (Matrix.TransvectionStruct ι K)) :
+    ∃ x : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ,
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          unitary (CliffordAlgebra (QuadraticForm.dualProd K W)) ∧
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          CliffordAlgebra.even (QuadraticForm.dualProd K W) ∧
+      splitCliffordAction (K := K) W
+          (x : CliffordAlgebra (QuadraticForm.dualProd K W)) =
+        (ExteriorAlgebra.map
+          ((((L.map (basisTransvectionLinearEquiv (K := K) (W := W) b)).prod :
+              W ≃ₗ[K] W) : W →ₗ[K] W))).toLinearMap := by
+  refine ⟨(L.map (basisTransvectionCliffordUnit (K := K) (W := W) b)).prod, ?_, ?_, ?_⟩
+  · change
+      (((L.map (basisTransvectionCliffordUnit (K := K) (W := W) b)).prod :
+          (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+        CliffordAlgebra (QuadraticForm.dualProd K W)) ∈
+          unitary (CliffordAlgebra (QuadraticForm.dualProd K W))
+    induction L with
+    | nil =>
+        simp
+    | cons t L ih =>
+        simp only [List.map_cons, List.prod_cons, Units.val_mul]
+        exact Submonoid.mul_mem _
+          (basisTransvectionCliffordUnit_mem_unitary (K := K) (W := W) b t) ih
+  · change
+      (((L.map (basisTransvectionCliffordUnit (K := K) (W := W) b)).prod :
+          (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+        CliffordAlgebra (QuadraticForm.dualProd K W)) ∈
+          CliffordAlgebra.even (QuadraticForm.dualProd K W)
+    induction L with
+    | nil =>
+        simp
+    | cons t L ih =>
+        simp only [List.map_cons, List.prod_cons, Units.val_mul]
+        exact (CliffordAlgebra.even (QuadraticForm.dualProd K W)).mul_mem
+          (basisTransvectionCliffordUnit_mem_even (K := K) (W := W) b t) ih
+  · simpa using
+      (splitCliffordAction_list_prod_basisTransvectionCliffordUnit_eq_exteriorMap_prod
+        (K := K) (V := V) (W := W) b L)
+
+omit [FiniteDimensional K V] in
+/-- A determinant-one basis scaling admits an explicit even unitary Clifford lift whose split
+action is exactly the natural exterior action of the scaling. -/
+theorem exists_basisScalingLinearEquivCliffordUnit_eq_exteriorMap_of_prod_eq_one
+    {ι : Type*} {W : Submodule K V} [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) (t : ι → Kˣ)
+    (hprod : (∏ j, t j) = 1) :
+    ∃ x : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ,
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          unitary (CliffordAlgebra (QuadraticForm.dualProd K W)) ∧
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          CliffordAlgebra.even (QuadraticForm.dualProd K W) ∧
+      splitCliffordAction (K := K) W
+          (x : CliffordAlgebra (QuadraticForm.dualProd K W)) =
+        (ExteriorAlgebra.map
+          (((basisScalingLinearEquiv (K := K) (W := W) b t : W ≃ₗ[K] W) :
+              W →ₗ[K] W))).toLinearMap := by
+  classical
+  let s : Finset ι := Finset.univ.erase i
+  let L : List ι := s.toList
+  let block : ι → W ≃ₗ[K] W := fun j =>
+    if hji : j = i then
+      1
+    else
+      basisScalingLinearEquiv (K := K) (W := W) b
+        (Function.update (Function.update (fun _ => (1 : Kˣ)) j (t j)) i (t j)⁻¹)
+  let xj : ι → (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ := fun j =>
+    if hji : j = i then
+      1
+    else
+      Classical.choose
+        (exists_basisScalingLinearEquiv_two_updateCliffordUnit_eq_exteriorMap
+          (K := K) (V := V) (W := W) b (i := j) (j := i) hji (a := t j))
+  have hxj :
+      ∀ j,
+        splitCliffordAction (K := K) W
+            ((xj j : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+              CliffordAlgebra (QuadraticForm.dualProd K W)) =
+          (ExteriorAlgebra.map ((block j : W ≃ₗ[K] W) : W →ₗ[K] W)).toLinearMap := by
+    intro j
+    by_cases hji : j = i
+    · subst hji
+      ext x
+      simp [xj, block, ExteriorAlgebra.map_id]
+    · simpa [xj, block, hji] using
+        (Classical.choose_spec
+          (exists_basisScalingLinearEquiv_two_updateCliffordUnit_eq_exteriorMap
+            (K := K) (V := V) (W := W) b (i := j) (j := i) hji (a := t j))).2.2
+  have hunitaryj :
+      ∀ j,
+        (((xj j : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+            CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          unitary (CliffordAlgebra (QuadraticForm.dualProd K W)) := by
+    intro j
+    by_cases hji : j = i
+    · subst hji
+      simp [xj]
+    · simpa [xj, hji] using
+        (Classical.choose_spec
+          (exists_basisScalingLinearEquiv_two_updateCliffordUnit_eq_exteriorMap
+            (K := K) (V := V) (W := W) b (i := j) (j := i) hji (a := t j))).1
+  have hevenj :
+      ∀ j,
+        (((xj j : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+            CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          CliffordAlgebra.even (QuadraticForm.dualProd K W) := by
+    intro j
+    by_cases hji : j = i
+    · subst hji
+      simp [xj]
+    · simpa [xj, hji] using
+        (Classical.choose_spec
+          (exists_basisScalingLinearEquiv_two_updateCliffordUnit_eq_exteriorMap
+            (K := K) (V := V) (W := W) b (i := j) (j := i) hji (a := t j))).2.1
+  have hunitary :
+      (((L.map xj).prod : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+        CliffordAlgebra (QuadraticForm.dualProd K W)) ∈
+          unitary (CliffordAlgebra (QuadraticForm.dualProd K W)) := by
+    induction L with
+    | nil =>
+        simp
+    | cons j L ih =>
+        simp only [List.map_cons, List.prod_cons, Units.val_mul]
+        exact Submonoid.mul_mem _ (hunitaryj j) ih
+  have heven :
+      (((L.map xj).prod : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+        CliffordAlgebra (QuadraticForm.dualProd K W)) ∈
+          CliffordAlgebra.even (QuadraticForm.dualProd K W) := by
+    induction L with
+    | nil =>
+        simp
+    | cons j L ih =>
+        simp only [List.map_cons, List.prod_cons, Units.val_mul]
+        exact (CliffordAlgebra.even (QuadraticForm.dualProd K W)).mul_mem (hevenj j) ih
+  have haction :
+      splitCliffordAction (K := K) W
+          ((((L.map xj).prod : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+            CliffordAlgebra (QuadraticForm.dualProd K W))) =
+        (ExteriorAlgebra.map
+          ((((L.map block).prod : W ≃ₗ[K] W) : W →ₗ[K] W))).toLinearMap := by
+    simpa using
+      (splitCliffordAction_list_prod_unit_eq_exteriorMap_prod_of_forall
+        (K := K) (V := V) (W := W) L xj block hxj)
+  let ublock : ι → W ≃ₗ[K] W := fun j =>
+    basisScalingLinearEquiv (K := K) (W := W) b
+      (Function.update (Function.update (fun _ => (1 : Kˣ)) j (t j)) i (t j)⁻¹)
+  have hpair :
+      (s : Set ι).Pairwise fun j k => Commute (ublock j) (ublock k) := by
+    simpa [s, ublock] using
+      (basisScalingLinearEquiv_two_update_pairwise
+        (K := K) (W := W) (b := b) (i := i) (t := t))
+  have hpairBlock :
+      (s : Set ι).Pairwise fun j k => Commute (block j) (block k) := by
+    intro j hj k hk hjk
+    have hji : j ≠ i := (Finset.mem_erase.mp hj).1
+    have hki : k ≠ i := (Finset.mem_erase.mp hk).1
+    simpa [block, ublock, hji, hki] using hpair hj hk hjk
+  have hpairBlock_toFinset :
+      (s.toList.toFinset : Set ι).Pairwise fun j k => Commute (block j) (block k) := by
+    simpa [L] using hpairBlock
+  have hLprod :
+      (L.map block).prod = s.noncommProd block hpairBlock := by
+    simpa [L, s, ublock] using
+      (Finset.noncommProd_toFinset (l := s.toList) (f := block) hpairBlock_toFinset
+        s.nodup_toList).symm
+  have hsame :
+      s.noncommProd block hpairBlock = s.noncommProd ublock hpair := by
+    refine Finset.noncommProd_congr rfl ?_ hpairBlock
+    intro j hj
+    have hji : j ≠ i := (Finset.mem_erase.mp hj).1
+    simp [block, ublock, hji]
+  have hscale :
+      (L.map block).prod = basisScalingLinearEquiv (K := K) (W := W) b t := by
+    rw [hLprod, hsame]
+    simpa [s, ublock] using
+      (basisScalingLinearEquiv_eq_noncommProd_two_update_of_prod_eq_one
+        (K := K) (W := W) (b := b) (i := i) (t := t) hprod).symm
+  refine ⟨(L.map xj).prod, hunitary, heven, ?_⟩
+  simpa [hscale] using haction
+
+omit [FiniteDimensional K V] in
+/-- On the split exterior model, the explicit two-reflection lift of a chosen-line square scaling
+acts on the vacuum vector by the normalized scalar `-(b / a)`. -/
+theorem splitCliffordAction_spinIotaPairOfQuadraticEqNegOne_apply_one_lineScaling
+    {W : Submodule K V} [FiniteDimensional K W]
+    (f : Module.Dual K W) (w : W) (hf : f w = 1) (a b : Kˣ) :
+    splitCliffordAction (K := K) W
+        (((spinIotaPairOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K W)
+            (-(((a : K)⁻¹) • f), (a : K) • w)
+            (-(((b : K)⁻¹) • f), (b : K) • w)
+            (by simp [QuadraticForm.dualProd, hf])
+            (by simp [QuadraticForm.dualProd, hf]) : spinGroup (QuadraticForm.dualProd K W)) :
+          CliffordAlgebra (QuadraticForm.dualProd K W))) 1 =
+      (-(b / a : K)) • (1 : IsotropicExteriorModel (K := K) W) := by
+  let x :
+      Module.Dual K W × W := (-(((a : K)⁻¹) • f), (a : K) • w)
+  let y :
+      Module.Dual K W × W := (-(((b : K)⁻¹) • f), (b : K) • w)
+  have hy1 : splitGeneratorAction (K := K) W y 1 = (b : K) • ExteriorAlgebra.ι K w := by
+    have hcontr :
+        contractionAction (K := K) W (-(((b : K)⁻¹) • f)) (1 : IsotropicExteriorModel (K := K) W) =
+          0 := by
+      simpa using
+        contractionAction_algebraMap (K := K) (W := W) (d := -(((b : K)⁻¹) • f)) (r := (1 : K))
+    rw [show splitGeneratorAction (K := K) W y 1 =
+        contractionAction (K := K) W (-(((b : K)⁻¹) • f)) 1 +
+          wedgeAction (K := K) W ((b : K) • w) 1 by
+          rfl]
+    rw [hcontr, zero_add, wedgeAction_apply]
+    simp [Algebra.smul_def]
+  calc
+    splitCliffordAction (K := K) W
+        (((spinIotaPairOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K W)
+            (-(((a : K)⁻¹) • f), (a : K) • w)
+            (-(((b : K)⁻¹) • f), (b : K) • w)
+            (by simp [QuadraticForm.dualProd, hf])
+            (by simp [QuadraticForm.dualProd, hf]) : spinGroup (QuadraticForm.dualProd K W)) :
+          CliffordAlgebra (QuadraticForm.dualProd K W))) 1
+      = splitGeneratorAction (K := K) W x
+          (splitGeneratorAction (K := K) W y 1) := by
+            simp [x, y, coe_spinIotaPairOfQuadraticEqNegOne, splitCliffordAction_apply_ι, map_mul]
+  _ = splitGeneratorAction (K := K) W x ((b : K) • ExteriorAlgebra.ι K w) := by
+        rw [hy1]
+  _ = (-(b / a : K)) • (1 : IsotropicExteriorModel (K := K) W) := by
+        have hsingle_zero :
+            wedgeAction (K := K) W ((a : K) • w) (ExteriorAlgebra.ι K w) = 0 := by
+          rw [wedgeAction_apply]
+          simp [Algebra.smul_def, mul_assoc]
+        have hwedge_zero :
+            wedgeAction (K := K) W ((a : K) • w) ((b : K) • ExteriorAlgebra.ι K w) = 0 := by
+          rw [map_smul, hsingle_zero, smul_zero]
+        rw [show splitGeneratorAction (K := K) W x ((b : K) • ExteriorAlgebra.ι K w) =
+            contractionAction (K := K) W (-(((a : K)⁻¹) • f))
+                ((b : K) • ExteriorAlgebra.ι K w) +
+              wedgeAction (K := K) W ((a : K) • w) ((b : K) • ExteriorAlgebra.ι K w) by
+              rfl]
+        rw [map_smul, contractionAction_ι, hwedge_zero, add_zero]
+        simp [hf, Algebra.smul_def, div_eq_mul_inv]
+
+/-- The explicit two-reflection lift of a chosen-line square scaling acts exactly as the natural
+exterior action, normalized by the scalar `-(b / a)`. -/
+theorem splitCliffordAction_spinIotaPairOfQuadraticEqNegOne_eq_smul_exteriorMap_lineScaling
+    {W : Submodule K V} [FiniteDimensional K W]
+    (f : Module.Dual K W) (w : W) (hf : f w = 1) (a b : Kˣ) :
+    splitCliffordAction (K := K) W
+        (((spinIotaPairOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K W)
+            (-(((a : K)⁻¹) • f), (a : K) • w)
+            (-(((b : K)⁻¹) • f), (b : K) • w)
+            (by simp [QuadraticForm.dualProd, hf])
+            (by simp [QuadraticForm.dualProd, hf]) : spinGroup (QuadraticForm.dualProd K W)) :
+          CliffordAlgebra (QuadraticForm.dualProd K W))) =
+      (-(b / a : K)) •
+        (ExteriorAlgebra.map
+          ((lineScalingLinearEquiv (f := f) (w := w) hf ((a / b) ^ 2)) : W →ₗ[K] W)).toLinearMap := by
+  let s : spinGroup (QuadraticForm.dualProd K W) :=
+    spinIotaPairOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K W)
+      (-(((a : K)⁻¹) • f), (a : K) • w)
+      (-(((b : K)⁻¹) • f), (b : K) • w)
+      (by simp [QuadraticForm.dualProd, hf])
+      (by simp [QuadraticForm.dualProd, hf])
+  let g : W ≃ₗ[K] W := lineScalingLinearEquiv (f := f) (w := w) hf ((a / b) ^ 2)
+  have hs :
+      spinSpecialOrthogonalRepresentationFiniteDimensional (Q := QuadraticForm.dualProd K W) s =
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K) g := by
+    change
+      spinSpecialOrthogonalPairGenerator (Q := QuadraticForm.dualProd K W)
+          (-(((a : K)⁻¹) • f), (a : K) • w)
+          (-(((b : K)⁻¹) • f), (b : K) • w)
+          (by simp [QuadraticForm.dualProd, hf])
+          (by simp [QuadraticForm.dualProd, hf]) =
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K) g
+    simpa [g] using
+      spinSpecialOrthogonalPairGenerator_eq_lineScalingLinearEquiv
+        (K := K) (W := W) (f := f) (w := w) hf (a := a) (b := b)
+  obtain ⟨c, hc⟩ :=
+    splitCliffordAction_eq_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq
+      (K := K) (V := V) s g hs
+  have hpair :
+      splitCliffordAction (K := K) W
+          ((s : spinGroup (QuadraticForm.dualProd K W)) :
+            CliffordAlgebra (QuadraticForm.dualProd K W)) 1 =
+        (-(b / a : K)) • (1 : IsotropicExteriorModel (K := K) W) := by
+    simpa [s] using
+      splitCliffordAction_spinIotaPairOfQuadraticEqNegOne_apply_one_lineScaling
+        (K := K) (V := V) (f := f) (w := w) hf (a := a) (b := b)
+  have hc1 :
+      algebraMap K (IsotropicExteriorModel (K := K) W) c =
+        algebraMap K (IsotropicExteriorModel (K := K) W) (-(b / a : K)) := by
+    simpa [Algebra.algebraMap_eq_smul_one] using
+      (congrArg
+        (fun A : Module.End K (IsotropicExteriorModel (K := K) W) =>
+          A (1 : IsotropicExteriorModel (K := K) W))
+        hc).symm.trans hpair
+  have hcoeff : c = -(b / a : K) :=
+    (algebraMap K (IsotropicExteriorModel (K := K) W)).injective hc1
+  simpa [s, g, hcoeff] using hc
+
+/-- A square-determinant basis scaling admits an explicit even unitary Clifford lift whose split
+action is the normalized exterior action, with scalar `-(1 / u)` for the chosen square root
+`u` of the determinant. -/
+theorem exists_basisScalingLinearEquivCliffordUnit_eq_smul_exteriorMap_of_prod_eq_sq
+    {ι : Type*} {W : Submodule K V} [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) (t : ι → Kˣ) (u : Kˣ)
+    (hprod : (∏ j, t j) = u ^ 2) :
+    ∃ x : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ,
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          unitary (CliffordAlgebra (QuadraticForm.dualProd K W)) ∧
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          CliffordAlgebra.even (QuadraticForm.dualProd K W) ∧
+      splitCliffordAction (K := K) W
+          (x : CliffordAlgebra (QuadraticForm.dualProd K W)) =
+        (-(1 / (u : K) : K)) •
+          (ExteriorAlgebra.map
+            (((basisScalingLinearEquiv (K := K) (W := W) b t : W ≃ₗ[K] W) :
+                W →ₗ[K] W))).toLinearMap := by
+  classical
+  let s : ι → Kˣ := Function.update t i (t i / u ^ 2)
+  have hsprod : (∏ j, s j) = 1 := by
+    have hi : i ∈ (Finset.univ : Finset ι) := Finset.mem_univ i
+    have hsupdate :
+        (∏ j, s j) = (t i / u ^ 2) * (Finset.univ.erase i).prod fun j => t j := by
+      simpa only [s, Finset.erase_eq] using
+        (Finset.prod_update_of_mem (s := Finset.univ) (i := i) hi t (t i / u ^ 2))
+    calc
+      (∏ j, s j) = (t i / u ^ 2) * (Finset.univ.erase i).prod fun j => t j := hsupdate
+      _ = (t i / u ^ 2) * ((∏ j, t j) / t i) := by
+        rw [Finset.prod_erase_eq_div (s := Finset.univ) (f := t) hi]
+      _ = 1 := by
+        rw [hprod]
+        simp [div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm]
+  have hsplit : t = (Function.update (1 : ι → Kˣ) i (u ^ 2)) * s := by
+    funext k
+    apply Units.ext
+    by_cases hki : k = i
+    · subst hki
+      simp [s, Function.update, div_eq_mul_inv, pow_two, mul_assoc, mul_left_comm, mul_comm]
+    · simp [s, Function.update, hki]
+  have hscale :
+      basisScalingLinearEquiv (K := K) (W := W) b t =
+        lineScalingLinearEquiv (f := b.coord i) (w := b i)
+            (by simp [Module.Basis.coord_apply]) (u ^ 2) *
+          basisScalingLinearEquiv (K := K) (W := W) b s := by
+    calc
+      basisScalingLinearEquiv (K := K) (W := W) b t =
+          basisScalingLinearEquiv (K := K) (W := W) b
+            ((Function.update (1 : ι → Kˣ) i (u ^ 2)) * s) := by
+              rw [hsplit]
+      _ = basisScalingLinearEquiv (K := K) (W := W) b (Function.update (1 : ι → Kˣ) i (u ^ 2)) *
+            basisScalingLinearEquiv (K := K) (W := W) b s := by
+              rw [basisScalingLinearEquiv_mul]
+      _ = lineScalingLinearEquiv (f := b.coord i) (w := b i)
+            (by simp [Module.Basis.coord_apply]) (u ^ 2) *
+            basisScalingLinearEquiv (K := K) (W := W) b s := by
+              rw [basisScalingLinearEquiv_update_eq_lineScalingLinearEquiv]
+  let gline : spinGroup (QuadraticForm.dualProd K W) :=
+    spinIotaPairOfQuadraticEqNegOne (Q := QuadraticForm.dualProd K W)
+      (-(((u : K)⁻¹) • b.coord i), (u : K) • b i)
+      (-((((1 : Kˣ) : K)⁻¹) • b.coord i), (((1 : Kˣ) : K)) • b i)
+      (by simp [QuadraticForm.dualProd, Module.Basis.coord_apply])
+      (by simp [QuadraticForm.dualProd, Module.Basis.coord_apply])
+  let xline : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ := spinGroup.toUnits gline
+  have hline_unitary :
+      ((xline : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+        unitary (CliffordAlgebra (QuadraticForm.dualProd K W)) := by
+    have hxline : IsUnit (xline : CliffordAlgebra (QuadraticForm.dualProd K W)) := xline.isUnit
+    rw [hxline.mem_unitary_iff_star_mul_self]
+    simpa [xline, gline] using (spinGroup.coe_star_mul_self gline)
+  have hline_even :
+      ((xline : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+        CliffordAlgebra.even (QuadraticForm.dualProd K W) := by
+    simpa [xline, gline] using spinGroup.mem_even gline.property
+  have hline_action :
+      splitCliffordAction (K := K) W
+          (xline : CliffordAlgebra (QuadraticForm.dualProd K W)) =
+        (-(1 / (u : K) : K)) •
+          (ExteriorAlgebra.map
+            ((lineScalingLinearEquiv (f := b.coord i) (w := b i)
+                (by simp [Module.Basis.coord_apply]) (u ^ 2)) : W →ₗ[K] W)).toLinearMap := by
+    simpa [xline, gline] using
+      (splitCliffordAction_spinIotaPairOfQuadraticEqNegOne_eq_smul_exteriorMap_lineScaling
+        (K := K) (W := W) (f := b.coord i) (w := b i)
+        (by simp [Module.Basis.coord_apply]) (a := u) (b := (1 : Kˣ)))
+  rcases
+      exists_basisScalingLinearEquivCliffordUnit_eq_exteriorMap_of_prod_eq_one
+        (K := K) (W := W) (b := b) (i := i) (t := s) hsprod with
+    ⟨y, hy_unitary, hy_even, hy_action⟩
+  refine ⟨xline * y, ?_, ?_, ?_⟩
+  · exact Submonoid.mul_mem _ hline_unitary hy_unitary
+  · exact (CliffordAlgebra.even (QuadraticForm.dualProd K W)).mul_mem hline_even hy_even
+  · have hxy :
+        splitCliffordAction (K := K) W
+            (((xline * y : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+              CliffordAlgebra (QuadraticForm.dualProd K W))) =
+          ((-(1 / (u : K) : K)) * 1) •
+            (ExteriorAlgebra.map
+              (((lineScalingLinearEquiv (f := b.coord i) (w := b i)
+                    (by simp [Module.Basis.coord_apply]) (u ^ 2) *
+                  basisScalingLinearEquiv (K := K) (W := W) b s : W ≃ₗ[K] W) :
+                  W →ₗ[K] W))).toLinearMap := by
+      simpa using
+        (splitCliffordAction_mul_eq_smul_exteriorMap_mul_of_eq_smul_exteriorMap
+          (K := K) (V := V) (W := W)
+          (x := (xline : CliffordAlgebra (QuadraticForm.dualProd K W)))
+          (y := (y : CliffordAlgebra (QuadraticForm.dualProd K W)))
+          (c := -(1 / (u : K) : K)) (d := 1)
+          (e := lineScalingLinearEquiv (f := b.coord i) (w := b i)
+            (by simp [Module.Basis.coord_apply]) (u ^ 2))
+          (f := basisScalingLinearEquiv (K := K) (W := W) b s)
+          hline_action (by simpa using hy_action))
+    simpa [hscale] using hxy
+
+/-- Any linear equivalence with square determinant admits an explicit even unitary Clifford lift
+whose split action is the normalized exterior action, with scalar `-(1 / u)` for a chosen square
+root `u` of the determinant. -/
+theorem exists_linearEquivCliffordUnit_eq_smul_exteriorMap_of_det_eq_sq
+    {ι : Type*} {W : Submodule K V} [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) (e : W ≃ₗ[K] W) (u : Kˣ)
+    (hdet : LinearEquiv.det e = u ^ 2) :
+    ∃ x : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ,
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          unitary (CliffordAlgebra (QuadraticForm.dualProd K W)) ∧
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          CliffordAlgebra.even (QuadraticForm.dualProd K W) ∧
+      splitCliffordAction (K := K) W
+          (x : CliffordAlgebra (QuadraticForm.dualProd K W)) =
+        (-(1 / (u : K) : K)) •
+          (ExteriorAlgebra.map ((e : W →ₗ[K] W))).toLinearMap := by
+  classical
+  rcases
+      linearEquiv_eq_list_basisTransvection_mul_basisScalingLinearEquiv_mul_list_basisTransvection_of_det_eq_sq
+        (K := K) (W := W) (b := b) (e := e) (u := u) hdet with
+    ⟨L, L', t, htprod, he⟩
+  rcases
+      exists_list_prod_basisTransvectionCliffordUnit_eq_exteriorMap_prod
+        (K := K) (V := V) (W := W) (b := b) L with
+    ⟨xL, hxL_unitary, hxL_even, hxL_action⟩
+  rcases
+      exists_basisScalingLinearEquivCliffordUnit_eq_smul_exteriorMap_of_prod_eq_sq
+        (K := K) (V := V) (W := W) (b := b) (i := i) (t := t) (u := u) htprod with
+    ⟨xM, hxM_unitary, hxM_even, hxM_action⟩
+  rcases
+      exists_list_prod_basisTransvectionCliffordUnit_eq_exteriorMap_prod
+        (K := K) (V := V) (W := W) (b := b) L' with
+    ⟨xR, hxR_unitary, hxR_even, hxR_action⟩
+  refine ⟨xL * xM * xR, ?_, ?_, ?_⟩
+  · exact Submonoid.mul_mem _ (Submonoid.mul_mem _ hxL_unitary hxM_unitary) hxR_unitary
+  · exact (CliffordAlgebra.even (QuadraticForm.dualProd K W)).mul_mem
+      ((CliffordAlgebra.even (QuadraticForm.dualProd K W)).mul_mem hxL_even hxM_even) hxR_even
+  · let eL : W ≃ₗ[K] W := (L.map (basisTransvectionLinearEquiv (K := K) (W := W) b)).prod
+    let eM : W ≃ₗ[K] W := basisScalingLinearEquiv (K := K) (W := W) b t
+    let eR : W ≃ₗ[K] W := (L'.map (basisTransvectionLinearEquiv (K := K) (W := W) b)).prod
+    have hxLM :
+        splitCliffordAction (K := K) W
+            (((xL * xM : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+              CliffordAlgebra (QuadraticForm.dualProd K W))) =
+          (1 * (-(1 / (u : K) : K))) •
+            (ExteriorAlgebra.map (((eL * eM : W ≃ₗ[K] W) : W →ₗ[K] W))).toLinearMap := by
+      simpa [eL, eM] using
+        (splitCliffordAction_mul_eq_smul_exteriorMap_mul_of_eq_smul_exteriorMap
+          (K := K) (V := V) (W := W)
+          (x := (xL : CliffordAlgebra (QuadraticForm.dualProd K W)))
+          (y := (xM : CliffordAlgebra (QuadraticForm.dualProd K W)))
+          (c := (1 : K)) (d := -(1 / (u : K) : K))
+          (e := eL) (f := eM)
+          (by simpa [eL] using hxL_action) hxM_action)
+    have hxLMR :
+        splitCliffordAction (K := K) W
+            ((((xL * xM) * xR : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+              CliffordAlgebra (QuadraticForm.dualProd K W))) =
+          ((1 * (-(1 / (u : K) : K))) * 1) •
+            (ExteriorAlgebra.map ((((eL * eM) * eR : W ≃ₗ[K] W) : W →ₗ[K] W))).toLinearMap := by
+      simpa [eL, eM, eR, mul_assoc] using
+        (splitCliffordAction_mul_eq_smul_exteriorMap_mul_of_eq_smul_exteriorMap
+          (K := K) (V := V) (W := W)
+          (x := (((xL * xM : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+            CliffordAlgebra (QuadraticForm.dualProd K W))))
+          (y := (xR : CliffordAlgebra (QuadraticForm.dualProd K W)))
+          (c := 1 * (-(1 / (u : K) : K))) (d := (1 : K))
+          (e := eL * eM) (f := eR)
+          hxLM (by simpa [eR] using hxR_action))
+    have he' : ((eL * eM) * eR : W ≃ₗ[K] W) = e := by
+      simpa [eL, eM, eR, mul_assoc] using he.symm
+    simpa [he', mul_assoc] using hxLMR
 
 end SplitTransport
 
