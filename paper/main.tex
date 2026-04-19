@@ -66,19 +66,21 @@ included as infrastructure, but the paper's focus is the field-sensitive
 covering theory that this chosen-model interface makes available at theorem
 level.
 
-The headline formalized results are these. In positive split rank, the kernel
-of $\Spin(V,Q)\to\SO(V,Q)$ is $\{\pm1\}$, so the exterior-model spin action is
-projective but not linear on the orthogonal image. In the hyperbolic model we
-construct explicit Clifford lifts of hyperbolic transvections and chosen-line
-square scalings, prove their weight-$2$ torus law, and normalize the resulting
-chosen-model exterior action of the torus lift. Using those lifts, we show that
-any split Levi lift acts projectively as the natural exterior action, prove an
-exact split-line image theorem identifying the image with the square-scaling
-subgroup, and in higher rank show that every square-determinant Levi element
-admits both an orthogonal factorization into transported transvections plus one
-chosen-line square scaling and an explicit even unitary Clifford unit acting on
-the chosen model by a scalar-normalized exterior action. The artifact comprises
-$22$ Lean source files totaling $15{,}035$ lines with no \texttt{sorry}.
+The headline formalized results are as follows. In positive split rank, the
+kernel of $\Spin(V,Q)\to\SO(V,Q)$ is $\{\pm1\}$, so the exterior-model spin
+action is projective but not linear on the orthogonal image. In the hyperbolic
+model we construct explicit Clifford lifts of hyperbolic transvections and
+chosen-line square scalings, prove their weight-$2$ torus law, and normalize
+the resulting chosen-model exterior action of the torus lift. Using those
+lifts, we show that any split Levi lift acts projectively as the natural
+exterior action, and prove an exact split-line image theorem identifying the
+image with the square-scaling subgroup. In higher rank, every
+square-determinant Levi element admits both an orthogonal factorization into
+transported transvections plus one chosen-line square scaling and an explicit
+even unitary Clifford unit acting on the chosen model by a scalar-normalized
+exterior action. The artifact comprises $22$ Lean source files totaling
+$15{,}035$ lines across the repository, of which $20$ files and roughly
+$15{,}000$ lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 % --- 1. Introduction -----------------------------------------------------
@@ -96,18 +98,18 @@ The point of the present treatment is therefore not to reintroduce
 $\bigwedge W$, but to keep that chosen-model construction explicit while making
 the covering/image statements field-sensitive and theorem-level.
 
-The paper develops the classical construction of a spinor
+We develop the classical construction of a spinor
 module $S=\bigwedge W$ attached to an explicit hyperbolic presentation
-$Q \simeq \dualProd_K W$, transports it through Witt-style reformulations, and
-obtains the induced $\Spin(V,Q)$-action. A crucial point throughout is that the
-paper's spinor module is \emph{not} the ambient exterior algebra on $V$, but
+$Q \simeq \dualProd_K W$, transport it through Witt-style reformulations, and
+obtain the induced $\Spin(V,Q)$-action. A crucial point throughout is that our
+spinor module is \emph{not} the ambient exterior algebra on $V$, but
 the exterior model $\bigwedge W$ supplied by a hyperbolic or split-Witt
 presentation, because that is the object with the classical spin dimension and
 chiral decomposition.
 
-From the formalization point of view, the paper's claim is that this
-chosen-model, field-sensitive covering package can be carried out in
-\Lean/\Mathlib all the way to explicit theorem-level image statements. The main
+From the formalization point of view, we show that this chosen-model,
+field-sensitive covering package can be carried out in \Lean/\Mathlib up to
+explicit theorem-level image statements. The main
 difficulty is that the exterior model depends on transported hyperbolic or Witt
 data, while the orthogonal-action statements depend on explicit Clifford
 calculations inside that chosen model. The payoff is that the Levi-action
@@ -117,18 +119,17 @@ Clifford lift become machine-checked results rather than informal consequences
 of the abstract theory.
 
 \paragraph{Contributions.}
-From a formalization-venue perspective, the contribution is a reusable
-chosen-model interface that transports Clifford and spin actions from explicit
-hyperbolic/Witt data to theorem-level covering statements. The three
-centerpiece mathematical outputs are the structural Levi-action theorem, the
-exact split-line image theorem, and the higher-rank square-determinant
-factorization together with its explicit chosen-model lift. Supporting these
-are the positive split-rank kernel/projective-descent package, the explicit
-hyperbolic transvection and chosen-line square-scaling lifts with their
-weight-$2$ torus laws. The classical chosen-model equivalence and half-spin
-package is included as
-infrastructure on which these field-sensitive theorems rest. The detailed
-theorem list appears below in ``New results at a glance''.
+Our main contribution is a reusable chosen-model interface that transports
+Clifford and spin actions from explicit hyperbolic/Witt data to theorem-level
+covering statements. The three centerpiece mathematical outputs are the
+structural Levi-action theorem, the exact split-line image theorem, and the
+higher-rank square-determinant factorization together with its explicit
+chosen-model lift. Supporting these are the positive split-rank
+kernel/projective-descent package and the explicit hyperbolic transvection and
+chosen-line square-scaling lifts with their weight-$2$ torus law. The classical
+chosen-model equivalence and half-spin package serves as infrastructure on
+which these field-sensitive theorems rest; the detailed theorem list appears
+below in ``New results at a glance''.
 
 \paragraph{Standing conventions.}
 Unless explicitly specialized to $\mathbb{R}$ or $\mathbb{C}$, the paper works
@@ -144,7 +145,7 @@ half-spin dimensions, additionally assume positive split rank.
 We write $\tilde x$ for Clifford conjugation (grade involution followed by
 reversion), so $\tilde v=-v$ for vectors and $\widetilde{vw}=-vw$ for
 orthogonal vectors $v,w$. The group $\Spin(V,Q)$ is the even subgroup of the
-Clifford units generated by products of unit vectors; in particular, any
+Clifford units generated by products of unit vectors. In particular, any
 product of two vectors of square $\pm1$ lies in $\Spin(V,Q)$, and every
 $x\in \Spin(V,Q)$ satisfies $x\tilde x=1$.
 All statements about the map $\Spin(V,Q)\to\SO(V,Q)$ concern the corresponding
@@ -202,21 +203,16 @@ but a concrete chosen-model realization of a root subgroup, its square torus,
 and the resulting square-class obstruction.
 
 \paragraph{New results at a glance.}
-For readers interested mainly in the venue-facing content, the nonclassical
-theorem package of this paper is as follows. Logically, the story runs from
-explicit root/torus lifts to the structural Levi-action theorem, and from there
-to the higher-rank and split-line image consequences.
-
-From the paper-facing point of view, however, the headline outputs are the Levi
-bridge, the exact split-line image theorem, and the constructive higher-rank
-square-determinant theorem; the supporting lift and descent statements are
-listed afterward.
+The headline theorems of this paper are the structural Levi-action bridge,
+the exact split-line image theorem, and the constructive higher-rank
+square-determinant factorization with its explicit chosen-model lift; the
+supporting explicit-lift and descent statements are listed alongside them:
 \begin{enumerate}
 \item the structural Levi-action theorem
   (Theorem~\ref{thm:levi-projective-exterior}), which identifies any split Levi
   lift projectively with the natural exterior action;
 \item the exact split-line image theorem of
-  Proposition~\ref{prop:split-line-square}.
+  Proposition~\ref{prop:split-line-square};
 \item the higher-rank square-determinant Levi factorization and explicit
   chosen-model lift of
   Theorem~\ref{thm:square-det-levi};
@@ -253,8 +249,6 @@ Lean LOC under \code{Spinor/} & $15{,}000$ \\
 \end{tabularx}
 \end{center}
 
-At the time of writing, the full repository rebuilds with \code{lake build}.
-
 The files most directly supporting the present paper are
 \code{ExteriorModel.lean}, \code{HyperbolicAction.lean},
 \code{OrthogonalAction.lean}, and \code{OddClassification.lean}; together
@@ -281,7 +275,8 @@ wedge/contraction construction each time a new covering or representation
 statement is needed.
 
 \paragraph{What the formalization contributes.}
-For venue purposes, the reusable payoff can be summarized in three layers.
+The reusable payoff is organized in three layers, each exposed as a small
+Lean interface.
 
 \paragraph{Chosen-model transport.}
 Lean interface: \code{Presentation.lean}, \code{CliffordAction.lean}, and
@@ -371,7 +366,7 @@ as a specified choice of maximal isotropic subspace together with an isometry to
 the standard hyperbolic form. From that single piece of data one obtains the
 chosen exterior model $\bigwedge W$, its even and odd halves, the transported
 Clifford action $\Cl(Q)\to\End(\bigwedge W)$, and the restricted spin-group
-action. The decisive point is that the paper's ``spinor module'' is not the
+action. The decisive point is that our ``spinor module'' is not the
 ambient regular module on $V$, but a distinguished exterior model carried along
 with the presentation data that justifies it.
 
@@ -387,7 +382,7 @@ model and then reused at the levels where classification and orthogonal-action
 results are stated.
 
 \paragraph{Representative Lean declarations.}
-The paper's main theorems are mirrored directly by reusable Lean declarations.
+Our main theorems are mirrored directly by reusable Lean declarations.
 For example, the vacuum-line lemma, the Levi-action bridge, and the exact
 split-line image theorem appear in the development as:
 \begin{quote}\small
@@ -406,7 +401,7 @@ split-line image theorem appear in the development as:
 \code{  MonoidHom.range (spinSpecialOrthogonalRepresentationFiniteDimensional}\\
 \code{    (Q := QuadraticForm.dualProd K K)) = dualProdLineSquareScalingSubgroup (K := K)}
 \end{quote}
-These declarations are representative of the paper's design goal: theorem-level
+These declarations are representative of the design goal: theorem-level
 covering statements are exposed directly at the Lean interface, not only as
 consequences hidden behind a large background equivalence.
 
@@ -470,8 +465,8 @@ state the result here because the later covering and image theorems are all
 built on this chosen-model interface.
 \end{proof}
 
-The paper deliberately separates the presentation-dependent and split-rank
-versions of these results. The endomorphism-algebra equivalences are
+We deliberately separate the presentation-dependent and split-rank
+versions of these results.The endomorphism-algebra equivalences are
 first proved from an explicit hyperbolic presentation, where no separate
 nondegeneracy hypothesis is needed; the nondegenerate split-rank assumptions
 enter when the explicit isometry data are suppressed and the chosen model is
@@ -548,7 +543,7 @@ for some $g\in \operatorname{GL}(W)$. Then there exists $c\in K^\times$ such tha
 \[
   \rho_S(s)=c\,(\bigwedge g)
 \]
-as endomorphisms of $S$. In particular the projective action of a split Levi
+as endomorphisms of $S$. In particular, the projective action of a split Levi
 lift on $S$ depends only on its Levi coordinate $g$.
 \end{theorem}
 
@@ -594,9 +589,9 @@ $\SO(\dualProd_K W)$ generated by the transported hyperbolic transvections.
 Together, Theorems~\ref{thm:chosen-spinor-package},
 \ref{thm:kernel-nonfactor-split-line},
 \ref{thm:levi-projective-exterior}, and
-\ref{thm:square-det-levi} capture the paper's main theorem-level arc: a
+\ref{thm:square-det-levi} capture our main theorem-level arc: a
 classical chosen-model foundation, a field-sensitive covering package, a
-structural Levi bridge, and a higher-rank factorization consequence. The next
+structural Levi bridge, and a higher-rank factorization consequence.The next
 section proves these statements and the supporting explicit calculations.
 
 % --- 5. Mechanized proof ingredients ---------------------------------------
@@ -1153,7 +1148,7 @@ Because both $\rho_S(s)$ and $\bigwedge g$ are invertible, necessarily
 $c\ne 0$.
 \end{proof}
 
-The previous theorem is structural: it identifies the chosen-model action of
+The preceding theorem is structural: it identifies the chosen-model action of
 any split Levi lift up to scalar. We now prove the corresponding higher-rank
 factorization and explicit-lift theorem from Section~\ref{sec:results}.
 
@@ -1243,7 +1238,7 @@ because $pqp=p$, $qpp=0$, $pqq=0$, and $qpq=q$. Therefore
   \qquad
   xqx^{-1}=b\,q(a\,qp+b\,pq)=b^2q=a^{-2}q.
 \]
-So the induced orthogonal action rescales the two isotropic lines by
+Hence the induced orthogonal action rescales the two isotropic lines by
 reciprocal squares, so the image is contained in the square-scaling subgroup.
 Conversely, Proposition~\ref{prop:chosen-line-square} specializes to the split
 line and shows that every square-scaling occurs in the image. This is exactly
@@ -1264,16 +1259,16 @@ additionally miss nonsquare reciprocal scalings.
 \section{Conclusion}
 \label{sec:conclusion}
 
-The paper uses the classical exterior-model construction only as the foundation
-for a sharper field-sensitive covering/image package. Its conceptual hinge is
+We use the classical exterior-model construction only as a foundation
+for a sharper field-sensitive covering/image package.Its conceptual hinge is
 the theorem that split Levi lifts act projectively as the natural exterior
 action on $\bigwedge W$; the explicit transvection and chosen-line square-scaling
 lifts feed into that bridge, and the higher-rank square-determinant theorem now
 produces not only an orthogonal factorization but also an explicit even unitary
 Clifford unit whose chosen-model action is $-u^{-1}\bigwedge g$ whenever
-$\det(g)=u^2$. Read that way, the paper is less about rederiving $\bigwedge W$
-and more about identifying how much of the split Levi picture is already
-visible inside explicit Clifford formulas over a general field. The next
+$\det(g)=u^2$. Read that way, our contribution is less about rederiving
+$\bigwedge W$ and more about identifying how much of the split Levi picture is
+already visible inside explicit Clifford formulas over a general field.The next
 mathematical frontier is to upgrade this constructive square-determinant theorem
 to an exact higher-rank image theorem, ideally phrased in terms of the subgroup
 generated by the explicit root/torus elements or, more conceptually, by the
