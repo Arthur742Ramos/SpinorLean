@@ -49,7 +49,19 @@
 % --- Metadata -------------------------------------------------------------
 \title{Formalized Exterior-Model Spinors in Split Rank:\\
        Levi Actions, Non-Descent, and the Exact Split-Line Image}
-\author{Anonymous Authors}
+
+\author{%
+  Arthur F.~Ramos\thanks{Microsoft, USA.
+    \href{mailto:arfreita@microsoft.com}{\nolinkurl{arfreita@microsoft.com}}.
+    Corresponding author.}
+  \and
+  David B.~Hulak\thanks{Independent Researcher.
+    \href{mailto:dbhulak@gmail.com}{\nolinkurl{dbhulak@gmail.com}}.}
+  \and
+  Ruy J.~G.~B.~de Queiroz\thanks{Centro de Inform\'atica,
+    Universidade Federal de Pernambuco, Brazil.
+    \href{mailto:ruy@cin.ufpe.br}{\nolinkurl{ruy@cin.ufpe.br}}.}%
+}
 \date{}
 
 \begin{document}
@@ -239,7 +251,7 @@ covering-image statements are built.
 
 \begin{center}
 \begin{tabularx}{\linewidth}{@{}lY@{}}
-Repository & blinded for review; public URL restored in the final version \\
+Repository & \url{https://github.com/Arthur742Ramos/SpinorLean} \\
 Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
 \Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
 Build command & \code{lake build} \\
@@ -1155,7 +1167,7 @@ factorization and explicit-lift theorem from Section~\ref{sec:results}.
 \begin{proof}[Proof of Theorem~\ref{thm:square-det-levi}]
 Choose a basis of $W$ and write the matrix of $g$ in that basis. The classical
 transvection reduction for invertible matrices in dimension at least
-$2$~\cite[Ch.~IX, \S8, Thm.~8.1]{HoffmanKunze1971} then writes $g$ as basis
+$2$~\cite[Ch.~IV]{Artin1957GeometricAlgebra} then writes $g$ as basis
 transvections, a diagonal basis scaling, and basis transvections. Because
 $\det(g)$ is a square, the middle diagonal factor has square total determinant.
 The basis-diagonal square-determinant theorem proved in the formal development
