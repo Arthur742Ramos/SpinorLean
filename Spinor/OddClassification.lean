@@ -3,7 +3,8 @@
 
   This packages the standard odd split form `dualProd K M ⊕ ⟨1⟩` by identifying its Clifford
   algebra with the even Clifford algebra of a one-up hyperbolic form, then applying the chosen
-  half-spin product classification proved for split even Clifford algebras.
+  half-spin product classification proved for split even Clifford algebras.  It also contains
+  the exact split-line image theorem used by the paper's covering-map discussion.
 -/
 
 import Spinor.ProdNeg
@@ -16,6 +17,10 @@ import Mathlib.LinearAlgebra.Matrix.Unique
 Classification of the standard odd split form `H(M) ⊕ ⟨1⟩` as a product of two matrix
 algebras by combining `CliffordAlgebra.equivEven` with the even-Clifford product-endomorphism
 classification from `Spinor.Presentation` and `Spinor.ProdNeg`.
+
+The file also records the exact rank-one spin image: for the split line, the image of the
+finite-dimensional spin-to-special-orthogonal representation is precisely the square-scaling
+subgroup.
 
 More precisely, the one-up hyperbolic form whose even Clifford algebra is `H(M) ⊕ ⟨1⟩` is
 identified via Mathlib's `CliffordAlgebra.equivEven` with the `Q ⊕ (-Q)` classification, and
@@ -35,6 +40,8 @@ model.
 * `Spinor.oddSplitOneUpEvenEquivProdEnd`, `Spinor.oddSplitCliffordEquivProdEnd`,
   `Spinor.oddSplitCliffordEquivProdMatrix` — the product-endomorphism and product-of-matrices
   equivalences classifying `CliffordAlgebra (oddSplitForm M)`.
+* `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup`
+  — exact split-line image theorem identifying the spin image with the square-scaling subgroup.
 -/
 
 namespace Spinor

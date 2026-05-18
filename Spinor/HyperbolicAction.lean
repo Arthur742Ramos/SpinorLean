@@ -1012,6 +1012,47 @@ theorem splitCliffordAction_eq_smul_exteriorMap_of_spinSpecialOrthogonalRepresen
   exact eq_smul_exteriorMap_of_map_one_and_wedgeAction
     (K := K) (V := V) (W := W) b (g : W →ₗ[K] W) A c hc hwedge
 
+/-- On the split exterior model `⋀W`, any spin lift of the Levi copy of `GL(W)` acts by a
+nonzero scalar multiple of the natural exterior action of the underlying linear automorphism. -/
+theorem splitCliffordAction_eq_units_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq
+    {W : Submodule K V} [FiniteDimensional K W]
+    (s : spinGroup (QuadraticForm.dualProd K W)) (g : W ≃ₗ[K] W)
+    (hs : spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W) s =
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K) g) :
+    ∃ c : Kˣ,
+      splitCliffordAction (K := K) W (s : CliffordAlgebra (QuadraticForm.dualProd K W)) =
+        (c : K) • (ExteriorAlgebra.map (g : W →ₗ[K] W)).toLinearMap := by
+  let Qd : QuadraticForm K (Module.Dual K W × W) := QuadraticForm.dualProd K W
+  obtain ⟨c, hc⟩ :=
+    splitCliffordAction_eq_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq
+      (K := K) (V := V) s g hs
+  have haction_ne_zero :
+      splitCliffordAction (K := K) W (s : CliffordAlgebra Qd) ≠ 0 := by
+    intro hzero
+    have hinv :
+        splitCliffordAction (K := K) W
+              ((((spinGroup.toUnits s)⁻¹ : (CliffordAlgebra Qd)ˣ) :
+                CliffordAlgebra Qd)) *
+            splitCliffordAction (K := K) W (s : CliffordAlgebra Qd) =
+          1 := by
+      rw [← map_mul]
+      change splitCliffordAction (K := K) W
+          ((((spinGroup.toUnits s)⁻¹ * spinGroup.toUnits s : (CliffordAlgebra Qd)ˣ) :
+            CliffordAlgebra Qd)) = 1
+      simp
+    have hzero_one : (0 : Module.End K (IsotropicExteriorModel (K := K) W)) = 1 := by
+      simpa [hzero] using hinv
+    have hzero_one_apply :
+        (0 : IsotropicExteriorModel (K := K) W) = 1 :=
+      congrArg (fun f : Module.End K (IsotropicExteriorModel (K := K) W) => f 1) hzero_one
+    exact zero_ne_one hzero_one_apply
+  have hc_ne : c ≠ 0 := by
+    intro hc0
+    apply haction_ne_zero
+    simpa [Qd, hc0] using hc
+  exact ⟨Units.mk0 c hc_ne, by simpa [Qd] using hc⟩
+
 /-- For a Levi spin lift, the same scalar controls the action on the bottom and top exterior
 lines, and the top-line eigenvalue differs by `det g`. -/
 theorem splitCliffordAction_apply_one_and_topExteriorGenerator_of

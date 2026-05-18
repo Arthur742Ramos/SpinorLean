@@ -346,6 +346,57 @@ theorem submodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
       exact submodule_map_mul_end_eq L (P.spinRepresentation (x * y⁻¹)) (P.spinRepresentation y)
     _ = L.map (P.spinRepresentation y) := hfix
 
+/-- The image of the spin-to-isometry map acts on chosen-model submodules by choosing any spin
+lift.  The accompanying `..._eq_map` and `..._mul` theorems show that the definition is
+independent of this choice and is the promised image-subgroup action on projective subspaces. -/
+noncomputable def spinIsometryImageSubmoduleAction [FiniteDimensional K V]
+    (P : HyperbolicPresentation Q)
+    (g : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (L : Submodule K P.spinorModule) : Submodule K P.spinorModule :=
+  L.map (P.spinRepresentation (Classical.choose g.property))
+
+theorem spinIsometryImageSubmoduleAction_eq_map [FiniteDimensional K V]
+    (P : HyperbolicPresentation Q)
+    (g : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (x : spinGroup Q) (hx : spinIsometryRepresentation (Q := Q) x = g)
+    (L : Submodule K P.spinorModule) :
+    P.spinIsometryImageSubmoduleAction g L = L.map (P.spinRepresentation x) := by
+  have hchoose :
+      spinIsometryRepresentation (Q := Q) (Classical.choose g.property) =
+        spinIsometryRepresentation (Q := Q) x := by
+    rw [Classical.choose_spec g.property, hx]
+  exact P.submodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq hchoose L
+
+@[simp] theorem spinIsometryImageSubmoduleAction_one [FiniteDimensional K V]
+    (P : HyperbolicPresentation Q) (L : Submodule K P.spinorModule) :
+    P.spinIsometryImageSubmoduleAction 1 L = L := by
+  rw [P.spinIsometryImageSubmoduleAction_eq_map 1 1
+    ((spinIsometryRepresentation (Q := Q)).map_one) L]
+  simpa using submodule_map_one_eq L
+
+theorem spinIsometryImageSubmoduleAction_mul [FiniteDimensional K V]
+    (P : HyperbolicPresentation Q)
+    (g h : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (L : Submodule K P.spinorModule) :
+    P.spinIsometryImageSubmoduleAction (g * h) L =
+      P.spinIsometryImageSubmoduleAction g (P.spinIsometryImageSubmoduleAction h L) := by
+  let xg : spinGroup Q := Classical.choose g.property
+  let xh : spinGroup Q := Classical.choose h.property
+  have hxg : spinIsometryRepresentation (Q := Q) xg = g :=
+    Classical.choose_spec g.property
+  have hxh : spinIsometryRepresentation (Q := Q) xh = h :=
+    Classical.choose_spec h.property
+  have hxgh : spinIsometryRepresentation (Q := Q) (xg * xh) = g * h := by
+    ext v
+    change (spinIsometryRepresentation (Q := Q) (xg * xh)) v = ((g * h : _) : Q.IsometryEquiv Q) v
+    rw [map_mul, hxg, hxh]
+    rfl
+  rw [P.spinIsometryImageSubmoduleAction_eq_map (g * h) (xg * xh) hxgh L]
+  rw [P.spinIsometryImageSubmoduleAction_eq_map h xh hxh L]
+  rw [P.spinIsometryImageSubmoduleAction_eq_map g xg hxg (L.map (P.spinRepresentation xh))]
+  rw [map_mul]
+  exact submodule_map_mul_end_eq L (P.spinRepresentation xg) (P.spinRepresentation xh)
+
 @[simp] theorem spinRepresentation_eq_one_iff [FiniteDimensional K V]
     (P : HyperbolicPresentation Q) (x : spinGroup Q) :
     P.spinRepresentation x = 1 ↔ x = 1 := by
@@ -1127,6 +1178,114 @@ theorem negativeChiralSubmodule_map_spinRepresentation_eq_of_spinIsometryReprese
       exact submodule_map_mul_end_eq L (P.negativeChiralSpinRepresentation (x * y⁻¹))
         (P.negativeChiralSpinRepresentation y)
     _ = L.map (P.negativeChiralSpinRepresentation y) := hfix
+
+/-- The spin-to-isometry image acts on positive half-spin submodules by choosing any spin lift. -/
+noncomputable def positiveChiralSpinIsometryImageSubmoduleAction
+    (P : HyperbolicPresentation Q)
+    (g : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (L : Submodule K P.positiveChiralSpinorModule) : Submodule K P.positiveChiralSpinorModule :=
+  L.map (P.positiveChiralSpinRepresentation (Classical.choose g.property))
+
+theorem positiveChiralSpinIsometryImageSubmoduleAction_eq_map
+    (P : HyperbolicPresentation Q)
+    (g : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (x : spinGroup Q) (hx : spinIsometryRepresentation (Q := Q) x = g)
+    (L : Submodule K P.positiveChiralSpinorModule) :
+    P.positiveChiralSpinIsometryImageSubmoduleAction g L =
+      L.map (P.positiveChiralSpinRepresentation x) := by
+  have hchoose :
+      spinIsometryRepresentation (Q := Q) (Classical.choose g.property) =
+        spinIsometryRepresentation (Q := Q) x := by
+    rw [Classical.choose_spec g.property, hx]
+  exact P.positiveChiralSubmodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+    hchoose L
+
+@[simp] theorem positiveChiralSpinIsometryImageSubmoduleAction_one
+    (P : HyperbolicPresentation Q) (L : Submodule K P.positiveChiralSpinorModule) :
+    P.positiveChiralSpinIsometryImageSubmoduleAction 1 L = L := by
+  rw [P.positiveChiralSpinIsometryImageSubmoduleAction_eq_map 1 1
+    ((spinIsometryRepresentation (Q := Q)).map_one) L]
+  simpa using submodule_map_one_eq L
+
+theorem positiveChiralSpinIsometryImageSubmoduleAction_mul
+    (P : HyperbolicPresentation Q)
+    (g h : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (L : Submodule K P.positiveChiralSpinorModule) :
+    P.positiveChiralSpinIsometryImageSubmoduleAction (g * h) L =
+      P.positiveChiralSpinIsometryImageSubmoduleAction g
+        (P.positiveChiralSpinIsometryImageSubmoduleAction h L) := by
+  let xg : spinGroup Q := Classical.choose g.property
+  let xh : spinGroup Q := Classical.choose h.property
+  have hxg : spinIsometryRepresentation (Q := Q) xg = g :=
+    Classical.choose_spec g.property
+  have hxh : spinIsometryRepresentation (Q := Q) xh = h :=
+    Classical.choose_spec h.property
+  have hxgh : spinIsometryRepresentation (Q := Q) (xg * xh) = g * h := by
+    ext v
+    change (spinIsometryRepresentation (Q := Q) (xg * xh)) v = ((g * h : _) : Q.IsometryEquiv Q) v
+    rw [map_mul, hxg, hxh]
+    rfl
+  rw [P.positiveChiralSpinIsometryImageSubmoduleAction_eq_map (g * h) (xg * xh) hxgh L]
+  rw [P.positiveChiralSpinIsometryImageSubmoduleAction_eq_map h xh hxh L]
+  rw [P.positiveChiralSpinIsometryImageSubmoduleAction_eq_map g xg hxg
+    (L.map (P.positiveChiralSpinRepresentation xh))]
+  rw [map_mul]
+  exact submodule_map_mul_end_eq L (P.positiveChiralSpinRepresentation xg)
+    (P.positiveChiralSpinRepresentation xh)
+
+/-- The spin-to-isometry image acts on negative half-spin submodules by choosing any spin lift. -/
+noncomputable def negativeChiralSpinIsometryImageSubmoduleAction
+    (P : HyperbolicPresentation Q)
+    (g : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (L : Submodule K P.negativeChiralSpinorModule) : Submodule K P.negativeChiralSpinorModule :=
+  L.map (P.negativeChiralSpinRepresentation (Classical.choose g.property))
+
+theorem negativeChiralSpinIsometryImageSubmoduleAction_eq_map
+    (P : HyperbolicPresentation Q)
+    (g : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (x : spinGroup Q) (hx : spinIsometryRepresentation (Q := Q) x = g)
+    (L : Submodule K P.negativeChiralSpinorModule) :
+    P.negativeChiralSpinIsometryImageSubmoduleAction g L =
+      L.map (P.negativeChiralSpinRepresentation x) := by
+  have hchoose :
+      spinIsometryRepresentation (Q := Q) (Classical.choose g.property) =
+        spinIsometryRepresentation (Q := Q) x := by
+    rw [Classical.choose_spec g.property, hx]
+  exact P.negativeChiralSubmodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+    hchoose L
+
+@[simp] theorem negativeChiralSpinIsometryImageSubmoduleAction_one
+    (P : HyperbolicPresentation Q) (L : Submodule K P.negativeChiralSpinorModule) :
+    P.negativeChiralSpinIsometryImageSubmoduleAction 1 L = L := by
+  rw [P.negativeChiralSpinIsometryImageSubmoduleAction_eq_map 1 1
+    ((spinIsometryRepresentation (Q := Q)).map_one) L]
+  simpa using submodule_map_one_eq L
+
+theorem negativeChiralSpinIsometryImageSubmoduleAction_mul
+    (P : HyperbolicPresentation Q)
+    (g h : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (L : Submodule K P.negativeChiralSpinorModule) :
+    P.negativeChiralSpinIsometryImageSubmoduleAction (g * h) L =
+      P.negativeChiralSpinIsometryImageSubmoduleAction g
+        (P.negativeChiralSpinIsometryImageSubmoduleAction h L) := by
+  let xg : spinGroup Q := Classical.choose g.property
+  let xh : spinGroup Q := Classical.choose h.property
+  have hxg : spinIsometryRepresentation (Q := Q) xg = g :=
+    Classical.choose_spec g.property
+  have hxh : spinIsometryRepresentation (Q := Q) xh = h :=
+    Classical.choose_spec h.property
+  have hxgh : spinIsometryRepresentation (Q := Q) (xg * xh) = g * h := by
+    ext v
+    change (spinIsometryRepresentation (Q := Q) (xg * xh)) v = ((g * h : _) : Q.IsometryEquiv Q) v
+    rw [map_mul, hxg, hxh]
+    rfl
+  rw [P.negativeChiralSpinIsometryImageSubmoduleAction_eq_map (g * h) (xg * xh) hxgh L]
+  rw [P.negativeChiralSpinIsometryImageSubmoduleAction_eq_map h xh hxh L]
+  rw [P.negativeChiralSpinIsometryImageSubmoduleAction_eq_map g xg hxg
+    (L.map (P.negativeChiralSpinRepresentation xh))]
+  rw [map_mul]
+  exact submodule_map_mul_end_eq L (P.negativeChiralSpinRepresentation xg)
+    (P.negativeChiralSpinRepresentation xh)
 
 /-- The corresponding `spinGroup` action on the positive-chiral half of the presented chosen
 model. -/
@@ -2295,6 +2454,71 @@ theorem negativeHalfSpinorSubmodule_map_spinRepresentation_eq_of_spinIsometryRep
     (HyperbolicPresentation.negativeChiralSubmodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
       (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
       hxy L)
+
+/-- The spin-to-isometry image acts on canonical split spinor submodules by choosing any spin
+lift. -/
+noncomputable def splitSpinorSubmoduleImageAction (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (g : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (L : Submodule K (splitSpinorModule (K := K) Q)) :
+    Submodule K (splitSpinorModule (K := K) Q) :=
+  (splitWittPresentation (K := K) Q hQ hsplit).spinIsometryImageSubmoduleAction g L
+
+theorem splitSpinorSubmoduleImageAction_eq_map (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (g : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (x : spinGroup Q) (hx : spinIsometryRepresentation (Q := Q) x = g)
+    (L : Submodule K (splitSpinorModule (K := K) Q)) :
+    splitSpinorSubmoduleImageAction (K := K) Q hQ hsplit g L =
+      L.map (splitSpinorRepresentation (K := K) Q hQ hsplit x) := by
+  simpa [splitSpinorSubmoduleImageAction, splitSpinorRepresentation, splitSpinorModule] using
+    (HyperbolicPresentation.spinIsometryImageSubmoduleAction_eq_map
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+      g x hx L)
+
+/-- The spin-to-isometry image acts on canonical positive half-spin submodules by choosing any spin
+lift. -/
+noncomputable def positiveHalfSpinorSubmoduleImageAction (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (g : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (L : Submodule K (positiveHalfSpinorModule (K := K) Q)) :
+    Submodule K (positiveHalfSpinorModule (K := K) Q) :=
+  (splitWittPresentation (K := K) Q hQ hsplit).positiveChiralSpinIsometryImageSubmoduleAction g L
+
+theorem positiveHalfSpinorSubmoduleImageAction_eq_map (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (g : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (x : spinGroup Q) (hx : spinIsometryRepresentation (Q := Q) x = g)
+    (L : Submodule K (positiveHalfSpinorModule (K := K) Q)) :
+    positiveHalfSpinorSubmoduleImageAction (K := K) Q hQ hsplit g L =
+      L.map (positiveHalfSpinRepresentation (K := K) Q hQ hsplit x) := by
+  simpa [positiveHalfSpinorSubmoduleImageAction, positiveHalfSpinRepresentation,
+    positiveHalfSpinorModule] using
+    (HyperbolicPresentation.positiveChiralSpinIsometryImageSubmoduleAction_eq_map
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+      g x hx L)
+
+/-- The spin-to-isometry image acts on canonical negative half-spin submodules by choosing any spin
+lift. -/
+noncomputable def negativeHalfSpinorSubmoduleImageAction (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (g : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (L : Submodule K (negativeHalfSpinorModule (K := K) Q)) :
+    Submodule K (negativeHalfSpinorModule (K := K) Q) :=
+  (splitWittPresentation (K := K) Q hQ hsplit).negativeChiralSpinIsometryImageSubmoduleAction g L
+
+theorem negativeHalfSpinorSubmoduleImageAction_eq_map (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (g : MonoidHom.range (spinIsometryRepresentation (Q := Q)))
+    (x : spinGroup Q) (hx : spinIsometryRepresentation (Q := Q) x = g)
+    (L : Submodule K (negativeHalfSpinorModule (K := K) Q)) :
+    negativeHalfSpinorSubmoduleImageAction (K := K) Q hQ hsplit g L =
+      L.map (negativeHalfSpinRepresentation (K := K) Q hQ hsplit x) := by
+  simpa [negativeHalfSpinorSubmoduleImageAction, negativeHalfSpinRepresentation,
+    negativeHalfSpinorModule] using
+    (HyperbolicPresentation.negativeChiralSpinIsometryImageSubmoduleAction_eq_map
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+      g x hx L)
 
 /-- In positive split rank, the ambient regular-model spin representation does not factor through
 the ambient isometry representation. -/

@@ -127,6 +127,12 @@ Implemented so far:
   hyperbolic/split setting the chosen-model equivalence `Cl(Q) ≃ End(⋀W)` now forces every kernel
   element to be scalar; hence on the canonical split-rank chosen-model API the ambient
   spin-to-isometry kernel is proved to be exactly `{1, -1}`
+- in positive split rank, the full chosen-model spin representation and the nonzero half-spin
+  representations are now proved not to factor through the ambient isometry representation, while
+  their induced projective actions are packaged as image-subgroup actions on submodules
+- the split-line spin image is now identified exactly with the square-scaling subgroup in
+  `Spinor.OddClassification`, giving a theorem-level field-sensitive replacement for an
+  unrestricted double-cover slogan
 - a chiral decomposition `S = S⁺ ⊕ S⁻` transported from Clifford parity, with `spinGroup`
   preserving both summands and restricting to actions on each summand
 - on the zero-form chosen model `⋀W`, an identification of the abstract chiral pieces with the
@@ -191,6 +197,11 @@ Implemented so far:
   packages each spin element as an ambient isometry `spinIsometryEquiv : Q.IsometryEquiv Q`
   together with the full homomorphism
   `spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q`
+- `Spinor.HyperbolicAction` now proves the Levi-projective exterior-action theorem with a unit
+  scalar, via
+  `splitCliffordAction_eq_units_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq`, and
+  packages explicit transvection Clifford units, chosen-line square-scaling lifts, and the
+  square-determinant Levi factorization/lift API used by the paper
 
 - the ambient chiral identification is now closed: the canonical chosen-model positive and
   negative half-spin modules are, by construction, the ambient `positiveChiral` /
@@ -226,8 +237,8 @@ Still open from the roadmap:
 
 - periodicity beyond the new split real foundation and canonical negative-signature entries
   (the full Bott period-8 table is still in progress)
-- the fully general double-cover / surjectivity and non-factorization theorems beyond the
-  packaged split-rank kernel and non-factorization results
+- fully general double-cover / surjectivity and non-factorization theorems beyond the packaged
+  split-rank kernel, non-factorization, projective-descent, and exact split-line image results
 - paper polish, evaluation, and submission-ready exposition beyond the current working draft
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

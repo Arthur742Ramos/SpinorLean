@@ -13,8 +13,9 @@
   * `QuadraticMap.radical`, `QuadraticMap.IsOrtho`, `QuadraticMap.Anisotropic`,
     and finite-dimensional signature/diagonalization tools.
 
-  The main gaps for this project are the missing API for totally isotropic subspaces,
-  Witt-index bookkeeping, and a project-level spinor-module construction.
+  The initial gaps for this project were the missing API for totally isotropic subspaces,
+  Witt-index bookkeeping, and a project-level spinor-module construction.  The project modules
+  below supply the companion APIs used by the paper.
 -/
 
 import Spinor.Notation
@@ -22,15 +23,15 @@ import Spinor.Notation
 /-!
 # Mathlib inventory for SpinorLean
 
-Documentation-only module recording the Mathlib APIs this project builds on and the gaps it
-sets out to fill. The `Spinor` namespace here is intentionally empty; see the file header
+Documentation-only module recording the Mathlib APIs this project builds on and the companion
+APIs it adds around them. The `Spinor` namespace here is intentionally empty; see the file header
 comment above for the current inventory.
 
-The main gaps targeted elsewhere in this library are an API for totally isotropic subspaces
-(`Spinor.Isotropic`), Witt-index bookkeeping (`Spinor.WittDecomp`), and a project-level
-spinor-module construction with its Clifford and spin-group actions
-(`Spinor.Basic`, `Spinor.ExteriorModel`, `Spinor.CliffordAction`, `Spinor.SpinRep`,
-`Spinor.Presentation`).
+The main project-level additions are an API for totally isotropic subspaces
+(`Spinor.Isotropic`), Witt-index bookkeeping (`Spinor.WittDecomp`), and a chosen-model
+spinor-module construction with its Clifford, spin-group, half-spin, and image-subgroup
+projective-descent actions (`Spinor.Basic`, `Spinor.ExteriorModel`,
+`Spinor.CliffordAction`, `Spinor.SpinRep`, `Spinor.Chiral`, `Spinor.Presentation`).
 -/
 
 namespace Spinor

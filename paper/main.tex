@@ -81,18 +81,18 @@ level.
 The headline formalized results are as follows. In positive split rank, the
 kernel of $\Spin(V,Q)\to\SO(V,Q)$ is $\{\pm1\}$, so the exterior-model spin
 action is projective but not linear on the orthogonal image. In the hyperbolic
-model we construct explicit Clifford lifts of hyperbolic transvections and
-chosen-line square scalings, prove their weight-$2$ torus law, and normalize
-the resulting chosen-model exterior action of the torus lift. Using those
-lifts, we show that any split Levi lift acts projectively as the natural
-exterior action, and prove an exact split-line image theorem identifying the
-image with the square-scaling subgroup. In higher rank, every
+model we construct explicit Clifford-unit representatives for hyperbolic
+transvections and chosen-line square scalings, prove their weight-$2$ torus
+law, and normalize the resulting chosen-model exterior action of the torus
+lift. In the same chosen model, any split Levi lift acts projectively as the
+natural exterior action, and the split-line spin image is exactly the
+square-scaling subgroup. In higher rank, every
 square-determinant Levi element admits both an orthogonal factorization into
 transported transvections plus one chosen-line square scaling and an explicit
 even unitary Clifford unit acting on the chosen model by a scalar-normalized
 exterior action. The artifact comprises $22$ Lean source files totaling
-$15{,}035$ lines across the repository, of which $20$ files and roughly
-$15{,}000$ lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$15{,}801$ lines across the repository, of which $20$ files and $15{,}765$
+lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 % --- 1. Introduction -----------------------------------------------------
@@ -137,8 +137,9 @@ covering statements. The three centerpiece mathematical outputs are the
 structural Levi-action theorem, the exact split-line image theorem, and the
 higher-rank square-determinant factorization together with its explicit
 chosen-model lift. Supporting these are the positive split-rank
-kernel/projective-descent package and the explicit hyperbolic transvection and
-chosen-line square-scaling lifts with their weight-$2$ torus law. The classical
+kernel/projective-descent package and the explicit hyperbolic transvection
+Clifford units and chosen-line square-scaling lifts with their weight-$2$ torus
+law. The classical
 chosen-model equivalence and half-spin package serves as infrastructure on
 which these field-sensitive theorems rest; the detailed theorem list appears
 below in ``New results at a glance''.
@@ -204,8 +205,9 @@ chosen-model lift proved here.
 realization $\Cl(Q)\simeq\End(\bigwedge W)$, the parity split, or the basic
 chosen-model reconstruction of spinors. The nonclassical content begins when the
 covering/image behavior is made field-sensitive in that chosen model: the
-positive split-rank linear/projective dichotomy; the explicit transvection and
-chosen-line square-scaling lifts; their internal and orthogonal weight-$2$
+positive split-rank linear/projective dichotomy; the explicit transvection
+Clifford units and chosen-line square-scaling lifts; their internal and
+orthogonal weight-$2$
 semidirect structure together with the exact normalized exterior action of the
 torus lift; the theorem that split Levi lifts act projectively as the natural
 exterior action; the higher-rank square-determinant factorization and its
@@ -228,7 +230,7 @@ supporting explicit-lift and descent statements are listed alongside them:
 \item the higher-rank square-determinant Levi factorization and explicit
   chosen-model lift of
   Theorem~\ref{thm:square-det-levi};
-\item the explicit hyperbolic transvection lift
+\item the explicit hyperbolic transvection Clifford unit
   $x_{\delta,w}=1+\iota(\delta,0)\iota(0,w)$ from
   Proposition~\ref{prop:transvection-unit} together with the explicit chosen-line
   square-scaling lift of Proposition~\ref{prop:chosen-line-square}, its internal
@@ -256,17 +258,17 @@ Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
 \Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
 Build command & \code{lake build} \\
 Lean files under \code{Spinor/} & $20$ \\
-Lean LOC under \code{Spinor/} & $15{,}000$ \\
+Lean LOC under \code{Spinor/} & $15{,}765$ \\
 \code{sorry} occurrences under \code{Spinor/} & $0$
 \end{tabularx}
 \end{center}
 
 The files most directly supporting the present paper are
-\code{ExteriorModel.lean}, \code{HyperbolicAction.lean},
+\code{Presentation.lean}, \code{ExteriorModel.lean}, \code{HyperbolicAction.lean},
 \code{OrthogonalAction.lean}, and \code{OddClassification.lean}; together
 they package the chosen-model vacuum-line lemmas, the structural Levi-action
-theorem, the explicit transvection and square-scaling lifts with their
-conjugation laws, the higher-rank square-determinant Levi factorization and
+theorem, the explicit transvection Clifford units and square-scaling lifts with
+their conjugation laws, the higher-rank square-determinant Levi factorization and
 explicit chosen-model lift, and
 the exact split-line image theorem.
 
@@ -298,8 +300,9 @@ distinguished exterior model without redoing the split-model construction.
 \paragraph{Levi-projective exterior action.}
 Lean interface:
 \code{eq_algebraMap_of_forall_contractionAction_eq_zero} and
-\code{splitCliffordAction_eq_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq}.
-This provides a reusable bridge from spin lifts to \code{ExteriorAlgebra.map},
+\code{splitCliffordAction_eq_units_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq}.
+This provides a reusable bridge from spin lifts to \code{ExteriorAlgebra.map}
+with the scalar recorded as a unit,
 which is the key interface for comparing Clifford actions with linear algebra.
 
 \paragraph{Exact split-line image and higher-rank factorization.}
@@ -889,7 +892,9 @@ chosen Witt decomposition of $Q$. Then the induced action of $\Spin(V,Q)$ on
 the projective space $\mathbb{P}(S)$ of one-dimensional subspaces depends only
 on the image of $\Spin(V,Q)\to\SO(V,Q)$ and therefore defines an action of
 that image subgroup. The same is true for the projective spaces of the nonzero
-half-spin modules $S^+$ and $S^-$.
+half-spin modules $S^+$ and $S^-$. In Lean this is packaged as an explicit
+action of the spin-to-isometry image subgroup on chosen-model submodules; the
+projective statement is the restriction to one-dimensional submodules.
 \end{proposition}
 
 \begin{proof}
@@ -903,7 +908,7 @@ projective actions depend only on the image in $\SO(V,Q)$ and therefore define
 actions of the image subgroup of $\Spin(V,Q)\to\SO(V,Q)$.
 \end{proof}
 
-\begin{proposition}[Explicit hyperbolic transvection lift]
+\begin{proposition}[Explicit hyperbolic transvection Clifford unit]
 \label{prop:transvection-unit}
 Let $Q=\dualProd_K W$. If $\delta\in W^*$ and $w\in W$ satisfy $\delta(w)=0$,
 set \(a=(\delta,0)\), \(b=(0,w)\), and
@@ -957,10 +962,10 @@ This is exactly the displayed transvection formula.
 \end{proof}
 
 \paragraph{Unipotent and semisimple directions in the hyperbolic model.}
-Proposition~\ref{prop:transvection-unit} gives an explicit Clifford lift of the
-unipotent root-subgroup direction in the hyperbolic Levi picture. The next
-proposition provides the complementary semisimple direction along a chosen split
-line.
+Proposition~\ref{prop:transvection-unit} gives an explicit Clifford-unit
+representative for the unipotent root-subgroup direction in the hyperbolic Levi
+picture. The next proposition provides the complementary semisimple direction
+along a chosen split line.
 
 \begin{proposition}[Chosen-line square scaling in the hyperbolic model]
 \label{prop:chosen-line-square}
@@ -1053,8 +1058,9 @@ $\lambda_t^{-1}$, then $T_{\delta,w}$, and then $\lambda_t$ gives
   = T_{t^2\delta,w}(d,u),
 \]
 which is the displayed conjugation formula. The final claim is just a
-reformulation: the manuscript now gives explicit Clifford lifts of both the
-unipotent subgroup $U_w$ and the semisimple square torus acting on it.
+reformulation: the manuscript gives explicit Clifford-unit representatives for
+the unipotent subgroup $U_w$ and an explicit spin lift of the semisimple square
+torus acting on it.
 \end{proof}
 
 \begin{corollary}[Internal Clifford-level torus action]
@@ -1157,7 +1163,9 @@ exterior monomials yields
   \rho_S(s)=c\,(\bigwedge g).
 \]
 Because both $\rho_S(s)$ and $\bigwedge g$ are invertible, necessarily
-$c\ne 0$.
+$c\ne 0$; the Lean statement records this final scalar directly as an element
+of $K^\times$ in
+\code{splitCliffordAction_eq_units_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq}.
 \end{proof}
 
 The preceding theorem is structural: it identifies the chosen-model action of
