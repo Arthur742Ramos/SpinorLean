@@ -12,6 +12,7 @@ This project fills that gap.
 
 ```
 SpinorLean/
+├── .github/workflows/lean.yml -- CI: Lean build + no-hole check
 ├── THEOREM_INDEX.md   -- Paper theorem labels mapped to Lean declarations
 ├── Spinor.lean
 ├── Spinor/
@@ -49,8 +50,8 @@ lake build
 ## Verification and reproducibility
 
 The Lean toolchain is pinned in `lean-toolchain`, and the Mathlib revision is pinned in
-`lake-manifest.json`. The verification scripts run the full Lean build and reject proof-hole
-tokens in Lean files:
+`lake-manifest.json`. Pull requests run the full Lean build and proof-hole token check in
+GitHub Actions. The same checks can be run locally with:
 
 ```bash
 bash scripts/verify.sh
