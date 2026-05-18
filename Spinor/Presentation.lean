@@ -47,6 +47,8 @@ identifications of the chiral pieces with `⋀^even W` / `⋀^odd W`, the Witt-i
 * `HyperbolicPresentation.spinRepresentation_injective`,
   `HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_pos_finrank` —
   faithfulness of the chosen-model spin representation and its non-factorization theorem.
+* `HyperbolicPresentation.submodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq` —
+  submodule-level projective descent for the chosen-model spin action.
 * `HyperbolicPresentation.ambientSpinRepresentation_not_factor_through_isometry_of_pos_finrank`,
   `Spinor.splitSpinRepresentation_not_factor_through_isometry` — the corresponding ambient
   regular-model non-factorization theorems in positive split rank.
@@ -54,6 +56,10 @@ identifications of the chiral pieces with `⋀^even W` / `⋀^odd W`, the Witt-i
   associated action / simplicity / inequivalence aliases — the top-level split-rank
   canonical chosen-model API built from `HyperbolicPresentation` together with
   `Spinor.WittPresentation` and `Spinor.splitWittPresentation`.
+* `positiveHalfSpinRepresentation_not_factor_through_isometry`,
+  `negativeHalfSpinRepresentation_not_factor_through_isometry` and the
+  `...Submodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq` theorems — the
+  half-spin non-factorization and projective-descent statements used by the paper companion.
 -/
 
 namespace Spinor
@@ -62,6 +68,56 @@ universe uK uV
 
 variable {K : Type uK} [Field K]
 variable {V : Type uV} [AddCommGroup V] [Module K V]
+
+section ModuleEndProjectiveHelpers
+
+variable {M : Type*} [AddCommGroup M] [Module K M]
+
+/-- Multiplication in `Module.End` corresponds to first mapping by the right factor and then by the
+left factor on submodules. -/
+private theorem submodule_map_mul_end_eq (L : Submodule K M) (f g : Module.End K M) :
+    L.map (f * g) = (L.map g).map f := by
+  ext y
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    exact ⟨g x, ⟨x, hx, rfl⟩, rfl⟩
+  · rintro ⟨_, ⟨x, hx, rfl⟩, rfl⟩
+    exact ⟨x, hx, rfl⟩
+
+/-- The identity endomorphism acts trivially on the lattice of submodules. -/
+private theorem submodule_map_one_eq (L : Submodule K M) :
+    L.map (1 : Module.End K M) = L := by
+  ext y
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    simpa using hx
+  · intro hy
+    exact ⟨y, hy, by simp⟩
+
+/-- The scalar `-1` acts trivially on the lattice of submodules. -/
+private theorem submodule_map_algebraMap_neg_one_eq (L : Submodule K M) :
+    L.map (algebraMap K (Module.End K M) (-1)) = L := by
+  ext y
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    simpa [Algebra.smul_def] using L.neg_mem hx
+  · intro hy
+    exact ⟨-y, L.neg_mem hy, by simp⟩
+
+/-- On a nonzero vector space, a nontrivial scalar is not the identity endomorphism. -/
+private theorem moduleEnd_algebraMap_ne_one_of_ne_one [Nontrivial M] (r : K) (hr : r ≠ 1) :
+    algebraMap K (Module.End K M) r ≠ 1 := by
+  obtain ⟨v, hv⟩ := exists_ne (0 : M)
+  intro h
+  have hrv : r • v = v := by
+    simpa [Algebra.smul_def] using congrArg (fun f : Module.End K M => f v) h
+  have hzero : (r - 1) • v = 0 := by
+    rw [sub_smul, hrv, one_smul, sub_self]
+  rcases smul_eq_zero.mp hzero with hsub | hvzero
+  · exact hr (sub_eq_zero.mp hsub)
+  · exact hv hvzero
+
+end ModuleEndProjectiveHelpers
 
 /-- An explicit split/hyperbolic presentation of a quadratic form. -/
 structure HyperbolicPresentation (Q : QuadraticForm K V) where
@@ -240,6 +296,55 @@ theorem spinRepresentation_apply_of_coe_eq_algebraMap (P : HyperbolicPresentatio
   simpa [Algebra.smul_def] using
     congrArg (fun f : Module.End K P.spinorModule => f v)
       (spinRepresentation_eq_algebraMap_of_coe_eq_algebraMap (K := K) (Q := Q) P x r hx)
+
+/-- A spin element in the kernel of the spin-to-isometry map fixes every projective subspace of the
+presented chosen model.  This is the submodule-level form of projective descent: the kernel acts by
+the scalars `±1`, hence trivially on lines. -/
+theorem submodule_map_spinRepresentation_eq_self_of_spinIsometryRepresentation_eq_one
+    [FiniteDimensional K V] (P : HyperbolicPresentation Q) (x : spinGroup Q)
+    (hx : spinIsometryRepresentation (Q := Q) x = 1)
+    (L : Submodule K P.spinorModule) :
+    L.map (P.spinRepresentation x) = L := by
+  rcases (P.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one x).mp hx with hx1 | hxneg
+  · have hspin : P.spinRepresentation x = algebraMap K (Module.End K P.spinorModule) 1 :=
+      P.spinRepresentation_eq_algebraMap_of_coe_eq_algebraMap x 1 (by simpa using hx1)
+    rw [hspin]
+    simpa using submodule_map_one_eq L
+  · have hspin : P.spinRepresentation x = algebraMap K (Module.End K P.spinorModule) (-1) :=
+      P.spinRepresentation_eq_algebraMap_of_coe_eq_algebraMap x (-1) (by simpa using hxneg)
+    rw [hspin]
+    exact submodule_map_algebraMap_neg_one_eq L
+
+/-- If two spin elements induce the same isometry, their presented spin actions have the same action
+on every submodule, hence in particular on projective lines. -/
+theorem submodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+    [FiniteDimensional K V] (P : HyperbolicPresentation Q) {x y : spinGroup Q}
+    (hxy : spinIsometryRepresentation (Q := Q) x = spinIsometryRepresentation (Q := Q) y)
+    (L : Submodule K P.spinorModule) :
+    L.map (P.spinRepresentation x) = L.map (P.spinRepresentation y) := by
+  have hker : spinIsometryRepresentation (Q := Q) (x * y⁻¹) = 1 := by
+    rw [map_mul, map_inv, hxy, mul_inv_cancel]
+  have hfix :
+      (L.map (P.spinRepresentation y)).map (P.spinRepresentation (x * y⁻¹)) =
+        L.map (P.spinRepresentation y) :=
+    P.submodule_map_spinRepresentation_eq_self_of_spinIsometryRepresentation_eq_one
+      (x * y⁻¹) hker (L.map (P.spinRepresentation y))
+  have hx_decomp : x = (x * y⁻¹) * y := by
+    simp
+  have hprod :
+      P.spinRepresentation x =
+        P.spinRepresentation (x * y⁻¹) * P.spinRepresentation y := by
+    calc
+      P.spinRepresentation x = P.spinRepresentation ((x * y⁻¹) * y) :=
+        congrArg P.spinRepresentation hx_decomp
+      _ = P.spinRepresentation (x * y⁻¹) * P.spinRepresentation y :=
+        map_mul P.spinRepresentation (x * y⁻¹) y
+  calc
+    L.map (P.spinRepresentation x)
+        = L.map (P.spinRepresentation (x * y⁻¹) * P.spinRepresentation y) := by rw [hprod]
+    _ = (L.map (P.spinRepresentation y)).map (P.spinRepresentation (x * y⁻¹)) := by
+      exact submodule_map_mul_end_eq L (P.spinRepresentation (x * y⁻¹)) (P.spinRepresentation y)
+    _ = L.map (P.spinRepresentation y) := hfix
 
 @[simp] theorem spinRepresentation_eq_one_iff [FiniteDimensional K V]
     (P : HyperbolicPresentation Q) (x : spinGroup Q) :
@@ -696,6 +801,332 @@ noncomputable def negativeChiralSpinRepresentation (P : HyperbolicPresentation Q
   map_mul' g h := by
     ext x
     simp [LinearMap.restrict_apply]
+
+omit [FiniteDimensional K V] in
+/-- A scalar spin element acts by the matching scalar on the positive-chiral half. -/
+theorem positiveChiralSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap
+    (P : HyperbolicPresentation Q) (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r) :
+    P.positiveChiralSpinRepresentation x =
+      algebraMap K (Module.End K P.positiveChiralSpinorModule) r := by
+  ext v
+  change P.spinRepresentation x (v : P.spinorModule) = r • (v : P.spinorModule)
+  exact P.spinRepresentation_apply_of_coe_eq_algebraMap x r hx v
+
+omit [FiniteDimensional K V] in
+/-- Pointwise form of scalar action on the positive-chiral half. -/
+theorem positiveChiralSpinRepresentation_apply_of_coe_eq_algebraMap
+    (P : HyperbolicPresentation Q) (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r)
+    (v : P.positiveChiralSpinorModule) :
+    P.positiveChiralSpinRepresentation x v = r • v := by
+  simpa [Algebra.smul_def] using congrArg
+    (fun f : Module.End K P.positiveChiralSpinorModule => f v)
+    (P.positiveChiralSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap x r hx)
+
+omit [FiniteDimensional K V] in
+/-- A scalar spin element acts by the matching scalar on the negative-chiral half. -/
+theorem negativeChiralSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap
+    (P : HyperbolicPresentation Q) (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r) :
+    P.negativeChiralSpinRepresentation x =
+      algebraMap K (Module.End K P.negativeChiralSpinorModule) r := by
+  ext v
+  change P.spinRepresentation x (v : P.spinorModule) = r • (v : P.spinorModule)
+  exact P.spinRepresentation_apply_of_coe_eq_algebraMap x r hx v
+
+omit [FiniteDimensional K V] in
+/-- Pointwise form of scalar action on the negative-chiral half. -/
+theorem negativeChiralSpinRepresentation_apply_of_coe_eq_algebraMap
+    (P : HyperbolicPresentation Q) (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r)
+    (v : P.negativeChiralSpinorModule) :
+    P.negativeChiralSpinRepresentation x v = r • v := by
+  simpa [Algebra.smul_def] using congrArg
+    (fun f : Module.End K P.negativeChiralSpinorModule => f v)
+    (P.negativeChiralSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap x r hx)
+
+/-- In positive hyperbolic rank, a nontrivial scalar spin element acts nontrivially on the
+positive-chiral half. -/
+theorem positiveChiralSpinRepresentation_ne_one_of_coe_eq_algebraMap_of_ne_one
+    (P : HyperbolicPresentation Q) (hW : 0 < Module.finrank K P.W)
+    (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r) (hr : r ≠ 1) :
+    P.positiveChiralSpinRepresentation x ≠ 1 := by
+  have hfinEven : 0 < Module.finrank K P.evenSpinorModule := by
+    rw [P.finrank_evenSpinorModule hW]
+    exact Nat.pow_pos (by decide)
+  have hfin : 0 < Module.finrank K P.positiveChiralSpinorModule := by
+    rw [positiveChiralSpinorModule_eq_evenSpinorModule (P := P)]
+    exact hfinEven
+  haveI : Nontrivial P.positiveChiralSpinorModule := Module.nontrivial_of_finrank_pos hfin
+  rw [P.positiveChiralSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap x r hx]
+  exact moduleEnd_algebraMap_ne_one_of_ne_one r hr
+
+/-- In positive hyperbolic rank, a nontrivial scalar spin element acts nontrivially on the
+negative-chiral half. -/
+theorem negativeChiralSpinRepresentation_ne_one_of_coe_eq_algebraMap_of_ne_one
+    (P : HyperbolicPresentation Q) (hW : 0 < Module.finrank K P.W)
+    (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r) (hr : r ≠ 1) :
+    P.negativeChiralSpinRepresentation x ≠ 1 := by
+  have hfinOdd : 0 < Module.finrank K P.oddSpinorModule := by
+    rw [P.finrank_oddSpinorModule hW]
+    exact Nat.pow_pos (by decide)
+  have hfin : 0 < Module.finrank K P.negativeChiralSpinorModule := by
+    rw [negativeChiralSpinorModule_eq_oddSpinorModule (P := P)]
+    exact hfinOdd
+  haveI : Nontrivial P.negativeChiralSpinorModule := Module.nontrivial_of_finrank_pos hfin
+  rw [P.negativeChiralSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap x r hx]
+  exact moduleEnd_algebraMap_ne_one_of_ne_one r hr
+
+omit [FiniteDimensional K V] in
+/-- Any kernel witness with nontrivial action on the positive-chiral half obstructs factorization
+through the ambient isometry representation. -/
+theorem positiveChiralSpinRepresentation_not_factor_through_isometry_of_kernel_witness
+    (P : HyperbolicPresentation Q) (x : spinGroup Q)
+    (hker : spinIsometryRepresentation (Q := Q) x = 1)
+    (hspin : P.positiveChiralSpinRepresentation x ≠ 1) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K P.positiveChiralSpinorModule,
+        P.positiveChiralSpinRepresentation = ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  intro hfactor
+  rcases hfactor with ⟨ρ, hρ⟩
+  have hρx :
+      P.positiveChiralSpinRepresentation x = ρ (spinIsometryRepresentation (Q := Q) x) := by
+    simpa using congrArg
+      (fun f : spinGroup Q →* Module.End K P.positiveChiralSpinorModule => f x) hρ
+  apply hspin
+  calc
+    P.positiveChiralSpinRepresentation x = ρ (spinIsometryRepresentation (Q := Q) x) := hρx
+    _ = ρ 1 := by rw [hker]
+    _ = 1 := map_one ρ
+
+omit [FiniteDimensional K V] in
+/-- Any kernel witness with nontrivial action on the negative-chiral half obstructs factorization
+through the ambient isometry representation. -/
+theorem negativeChiralSpinRepresentation_not_factor_through_isometry_of_kernel_witness
+    (P : HyperbolicPresentation Q) (x : spinGroup Q)
+    (hker : spinIsometryRepresentation (Q := Q) x = 1)
+    (hspin : P.negativeChiralSpinRepresentation x ≠ 1) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K P.negativeChiralSpinorModule,
+        P.negativeChiralSpinRepresentation = ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  intro hfactor
+  rcases hfactor with ⟨ρ, hρ⟩
+  have hρx :
+      P.negativeChiralSpinRepresentation x = ρ (spinIsometryRepresentation (Q := Q) x) := by
+    simpa using congrArg
+      (fun f : spinGroup Q →* Module.End K P.negativeChiralSpinorModule => f x) hρ
+  apply hspin
+  calc
+    P.negativeChiralSpinRepresentation x = ρ (spinIsometryRepresentation (Q := Q) x) := hρx
+    _ = ρ 1 := by rw [hker]
+    _ = 1 := map_one ρ
+
+/-- In positive hyperbolic rank, a nontrivial scalar spin element obstructs factorization of the
+positive half-spin representation through the ambient isometry representation. -/
+theorem positiveChiralSpinRepresentation_not_factor_through_isometry_of_coe_eq_algebraMap_of_ne_one
+    (P : HyperbolicPresentation Q) (hW : 0 < Module.finrank K P.W)
+    (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r) (hr : r ≠ 1) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K P.positiveChiralSpinorModule,
+        P.positiveChiralSpinRepresentation = ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  apply P.positiveChiralSpinRepresentation_not_factor_through_isometry_of_kernel_witness x
+  · exact spinIsometryRepresentation_eq_one_of_coe_eq_algebraMap (Q := Q) x r hx
+  · exact P.positiveChiralSpinRepresentation_ne_one_of_coe_eq_algebraMap_of_ne_one hW x r hx hr
+
+/-- In positive hyperbolic rank, a nontrivial scalar spin element obstructs factorization of the
+negative half-spin representation through the ambient isometry representation. -/
+theorem negativeChiralSpinRepresentation_not_factor_through_isometry_of_coe_eq_algebraMap_of_ne_one
+    (P : HyperbolicPresentation Q) (hW : 0 < Module.finrank K P.W)
+    (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r) (hr : r ≠ 1) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K P.negativeChiralSpinorModule,
+        P.negativeChiralSpinRepresentation = ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  apply P.negativeChiralSpinRepresentation_not_factor_through_isometry_of_kernel_witness x
+  · exact spinIsometryRepresentation_eq_one_of_coe_eq_algebraMap (Q := Q) x r hx
+  · exact P.negativeChiralSpinRepresentation_ne_one_of_coe_eq_algebraMap_of_ne_one hW x r hx hr
+
+/-- If the quadratic form represents `-1`, then in positive hyperbolic rank the positive half-spin
+representation does not factor through the ambient isometry representation. -/
+theorem positiveChiralSpinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one
+    (P : HyperbolicPresentation Q) (hW : 0 < Module.finrank K P.W)
+    (hQ : ∃ v : V, Q v = -1) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K P.positiveChiralSpinorModule,
+        P.positiveChiralSpinRepresentation = ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  have hneq : (-1 : K) ≠ 1 := by
+    intro h
+    have h' : (0 : K) = 1 + 1 := by
+      simpa using congrArg (fun t : K => t + 1) h
+    have h2 : (2 : K) = 0 := by
+      simpa [one_add_one_eq_two] using h'.symm
+    exact two_ne_zero h2
+  rcases hQ with ⟨v, hv⟩
+  let x : spinGroup Q := ⟨-1, neg_one_mem_spinGroup_of_quadratic_eq_neg_one (Q := Q) v hv⟩
+  apply P.positiveChiralSpinRepresentation_not_factor_through_isometry_of_coe_eq_algebraMap_of_ne_one
+    hW x (-1)
+  · change (-1 : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) (-1)
+    simp
+  · exact hneq
+
+/-- If the quadratic form represents `-1`, then in positive hyperbolic rank the negative half-spin
+representation does not factor through the ambient isometry representation. -/
+theorem negativeChiralSpinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one
+    (P : HyperbolicPresentation Q) (hW : 0 < Module.finrank K P.W)
+    (hQ : ∃ v : V, Q v = -1) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K P.negativeChiralSpinorModule,
+        P.negativeChiralSpinRepresentation = ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  have hneq : (-1 : K) ≠ 1 := by
+    intro h
+    have h' : (0 : K) = 1 + 1 := by
+      simpa using congrArg (fun t : K => t + 1) h
+    have h2 : (2 : K) = 0 := by
+      simpa [one_add_one_eq_two] using h'.symm
+    exact two_ne_zero h2
+  rcases hQ with ⟨v, hv⟩
+  let x : spinGroup Q := ⟨-1, neg_one_mem_spinGroup_of_quadratic_eq_neg_one (Q := Q) v hv⟩
+  apply P.negativeChiralSpinRepresentation_not_factor_through_isometry_of_coe_eq_algebraMap_of_ne_one
+    hW x (-1)
+  · change (-1 : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) (-1)
+    simp
+  · exact hneq
+
+/-- Positive hyperbolic rank obstructs factoring the positive half-spin representation through the
+ambient isometry representation. -/
+theorem positiveChiralSpinRepresentation_not_factor_through_isometry_of_pos_finrank
+    (P : HyperbolicPresentation Q) (hW : 0 < Module.finrank K P.W) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K P.positiveChiralSpinorModule,
+        P.positiveChiralSpinRepresentation = ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  exact P.positiveChiralSpinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one
+    hW (P.exists_quadratic_eq_neg_one hW)
+
+/-- Positive hyperbolic rank obstructs factoring the negative half-spin representation through the
+ambient isometry representation. -/
+theorem negativeChiralSpinRepresentation_not_factor_through_isometry_of_pos_finrank
+    (P : HyperbolicPresentation Q) (hW : 0 < Module.finrank K P.W) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K P.negativeChiralSpinorModule,
+        P.negativeChiralSpinRepresentation = ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  exact P.negativeChiralSpinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one
+    hW (P.exists_quadratic_eq_neg_one hW)
+
+/-- A kernel spin element fixes every projective subspace of the positive half-spin module. -/
+theorem positiveChiralSubmodule_map_spinRepresentation_eq_self_of_spinIsometryRepresentation_eq_one
+    (P : HyperbolicPresentation Q) (x : spinGroup Q)
+    (hx : spinIsometryRepresentation (Q := Q) x = 1)
+    (L : Submodule K P.positiveChiralSpinorModule) :
+    L.map (P.positiveChiralSpinRepresentation x) = L := by
+  rcases (P.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one x).mp hx with hx1 | hxneg
+  · have hspin :
+        P.positiveChiralSpinRepresentation x =
+          algebraMap K (Module.End K P.positiveChiralSpinorModule) 1 :=
+      P.positiveChiralSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap x 1 (by simpa using hx1)
+    rw [hspin]
+    simpa using submodule_map_one_eq L
+  · have hspin :
+        P.positiveChiralSpinRepresentation x =
+          algebraMap K (Module.End K P.positiveChiralSpinorModule) (-1) :=
+      P.positiveChiralSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap x (-1) (by simpa using hxneg)
+    rw [hspin]
+    exact submodule_map_algebraMap_neg_one_eq L
+
+/-- A kernel spin element fixes every projective subspace of the negative half-spin module. -/
+theorem negativeChiralSubmodule_map_spinRepresentation_eq_self_of_spinIsometryRepresentation_eq_one
+    (P : HyperbolicPresentation Q) (x : spinGroup Q)
+    (hx : spinIsometryRepresentation (Q := Q) x = 1)
+    (L : Submodule K P.negativeChiralSpinorModule) :
+    L.map (P.negativeChiralSpinRepresentation x) = L := by
+  rcases (P.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one x).mp hx with hx1 | hxneg
+  · have hspin :
+        P.negativeChiralSpinRepresentation x =
+          algebraMap K (Module.End K P.negativeChiralSpinorModule) 1 :=
+      P.negativeChiralSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap x 1 (by simpa using hx1)
+    rw [hspin]
+    simpa using submodule_map_one_eq L
+  · have hspin :
+        P.negativeChiralSpinRepresentation x =
+          algebraMap K (Module.End K P.negativeChiralSpinorModule) (-1) :=
+      P.negativeChiralSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap x (-1) (by simpa using hxneg)
+    rw [hspin]
+    exact submodule_map_algebraMap_neg_one_eq L
+
+/-- If two spin elements induce the same isometry, they have the same projective action on the
+positive half-spin module. -/
+theorem positiveChiralSubmodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+    (P : HyperbolicPresentation Q) {x y : spinGroup Q}
+    (hxy : spinIsometryRepresentation (Q := Q) x = spinIsometryRepresentation (Q := Q) y)
+    (L : Submodule K P.positiveChiralSpinorModule) :
+    L.map (P.positiveChiralSpinRepresentation x) =
+      L.map (P.positiveChiralSpinRepresentation y) := by
+  have hker : spinIsometryRepresentation (Q := Q) (x * y⁻¹) = 1 := by
+    rw [map_mul, map_inv, hxy, mul_inv_cancel]
+  have hfix :
+      (L.map (P.positiveChiralSpinRepresentation y)).map
+          (P.positiveChiralSpinRepresentation (x * y⁻¹)) =
+        L.map (P.positiveChiralSpinRepresentation y) :=
+    P.positiveChiralSubmodule_map_spinRepresentation_eq_self_of_spinIsometryRepresentation_eq_one
+      (x * y⁻¹) hker (L.map (P.positiveChiralSpinRepresentation y))
+  have hx_decomp : x = (x * y⁻¹) * y := by
+    simp
+  have hprod :
+      P.positiveChiralSpinRepresentation x =
+        P.positiveChiralSpinRepresentation (x * y⁻¹) *
+          P.positiveChiralSpinRepresentation y := by
+    calc
+      P.positiveChiralSpinRepresentation x =
+          P.positiveChiralSpinRepresentation ((x * y⁻¹) * y) :=
+        congrArg P.positiveChiralSpinRepresentation hx_decomp
+      _ = P.positiveChiralSpinRepresentation (x * y⁻¹) *
+          P.positiveChiralSpinRepresentation y :=
+        map_mul P.positiveChiralSpinRepresentation (x * y⁻¹) y
+  calc
+    L.map (P.positiveChiralSpinRepresentation x)
+        = L.map
+        (P.positiveChiralSpinRepresentation (x * y⁻¹) * P.positiveChiralSpinRepresentation y) := by
+      rw [hprod]
+    _ = (L.map (P.positiveChiralSpinRepresentation y)).map
+        (P.positiveChiralSpinRepresentation (x * y⁻¹)) := by
+      exact submodule_map_mul_end_eq L (P.positiveChiralSpinRepresentation (x * y⁻¹))
+        (P.positiveChiralSpinRepresentation y)
+    _ = L.map (P.positiveChiralSpinRepresentation y) := hfix
+
+/-- If two spin elements induce the same isometry, they have the same projective action on the
+negative half-spin module. -/
+theorem negativeChiralSubmodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+    (P : HyperbolicPresentation Q) {x y : spinGroup Q}
+    (hxy : spinIsometryRepresentation (Q := Q) x = spinIsometryRepresentation (Q := Q) y)
+    (L : Submodule K P.negativeChiralSpinorModule) :
+    L.map (P.negativeChiralSpinRepresentation x) =
+      L.map (P.negativeChiralSpinRepresentation y) := by
+  have hker : spinIsometryRepresentation (Q := Q) (x * y⁻¹) = 1 := by
+    rw [map_mul, map_inv, hxy, mul_inv_cancel]
+  have hfix :
+      (L.map (P.negativeChiralSpinRepresentation y)).map
+          (P.negativeChiralSpinRepresentation (x * y⁻¹)) =
+        L.map (P.negativeChiralSpinRepresentation y) :=
+    P.negativeChiralSubmodule_map_spinRepresentation_eq_self_of_spinIsometryRepresentation_eq_one
+      (x * y⁻¹) hker (L.map (P.negativeChiralSpinRepresentation y))
+  have hx_decomp : x = (x * y⁻¹) * y := by
+    simp
+  have hprod :
+      P.negativeChiralSpinRepresentation x =
+        P.negativeChiralSpinRepresentation (x * y⁻¹) *
+          P.negativeChiralSpinRepresentation y := by
+    calc
+      P.negativeChiralSpinRepresentation x =
+          P.negativeChiralSpinRepresentation ((x * y⁻¹) * y) :=
+        congrArg P.negativeChiralSpinRepresentation hx_decomp
+      _ = P.negativeChiralSpinRepresentation (x * y⁻¹) *
+          P.negativeChiralSpinRepresentation y :=
+        map_mul P.negativeChiralSpinRepresentation (x * y⁻¹) y
+  calc
+    L.map (P.negativeChiralSpinRepresentation x)
+        = L.map
+        (P.negativeChiralSpinRepresentation (x * y⁻¹) * P.negativeChiralSpinRepresentation y) := by
+      rw [hprod]
+    _ = (L.map (P.negativeChiralSpinRepresentation y)).map
+        (P.negativeChiralSpinRepresentation (x * y⁻¹)) := by
+      exact submodule_map_mul_end_eq L (P.negativeChiralSpinRepresentation (x * y⁻¹))
+        (P.negativeChiralSpinRepresentation y)
+    _ = L.map (P.negativeChiralSpinRepresentation y) := hfix
 
 /-- The corresponding `spinGroup` action on the positive-chiral half of the presented chosen
 model. -/
@@ -1715,6 +2146,56 @@ noncomputable def negativeHalfSpinRepresentation (Q : QuadraticForm K V)
     spinGroup Q →* Module.End K (negativeHalfSpinorModule (K := K) Q) :=
   negativeSplitWittSpinRepresentation (K := K) Q hQ hsplit
 
+/-- Scalar spin elements act by the matching scalar on the canonical positive half-spin module. -/
+theorem positiveHalfSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r) :
+    positiveHalfSpinRepresentation (K := K) Q hQ hsplit x =
+      algebraMap K (Module.End K (positiveHalfSpinorModule (K := K) Q)) r := by
+  simpa [positiveHalfSpinRepresentation, positiveHalfSpinorModule] using
+    (HyperbolicPresentation.positiveChiralSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit) x r hx)
+
+/-- Scalar spin elements act by the matching scalar on the canonical negative half-spin module. -/
+theorem negativeHalfSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r) :
+    negativeHalfSpinRepresentation (K := K) Q hQ hsplit x =
+      algebraMap K (Module.End K (negativeHalfSpinorModule (K := K) Q)) r := by
+  simpa [negativeHalfSpinRepresentation, negativeHalfSpinorModule] using
+    (HyperbolicPresentation.negativeChiralSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit) x r hx)
+
+/-- Pointwise scalar action on the canonical positive half-spin module. -/
+theorem positiveHalfSpinRepresentation_apply_of_coe_eq_algebraMap
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r)
+    (v : positiveHalfSpinorModule (K := K) Q) :
+    positiveHalfSpinRepresentation (K := K) Q hQ hsplit x v = r • v := by
+  simpa [Algebra.smul_def] using congrArg
+    (fun f : Module.End K (positiveHalfSpinorModule (K := K) Q) => f v)
+    (positiveHalfSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap
+      (K := K) Q hQ hsplit x r hx)
+
+/-- Pointwise scalar action on the canonical negative half-spin module. -/
+theorem negativeHalfSpinRepresentation_apply_of_coe_eq_algebraMap
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (x : spinGroup Q) (r : K)
+    (hx : (x : CliffordAlgebra Q) = algebraMap K (CliffordAlgebra Q) r)
+    (v : negativeHalfSpinorModule (K := K) Q) :
+    negativeHalfSpinRepresentation (K := K) Q hQ hsplit x v = r • v := by
+  simpa [Algebra.smul_def] using congrArg
+    (fun f : Module.End K (negativeHalfSpinorModule (K := K) Q) => f v)
+    (negativeHalfSpinRepresentation_eq_algebraMap_of_coe_eq_algebraMap
+      (K := K) Q hQ hsplit x r hx)
+
 /-- In split rank, the ambient spin-to-isometry kernel is exactly the scalar elements `±1`, stated
 on the canonical chosen-model API. -/
 theorem splitSpinorCoveringKernel_eq_one_or_neg_one (Q : QuadraticForm K V)
@@ -1740,6 +2221,80 @@ theorem splitSpinorRepresentation_not_factor_through_isometry (Q : QuadraticForm
     (HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_pos_finrank
       (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
       hW')
+
+/-- In positive split rank, the canonical positive half-spin representation does not factor through
+the ambient isometry representation. -/
+theorem positiveHalfSpinRepresentation_not_factor_through_isometry (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (hW : 0 < Q.wittIndex) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K (positiveHalfSpinorModule (K := K) Q),
+        positiveHalfSpinRepresentation (K := K) Q hQ hsplit =
+          ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  have hW' : 0 < Module.finrank K (splitWittPresentation (K := K) Q hQ hsplit).W := by
+    change 0 < Module.finrank K Q.wittSubspace
+    rwa [Q.finrank_wittSubspace]
+  simpa [positiveHalfSpinRepresentation, positiveHalfSpinorModule] using
+    (HyperbolicPresentation.positiveChiralSpinRepresentation_not_factor_through_isometry_of_pos_finrank
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+      hW')
+
+/-- In positive split rank, the canonical negative half-spin representation does not factor through
+the ambient isometry representation. -/
+theorem negativeHalfSpinRepresentation_not_factor_through_isometry (Q : QuadraticForm K V)
+    (hQ : Q.Nondegenerate) (hsplit : Module.finrank K V = 2 * Q.wittIndex)
+    (hW : 0 < Q.wittIndex) :
+    ¬ ∃ ρ : Q.IsometryEquiv Q →* Module.End K (negativeHalfSpinorModule (K := K) Q),
+        negativeHalfSpinRepresentation (K := K) Q hQ hsplit =
+          ρ.comp (spinIsometryRepresentation (Q := Q)) := by
+  have hW' : 0 < Module.finrank K (splitWittPresentation (K := K) Q hQ hsplit).W := by
+    change 0 < Module.finrank K Q.wittSubspace
+    rwa [Q.finrank_wittSubspace]
+  simpa [negativeHalfSpinRepresentation, negativeHalfSpinorModule] using
+    (HyperbolicPresentation.negativeChiralSpinRepresentation_not_factor_through_isometry_of_pos_finrank
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+      hW')
+
+/-- If two spin elements induce the same isometry, their canonical chosen-model spin actions agree
+on all projective subspaces. -/
+theorem splitSpinorSubmodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) {x y : spinGroup Q}
+    (hxy : spinIsometryRepresentation (Q := Q) x = spinIsometryRepresentation (Q := Q) y)
+    (L : Submodule K (splitSpinorModule (K := K) Q)) :
+    L.map (splitSpinorRepresentation (K := K) Q hQ hsplit x) =
+      L.map (splitSpinorRepresentation (K := K) Q hQ hsplit y) := by
+  simpa [splitSpinorRepresentation, splitSpinorModule] using
+    (HyperbolicPresentation.submodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+      hxy L)
+
+/-- If two spin elements induce the same isometry, their positive half-spin actions agree on all
+projective subspaces. -/
+theorem positiveHalfSpinorSubmodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) {x y : spinGroup Q}
+    (hxy : spinIsometryRepresentation (Q := Q) x = spinIsometryRepresentation (Q := Q) y)
+    (L : Submodule K (positiveHalfSpinorModule (K := K) Q)) :
+    L.map (positiveHalfSpinRepresentation (K := K) Q hQ hsplit x) =
+      L.map (positiveHalfSpinRepresentation (K := K) Q hQ hsplit y) := by
+  simpa [positiveHalfSpinRepresentation, positiveHalfSpinorModule] using
+    (HyperbolicPresentation.positiveChiralSubmodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+      hxy L)
+
+/-- If two spin elements induce the same isometry, their negative half-spin actions agree on all
+projective subspaces. -/
+theorem negativeHalfSpinorSubmodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+    (Q : QuadraticForm K V) (hQ : Q.Nondegenerate)
+    (hsplit : Module.finrank K V = 2 * Q.wittIndex) {x y : spinGroup Q}
+    (hxy : spinIsometryRepresentation (Q := Q) x = spinIsometryRepresentation (Q := Q) y)
+    (L : Submodule K (negativeHalfSpinorModule (K := K) Q)) :
+    L.map (negativeHalfSpinRepresentation (K := K) Q hQ hsplit x) =
+      L.map (negativeHalfSpinRepresentation (K := K) Q hQ hsplit y) := by
+  simpa [negativeHalfSpinRepresentation, negativeHalfSpinorModule] using
+    (HyperbolicPresentation.negativeChiralSubmodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+      (K := K) (Q := Q) (P := splitWittPresentation (K := K) Q hQ hsplit)
+      hxy L)
 
 /-- In positive split rank, the ambient regular-model spin representation does not factor through
 the ambient isometry representation. -/
