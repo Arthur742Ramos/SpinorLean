@@ -33,8 +33,9 @@ SpinorLean/
 │   ├── ComplexClassification.lean -- Periodicity: complex even/odd matrix models
 │   ├── RealClassification.lean -- Periodicity: split `(n,n)` real matrix models + low-signature entries
 │   ├── LowDimensional.lean -- Explicit low-dim Clifford models + Spin(2), Spin(3) group IDs
+│   ├── TheoremIndex.lean -- Machine-checked paper theorem surface
 │   └── OddClassification.lean -- Classification pieces over the odd split form
-├── paper/                  -- Paper scaffolding (main.tex, refs.bib, README.md)
+├── paper/                  -- Submission-oriented paper sources (main.tex, refs.bib, README.md)
 ├── scripts/                -- Reproducibility/verification scripts
 ├── ROADMAP.md
 ├── AGENTS.md
@@ -187,10 +188,10 @@ Implemented so far:
 - via `CliffordAlgebra.equivEven`, the standard odd split form `H(W) ⊕ ⟨1⟩` is now also packaged as
   `Cl(H(W) ⊕ ⟨1⟩) ≃ Mat_(2^dim W)(K) × Mat_(2^dim W)(K)`
 - over `ℂ`, the standard even-dimensional sum-of-squares form on `Fin n ⊕ Fin n` is now packaged as
-  `Cl(2n, ℂ) ≃ Mat_(2^n)(ℂ)` in `Spinor.ComplexClassification.complexEvenCliffordEquivMatrix`
+  `Cl(2n, ℂ) ≃ Mat_(2^n)(ℂ)` in `Spinor.complexEvenCliffordEquivMatrix`
 - over `ℂ`, the corresponding odd-dimensional grouped sum-of-squares form is now packaged as
   `Cl(2n+1, ℂ) ≃ Mat_(2^n)(ℂ) × Mat_(2^n)(ℂ)` in
-  `Spinor.ComplexClassification.complexOddCliffordEquivProdMatrix`
+  `Spinor.complexOddCliffordEquivProdMatrix`
 - `Spinor.LowDimensional` now records explicit low-dimensional specializations of those algebraic
   models, including `Cl(1, ℂ) ≃ ℂ × ℂ`, `Cl(2, ℂ) ≃ Mat₂(ℂ)`, `Cl(3, ℂ) ≃ Mat₂(ℂ) × Mat₂(ℂ)`,
   `Cl(4, ℂ) ≃ Mat₄(ℂ)`, `Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ`, `Cl⁺(2,0) ≃ ℂ`,
@@ -203,12 +204,12 @@ Implemented so far:
   unitary ℍ[ℝ, -1, -1]`,
   i.e. `Spin(2) ≃ U(1)` and `Spin(3) ≃ SU(2)` in Mathlib's negative-signature convention
 - over `ℝ`, the standard split-signature form `(n,n)` is now packaged as
-  `Cl(n,n) ≃ Mat_(2^n)(ℝ)` in `Spinor.RealClassification.realSplitCliffordEquivMatrix`,
+  `Cl(n,n) ≃ Mat_(2^n)(ℝ)` in `Spinor.realSplitCliffordEquivMatrix`,
   with the first explicit base case `Cl(1,1) ≃ Mat₂(ℝ)` recorded as
-  `Spinor.RealClassification.realClifford_1_1_equivMatrix2`
+  `Spinor.realClifford_1_1_equivMatrix2`
 - over `ℝ`, the corresponding even split Clifford algebra is now packaged as
   `Cl⁺(n,n) ≃ Mat_(2^(n-1))(ℝ) × Mat_(2^(n-1))(ℝ)` in
-  `Spinor.RealClassification.realSplitEvenCliffordEquivProdMatrix`
+  `Spinor.realSplitEvenCliffordEquivProdMatrix`
 - `Spinor.OrthogonalAction` now packages the ambient vector action
   `spinLinearRepresentation : spinGroup Q → (M ≃ₗ[R] M)` obtained from conjugation on the Clifford
   copy `ι(Q)(M)`, proves this action preserves `Q` via `spinVector_preserves_quadratic`, and
@@ -220,6 +221,9 @@ Implemented so far:
   `splitCliffordAction_eq_units_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq`, and
   packages explicit transvection Clifford units, chosen-line square-scaling lifts, and the
   square-determinant Levi factorization/lift API used by the paper
+- the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
+  subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
+  a nonsquare unit gives a formal non-surjectivity theorem
 
 - the ambient chiral identification is now closed: the canonical chosen-model positive and
   negative half-spin modules are, by construction, the ambient `positiveChiral` /
@@ -247,16 +251,18 @@ Implemented so far:
   `spinGroupRealCl04ToUnitaryQuaternionPair`, the diagonal constructor
   `unitaryQuaternionToSpinGroupRealCl04Diagonal`, and the full anti-diagonal constructor
   `unitaryQuaternionToSpinGroupRealCl04Antidiagonal` (Phase 4.2)
-- `paper/` now contains a substantive working draft (`main.tex`, `refs.bib`,
-  `README.md`) grounded in the current repository state, with target venues recorded for
-  CPP 2027 / ITP 2027 / *Advances in Applied Clifford Algebras* (Phase 5.1)
+- `Spinor.TheoremIndex` is a machine-checked paper theorem surface: it imports and `#check`s the
+  declarations cited by `THEOREM_INDEX.md`, so theorem-name drift is caught by `lake build`
+- `paper/` now contains submission-oriented sources (`main.tex`, `refs.bib`, `README.md`) grounded
+  in the formalized theorem package, with target venues recorded for CPP 2027 / ITP 2027 /
+  *Advances in Applied Clifford Algebras* (Phase 5.1)
 
-Still open from the roadmap:
+Out of scope for the current submission package:
 
-- periodicity beyond the new split real foundation and canonical negative-signature entries
-  (the full Bott period-8 table is still in progress)
-- fully general double-cover / surjectivity and non-factorization theorems beyond the packaged
-  split-rank kernel, non-factorization, projective-descent, and exact split-line image results
-- paper polish, evaluation, and submission-ready exposition beyond the current working draft
+- real classification beyond the split foundation and canonical low-signature entries, i.e. the
+  full Bott period-8 table as a future extension
+- an unrestricted higher-rank exact image theorem beyond the packaged split-rank kernel,
+  non-factorization, projective descent, square-determinant Levi lifts, and exact split-line iff
+  criterion
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

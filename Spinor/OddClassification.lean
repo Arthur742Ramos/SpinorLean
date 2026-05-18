@@ -42,6 +42,11 @@ model.
   equivalences classifying `CliffordAlgebra (oddSplitForm M)`.
 * `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup`
   — exact split-line image theorem identifying the spin image with the square-scaling subgroup.
+* `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_iff_square_surjective`
+  and
+  `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_not_surjective_dualProdLine_of_exists_nonsquare_unit`
+  — the split-line image theorem sharpened to an iff criterion and a theorem-level nonsquare
+  obstruction.
 -/
 
 namespace Spinor
@@ -1002,6 +1007,43 @@ theorem spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_
   rw [← spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_squareScalingSubgroup (K := K)]
   rw [Subgroup.closure_le]
   exact spinSpecialOrthogonalPairGeneratorSet_subset_range (Q := QuadraticForm.dualProd K K)
+
+/-- On the split hyperbolic line, the ambient spin map is surjective exactly over fields whose
+unit group is square-surjective. -/
+theorem spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_iff_square_surjective :
+    Function.Surjective (spinSpecialOrthogonalRepresentationFiniteDimensional
+      (Q := QuadraticForm.dualProd K K)) ↔
+      Function.Surjective (powMonoidHom (α := Kˣ) 2) := by
+  constructor
+  · intro hspin u
+    have hmemRange :
+        dualProdLineScalingHom (K := K) u ∈
+          MonoidHom.range
+            (spinSpecialOrthogonalRepresentationFiniteDimensional
+              (Q := QuadraticForm.dualProd K K)) := by
+      exact hspin (dualProdLineScalingHom (K := K) u)
+    have hmemSquare :
+        dualProdLineScalingHom (K := K) u ∈ dualProdLineSquareScalingSubgroup (K := K) := by
+      simpa [spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup
+        (K := K)] using hmemRange
+    rcases hmemSquare with ⟨t, ht⟩
+    refine ⟨t, ?_⟩
+    exact dualProdLineScalingHom_injective (K := K) ht
+  · intro hsq
+    exact spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_of_square_surjective
+      (K := K) hsq
+
+/-- Consequently, over any field with a nonsquare unit, the ambient split-line spin map is not
+surjective onto `SO(1,1)`. -/
+theorem spinSpecialOrthogonalRepresentationFiniteDimensional_not_surjective_dualProdLine_of_exists_nonsquare_unit
+    (hnsq : ∃ u : Kˣ, u ∉ MonoidHom.range (powMonoidHom (α := Kˣ) 2)) :
+    ¬ Function.Surjective (spinSpecialOrthogonalRepresentationFiniteDimensional
+      (Q := QuadraticForm.dualProd K K)) := by
+  intro hspin
+  rcases hnsq with ⟨u, hu⟩
+  exact hu
+    ((spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_iff_square_surjective
+      (K := K)).1 hspin u)
 
 end DualProdLine
 

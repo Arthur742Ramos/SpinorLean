@@ -6,8 +6,8 @@ from Clifford algebras in Lean 4 / Mathlib).
 
 ## Files
 
-- `main.tex` — the paper source (article class, self-contained skeleton with
-  real prose grounded in the repository).
+- `main.tex` — the paper source (article class, submission-oriented prose
+  grounded in the repository).
 - `refs.bib` — bibliography (BibTeX, `alpha` style).
 - `../THEOREM_INDEX.md` — reader-facing map from paper theorem labels to Lean declarations.
 
@@ -40,12 +40,13 @@ Per `ROADMAP.md` §5.3, the intended submission targets are:
 
 ## Status
 
-This is now a **substantive working draft** for ROADMAP §5.1. The paper
-contains grounded introduction, related-work, architecture, results,
-proof-highlight, lessons-learned, future-work prose, and a companion theorem
-index tied to the current Lean files and theorem names.
+This is a **submission-oriented draft for the current formalized theorem
+package**. The paper contains grounded introduction, related-work,
+architecture, results, proof-highlight, lessons-learned, future-work prose, and
+a companion theorem index tied to the current Lean files and theorem names.
 
-It is still not submission-ready: evaluation, final exposition polishing,
-and the last open mathematical stories (notably the full covering-map
-theorem and the complete real Bott-periodicity narrative) remain to be
-finished.
+The scope is explicit: the submitted theorem package covers the chosen-model
+spinor construction, split-rank kernel/non-descent, Levi-projective action,
+square-determinant Levi lifts, and the exact split-line image / double-cover
+criterion. The full Bott-period-8 table and unrestricted higher-rank image
+theorem are future extensions, not claims of this manuscript.

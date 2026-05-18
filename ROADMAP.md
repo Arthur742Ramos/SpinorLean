@@ -165,10 +165,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [x] Package the standard odd split form `H(W) ⊕ ⟨1⟩` as
   `Mat_(2^dim W)(K) × Mat_(2^dim W)(K)` via `CliffordAlgebra.equivEven`
 - [x] Cl(n, ℂ) ≅ Mat(2^(n/2), ℂ) for n even
-  - implemented as `Spinor.ComplexClassification.complexEvenCliffordEquivMatrix`, i.e. the standard
+  - implemented as `Spinor.complexEvenCliffordEquivMatrix`, i.e. the standard
     `2n`-dimensional complex sum-of-squares form on `Fin n ⊕ Fin n`
 - [x] Cl(n, ℂ) ≅ Mat(2^((n-1)/2), ℂ) × Mat(2^((n-1)/2), ℂ) for n odd
-  - implemented as `Spinor.ComplexClassification.complexOddCliffordEquivProdMatrix`, i.e. the
+  - implemented as `Spinor.complexOddCliffordEquivProdMatrix`, i.e. the
     standard grouped form consisting of the even `2n` sum-of-squares block plus one extra square
 - [x] Build the real-classification foundation needed for the real period-8 table
   - foundation now started in `Spinor.RealClassification`: standard signature forms are packaged,
@@ -188,11 +188,11 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 ### 4.2 Low-Dimensional Examples
 - [x] Spin(2) ≃ U(1) (circle)
   - packaged as
-    `Spinor.LowDimensional.realSpin02EquivUnitaryComplex : spinGroup realCl02Form ≃* unitary ℂ`
+    `Spinor.realSpin02EquivUnitaryComplex : spinGroup realCl02Form ≃* unitary ℂ`
     using Mathlib's compact negative-signature normalization
 - [x] Spin(3) ≃ SU(2) (unit quaternions / Pauli matrices)
   - packaged as
-    `Spinor.LowDimensional.realSpin03EquivUnitaryQuaternion :
+    `Spinor.realSpin03EquivUnitaryQuaternion :
     spinGroup realCl03Form ≃* unitary ℍ`,
     using the explicit factorization of every unit quaternion into a product of two
     unit 3-vectors in `Cl⁺(0,3)`
@@ -331,8 +331,14 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     recover surjectivity onto `SO(1,1)`, while
     `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLine_of_square_surjective`
     packages the full split-line double-cover statement
+  - [x] sharpen the split-line theorem to an exact iff:
+    `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_iff_square_surjective`
+    says the spin map onto `SO(1,1)` is surjective iff every unit is a square, and
+    `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_not_surjective_dualProdLine_of_exists_nonsquare_unit`
+    gives the theorem-level nonsquare obstruction; the covering version is packaged as
+    `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLine_iff_square_surjective`
   - the current pair-generator closure claim is therefore **false** in split rank 1 over any field
-    with a unit outside the square map
+    with a unit outside the square map, and the full spin map is not surjective there either
   - unconditional surjectivity now requires a different generator theorem or additional field
     hypotheses; the packaged covering theorem is intentionally left conditional on the closure
     hypothesis above
@@ -341,8 +347,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - done on the ambient API by
     `Spinor.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one`, extending the earlier
     split/hyperbolic chosen-model theorem `splitSpinorCoveringKernel_eq_one_or_neg_one`
-  - the remaining open part of the covering-map package is unrestricted surjectivity / double-cover
-    packaging beyond the fully analyzed split-line case (exact image + square-surjective salvage)
+  - the remaining open part of the covering-map package is an unrestricted higher-rank exact image
+    theorem beyond the fully analyzed split-line iff criterion
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
     `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`
@@ -359,9 +365,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 
 ### 5.1 Paper Writing
 - paper draft now lives at `paper/` (`main.tex`, `refs.bib`, `README.md`) with
-  substantive prose tied to the current repository state; it is now a working
-  draft rather than mere scaffolding, though polishing and final exposition
-  remain
+  submission-oriented prose tied to the current theorem package; broad Bott-periodicity and
+  unrestricted higher-rank image theorems are framed as future extensions rather than claims
 - [x] Introduction: why spinors matter, why formalization is novel
 - [x] Related work: lean-ga, Mathlib Clifford, what's missing
 - [x] Formalization architecture
@@ -373,8 +378,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [x] Full `lake build` clean
 - [x] Zero `sorry` / `admit` sweep
 - style/lint polish remains ongoing, but the repository now has a green `lake build`, zero
-  `sorry`/`admit`, and Mathlib-style module documentation throughout
-- [x] Module documentation (Mathlib-style `/-! # ... -/` blocks on all 20 `Spinor/*.lean` files)
+  `sorry`/`admit`, Mathlib-style module documentation throughout, and a machine-checked theorem
+  index imported by `Spinor.lean`
+- [x] Module documentation (Mathlib-style `/-! # ... -/` blocks on all 21 `Spinor/*.lean` files)
 
 ### 5.3 Submission
 - [x] Target: CPP 2027 (deadline ~Sep 2026) or ITP 2027

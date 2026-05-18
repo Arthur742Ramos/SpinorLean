@@ -1,4 +1,5 @@
 import Spinor.ProdNeg
+import Spinor.OddClassification
 import Mathlib.LinearAlgebra.CliffordAlgebra.Prod
 
 /-!
@@ -10,8 +11,10 @@ import Mathlib.LinearAlgebra.CliffordAlgebra.Prod
   passing to the canonical doubled hyperbolic presentation `Q ⊕ (-Q)`,
   where the chosen-model Clifford action is an endomorphism algebra. It also
   lifts the resulting kernel statement from the ambient isometry map to the
-  `SO(V,Q)`-valued factor and packages the final covering-map statement under
-  the remaining pair-generator closure hypothesis.
+  `SO(V,Q)`-valued factor, packages the conditional covering-map statement under
+  the pair-generator closure hypothesis, and records the exact split-line
+  double-cover criterion: surjectivity onto `SO(1,1)` is equivalent to
+  square-surjectivity of `Kˣ`.
 -/
 
 namespace Spinor
@@ -222,5 +225,26 @@ theorem spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLi
   · exact
       spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_top_of_square_surjective
         (K := K) hsq
+
+/-- On the split hyperbolic line, the double-cover package is available exactly over fields whose
+unit group is square-surjective. The kernel statement is unconditional; square-surjectivity is
+precisely the extra condition needed for surjectivity onto `SO(1,1)`. -/
+theorem spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLine_iff_square_surjective :
+    (Function.Surjective (spinSpecialOrthogonalRepresentationFiniteDimensional
+      (Q := QuadraticForm.dualProd K K)) ∧
+      ∀ x : spinGroup (QuadraticForm.dualProd K K),
+        spinSpecialOrthogonalRepresentationFiniteDimensional
+            (Q := QuadraticForm.dualProd K K) x = 1 ↔
+          (x : CliffordAlgebra (QuadraticForm.dualProd K K)) = 1 ∨
+            (x : CliffordAlgebra (QuadraticForm.dualProd K K)) = -1) ↔
+      Function.Surjective (powMonoidHom (α := Kˣ) 2) := by
+  constructor
+  · intro hcover
+    exact
+      (spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_iff_square_surjective
+        (K := K)).1 hcover.1
+  · intro hsq
+    exact spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLine_of_square_surjective
+      (K := K) hsq
 
 end Spinor

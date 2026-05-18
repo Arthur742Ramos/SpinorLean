@@ -19,7 +19,7 @@ when checking that the artifact matches the paper.
 | Hyperbolic transvection Clifford unit (`prop:transvection-unit`) | `dualProdTransvectionCliffordUnit`; `coe_dualProdTransvectionCliffordUnit`; `dualProdTransvectionCliffordUnit_inv_eq`; `dualProdTransvectionCliffordUnit_mem_unitary`; `dualProdTransvectionCliffordUnit_mem_even`; `dualProdTransvectionCliffordUnit_conjAct_eq_transvection`; `splitCliffordAction_dualProdTransvectionCliffordUnit_eq_exteriorMap_transvection` |
 | Chosen-line square scaling and torus action (`prop:chosen-line-square`, `cor:torus-transvection`, `cor:internal-clifford-torus`, `cor:one-line-semidirect`) | `spinSpecialOrthogonalPairGenerator`; `lineScalingLinearEquiv`; `spinSpecialOrthogonalPairGenerator_eq_lineScalingLinearEquiv`; `lineScalingLinearEquiv_mul_transvection_mul_symm_eq`; `splitCliffordAction_spinIotaPairOfQuadraticEqNegOne_eq_smul_exteriorMap_lineScaling` |
 | Square-determinant Levi factorization and explicit chosen-model lift (`thm:square-det-levi`) | `splitCliffordAction_list_prod_basisTransvectionCliffordUnit_eq_exteriorMap_prod`; `exists_basisScalingLinearEquivCliffordUnit_eq_smul_exteriorMap_of_prod_eq_sq`; `exists_linearEquivCliffordUnit_eq_smul_exteriorMap_of_det_eq_sq` |
-| Exact split-line image (`prop:split-line-square`) | `spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_squareScalingSubgroup`; `spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup` |
+| Exact split-line image and double-cover criterion (`prop:split-line-square`) | `spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_squareScalingSubgroup`; `spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup`; `spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_iff_square_surjective`; `spinSpecialOrthogonalRepresentationFiniteDimensional_not_surjective_dualProdLine_of_exists_nonsquare_unit`; `spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLine_iff_square_surjective` |
 
 ## Verification surface
 
@@ -31,3 +31,5 @@ bash scripts/verify.sh
 
 On Windows PowerShell, use `.\scripts\verify.ps1`. The proof-hole check is expected to return no
 matches. GitHub Actions runs the same build and no-hole checks on pushes and pull requests.
+`Spinor.TheoremIndex` is imported by `Spinor.lean`, so the normal build also checks that the
+paper-facing declaration names in this index still resolve.
