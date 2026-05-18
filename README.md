@@ -12,6 +12,7 @@ This project fills that gap.
 
 ```
 SpinorLean/
+├── THEOREM_INDEX.md   -- Paper theorem labels mapped to Lean declarations
 ├── Spinor.lean
 ├── Spinor/
 │   ├── Mathlib.lean        -- Shared Mathlib imports
@@ -33,6 +34,7 @@ SpinorLean/
 │   ├── LowDimensional.lean -- Explicit low-dim Clifford models + Spin(2), Spin(3) group IDs
 │   └── OddClassification.lean -- Classification pieces over the odd split form
 ├── paper/                  -- Paper scaffolding (main.tex, refs.bib, README.md)
+├── scripts/                -- Reproducibility/verification scripts
 ├── ROADMAP.md
 ├── AGENTS.md
 └── lakefile.lean
@@ -43,6 +45,21 @@ SpinorLean/
 ```bash
 lake build
 ```
+
+## Verification and reproducibility
+
+The Lean toolchain is pinned in `lean-toolchain`, and the Mathlib revision is pinned in
+`lake-manifest.json`. The verification scripts run the full Lean build and reject proof-hole
+tokens in Lean files:
+
+```bash
+bash scripts/verify.sh
+```
+
+On Windows PowerShell, use `.\scripts\verify.ps1`.
+
+`THEOREM_INDEX.md` maps the paper's theorem-facing statements to the exact Lean declarations used
+to support them.
 
 ## References
 
