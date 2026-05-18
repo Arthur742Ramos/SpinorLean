@@ -1,0 +1,104 @@
+/-
+  Machine-checked theorem index for the SpinorLean paper surface.
+-/
+
+import Spinor.Covering
+import Spinor.ComplexClassification
+import Spinor.RealClassification
+import Spinor.Cl03QuaternionProd
+
+/-!
+# Machine-checked theorem index
+
+This module intentionally contains no new definitions. It imports the public theorem-facing
+surface used by the paper and `#check`s the declarations cited in `THEOREM_INDEX.md`. Keeping
+this file in the normal `lake build` makes theorem-name drift visible to CI and reviewers.
+-/
+
+#check Spinor.HyperbolicPresentation
+#check Spinor.HyperbolicPresentation.spinorModule
+#check Spinor.HyperbolicPresentation.cliffordAction
+#check Spinor.HyperbolicPresentation.spinRepresentation
+#check Spinor.HyperbolicPresentation.cliffordEquivEnd
+#check Spinor.HyperbolicPresentation.cliffordEquivMatrix
+#check Spinor.splitSpinorModule
+#check Spinor.positiveHalfSpinorModule
+#check Spinor.negativeHalfSpinorModule
+
+#check Spinor.splitCliffordAction_surjective
+#check Spinor.splitCliffordAction_injective
+#check Spinor.splitWittCliffordEquivMatrix
+
+#check Spinor.evenSplitCliffordEquivProdEnd
+#check Spinor.evenSplitCliffordAction_isSimpleModule
+#check Spinor.oddSplitCliffordAction_isSimpleModule
+#check Spinor.not_nonempty_evenOddSplitCliffordLinearEquiv
+#check Spinor.positiveHalfSpinorModule_eq_evenWittExterior
+#check Spinor.negativeHalfSpinorModule_eq_oddWittExterior
+#check Spinor.splitSpinor_chiral_correspondence
+
+#check Spinor.HyperbolicPresentation.ofIsCompl
+#check Spinor.wittPresentation
+#check Spinor.splitWittPresentation
+#check Spinor.splitSpinorCliffordAction_sq_apply
+#check Spinor.splitSpinorCliffordAction_injective
+#check Spinor.splitSpinorModule_finrank
+#check Spinor.positiveHalfSpinorModule_finrank
+#check Spinor.negativeHalfSpinorModule_finrank
+
+#check Spinor.spinIsometryRepresentation
+#check Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional
+#check Spinor.spinLinearRepresentation_det_eq_one
+
+#check Spinor.HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_pos_finrank
+#check Spinor.splitSpinRepresentation_not_factor_through_isometry
+#check Spinor.positiveHalfSpinRepresentation_not_factor_through_isometry
+#check Spinor.negativeHalfSpinRepresentation_not_factor_through_isometry
+
+#check Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup
+#check Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_iff_square_surjective
+#check Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_not_surjective_dualProdLine_of_exists_nonsquare_unit
+#check Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLine_iff_square_surjective
+
+#check Spinor.HyperbolicPresentation.submodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+#check Spinor.splitSpinorSubmodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+#check Spinor.positiveHalfSpinorSubmodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+#check Spinor.negativeHalfSpinorSubmodule_map_spinRepresentation_eq_of_spinIsometryRepresentation_eq
+#check Spinor.splitSpinorSubmoduleImageAction
+#check Spinor.positiveHalfSpinorSubmoduleImageAction
+#check Spinor.negativeHalfSpinorSubmoduleImageAction
+
+#check Spinor.eq_algebraMap_of_forall_contractionAction_eq_zero
+#check Spinor.splitCliffordAction_eq_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq
+#check Spinor.splitCliffordAction_eq_units_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq
+#check Spinor.splitCliffordAction_apply_one_and_topExteriorGenerator_of
+
+#check Spinor.dualProdTransvectionCliffordUnit
+#check Spinor.coe_dualProdTransvectionCliffordUnit
+#check Spinor.dualProdTransvectionCliffordUnit_inv_eq
+#check Spinor.dualProdTransvectionCliffordUnit_mem_unitary
+#check Spinor.dualProdTransvectionCliffordUnit_mem_even
+#check Spinor.dualProdTransvectionCliffordUnit_conjAct_eq_transvection
+#check Spinor.splitCliffordAction_dualProdTransvectionCliffordUnit_eq_exteriorMap_transvection
+
+#check Spinor.spinSpecialOrthogonalPairGenerator
+#check Spinor.lineScalingLinearEquiv
+#check Spinor.spinSpecialOrthogonalPairGenerator_eq_lineScalingLinearEquiv
+#check Spinor.lineScalingLinearEquiv_mul_transvection_mul_symm_eq
+#check Spinor.splitCliffordAction_spinIotaPairOfQuadraticEqNegOne_eq_smul_exteriorMap_lineScaling
+
+#check Spinor.splitCliffordAction_list_prod_basisTransvectionCliffordUnit_eq_exteriorMap_prod
+#check Spinor.exists_basisScalingLinearEquivCliffordUnit_eq_smul_exteriorMap_of_prod_eq_sq
+#check Spinor.exists_linearEquivCliffordUnit_eq_smul_exteriorMap_of_det_eq_sq
+
+#check Spinor.complexEvenCliffordEquivMatrix
+#check Spinor.complexOddCliffordEquivProdMatrix
+#check Spinor.realSplitCliffordEquivMatrix
+#check Spinor.realSplitEvenCliffordEquivProdMatrix
+#check Spinor.RealClassification.cl_0_1_equivComplex
+#check Spinor.RealClassification.cl_0_2_equivQuaternion
+#check Spinor.realOddSplitPositiveCliffordEquivProdMatrix
+
+#check Spinor.realSpin02EquivUnitaryComplex
+#check Spinor.realSpin03EquivUnitaryQuaternion
+#check Spinor.realSpin04EquivUnitaryQuaternionPair

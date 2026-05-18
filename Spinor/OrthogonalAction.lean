@@ -64,6 +64,11 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
 * `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_of_pairGeneratorClosure_eq_top`
   — surjectivity of the ambient spin covering map reduces to showing those paired generators span
   `SO(V,Q)`.
+* `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_iff_square_surjective`
+  and
+  `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_not_surjective_dualProdLine_of_exists_nonsquare_unit`
+  — the exact split-line criterion: the spin map onto `SO(1,1)` is surjective precisely when every
+  unit of the base field is a square, and it is not surjective in the presence of a nonsquare unit.
 * `Spinor.spinRepresentation_not_factor_through_isometry_of_kernel_witness`,
   `Spinor.spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one` —
   the spin representation does not factor through the ambient isometry representation when
