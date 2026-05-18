@@ -9,6 +9,7 @@ from Clifford algebras in Lean 4 / Mathlib).
 - `main.tex` — the paper source (article class, self-contained skeleton with
   real prose grounded in the repository).
 - `refs.bib` — bibliography (BibTeX, `alpha` style).
+- `../THEOREM_INDEX.md` — reader-facing map from paper theorem labels to Lean declarations.
 
 ## Building
 
@@ -41,8 +42,8 @@ Per `ROADMAP.md` §5.3, the intended submission targets are:
 
 This is now a **substantive working draft** for ROADMAP §5.1. The paper
 contains grounded introduction, related-work, architecture, results,
-proof-highlight, lessons-learned, and future-work prose tied to the current
-Lean files and theorem names.
+proof-highlight, lessons-learned, future-work prose, and a companion theorem
+index tied to the current Lean files and theorem names.
 
 It is still not submission-ready: evaluation, final exposition polishing,
 and the last open mathematical stories (notably the full covering-map
