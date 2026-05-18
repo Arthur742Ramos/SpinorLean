@@ -1,0 +1,35 @@
+name: Lean
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Build and no-hole check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check Lean sources for forbidden proof holes
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE --include='*.lean' '(^|[^[:alnum:]_])(sorry|admit|axiom|unsafe)([^[:alnum:]_]|$)' Spinor Spinor.lean; then
+            echo "Forbidden proof-hole token found in Lean source." >&2
+            exit 1
+          fi
+
+      - name: Build Lean project
+        uses: leanprover/lean-action@v1
+        with:
+          build: "true"
+          test: "false"
+          lint: "false"
+          use-github-cache: "true"
+          use-mathlib-cache: "true"

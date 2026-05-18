@@ -30,4 +30,4 @@ bash scripts/verify.sh
 ```
 
 On Windows PowerShell, use `.\scripts\verify.ps1`. The proof-hole check is expected to return no
-matches.
+matches. GitHub Actions runs the same build and no-hole checks on pushes and pull requests.
