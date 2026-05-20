@@ -97,6 +97,11 @@ $15{,}952$ lines across the repository, of which $21$ files and $15{,}915$
 lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
+\noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
+representations; spin groups; formalized mathematics.
+
+\noindent\textbf{MSC 2020:} 15A66; 03B35; 68V15.
+
 % --- 1. Introduction -----------------------------------------------------
 \section{Introduction}
 \label{sec:intro}
@@ -165,6 +170,18 @@ product of two vectors of square $\pm1$ lies in $\Spin(V,Q)$, and every
 $x\in \Spin(V,Q)$ satisfies $x\tilde x=1$.
 All statements about the map $\Spin(V,Q)\to\SO(V,Q)$ concern the corresponding
 groups of $K$-points; no stronger scheme-theoretic claim is intended.
+
+\paragraph{Scope and limitations.}
+The paper is submission-ready for the theorem package stated here, but its scope
+is deliberately bounded. It does not claim a full Bott-period-$8$ real
+classification, an unrestricted higher-rank exact image theorem, or a
+scheme-theoretic spin-cover statement. Instead, it gives a machine-checked
+chosen-model spinor interface, the split-rank kernel/projective-descent package,
+explicit transvection and chosen-line square-scaling lifts, the
+Levi-projective exterior-action bridge, the exact split-line image criterion,
+and the square-determinant Levi factorization with an explicit Clifford lift.
+The excluded generalizations are recorded as future work rather than used as
+unproved assumptions.
 
 The split line is the smallest test case. When $\dim W=1$, the exact image
 theorem shows that $\Spin(H(W)) \to \SO(H(W))$ hits precisely the
@@ -250,8 +267,9 @@ The exterior-model equivalences and half-spin decomposition theorems serve as
 the classical theorem-facing foundation on which these field-sensitive
 covering-image statements are built.
 
-% --- Artifact overview -------------------------------------------------------
-\section*{Artifact overview}
+% --- Artifact and reproducibility -------------------------------------------
+\section{Artifact and reproducibility}
+\label{sec:artifact}
 
 \begin{center}
 \begin{tabularx}{\linewidth}{@{}lY@{}}
@@ -264,6 +282,19 @@ Lean LOC under \code{Spinor/} & $15{,}915$ \\
 \code{sorry} occurrences under \code{Spinor/} & $0$
 \end{tabularx}
 \end{center}
+
+\paragraph{Publication and artifact status.}
+The manuscript and artifact are ready for venue submission in the scoped form
+stated above. The theorem claims in Sections~\ref{sec:results}
+and~\ref{sec:highlights} are tied to named Lean declarations in
+\code{THEOREM_INDEX.md}; the companion module \code{Spinor.TheoremIndex} imports
+and checks those declarations, and \code{Spinor.lean} imports that module so a
+normal build catches theorem-name drift. The reproducible artifact path is:
+use the pinned \code{lean-toolchain} and \code{lake-manifest.json}, optionally
+fetch cached dependencies with \code{lake exe cache get}, run \code{lake build},
+and run the proof-hole audit in \code{scripts/verify.sh} or
+\code{scripts/verify.ps1}. The paper source itself builds from
+\code{paper/main.tex} with the bibliography in \code{paper/refs.bib}.
 
 The files most directly supporting the present paper are
 \code{Presentation.lean}, \code{ExteriorModel.lean}, \code{HyperbolicAction.lean},
@@ -487,7 +518,7 @@ built on this chosen-model interface.
 \end{proof}
 
 We deliberately separate the presentation-dependent and split-rank
-versions of these results.The endomorphism-algebra equivalences are
+versions of these results. The endomorphism-algebra equivalences are
 first proved from an explicit hyperbolic presentation, where no separate
 nondegeneracy hypothesis is needed; the nondegenerate split-rank assumptions
 enter when the explicit isometry data are suppressed and the chosen model is
@@ -824,11 +855,12 @@ parts of the exterior model built on the maximal isotropic space. This is the
 formal content of the slogan
 $S^{\pm} = \bigwedge^{\mathrm{even}/\mathrm{odd}} W$.
 
-\paragraph{Covering-map progress: exact kernel, spinorial descent, explicit transvections, chosen-line square scaling, and exact split-line image.}
-The covering map $\Spin(V,Q) \to \SO(V,Q)$ is not yet treated in full
-generality here, but the present manuscript already isolates the pieces that a
-complete proof must control. All of these statements live under the standing
-$2\in K^\times$ hypothesis. In the split-rank setting treated here, if an
+\paragraph{Covering-map package: exact kernel, spinorial descent, explicit transvections, chosen-line square scaling, and exact split-line image.}
+The covering map $\Spin(V,Q) \to \SO(V,Q)$ is not claimed here in
+unrestricted generality. Instead, the present manuscript isolates the exact
+field-sensitive pieces needed for the chosen-model theorem package. All of these
+statements live under the standing $2\in K^\times$ hypothesis. In the split-rank
+setting treated here, if an
 element lies in the kernel of the spin-to-isometry representation, then its
 conjugation action is trivial on the Clifford generators, hence on the whole
 Clifford algebra. The matrix model then forces such an element to be scalar,
