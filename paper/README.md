@@ -57,7 +57,6 @@ Use these commands before submission or artifact upload:
 
 ```bash
 lake exe cache get
-lake build
 bash scripts/verify.sh
 cd paper && latexmk -pdf main.tex
 ```
@@ -66,8 +65,10 @@ On Windows PowerShell:
 
 ```powershell
 lake exe cache get
-lake build
 .\scripts\verify.ps1
 Set-Location paper
 latexmk -pdf main.tex
 ```
+
+The verification scripts run `lake build` before checking for forbidden
+proof-hole tokens, so the preflight does not list a separate build step.
