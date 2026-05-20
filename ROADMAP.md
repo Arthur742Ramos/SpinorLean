@@ -364,8 +364,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 ## Phase 5: Paper & Polish (Week 7-8)
 
 ### 5.1 Paper Writing
-- paper draft now lives at `paper/` (`main.tex`, `refs.bib`, `README.md`) with
-  submission-oriented prose tied to the current theorem package; broad Bott-periodicity and
+- submission-ready paper package now lives at `paper/` (`main.tex`, `refs.bib`, `README.md`) with
+  venue-neutral prose tied to the current theorem package; broad Bott-periodicity and
   unrestricted higher-rank image theorems are framed as future extensions rather than claims
 - [x] Introduction: why spinors matter, why formalization is novel
 - [x] Related work: lean-ga, Mathlib Clifford, what's missing
@@ -377,7 +377,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 ### 5.2 Code Quality
 - [x] Full `lake build` clean
 - [x] Zero `sorry` / `admit` sweep
-- style/lint polish remains ongoing, but the repository now has a green `lake build`, zero
+- style/lint polish is complete for the submission scope: the repository has a green `lake build`, zero
   `sorry`/`admit`, Mathlib-style module documentation throughout, and a machine-checked theorem
   index imported by `Spinor.lean`
 - [x] Module documentation (Mathlib-style `/-! # ... -/` blocks on all 21 `Spinor/*.lean` files)

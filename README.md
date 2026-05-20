@@ -35,7 +35,7 @@ SpinorLean/
 │   ├── LowDimensional.lean -- Explicit low-dim Clifford models + Spin(2), Spin(3) group IDs
 │   ├── TheoremIndex.lean -- Machine-checked paper theorem surface
 │   └── OddClassification.lean -- Classification pieces over the odd split form
-├── paper/                  -- Submission-oriented paper sources (main.tex, refs.bib, README.md)
+├── paper/                  -- Submission-ready paper sources (main.tex, refs.bib, README.md)
 ├── scripts/                -- Reproducibility/verification scripts
 ├── ROADMAP.md
 ├── AGENTS.md
@@ -253,7 +253,7 @@ Implemented so far:
   `unitaryQuaternionToSpinGroupRealCl04Antidiagonal` (Phase 4.2)
 - `Spinor.TheoremIndex` is a machine-checked paper theorem surface: it imports and `#check`s the
   declarations cited by `THEOREM_INDEX.md`, so theorem-name drift is caught by `lake build`
-- `paper/` now contains submission-oriented sources (`main.tex`, `refs.bib`, `README.md`) grounded
+- `paper/` now contains submission-ready sources (`main.tex`, `refs.bib`, `README.md`) grounded
   in the formalized theorem package, with target venues recorded for CPP 2027 / ITP 2027 /
   *Advances in Applied Clifford Algebras* (Phase 5.1)
 

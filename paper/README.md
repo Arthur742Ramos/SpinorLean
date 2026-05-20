@@ -6,8 +6,7 @@ from Clifford algebras in Lean 4 / Mathlib).
 
 ## Files
 
-- `main.tex` — the paper source (article class, submission-oriented prose
-  grounded in the repository).
+- `main.tex` — the submission-ready article source grounded in the repository.
 - `refs.bib` — bibliography (BibTeX, `alpha` style).
 - `../THEOREM_INDEX.md` — reader-facing map from paper theorem labels to Lean declarations.
 
@@ -28,7 +27,7 @@ or with `latexmk`:
 latexmk -pdf main.tex
 ```
 
-## Target Venues
+## Candidate Venues
 
 Per `ROADMAP.md` §5.3, the intended submission targets are:
 
@@ -40,13 +39,36 @@ Per `ROADMAP.md` §5.3, the intended submission targets are:
 
 ## Status
 
-This is a **submission-oriented draft for the current formalized theorem
-package**. The paper contains grounded introduction, related-work,
-architecture, results, proof-highlight, lessons-learned, future-work prose, and
-a companion theorem index tied to the current Lean files and theorem names.
+This is a **submission-ready manuscript and artifact package for the current
+formalized theorem package**. The paper contains the introduction, related-work
+context, architecture, results, proof-highlight, limitations/future-work scope,
+keywords/MSC metadata, reproducibility instructions, and companion theorem index
+tied to the current Lean files and theorem names.
 
 The scope is explicit: the submitted theorem package covers the chosen-model
 spinor construction, split-rank kernel/non-descent, Levi-projective action,
 square-determinant Levi lifts, and the exact split-line image / double-cover
 criterion. The full Bott-period-8 table and unrestricted higher-rank image
 theorem are future extensions, not claims of this manuscript.
+
+## Final preflight
+
+Use these commands before submission or artifact upload:
+
+```bash
+lake exe cache get
+bash scripts/verify.sh
+cd paper && latexmk -pdf main.tex
+```
+
+On Windows PowerShell:
+
+```powershell
+lake exe cache get
+.\scripts\verify.ps1
+Set-Location paper
+latexmk -pdf main.tex
+```
+
+The verification scripts run `lake build` before checking for forbidden
+proof-hole tokens, so the preflight does not list a separate build step.
