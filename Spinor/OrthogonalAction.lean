@@ -4285,6 +4285,1176 @@ theorem neg_one_mem_spinGroup_of_quadratic_eq_neg_one (m : M) (hq : Q m = -1) :
   · convert (CliffordAlgebra.even Q).algebraMap_mem (-1 : R) using 1
     · simp
 
+omit [Invertible (2 : R)] in
+/-- If `a` is isotropic and orthogonal to a norm-`-1` vector `c`, then
+`1 + ι(a)ι(c)` is already a spin element. Algebraically it is
+`-(ι(c-a)ι(c))`, a product of two norm-`-1` vector factors up to the scalar
+spin element `-1`. -/
+theorem one_add_iota_mul_iota_mem_spinGroup_of_isotropic_ortho_norm_neg_one
+    (a c : M) (ha : Q a = 0) (hc : Q c = -1)
+    (hac : QuadraticMap.polar Q a c = 0) :
+    (1 + CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q c : CliffordAlgebra Q) ∈
+      spinGroup Q := by
+  have hcsub : Q (c - a) = -1 := by
+    have hca : QuadraticMap.polar Q c a = 0 := by
+      rw [QuadraticMap.polar_comm]
+      exact hac
+    rw [sub_eq_add_neg]
+    rw [QuadraticMap.map_add Q c (-a)]
+    rw [QuadraticMap.map_neg]
+    rw [QuadraticMap.polar_neg_right]
+    simp [hc, ha, hca]
+  have hspinPair :
+      (CliffordAlgebra.ι Q (c - a) * CliffordAlgebra.ι Q c : CliffordAlgebra Q) ∈
+        spinGroup Q := by
+    exact (spinIotaPairOfQuadraticEqNegOne (Q := Q) (c - a) c hcsub hc).prop
+  have hneg : (-1 : CliffordAlgebra Q) ∈ spinGroup Q :=
+    neg_one_mem_spinGroup_of_quadratic_eq_neg_one (Q := Q) c hc
+  have hprod :
+      (-1 : CliffordAlgebra Q) *
+          (CliffordAlgebra.ι Q (c - a) * CliffordAlgebra.ι Q c) ∈ spinGroup Q := by
+    exact (spinGroup Q).mul_mem hneg hspinPair
+  convert hprod using 1
+  rw [map_sub, sub_mul, CliffordAlgebra.ι_sq_scalar]
+  simp [hc, sub_eq_add_neg, add_comm]
+
+private theorem commutator_square_zero {A : Type*} [Ring A] (x y : A)
+    (hx : x * x = 0) (hy : y * y = 0)
+    (hxyx : x * y * x = 0) (hyxy : y * x * y = 0) :
+    (1 + x) * (1 + y) * (1 - x) * (1 - y) = 1 + (x * y - y * x) := by
+  simp [sub_eq_add_neg, mul_add, add_mul, hx, hy, hxyx, hyxy, mul_assoc]
+  abel
+
+/-- If two orthogonal isotropic vectors `a` and `b` have a common orthogonal
+norm-`-1` auxiliary vector `c`, then the unipotent Clifford element
+`1 + ι(a)ι(b)` lies in the spin group. This is the commutator
+`[1+ι(a)ι(c), 1+(1/2)ι(b)ι(c)]`. -/
+theorem one_add_iota_mul_iota_mem_spinGroup_of_common_orthogonal_norm_neg_one
+    {K M : Type*} [Field K] [AddCommGroup M] [Module K M]
+    (Q : QuadraticForm K M) [Invertible (2 : K)]
+    (a b c : M) (ha : Q a = 0) (hb : Q b = 0) (hc : Q c = -1)
+    (hab : QuadraticMap.polar Q a b = 0)
+    (hac : QuadraticMap.polar Q a c = 0)
+    (hbc : QuadraticMap.polar Q b c = 0) :
+    (1 + CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b : CliffordAlgebra Q) ∈
+      spinGroup Q := by
+  let A : CliffordAlgebra Q := CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q c
+  let B : CliffordAlgebra Q := ((2 : K)⁻¹) •
+    (CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q c)
+  have hrootA : (1 + A : CliffordAlgebra Q) ∈ spinGroup Q := by
+    dsimp [A]
+    exact one_add_iota_mul_iota_mem_spinGroup_of_isotropic_ortho_norm_neg_one
+      (Q := Q) a c ha hc hac
+  have hrootB : (1 + B : CliffordAlgebra Q) ∈ spinGroup Q := by
+    dsimp [B]
+    simpa [map_smul, Algebra.smul_def, mul_assoc] using
+      one_add_iota_mul_iota_mem_spinGroup_of_isotropic_ortho_norm_neg_one
+        (Q := Q) (((2 : K)⁻¹) • b) c
+        (by simp [QuadraticMap.map_smul, hb]) hc
+        (by simp [QuadraticMap.polar_smul_left, hbc])
+  have hrootAneg : (1 - A : CliffordAlgebra Q) ∈ spinGroup Q := by
+    dsimp [A]
+    simpa [sub_eq_add_neg, map_neg, neg_mul] using
+      one_add_iota_mul_iota_mem_spinGroup_of_isotropic_ortho_norm_neg_one
+        (Q := Q) (-a) c (by simp [QuadraticMap.map_neg, ha]) hc
+        (by simp [QuadraticMap.polar_neg_left, hac])
+  have hrootBneg : (1 - B : CliffordAlgebra Q) ∈ spinGroup Q := by
+    dsimp [B]
+    simpa [sub_eq_add_neg, map_smul, Algebra.smul_def, mul_assoc] using
+      one_add_iota_mul_iota_mem_spinGroup_of_isotropic_ortho_norm_neg_one
+        (Q := Q) (-(((2 : K)⁻¹) • b)) c
+        (by simp [QuadraticMap.map_neg, QuadraticMap.map_smul, hb]) hc
+        (by simp [QuadraticMap.polar_neg_left, QuadraticMap.polar_smul_left, hbc])
+  have hprod :
+      ((1 + A) * (1 + B) * (1 - A) * (1 - B) : CliffordAlgebra Q) ∈ spinGroup Q := by
+    exact (spinGroup Q).mul_mem
+      ((spinGroup Q).mul_mem ((spinGroup Q).mul_mem hrootA hrootB) hrootAneg) hrootBneg
+  have hA2 : A * A = 0 := by
+    dsimp [A]
+    calc
+      (CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q c) *
+          (CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q c) =
+          CliffordAlgebra.ι Q a *
+            ((CliffordAlgebra.ι Q c * CliffordAlgebra.ι Q a) * CliffordAlgebra.ι Q c) := by
+            simp only [mul_assoc]
+      _ = CliffordAlgebra.ι Q a *
+            ((-CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q c) * CliffordAlgebra.ι Q c) := by
+            rw [CliffordAlgebra.ι_mul_ι_comm (Q := Q) c a]
+            rw [show QuadraticMap.polar Q c a = 0 by
+              simpa [QuadraticMap.polar_comm] using hac]
+            simp
+      _ = -((CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q a) *
+            (CliffordAlgebra.ι Q c * CliffordAlgebra.ι Q c)) := by
+            simp only [mul_assoc, neg_mul, mul_neg]
+      _ = 0 := by
+            rw [CliffordAlgebra.ι_sq_scalar (Q := Q) a]
+            simp [ha]
+  have hBcore2 :
+      (CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q c) *
+          (CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q c) = 0 := by
+    calc
+      (CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q c) *
+          (CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q c) =
+          CliffordAlgebra.ι Q b *
+            ((CliffordAlgebra.ι Q c * CliffordAlgebra.ι Q b) * CliffordAlgebra.ι Q c) := by
+            simp only [mul_assoc]
+      _ = CliffordAlgebra.ι Q b *
+            ((-CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q c) * CliffordAlgebra.ι Q c) := by
+            rw [CliffordAlgebra.ι_mul_ι_comm (Q := Q) c b]
+            rw [show QuadraticMap.polar Q c b = 0 by
+              simpa [QuadraticMap.polar_comm] using hbc]
+            simp
+      _ = -((CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q b) *
+            (CliffordAlgebra.ι Q c * CliffordAlgebra.ι Q c)) := by
+            simp only [mul_assoc, neg_mul, mul_neg]
+      _ = 0 := by
+            rw [CliffordAlgebra.ι_sq_scalar (Q := Q) b]
+            simp [hb]
+  have hB2 : B * B = 0 := by
+    dsimp [B]
+    simp [hBcore2]
+  have hAB :
+      A * B = ((2 : K)⁻¹) • (CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b) := by
+    dsimp [A, B]
+    rw [mul_smul_comm]
+    congr 1
+    calc
+      (CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q c) *
+          (CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q c) =
+        CliffordAlgebra.ι Q a *
+          ((CliffordAlgebra.ι Q c * CliffordAlgebra.ι Q b) * CliffordAlgebra.ι Q c) := by
+          simp [mul_assoc]
+      _ = CliffordAlgebra.ι Q a *
+          ((-CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q c) * CliffordAlgebra.ι Q c) := by
+          rw [CliffordAlgebra.ι_mul_ι_comm (Q := Q) c b]
+          rw [show QuadraticMap.polar Q c b = 0 by
+            simpa [QuadraticMap.polar_comm] using hbc]
+          simp
+      _ = -(CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b) *
+          (CliffordAlgebra.ι Q c * CliffordAlgebra.ι Q c) := by
+          simp [mul_assoc]
+      _ = CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b := by
+          rw [CliffordAlgebra.ι_sq_scalar, hc]
+          simp
+  have hBA :
+      B * A = -(((2 : K)⁻¹) • (CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b)) := by
+    dsimp [A, B]
+    rw [smul_mul_assoc]
+    rw [show (CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q c) *
+          (CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q c) =
+        -(CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b) by
+      calc
+        (CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q c) *
+            (CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q c) =
+          CliffordAlgebra.ι Q b *
+            ((CliffordAlgebra.ι Q c * CliffordAlgebra.ι Q a) * CliffordAlgebra.ι Q c) := by
+            simp [mul_assoc]
+        _ = CliffordAlgebra.ι Q b *
+            ((-CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q c) * CliffordAlgebra.ι Q c) := by
+            rw [CliffordAlgebra.ι_mul_ι_comm (Q := Q) c a]
+            rw [show QuadraticMap.polar Q c a = 0 by
+              simpa [QuadraticMap.polar_comm] using hac]
+            simp
+        _ = -(CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q a) *
+            (CliffordAlgebra.ι Q c * CliffordAlgebra.ι Q c) := by
+            simp [mul_assoc]
+        _ = CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q a := by
+            rw [CliffordAlgebra.ι_sq_scalar, hc]
+            simp
+        _ = -(CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b) := by
+            rw [CliffordAlgebra.ι_mul_ι_comm (Q := Q) b a]
+            rw [show QuadraticMap.polar Q b a = 0 by
+              simpa [QuadraticMap.polar_comm] using hab]
+            simp]
+    simp
+  have hcoreA : (CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b) * A = 0 := by
+    dsimp [A]
+    calc
+      (CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b) *
+          (CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q c) =
+        CliffordAlgebra.ι Q a *
+          ((CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q a) * CliffordAlgebra.ι Q c) := by
+          simp only [mul_assoc]
+      _ = CliffordAlgebra.ι Q a *
+          ((-CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b) * CliffordAlgebra.ι Q c) := by
+          rw [CliffordAlgebra.ι_mul_ι_comm (Q := Q) b a]
+          rw [show QuadraticMap.polar Q b a = 0 by
+            simpa [QuadraticMap.polar_comm] using hab]
+          simp
+      _ = -((CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q a) *
+          (CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q c)) := by
+          simp only [mul_assoc, neg_mul, mul_neg]
+      _ = 0 := by
+          rw [CliffordAlgebra.ι_sq_scalar (Q := Q) a]
+          simp [ha]
+  have hABA : A * B * A = 0 := by
+    rw [hAB]
+    rw [smul_mul_assoc]
+    simp [hcoreA]
+  have hcoreB : (CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b) * B = 0 := by
+    dsimp [B]
+    rw [mul_smul_comm]
+    simp only [smul_eq_zero]
+    right
+    calc
+      (CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b) *
+          (CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q c) =
+        CliffordAlgebra.ι Q a *
+          ((CliffordAlgebra.ι Q b * CliffordAlgebra.ι Q b) * CliffordAlgebra.ι Q c) := by
+          simp only [mul_assoc]
+      _ = 0 := by
+          rw [CliffordAlgebra.ι_sq_scalar (Q := Q) b]
+          simp [hb]
+  have hBAB : B * A * B = 0 := by
+    rw [hBA]
+    rw [neg_mul, smul_mul_assoc]
+    simp [hcoreB]
+  have hdiff : A * B - B * A = CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b := by
+    rw [hAB, hBA]
+    rw [sub_eq_add_neg, neg_neg, ← add_smul]
+    have hhalf : ((2 : K)⁻¹ + (2 : K)⁻¹ : K) = 1 := by
+      field_simp [(isUnit_of_invertible (2 : K)).ne_zero]
+      ring
+    simp [hhalf]
+  have heq :
+      (1 + A) * (1 + B) * (1 - A) * (1 - B) =
+        1 + CliffordAlgebra.ι Q a * CliffordAlgebra.ι Q b := by
+    rw [commutator_square_zero A B hA2 hB2 hABA hBAB, hdiff]
+  simpa [heq] using hprod
+
+private theorem four_vector_product_eq_one_add_of_relations
+    {K A : Type*} [Field K] [Ring A] [Algebra K A] [Invertible (2 : K)]
+    (a d b : A)
+    (ha2 : a * a = 0) (hd2 : d * d = 0) (hb2 : b * b = 0)
+    (had : a * d = -d * a) (hdb : d * b = -b * d)
+    (hab : a * b + b * a = 1) :
+    (a - d + b) * (a + b) * (a + (2 : K) • b) *
+        (((2 : K)⁻¹) • a - d + b) =
+      1 + d * b := by
+  have hBA : b * a = 1 - a * b := by
+    rw [← hab]
+    abel
+  have hDA : d * a = -a * d := by
+    simpa using (congrArg Neg.neg had).symm
+  have hBD : b * d = -d * b := by
+    simpa using (congrArg Neg.neg hdb).symm
+  have hp12 : (a - d + b) * (a + b) = 1 + a * d - d * b := by
+    simp [sub_eq_add_neg, add_mul, mul_add, ha2, hb2, hBA, hDA, hdb]
+    abel
+  have had_a : a * d * a = 0 := by
+    calc
+      a * d * a = a * (d * a) := by rw [mul_assoc]
+      _ = a * (-(a * d)) := by simpa [mul_neg] using congrArg (fun x => a * x) hDA
+      _ = 0 := by rw [mul_neg, ← mul_assoc, ha2]; simp
+  have hdb_b : d * b * b = 0 := by
+    rw [mul_assoc, hb2]
+    simp
+  have hdb_a : d * b * a = d + a * d * b := by
+    calc
+      d * b * a = d * (b * a) := by rw [mul_assoc]
+      _ = d * (1 - a * b) := by rw [hBA]
+      _ = d - d * (a * b) := by simp [mul_sub]
+      _ = d - (d * a) * b := by rw [mul_assoc]
+      _ = d - (-(a * d)) * b := by
+        simpa [neg_mul] using congrArg (fun x => d - x * b) hDA
+      _ = d + a * d * b := by rw [neg_mul]; simp [mul_assoc, sub_eq_add_neg]
+  have hp123 :
+      (a - d + b) * (a + b) * (a + (2 : K) • b) =
+        a + (2 : K) • b - d + a * d * b := by
+    have h_ad_mul : (a * d) * (a + (2 : K) • b) = (2 : K) • (a * d * b) := by
+      rw [mul_add, had_a, zero_add]
+      rw [mul_smul_comm]
+    have h_db_mul : (d * b) * (a + (2 : K) • b) = d + a * d * b := by
+      have hdb_two : d * b * ((2 : K) • b) = 0 := by
+        rw [mul_smul_comm, hdb_b, smul_zero]
+      rw [mul_add, hdb_a, hdb_two, add_zero]
+    rw [hp12]
+    rw [sub_eq_add_neg]
+    rw [add_mul, add_mul, one_mul]
+    rw [h_ad_mul]
+    rw [neg_mul, h_db_mul]
+    module
+  have hadb_a : a * d * b * a = a * d := by
+    calc
+      a * d * b * a = a * (d * b * a) := by simp [mul_assoc]
+      _ = a * (d + a * d * b) := by rw [hdb_a]
+      _ = a * d + a * (a * d * b) := by rw [mul_add]
+      _ = a * d := by
+        have haa : a * (a * d * b) = 0 := by
+          calc
+            a * (a * d * b) = (a * a) * d * b := by simp [mul_assoc]
+            _ = 0 := by rw [ha2]; simp
+        rw [haa, add_zero]
+  have hadb_d : a * d * b * d = 0 := by
+    calc
+      a * d * b * d = a * d * (b * d) := by simp [mul_assoc]
+      _ = a * d * (-(d * b)) := by
+        simpa [mul_neg] using congrArg (fun x => a * d * x) hBD
+      _ = -(a * d * (d * b)) := by rw [mul_neg]
+      _ = 0 := by
+        have hdd : a * d * (d * b) = 0 := by
+          calc
+            a * d * (d * b) = a * (d * d) * b := by simp [mul_assoc]
+            _ = 0 := by rw [hd2]; simp
+        rw [hdd, neg_zero]
+  have hadb_b : a * d * b * b = 0 := by
+    calc
+      a * d * b * b = a * d * (b * b) := by simp [mul_assoc]
+      _ = 0 := by rw [hb2, mul_zero]
+  have ha_V : a * (((2 : K)⁻¹) • a - d + b) = -(a * d) + a * b := by
+    simp [sub_eq_add_neg, mul_add, mul_smul_comm, ha2]
+  have hb_V : ((2 : K) • b) * (((2 : K)⁻¹) • a - d + b) =
+      b * a - (2 : K) • (b * d) := by
+    simp [sub_eq_add_neg, mul_add, smul_mul_assoc, hb2, smul_smul, mul_comm,
+      mul_left_comm, mul_assoc]
+  have hd_V : d * (((2 : K)⁻¹) • a - d + b) =
+      -(((2 : K)⁻¹) • (a * d)) + d * b := by
+    simp [sub_eq_add_neg, mul_add, mul_smul_comm, hd2, hDA, smul_smul, mul_comm,
+      mul_left_comm, mul_assoc]
+  have hadb_V : (a * d * b) * (((2 : K)⁻¹) • a - d + b) =
+      ((2 : K)⁻¹) • (a * d) := by
+    have h1 : (a * d * b) * (((2 : K)⁻¹) • a) = ((2 : K)⁻¹) • (a * d) := by
+      rw [mul_smul_comm, hadb_a]
+    have h2neg : (a * d * b) * (-d) = 0 := by
+      rw [mul_neg, hadb_d, neg_zero]
+    have h3 : (a * d * b) * b = 0 := hadb_b
+    rw [sub_eq_add_neg, mul_add, mul_add]
+    rw [h1, h2neg, h3]
+    simp
+  rw [hp123]
+  rw [sub_eq_add_neg]
+  rw [add_mul, add_mul, add_mul]
+  rw [ha_V, hb_V]
+  rw [neg_mul, hd_V, hadb_V]
+  rw [hBA, hBD]
+  simp
+  have hhalf : ((2 : K)⁻¹ + (2 : K)⁻¹ : K) = 1 := by
+    field_simp [(isUnit_of_invertible (2 : K)).ne_zero]
+    ring
+  have hAD : -(a * d) + (2 : K)⁻¹ • (a * d) + (2 : K)⁻¹ • (a * d) = 0 := by
+    calc
+      -(a * d) + (2 : K)⁻¹ • (a * d) + (2 : K)⁻¹ • (a * d)
+          = (-1 + ((2 : K)⁻¹ + (2 : K)⁻¹)) • (a * d) := by module
+      _ = 0 := by rw [hhalf]; simp
+  have hDB : (2 : K) • (d * b) + -(d * b) = d * b := by
+    calc
+      (2 : K) • (d * b) + -(d * b) = ((2 : K) + -1) • (d * b) := by module
+      _ = d * b := by norm_num
+  calc
+    -(a * d) + a * b + (1 - a * b + (2 : K) • (d * b)) +
+          (-(d * b) + (2 : K)⁻¹ • (a * d)) + (2 : K)⁻¹ • (a * d)
+        =
+        (a * b + (1 - a * b)) + ((2 : K) • (d * b) + -(d * b)) +
+          (-(a * d) + (2 : K)⁻¹ • (a * d) + (2 : K)⁻¹ • (a * d)) := by
+          abel
+    _ = 1 + d * b := by rw [hAD, hDB]; simp
+
+/-- The explicit hyperbolic transvection Clifford unit is a spin element whenever the two isotropic
+vectors `(δ,0)` and `(0,w)` have a common orthogonal norm-`-1` auxiliary vector. -/
+theorem dualProdTransvectionCliffordUnit_mem_spinGroup_of_common_orthogonal_norm_neg_one
+    {K W : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0)
+    (c : Module.Dual K W × W)
+    (hc : QuadraticForm.dualProd K W c = -1)
+    (hac : QuadraticMap.polar (QuadraticForm.dualProd K W) (δ, 0) c = 0)
+    (hbc : QuadraticMap.polar (QuadraticForm.dualProd K W) (0, w) c = 0) :
+    (((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ :
+        (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+      CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+        spinGroup (QuadraticForm.dualProd K W) := by
+  simpa [coe_dualProdTransvectionCliffordUnit] using
+    (one_add_iota_mul_iota_mem_spinGroup_of_common_orthogonal_norm_neg_one
+      (Q := QuadraticForm.dualProd K W)
+      (a := (δ, 0)) (b := (0, w)) (c := c)
+      (by simp [QuadraticForm.dualProd])
+      (by simp [QuadraticForm.dualProd]) hc
+      (by simpa [QuadraticForm.dualProd, QuadraticMap.polar] using hδ)
+      hac hbc)
+
+/-- The explicit hyperbolic transvection Clifford unit is a spin element whenever the primal
+direction has a dual coordinate equal to `1`. This covers every basis transvection, including
+split rank two, without needing an auxiliary orthogonal basis direction. -/
+theorem dualProdTransvectionCliffordUnit_mem_spinGroup_of_dual_apply_eq_one
+    {K W : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W]
+    (δ f : Module.Dual K W) (w : W) (hδ : δ w = 0) (hf : f w = 1) :
+    (((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ :
+        (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+      CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+        spinGroup (QuadraticForm.dualProd K W) := by
+  let Qd : QuadraticForm K (Module.Dual K W × W) := QuadraticForm.dualProd K W
+  let A : Module.Dual K W × W := (f, 0)
+  let D : Module.Dual K W × W := (δ, 0)
+  let B : Module.Dual K W × W := (0, w)
+  let v1 : Module.Dual K W × W := A - D + B
+  let v2 : Module.Dual K W × W := A + B
+  let v3 : Module.Dual K W × W := A + (2 : K) • B
+  let v4 : Module.Dual K W × W := ((2 : K)⁻¹) • A - D + B
+  let u1 : (CliffordAlgebra Qd)ˣ :=
+    (CliffordAlgebra.isUnit_ι_of_isUnit (Q := Qd) (m := v1) (by
+      change IsUnit (Qd v1)
+      rw [show Qd v1 = 1 by simp [Qd, v1, A, D, B, QuadraticForm.dualProd, hδ, hf]]
+      exact isUnit_one)).unit
+  let u2 : (CliffordAlgebra Qd)ˣ :=
+    (CliffordAlgebra.isUnit_ι_of_isUnit (Q := Qd) (m := v2) (by
+      change IsUnit (Qd v2)
+      rw [show Qd v2 = 1 by simp [Qd, v2, A, B, QuadraticForm.dualProd, hf]]
+      exact isUnit_one)).unit
+  let u3 : (CliffordAlgebra Qd)ˣ :=
+    (CliffordAlgebra.isUnit_ι_of_isUnit (Q := Qd) (m := v3) (by
+      change IsUnit (Qd v3)
+      rw [show Qd v3 = 2 by simp [Qd, v3, A, B, QuadraticForm.dualProd, hf]]
+      exact isUnit_of_invertible (2 : K))).unit
+  let u4 : (CliffordAlgebra Qd)ˣ :=
+    (CliffordAlgebra.isUnit_ι_of_isUnit (Q := Qd) (m := v4) (by
+      change IsUnit (Qd v4)
+      rw [show Qd v4 = (2 : K)⁻¹ by
+        simp [Qd, v4, A, D, B, QuadraticForm.dualProd, hδ, hf]]
+      exact IsUnit.inv (isUnit_of_invertible (2 : K)))).unit
+  have hu1 : (u1 : CliffordAlgebra Qd) = CliffordAlgebra.ι Qd v1 := by
+    exact IsUnit.unit_spec
+      (CliffordAlgebra.isUnit_ι_of_isUnit (Q := Qd) (m := v1) (by
+        change IsUnit (Qd v1)
+        rw [show Qd v1 = 1 by simp [Qd, v1, A, D, B, QuadraticForm.dualProd, hδ, hf]]
+        exact isUnit_one))
+  have hu2 : (u2 : CliffordAlgebra Qd) = CliffordAlgebra.ι Qd v2 := by
+    exact IsUnit.unit_spec
+      (CliffordAlgebra.isUnit_ι_of_isUnit (Q := Qd) (m := v2) (by
+        change IsUnit (Qd v2)
+        rw [show Qd v2 = 1 by simp [Qd, v2, A, B, QuadraticForm.dualProd, hf]]
+        exact isUnit_one))
+  have hu3 : (u3 : CliffordAlgebra Qd) = CliffordAlgebra.ι Qd v3 := by
+    exact IsUnit.unit_spec
+      (CliffordAlgebra.isUnit_ι_of_isUnit (Q := Qd) (m := v3) (by
+        change IsUnit (Qd v3)
+        rw [show Qd v3 = 2 by simp [Qd, v3, A, B, QuadraticForm.dualProd, hf]]
+        exact isUnit_of_invertible (2 : K)))
+  have hu4 : (u4 : CliffordAlgebra Qd) = CliffordAlgebra.ι Qd v4 := by
+    exact IsUnit.unit_spec
+      (CliffordAlgebra.isUnit_ι_of_isUnit (Q := Qd) (m := v4) (by
+        change IsUnit (Qd v4)
+        rw [show Qd v4 = (2 : K)⁻¹ by
+          simp [Qd, v4, A, D, B, QuadraticForm.dualProd, hδ, hf]]
+        exact IsUnit.inv (isUnit_of_invertible (2 : K))))
+  have hu_lip : u1 * u2 * u3 * u4 ∈ lipschitzGroup Qd := by
+    refine (lipschitzGroup Qd).mul_mem
+      ((lipschitzGroup Qd).mul_mem ((lipschitzGroup Qd).mul_mem ?_ ?_) ?_) ?_
+    · exact Subgroup.subset_closure ⟨v1, hu1⟩
+    · exact Subgroup.subset_closure ⟨v2, hu2⟩
+    · exact Subgroup.subset_closure ⟨v3, hu3⟩
+    · exact Subgroup.subset_closure ⟨v4, hu4⟩
+  have hfactor :
+      (CliffordAlgebra.ι Qd v1 * CliffordAlgebra.ι Qd v2 *
+            CliffordAlgebra.ι Qd v3 * CliffordAlgebra.ι Qd v4) =
+        (1 + CliffordAlgebra.ι Qd D * CliffordAlgebra.ι Qd B) := by
+    have ha2 : CliffordAlgebra.ι Qd A * CliffordAlgebra.ι Qd A = 0 := by
+      rw [CliffordAlgebra.ι_sq_scalar]
+      have hQA : Qd A = 0 := by simp [Qd, A, QuadraticForm.dualProd]
+      rw [hQA]
+      simp
+    have hd2 : CliffordAlgebra.ι Qd D * CliffordAlgebra.ι Qd D = 0 := by
+      rw [CliffordAlgebra.ι_sq_scalar]
+      have hQD : Qd D = 0 := by simp [Qd, D, QuadraticForm.dualProd]
+      rw [hQD]
+      simp
+    have hb2 : CliffordAlgebra.ι Qd B * CliffordAlgebra.ι Qd B = 0 := by
+      rw [CliffordAlgebra.ι_sq_scalar]
+      have hQB : Qd B = 0 := by simp [Qd, B, QuadraticForm.dualProd]
+      rw [hQB]
+      simp
+    have had :
+        CliffordAlgebra.ι Qd A * CliffordAlgebra.ι Qd D =
+          -CliffordAlgebra.ι Qd D * CliffordAlgebra.ι Qd A := by
+      rw [CliffordAlgebra.ι_mul_ι_comm (Q := Qd) A D]
+      have hpolar : QuadraticMap.polar Qd A D = 0 := by
+        simp [Qd, A, D, QuadraticMap.polar, QuadraticForm.dualProd]
+      rw [hpolar]
+      simp
+    have hdb :
+        CliffordAlgebra.ι Qd D * CliffordAlgebra.ι Qd B =
+          -CliffordAlgebra.ι Qd B * CliffordAlgebra.ι Qd D := by
+      rw [CliffordAlgebra.ι_mul_ι_comm (Q := Qd) D B]
+      have hpolar : QuadraticMap.polar Qd D B = 0 := by
+        simp [Qd, D, B, QuadraticMap.polar, QuadraticForm.dualProd, hδ]
+      rw [hpolar]
+      simp
+    have hab :
+        CliffordAlgebra.ι Qd A * CliffordAlgebra.ι Qd B +
+            CliffordAlgebra.ι Qd B * CliffordAlgebra.ι Qd A = 1 := by
+      rw [CliffordAlgebra.ι_mul_ι_comm (Q := Qd) B A]
+      have hpolar : QuadraticMap.polar Qd B A = 1 := by
+        simp [Qd, A, B, QuadraticMap.polar, QuadraticForm.dualProd, hf]
+      rw [hpolar]
+      simp
+    simpa [v1, v2, v3, v4, map_add, map_sub, map_smul] using
+      (four_vector_product_eq_one_add_of_relations
+        (K := K) (A := CliffordAlgebra Qd)
+        (a := CliffordAlgebra.ι Qd A) (d := CliffordAlgebra.ι Qd D)
+        (b := CliffordAlgebra.ι Qd B) ha2 hd2 hb2 had hdb hab)
+  rw [spinGroup.mem_iff]
+  constructor
+  · rw [pinGroup.mem_iff]
+    constructor
+    · refine ⟨u1 * u2 * u3 * u4, hu_lip, ?_⟩
+      change
+        (u1 : CliffordAlgebra Qd) * (u2 : CliffordAlgebra Qd) *
+            (u3 : CliffordAlgebra Qd) * (u4 : CliffordAlgebra Qd) =
+          ((dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ :
+            (CliffordAlgebra Qd)ˣ) : CliffordAlgebra Qd)
+      rw [hu1, hu2, hu3, hu4]
+      rw [hfactor]
+      rw [coe_dualProdTransvectionCliffordUnit]
+    · simpa [Qd] using
+        dualProdTransvectionCliffordUnit_mem_unitary (K := K) (W := W) δ w hδ
+  · simpa [Qd] using
+      dualProdTransvectionCliffordUnit_mem_even (K := K) (W := W) δ w hδ
+
+/-- Every basis-transvection Clifford unit is a genuine spin element. -/
+theorem basisTransvectionCliffordUnit_mem_spinGroup
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K) :
+    (((basisTransvectionCliffordUnit (K := K) (W := W) b t :
+        (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+      CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+        spinGroup (QuadraticForm.dualProd K W) := by
+  simpa [basisTransvectionCliffordUnit] using
+    (dualProdTransvectionCliffordUnit_mem_spinGroup_of_dual_apply_eq_one
+      (K := K) (W := W)
+      (δ := -((t.c : K) • b.coord t.j)) (f := b.coord t.i) (w := b t.i)
+      (hδ := by simp [Module.Basis.coord_apply, t.hij])
+      (hf := by simp [Module.Basis.coord_apply]))
+
+/-- Package the basis-transvection Clifford unit as a spin element. -/
+noncomputable def basisTransvectionSpin
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K) :
+    spinGroup (QuadraticForm.dualProd K W) :=
+  ⟨(basisTransvectionCliffordUnit (K := K) (W := W) b t :
+      (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ),
+    basisTransvectionCliffordUnit_mem_spinGroup (K := K) (W := W) b t⟩
+
+@[simp]
+theorem coe_basisTransvectionSpin
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K) :
+    ((basisTransvectionSpin (K := K) (W := W) b t :
+      spinGroup (QuadraticForm.dualProd K W)) :
+      CliffordAlgebra (QuadraticForm.dualProd K W)) =
+      basisTransvectionCliffordUnit (K := K) (W := W) b t := rfl
+
+/-- The basis-transvection spin lift maps to the corresponding split-special-orthogonal Levi
+transvection. -/
+theorem spinSpecialOrthogonalRepresentation_basisTransvectionSpin
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K) :
+    spinSpecialOrthogonalRepresentationFiniteDimensional (Q := QuadraticForm.dualProd K W)
+        (basisTransvectionSpin (K := K) (W := W) b t) =
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisTransvectionLinearEquiv (K := K) (W := W) b t) := by
+  let xU : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ :=
+    basisTransvectionCliffordUnit (K := K) (W := W) b t
+  let s : spinGroup (QuadraticForm.dualProd K W) :=
+    basisTransvectionSpin (K := K) (W := W) b t
+  change spinSpecialOrthogonalRepresentationFiniteDimensional (Q := QuadraticForm.dualProd K W) s =
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+      (basisTransvectionLinearEquiv (K := K) (W := W) b t)
+  apply Subtype.ext
+  apply DFunLike.ext
+  intro z
+  apply cliffordIota_injective (Q := QuadraticForm.dualProd K W)
+  have hUnits : spinGroup.toUnits s = xU := by
+    ext
+    rfl
+  rw [coe_spinSpecialOrthogonalRepresentationFiniteDimensional]
+  rw [spinIsometryRepresentation_apply, spinIsometryEquiv_apply]
+  rw [spinLinearRepresentation_apply, spinLinearEquiv_ι]
+  rw [hUnits]
+  exact basisTransvectionCliffordUnit_conjAct_eq_basisTransvectionLinearEquiv
+    (K := K) (W := W) b t (d := z.1) (u := z.2)
+
+/-- Every basis transvection in the Levi copy of `GL(W)` lies in the spin image. -/
+theorem dualProdSpecialOrthogonalOf_basisTransvectionLinearEquiv_mem_spin_range
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisTransvectionLinearEquiv (K := K) (W := W) b t) ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  refine ⟨basisTransvectionSpin (K := K) (W := W) b t, ?_⟩
+  exact spinSpecialOrthogonalRepresentation_basisTransvectionSpin
+    (K := K) (W := W) b t
+
+/-- Transvections supported on two basis lines lie in the spin image. This form is convenient for
+the four-transvection diagonal block factorization. -/
+theorem dualProdSpecialOrthogonalOf_basisCoordTransvection_mem_spin_range
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) {i j : ι} (hij : i ≠ j) (c : K) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -(b.coord j)) (v := c • b i)
+          (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij])) ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  let t : Matrix.TransvectionStruct ι K := ⟨i, j, hij, -c⟩
+  have htrans :
+      LinearEquiv.transvection (f := -(b.coord j)) (v := c • b i)
+          (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij]) =
+        basisTransvectionLinearEquiv (K := K) (W := W) b t := by
+    ext x
+    simp [basisTransvectionLinearEquiv, LinearMap.transvection.apply, t,
+      smul_smul, mul_comm, mul_left_comm, mul_assoc]
+  rw [htrans]
+  exact dualProdSpecialOrthogonalOf_basisTransvectionLinearEquiv_mem_spin_range
+    (K := K) (W := W) b t
+
+/-- Products of basis transvections lie in the spin image. -/
+theorem dualProdSpecialOrthogonalOf_list_basisTransvectionLinearEquiv_prod_mem_spin_range
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (L : List (Matrix.TransvectionStruct ι K)) :
+    (L.map (fun t =>
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisTransvectionLinearEquiv (K := K) (W := W) b t))).prod ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  induction L with
+  | nil =>
+      simp
+  | cons t L ih =>
+      simp only [List.map_cons, List.prod_cons]
+      exact Subgroup.mul_mem _
+        (dualProdSpecialOrthogonalOf_basisTransvectionLinearEquiv_mem_spin_range
+          (K := K) (W := W) b t)
+        ih
+
+/-- The canonical determinant-one two-line basis scaling block lies in the spin image. -/
+theorem dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_two_update_mem_spin_range
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) {i j : ι} (hij : i ≠ j) (a : Kˣ) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisScalingLinearEquiv (K := K) (W := W) b
+          (Function.update (Function.update (fun _ => (1 : Kˣ)) i a) j a⁻¹)) ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  rw [dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_two_update_eq_transvection_four
+    (K := K) (W := W) (b := b) (i := i) (j := j) hij a]
+  exact Subgroup.mul_mem _
+    (Subgroup.mul_mem _
+      (Subgroup.mul_mem _
+        (dualProdSpecialOrthogonalOf_basisCoordTransvection_mem_spin_range
+          (K := K) (W := W) b hij ((1 : K) - (a : K)))
+        (dualProdSpecialOrthogonalOf_basisCoordTransvection_mem_spin_range
+          (K := K) (W := W) b hij.symm (-1 : K)))
+      (dualProdSpecialOrthogonalOf_basisCoordTransvection_mem_spin_range
+        (K := K) (W := W) b hij ((1 : K) - (a : K)⁻¹)))
+    (dualProdSpecialOrthogonalOf_basisCoordTransvection_mem_spin_range
+      (K := K) (W := W) b hij.symm (a : K))
+
+/-- A square-determinant basis scaling lies in the spin image. -/
+theorem dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_mem_spin_range_of_prod_eq_sq
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) (t : ι → Kˣ) (u : Kˣ)
+    (hprod : (∏ j, t j) = u ^ 2) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisScalingLinearEquiv (K := K) (W := W) b t) ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  rw [dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_eq_lineScalingLinearEquiv_mul_noncommProd_two_update_of_prod_eq_sq
+    (K := K) (W := W) (b := b) (i := i) (t := t) (u := u) hprod]
+  exact Subgroup.mul_mem _
+    (dualProdSpecialOrthogonalOf_lineScalingLinearEquiv_sq_mem_range
+      (K := K) (W := W) (f := b.coord i) (w := b i)
+      (by simp [Module.Basis.coord_apply]) u)
+    (Finset.noncommProd_induction (s := Finset.univ.erase i)
+      (f := fun j =>
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+          (basisScalingLinearEquiv (K := K) (W := W) b
+            (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹)))
+      (comm := by
+        intro j hj k hk hjk
+        exact
+          (basisScalingLinearEquiv_two_update_pairwise
+            (K := K) (W := W) (b := b) (i := i) (t := t) hj hk hjk).map
+            (dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W)))
+      (p := fun y =>
+        y ∈ MonoidHom.range
+          (spinSpecialOrthogonalRepresentationFiniteDimensional
+            (Q := QuadraticForm.dualProd K W)))
+      (fun _ _ hx hy => Subgroup.mul_mem _ hx hy)
+      (by simp)
+      (fun j hj =>
+        dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_two_update_mem_spin_range
+          (K := K) (W := W) b (i := j) (j := i) (Finset.mem_erase.mp hj).1
+          (t j)))
+
+/-- Any Levi element with square determinant lies in the spin image. -/
+theorem dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_det_eq_sq
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) (e : W ≃ₗ[K] W) (u : Kˣ)
+    (hdet : LinearEquiv.det e = u ^ 2) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K) e ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  rcases
+      dualProdSpecialOrthogonalOfLinearEquiv_eq_list_basisTransvection_mul_basisScalingLinearEquiv_mul_list_basisTransvection_of_det_eq_sq
+        (K := K) (W := W) (b := b) (e := e) (u := u) hdet with
+    ⟨L, L', t, htprod, he⟩
+  rw [he]
+  exact Subgroup.mul_mem _
+    (Subgroup.mul_mem _
+      (dualProdSpecialOrthogonalOf_list_basisTransvectionLinearEquiv_prod_mem_spin_range
+        (K := K) (W := W) b L)
+      (dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_mem_spin_range_of_prod_eq_sq
+        (K := K) (W := W) b i t u htprod))
+    (dualProdSpecialOrthogonalOf_list_basisTransvectionLinearEquiv_prod_mem_spin_range
+      (K := K) (W := W) b L')
+
+/-- Every determinant-one Levi element lies in the spin image. -/
+theorem dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_det_eq_one
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) (e : W ≃ₗ[K] W)
+    (hdet : LinearEquiv.det e = 1) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K) e ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  simpa [hdet] using
+    (dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_det_eq_sq
+      (K := K) (W := W) b i e (1 : Kˣ) (by simpa [hdet]))
+
+/-- If every unit is a square, then every Levi element lies in the spin image. -/
+theorem dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_square_surjective
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (hsq : Function.Surjective (powMonoidHom (α := Kˣ) 2))
+    (b : Module.Basis ι K W) (i : ι) (e : W ≃ₗ[K] W) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K) e ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  rcases hsq (LinearEquiv.det e) with ⟨u, hu⟩
+  exact
+    dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_det_eq_sq
+      (K := K) (W := W) b i e u hu.symm
+
+/-- Package the explicit hyperbolic transvection Clifford unit as a spin element when a common
+orthogonal norm-`-1` auxiliary vector is supplied. -/
+noncomputable def dualProdTransvectionSpinOfCommonOrthogonalNormNegOne
+    {K W : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0)
+    (c : Module.Dual K W × W)
+    (hc : QuadraticForm.dualProd K W c = -1)
+    (hac : QuadraticMap.polar (QuadraticForm.dualProd K W) (δ, 0) c = 0)
+    (hbc : QuadraticMap.polar (QuadraticForm.dualProd K W) (0, w) c = 0) :
+    spinGroup (QuadraticForm.dualProd K W) :=
+  ⟨(dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ :
+      (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ),
+    dualProdTransvectionCliffordUnit_mem_spinGroup_of_common_orthogonal_norm_neg_one
+      (K := K) (W := W) δ w hδ c hc hac hbc⟩
+
+@[simp]
+theorem coe_dualProdTransvectionSpinOfCommonOrthogonalNormNegOne
+    {K W : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0)
+    (c : Module.Dual K W × W)
+    (hc : QuadraticForm.dualProd K W c = -1)
+    (hac : QuadraticMap.polar (QuadraticForm.dualProd K W) (δ, 0) c = 0)
+    (hbc : QuadraticMap.polar (QuadraticForm.dualProd K W) (0, w) c = 0) :
+    ((dualProdTransvectionSpinOfCommonOrthogonalNormNegOne
+        (K := K) (W := W) δ w hδ c hc hac hbc :
+      spinGroup (QuadraticForm.dualProd K W)) :
+      CliffordAlgebra (QuadraticForm.dualProd K W)) =
+      dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ := rfl
+
+/-- The spin element attached to the explicit hyperbolic transvection maps to the corresponding
+split-special-orthogonal transvection. -/
+theorem spinSpecialOrthogonalRepresentation_dualProdTransvectionSpinOfCommonOrthogonalNormNegOne
+    {K W : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W]
+    (δ : Module.Dual K W) (w : W) (hδ : δ w = 0)
+    (c : Module.Dual K W × W)
+    (hc : QuadraticForm.dualProd K W c = -1)
+    (hac : QuadraticMap.polar (QuadraticForm.dualProd K W) (δ, 0) c = 0)
+    (hbc : QuadraticMap.polar (QuadraticForm.dualProd K W) (0, w) c = 0) :
+    spinSpecialOrthogonalRepresentationFiniteDimensional (Q := QuadraticForm.dualProd K W)
+        (dualProdTransvectionSpinOfCommonOrthogonalNormNegOne
+          (K := K) (W := W) δ w hδ c hc hac hbc) =
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -δ) (v := w) (by simpa using hδ)) := by
+  let xU : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ :=
+    dualProdTransvectionCliffordUnit (K := K) (W := W) δ w hδ
+  let s : spinGroup (QuadraticForm.dualProd K W) :=
+    dualProdTransvectionSpinOfCommonOrthogonalNormNegOne
+      (K := K) (W := W) δ w hδ c hc hac hbc
+  change spinSpecialOrthogonalRepresentationFiniteDimensional (Q := QuadraticForm.dualProd K W) s =
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+      (LinearEquiv.transvection (f := -δ) (v := w) (by simpa using hδ))
+  apply Subtype.ext
+  apply DFunLike.ext
+  intro z
+  apply cliffordIota_injective (Q := QuadraticForm.dualProd K W)
+  have hUnits : spinGroup.toUnits s = xU := by
+    ext
+    rfl
+  rw [coe_spinSpecialOrthogonalRepresentationFiniteDimensional]
+  rw [spinIsometryRepresentation_apply, spinIsometryEquiv_apply]
+  rw [spinLinearRepresentation_apply, spinLinearEquiv_ι]
+  rw [hUnits]
+  exact dualProdTransvectionCliffordUnit_conjAct_eq_transvection
+    (K := K) (W := W) (δ := δ) (w := w) hδ (d := z.1) (u := z.2)
+
+/-- A basis transvection Clifford unit is spin as soon as the basis has a third index different
+from the source and target indices of the transvection. -/
+theorem basisTransvectionCliffordUnit_mem_spinGroup_of_distinct_aux
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K)
+    {k : ι} (hki : k ≠ t.i) (hkj : k ≠ t.j) :
+    (((basisTransvectionCliffordUnit (K := K) (W := W) b t :
+        (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ) :
+      CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+        spinGroup (QuadraticForm.dualProd K W) := by
+  let c : Module.Dual K W × W := (-b.coord k, b k)
+  simpa [basisTransvectionCliffordUnit, c] using
+    (dualProdTransvectionCliffordUnit_mem_spinGroup_of_common_orthogonal_norm_neg_one
+      (K := K) (W := W)
+      (δ := -((t.c : K) • b.coord t.j)) (w := b t.i)
+      (hδ := by simp [Module.Basis.coord_apply, t.hij])
+      (c := c)
+      (by
+        change (-b.coord k) (b k) = -1
+        simp [Module.Basis.coord_apply])
+      (by
+        change
+          QuadraticMap.polar (QuadraticForm.dualProd K W)
+              (-((t.c : K) • b.coord t.j), 0) (-b.coord k, b k) = 0
+        simp [QuadraticMap.polar, QuadraticForm.dualProd, Module.Basis.coord_apply,
+          hkj, hkj.symm])
+      (by
+        change
+          QuadraticMap.polar (QuadraticForm.dualProd K W)
+              (0, b t.i) (-b.coord k, b k) = 0
+        simp [QuadraticMap.polar, QuadraticForm.dualProd, Module.Basis.coord_apply,
+          hki, hki.symm]))
+
+/-- Package a basis transvection Clifford unit as a spin element using a third basis index. -/
+noncomputable def basisTransvectionSpinOfDistinctAux
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K)
+    {k : ι} (hki : k ≠ t.i) (hkj : k ≠ t.j) :
+    spinGroup (QuadraticForm.dualProd K W) :=
+  ⟨(basisTransvectionCliffordUnit (K := K) (W := W) b t :
+      (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ),
+    basisTransvectionCliffordUnit_mem_spinGroup_of_distinct_aux
+      (K := K) (W := W) b t hki hkj⟩
+
+@[simp]
+theorem coe_basisTransvectionSpinOfDistinctAux
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K)
+    {k : ι} (hki : k ≠ t.i) (hkj : k ≠ t.j) :
+    ((basisTransvectionSpinOfDistinctAux (K := K) (W := W) b t hki hkj :
+      spinGroup (QuadraticForm.dualProd K W)) :
+      CliffordAlgebra (QuadraticForm.dualProd K W)) =
+      basisTransvectionCliffordUnit (K := K) (W := W) b t := rfl
+
+/-- The basis-transvection spin lift maps to the corresponding split-special-orthogonal Levi
+transvection. -/
+theorem spinSpecialOrthogonalRepresentation_basisTransvectionSpinOfDistinctAux
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K)
+    {k : ι} (hki : k ≠ t.i) (hkj : k ≠ t.j) :
+    spinSpecialOrthogonalRepresentationFiniteDimensional (Q := QuadraticForm.dualProd K W)
+        (basisTransvectionSpinOfDistinctAux (K := K) (W := W) b t hki hkj) =
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisTransvectionLinearEquiv (K := K) (W := W) b t) := by
+  let c : Module.Dual K W × W := (-b.coord k, b k)
+  simpa [basisTransvectionSpinOfDistinctAux, basisTransvectionCliffordUnit,
+    basisTransvectionLinearEquiv, c] using
+    (spinSpecialOrthogonalRepresentation_dualProdTransvectionSpinOfCommonOrthogonalNormNegOne
+      (K := K) (W := W)
+      (δ := -((t.c : K) • b.coord t.j)) (w := b t.i)
+      (hδ := by simp [Module.Basis.coord_apply, t.hij])
+      (c := c)
+      (by
+        change (-b.coord k) (b k) = -1
+        simp [Module.Basis.coord_apply])
+      (by
+        change
+          QuadraticMap.polar (QuadraticForm.dualProd K W)
+              (-((t.c : K) • b.coord t.j), 0) (-b.coord k, b k) = 0
+        simp [QuadraticMap.polar, QuadraticForm.dualProd, Module.Basis.coord_apply,
+          hkj, hkj.symm])
+      (by
+        change
+          QuadraticMap.polar (QuadraticForm.dualProd K W)
+              (0, b t.i) (-b.coord k, b k) = 0
+        simp [QuadraticMap.polar, QuadraticForm.dualProd, Module.Basis.coord_apply,
+          hki, hki.symm]))
+
+/-- In a finite type with more than two elements, there is an index different from any prescribed
+pair. -/
+theorem exists_ne_ne_of_two_lt_card {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (hcard : 2 < Fintype.card ι) (i j : ι) :
+    ∃ k : ι, k ≠ i ∧ k ≠ j := by
+  by_contra h
+  have hall : ∀ k : ι, k = i ∨ k = j := by
+    intro k
+    by_cases hki : k = i
+    · exact Or.inl hki
+    · by_cases hkj : k = j
+      · exact Or.inr hkj
+      · exfalso
+        exact h ⟨k, hki, hkj⟩
+  have hsubset : (Finset.univ : Finset ι) ⊆ {i, j} := by
+    intro k hk
+    rcases hall k with rfl | rfl
+    · simp
+    · simp
+  have hle : Fintype.card ι ≤ ({i, j} : Finset ι).card := by
+    simpa using Finset.card_le_card hsubset
+  have hpair : ({i, j} : Finset ι).card ≤ 2 := by
+    exact Finset.card_le_two
+  exact (Nat.not_lt_of_ge (le_trans hle hpair)) hcard
+
+/-- In split rank at least three, every basis transvection in the Levi copy of `GL(W)` lies in the
+spin image. -/
+theorem dualProdSpecialOrthogonalOf_basisTransvectionLinearEquiv_mem_spin_range_of_two_lt_card
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (hcard : 2 < Fintype.card ι)
+    (b : Module.Basis ι K W) (t : Matrix.TransvectionStruct ι K) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisTransvectionLinearEquiv (K := K) (W := W) b t) ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  rcases exists_ne_ne_of_two_lt_card hcard t.i t.j with ⟨k, hki, hkj⟩
+  refine ⟨basisTransvectionSpinOfDistinctAux (K := K) (W := W) b t hki hkj, ?_⟩
+  exact spinSpecialOrthogonalRepresentation_basisTransvectionSpinOfDistinctAux
+    (K := K) (W := W) b t hki hkj
+
+/-- In split rank at least three, transvections supported on two basis lines lie in the spin
+image. This form is convenient for the four-transvection diagonal block factorization. -/
+theorem dualProdSpecialOrthogonalOf_basisCoordTransvection_mem_spin_range_of_two_lt_card
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (hcard : 2 < Fintype.card ι)
+    (b : Module.Basis ι K W) {i j : ι} (hij : i ≠ j) (c : K) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (LinearEquiv.transvection (f := -(b.coord j)) (v := c • b i)
+          (by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij])) ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  rcases exists_ne_ne_of_two_lt_card hcard i j with ⟨k, hki, hkj⟩
+  let aux : Module.Dual K W × W := (-b.coord k, b k)
+  refine
+    ⟨dualProdTransvectionSpinOfCommonOrthogonalNormNegOne
+      (K := K) (W := W) (δ := b.coord j) (w := c • b i)
+      (hδ := by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij])
+      (c := aux)
+      (by
+        change (-b.coord k) (b k) = -1
+        simp [Module.Basis.coord_apply])
+      (by
+        change
+          QuadraticMap.polar (QuadraticForm.dualProd K W)
+              (b.coord j, 0) (-b.coord k, b k) = 0
+        simp [QuadraticMap.polar, QuadraticForm.dualProd, Module.Basis.coord_apply,
+          hkj, hkj.symm])
+      (by
+        change
+          QuadraticMap.polar (QuadraticForm.dualProd K W)
+              (0, c • b i) (-b.coord k, b k) = 0
+        simp [QuadraticMap.polar, QuadraticForm.dualProd, Module.Basis.coord_apply,
+          hki, hki.symm]),
+      ?_⟩
+  simpa [aux] using
+    (spinSpecialOrthogonalRepresentation_dualProdTransvectionSpinOfCommonOrthogonalNormNegOne
+      (K := K) (W := W) (δ := b.coord j) (w := c • b i)
+      (hδ := by simp [Module.Basis.coord_apply, Module.Basis.repr_self_apply, hij])
+      (c := aux)
+      (by
+        change (-b.coord k) (b k) = -1
+        simp [Module.Basis.coord_apply])
+      (by
+        change
+          QuadraticMap.polar (QuadraticForm.dualProd K W)
+              (b.coord j, 0) (-b.coord k, b k) = 0
+        simp [QuadraticMap.polar, QuadraticForm.dualProd, Module.Basis.coord_apply,
+          hkj, hkj.symm])
+      (by
+        change
+          QuadraticMap.polar (QuadraticForm.dualProd K W)
+              (0, c • b i) (-b.coord k, b k) = 0
+        simp [QuadraticMap.polar, QuadraticForm.dualProd, Module.Basis.coord_apply,
+          hki, hki.symm]))
+
+/-- Products of basis transvections in split rank at least three lie in the spin image. -/
+theorem dualProdSpecialOrthogonalOf_list_basisTransvectionLinearEquiv_prod_mem_spin_range_of_two_lt_card
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (hcard : 2 < Fintype.card ι)
+    (b : Module.Basis ι K W) (L : List (Matrix.TransvectionStruct ι K)) :
+    (L.map (fun t =>
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisTransvectionLinearEquiv (K := K) (W := W) b t))).prod ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  induction L with
+  | nil =>
+      simp
+  | cons t L ih =>
+      simp only [List.map_cons, List.prod_cons]
+      exact Subgroup.mul_mem _
+        (dualProdSpecialOrthogonalOf_basisTransvectionLinearEquiv_mem_spin_range_of_two_lt_card
+          (K := K) (W := W) hcard b t)
+        ih
+
+/-- In split rank at least three, the canonical determinant-one two-line basis scaling block lies in
+the spin image. -/
+theorem dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_two_update_mem_spin_range_of_two_lt_card
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (hcard : 2 < Fintype.card ι)
+    (b : Module.Basis ι K W) {i j : ι} (hij : i ≠ j) (a : Kˣ) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisScalingLinearEquiv (K := K) (W := W) b
+          (Function.update (Function.update (fun _ => (1 : Kˣ)) i a) j a⁻¹)) ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  rw [dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_two_update_eq_transvection_four
+    (K := K) (W := W) (b := b) (i := i) (j := j) hij a]
+  exact Subgroup.mul_mem _
+    (Subgroup.mul_mem _
+      (Subgroup.mul_mem _
+        (dualProdSpecialOrthogonalOf_basisCoordTransvection_mem_spin_range_of_two_lt_card
+          (K := K) (W := W) hcard b hij ((1 : K) - (a : K)))
+        (dualProdSpecialOrthogonalOf_basisCoordTransvection_mem_spin_range_of_two_lt_card
+          (K := K) (W := W) hcard b hij.symm (-1 : K)))
+      (dualProdSpecialOrthogonalOf_basisCoordTransvection_mem_spin_range_of_two_lt_card
+        (K := K) (W := W) hcard b hij ((1 : K) - (a : K)⁻¹)))
+    (dualProdSpecialOrthogonalOf_basisCoordTransvection_mem_spin_range_of_two_lt_card
+      (K := K) (W := W) hcard b hij.symm (a : K))
+
+/-- A square-determinant basis scaling in split rank at least three lies in the spin image. -/
+theorem dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_mem_spin_range_of_prod_eq_sq_of_two_lt_card
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (hcard : 2 < Fintype.card ι)
+    (b : Module.Basis ι K W) (i : ι) (t : ι → Kˣ) (u : Kˣ)
+    (hprod : (∏ j, t j) = u ^ 2) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+        (basisScalingLinearEquiv (K := K) (W := W) b t) ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  rw [dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_eq_lineScalingLinearEquiv_mul_noncommProd_two_update_of_prod_eq_sq
+    (K := K) (W := W) (b := b) (i := i) (t := t) (u := u) hprod]
+  exact Subgroup.mul_mem _
+    (dualProdSpecialOrthogonalOf_lineScalingLinearEquiv_sq_mem_range
+      (K := K) (W := W) (f := b.coord i) (w := b i)
+      (by simp [Module.Basis.coord_apply]) u)
+    (Finset.noncommProd_induction (s := Finset.univ.erase i)
+      (f := fun j =>
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K)
+          (basisScalingLinearEquiv (K := K) (W := W) b
+            (Function.update (Function.update (1 : ι → Kˣ) j (t j)) i (t j)⁻¹)))
+      (comm := by
+        intro j hj k hk hjk
+        exact
+          (basisScalingLinearEquiv_two_update_pairwise
+            (K := K) (W := W) (b := b) (i := i) (t := t) hj hk hjk).map
+            (dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W)))
+      (p := fun y =>
+        y ∈ MonoidHom.range
+          (spinSpecialOrthogonalRepresentationFiniteDimensional
+            (Q := QuadraticForm.dualProd K W)))
+      (fun _ _ hx hy => Subgroup.mul_mem _ hx hy)
+      (by simp)
+      (fun j hj =>
+        dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_two_update_mem_spin_range_of_two_lt_card
+          (K := K) (W := W) hcard b (i := j) (j := i) (Finset.mem_erase.mp hj).1
+          (t j)))
+
+/-- In split rank at least three, any Levi element with square determinant lies in the spin image. -/
+theorem dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_det_eq_sq_of_two_lt_card
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (hcard : 2 < Fintype.card ι)
+    (b : Module.Basis ι K W) (i : ι) (e : W ≃ₗ[K] W) (u : Kˣ)
+    (hdet : LinearEquiv.det e = u ^ 2) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K) e ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  rcases
+      dualProdSpecialOrthogonalOfLinearEquiv_eq_list_basisTransvection_mul_basisScalingLinearEquiv_mul_list_basisTransvection_of_det_eq_sq
+        (K := K) (W := W) (b := b) (e := e) (u := u) hdet with
+    ⟨L, L', t, htprod, he⟩
+  rw [he]
+  exact Subgroup.mul_mem _
+    (Subgroup.mul_mem _
+      (dualProdSpecialOrthogonalOf_list_basisTransvectionLinearEquiv_prod_mem_spin_range_of_two_lt_card
+        (K := K) (W := W) hcard b L)
+      (dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_mem_spin_range_of_prod_eq_sq_of_two_lt_card
+        (K := K) (W := W) hcard b i t u htprod))
+    (dualProdSpecialOrthogonalOf_list_basisTransvectionLinearEquiv_prod_mem_spin_range_of_two_lt_card
+      (K := K) (W := W) hcard b L')
+
+/-- In split rank at least three, every determinant-one Levi element lies in the spin image. -/
+theorem dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_det_eq_one_of_two_lt_card
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (hcard : 2 < Fintype.card ι)
+    (b : Module.Basis ι K W) (i : ι) (e : W ≃ₗ[K] W)
+    (hdet : LinearEquiv.det e = 1) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K) e ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  simpa [hdet] using
+    (dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_det_eq_sq_of_two_lt_card
+      (K := K) (W := W) hcard b i e (1 : Kˣ) (by simpa [hdet]))
+
+/-- If every unit is a square, then every higher-rank Levi element lies in the spin image in split
+rank at least three. -/
+theorem dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_square_surjective_of_two_lt_card
+    {K W ι : Type*} [Field K] [AddCommGroup W] [Module K W] [Invertible (2 : K)]
+    [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (hsq : Function.Surjective (powMonoidHom (α := Kˣ) 2))
+    (hcard : 2 < Fintype.card ι)
+    (b : Module.Basis ι K W) (i : ι) (e : W ≃ₗ[K] W) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K) e ∈
+      MonoidHom.range
+        (spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W)) := by
+  rcases hsq (LinearEquiv.det e) with ⟨u, hu⟩
+  exact
+    dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_det_eq_sq_of_two_lt_card
+      (K := K) (W := W) hcard b i e u hu.symm
+
 /-- If the quadratic form represents `-1` and `-1 ≠ 1`, the spin representation cannot factor
 through the ambient isometry representation. -/
 theorem spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one

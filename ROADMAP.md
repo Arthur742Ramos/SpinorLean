@@ -302,14 +302,14 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.dualProdSpecialOrthogonalOf_basisScalingLinearEquiv_eq_lineScalingLinearEquiv_mul_noncommProd_two_update_of_prod_eq_sq`,
     splitting any basis scaling with square total determinant into one square line scaling times the
     determinant-one diagonal factorization
-  - [x] package the full higher-rank square-determinant Levi factorization via
+  - [x] package the full finite-basis square-determinant Levi factorization via
     `Spinor.linearEquiv_eq_list_basisTransvection_mul_basisScalingLinearEquiv_mul_list_basisTransvection_of_det_eq_sq`,
     `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_eq_list_basisTransvection_mul_basisScalingLinearEquiv_mul_list_basisTransvection_of_det_eq_sq`,
     and
     `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_eq_list_basisTransvection_mul_lineScalingLinearEquiv_mul_noncommProd_two_update_mul_list_basisTransvection_of_det_eq_sq`,
     expressing any square-determinant Levi element as basis transvections together with one
     chosen-line square scaling and the canonical determinant-one `2 \times 2` diagonal blocks
-  - [x] package the corresponding higher-rank chosen-model lift via
+  - [x] package the corresponding finite-basis chosen-model lift via
     `Spinor.exists_list_prod_basisTransvectionCliffordUnit_eq_exteriorMap_prod`,
     `Spinor.exists_basisScalingLinearEquivCliffordUnit_eq_exteriorMap_of_prod_eq_one`,
     `Spinor.exists_basisScalingLinearEquivCliffordUnit_eq_smul_exteriorMap_of_prod_eq_sq`,
@@ -342,13 +342,24 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - unconditional surjectivity now requires a different generator theorem or additional field
     hypotheses; the packaged covering theorem is intentionally left conditional on the closure
     hypothesis above
+  - [x] strengthen square-determinant Levi sufficiency from split rank at least 3 to arbitrary
+    finite basis with a distinguished line via
+    `Spinor.dualProdSpecialOrthogonalOf_basisTransvectionLinearEquiv_mem_spin_range`,
+    `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_det_eq_sq`, and
+    `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_square_surjective`
+  - [x] prove the reverse determinant-square necessity and exact finite-basis split-Levi
+    spin-image iff via the top exterior pairing/star-normalization package:
+    `Spinor.topExteriorPairing_splitCliffordAction_reverse_left`,
+    `Spinor.splitCliffordAction_topExteriorCoeff_pairing_of_units_smul_exteriorMap`,
+    `Spinor.exists_det_eq_sq_of_spinSpecialOrthogonalRepresentation_eq`, and
+    `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_iff_exists_det_eq_sq`
   - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
   - done on the ambient API by
     `Spinor.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one`, extending the earlier
     split/hyperbolic chosen-model theorem `splitSpinorCoveringKernel_eq_one_or_neg_one`
-  - the remaining open part of the covering-map package is an unrestricted higher-rank exact image
-    theorem beyond the fully analyzed split-line iff criterion
+  - the remaining open image-classification work is now outside the finite-basis Levi subgroup:
+    broaden the exact criterion to larger orthogonal subgroups or spinor-norm formulations
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
     `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`
@@ -365,8 +376,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 
 ### 5.1 Paper Writing
 - submission-ready paper package now lives at `paper/` (`main.tex`, `refs.bib`, `README.md`) with
-  venue-neutral prose tied to the current theorem package; broad Bott-periodicity and
-  unrestricted higher-rank image theorems are framed as future extensions rather than claims
+  venue-neutral prose tied to the current theorem package; broad Bott-periodicity and full
+  all-orthogonal-group image classifications are framed as future extensions rather than claims
 - [x] Introduction: why spinors matter, why formalization is novel
 - [x] Related work: lean-ga, Mathlib Clifford, what's missing
 - [x] Formalization architecture

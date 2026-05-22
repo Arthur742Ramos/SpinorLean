@@ -1090,6 +1090,227 @@ theorem splitCliffordAction_apply_one_and_topExteriorGenerator_of
             ExteriorAlgebra.topExteriorGenerator (K := K) (M := W) := by
               simpa [Units.smul_def, smul_smul, mul_comm]
 
+/-- Applying the basis-fixed top exterior coefficient to the previous theorem records the
+determinant factor as an equality in the base field. This is a first formal invariant toward the
+reverse square-determinant direction for Levi spin-image elements. -/
+theorem splitCliffordAction_topExteriorCoeff_of_spinSpecialOrthogonalRepresentation_eq
+    {W : Submodule K V} [FiniteDimensional K W]
+    (s : spinGroup (QuadraticForm.dualProd K W)) (g : W ≃ₗ[K] W)
+    (hs : spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W) s =
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K) g) :
+    ∃ c : K,
+      splitCliffordAction (K := K) W (s : CliffordAlgebra (QuadraticForm.dualProd K W)) 1 =
+        c • (1 : IsotropicExteriorModel (K := K) W) ∧
+      ExteriorAlgebra.topExteriorCoeff (K := K) (M := W)
+        (splitCliffordAction (K := K) W (s : CliffordAlgebra (QuadraticForm.dualProd K W))
+          (ExteriorAlgebra.topExteriorGenerator (K := K) (M := W))) =
+        c * ↑(LinearEquiv.det g) := by
+  obtain ⟨c, hbot, htop⟩ :=
+    splitCliffordAction_apply_one_and_topExteriorGenerator_of
+      (K := K) (V := V) s g hs
+  refine ⟨c, hbot, ?_⟩
+  rw [htop]
+  simp [Units.smul_def]
+
+/-- The spin-unitarity identity `star s * s = 1`, transported through the top exterior pairing,
+normalizes the bottom/top scalar product for any Levi lift. This discharges the pairing
+hypothesis used by the reverse square-determinant theorem below. -/
+theorem splitCliffordAction_topExteriorCoeff_pairing_of_units_smul_exteriorMap
+    {W : Submodule K V} [FiniteDimensional K W]
+    (s : spinGroup (QuadraticForm.dualProd K W)) (g : W ≃ₗ[K] W) (c : Kˣ)
+    (hc :
+      splitCliffordAction (K := K) W
+          (s : CliffordAlgebra (QuadraticForm.dualProd K W)) =
+        (c : K) • (ExteriorAlgebra.map (g : W →ₗ[K] W)).toLinearMap) :
+    (c : K) *
+      ExteriorAlgebra.topExteriorCoeff (K := K) (M := W)
+        (splitCliffordAction (K := K) W
+          (s : CliffordAlgebra (QuadraticForm.dualProd K W))
+          (ExteriorAlgebra.topExteriorGenerator (K := K) (M := W))) =
+      1 := by
+  let Qd : QuadraticForm K (Module.Dual K W × W) := QuadraticForm.dualProd K W
+  let ρ := splitCliffordAction (K := K) W
+  let top := ExteriorAlgebra.topExteriorGenerator (K := K) (M := W)
+  have hstar_reverse :
+      star (s : CliffordAlgebra Qd) =
+        CliffordAlgebra.reverse (Q := Qd) (s : CliffordAlgebra Qd) := by
+    rw [CliffordAlgebra.star_def, spinGroup.involute_eq s.prop]
+  have hreverse_mul :
+      CliffordAlgebra.reverse (Q := Qd) (s : CliffordAlgebra Qd) *
+          (s : CliffordAlgebra Qd) =
+        1 := by
+    rw [← hstar_reverse]
+    exact spinGroup.coe_star_mul_self s
+  have hunit_action :
+      ρ (CliffordAlgebra.reverse (Q := Qd) (s : CliffordAlgebra Qd))
+          (ρ (s : CliffordAlgebra Qd) (1 : IsotropicExteriorModel (K := K) W)) =
+        (1 : IsotropicExteriorModel (K := K) W) := by
+    calc
+      ρ (CliffordAlgebra.reverse (Q := Qd) (s : CliffordAlgebra Qd))
+          (ρ (s : CliffordAlgebra Qd) (1 : IsotropicExteriorModel (K := K) W)) =
+          ρ (CliffordAlgebra.reverse (Q := Qd) (s : CliffordAlgebra Qd) *
+              (s : CliffordAlgebra Qd)) (1 : IsotropicExteriorModel (K := K) W) := by
+            simp [ρ, map_mul]
+      _ = 1 := by
+            rw [hreverse_mul]
+            simp [ρ]
+  have hpair_unit :
+      ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+          (ρ (s : CliffordAlgebra Qd) (1 : IsotropicExteriorModel (K := K) W))
+          (ρ (s : CliffordAlgebra Qd) top) =
+        1 := by
+    calc
+      ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+          (ρ (s : CliffordAlgebra Qd) (1 : IsotropicExteriorModel (K := K) W))
+          (ρ (s : CliffordAlgebra Qd) top) =
+        ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+          (ρ (CliffordAlgebra.reverse (Q := Qd) (s : CliffordAlgebra Qd))
+            (ρ (s : CliffordAlgebra Qd) (1 : IsotropicExteriorModel (K := K) W)))
+          top := by
+            simpa [ρ] using
+              (topExteriorPairing_splitCliffordAction_reverse_left
+                (K := K) (W := W) (a := (s : CliffordAlgebra Qd))
+                (x := ρ (s : CliffordAlgebra Qd)
+                  (1 : IsotropicExteriorModel (K := K) W)) (y := top)).symm
+      _ = 1 := by
+            rw [hunit_action]
+            simp [top, ExteriorAlgebra.topExteriorPairing]
+  have hbottom :
+      ρ (s : CliffordAlgebra Qd) (1 : IsotropicExteriorModel (K := K) W) =
+        (c : K) • (1 : IsotropicExteriorModel (K := K) W) := by
+    have h := congrArg
+      (fun f : Module.End K (IsotropicExteriorModel (K := K) W) =>
+        f (1 : IsotropicExteriorModel (K := K) W)) hc
+    simpa [ρ, LinearMap.smul_apply] using h
+  calc
+    (c : K) *
+      ExteriorAlgebra.topExteriorCoeff (K := K) (M := W)
+        (splitCliffordAction (K := K) W
+          (s : CliffordAlgebra (QuadraticForm.dualProd K W))
+          (ExteriorAlgebra.topExteriorGenerator (K := K) (M := W))) =
+        ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+          ((c : K) • (1 : IsotropicExteriorModel (K := K) W))
+          (ρ (s : CliffordAlgebra Qd) top) := by
+          symm
+          calc
+            ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+                ((c : K) • (1 : IsotropicExteriorModel (K := K) W))
+                (ρ (s : CliffordAlgebra Qd) top) =
+              (c : K) * ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+                (1 : IsotropicExteriorModel (K := K) W) (ρ (s : CliffordAlgebra Qd) top) := by
+                  simp
+            _ =
+              (c : K) *
+                ExteriorAlgebra.topExteriorCoeff (K := K) (M := W)
+                  (splitCliffordAction (K := K) W
+                    (s : CliffordAlgebra (QuadraticForm.dualProd K W))
+                    (ExteriorAlgebra.topExteriorGenerator (K := K) (M := W))) := by
+                  simp [ExteriorAlgebra.topExteriorPairing, ρ, top]
+    _ = ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+          (ρ (s : CliffordAlgebra Qd) (1 : IsotropicExteriorModel (K := K) W))
+          (ρ (s : CliffordAlgebra Qd) top) := by
+          rw [hbottom]
+    _ = 1 := hpair_unit
+
+/-- A precise reduction of the reverse square-determinant direction to the missing
+top-pairing/star normalization. The hypothesis says that the scalar on the bottom exterior line
+and the top coefficient of the top exterior line multiply to `1`; under that invariant, the
+determinant of the Levi element is forced to be a square. -/
+theorem exists_det_eq_sq_of_spinSpecialOrthogonalRepresentation_eq_of_topExteriorCoeff_pairing
+    {W : Submodule K V} [FiniteDimensional K W]
+    (s : spinGroup (QuadraticForm.dualProd K W)) (g : W ≃ₗ[K] W)
+    (hs : spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W) s =
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K) g)
+    (hpair :
+      ∀ c : Kˣ,
+        splitCliffordAction (K := K) W
+            (s : CliffordAlgebra (QuadraticForm.dualProd K W)) =
+          (c : K) • (ExteriorAlgebra.map (g : W →ₗ[K] W)).toLinearMap →
+        (c : K) *
+          ExteriorAlgebra.topExteriorCoeff (K := K) (M := W)
+            (splitCliffordAction (K := K) W
+              (s : CliffordAlgebra (QuadraticForm.dualProd K W))
+              (ExteriorAlgebra.topExteriorGenerator (K := K) (M := W))) =
+          1) :
+    ∃ u : Kˣ, LinearEquiv.det g = u ^ 2 := by
+  obtain ⟨c, hc⟩ :=
+    splitCliffordAction_eq_units_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq
+      (K := K) (V := V) s g hs
+  have htop :
+      ExteriorAlgebra.topExteriorCoeff (K := K) (M := W)
+        (splitCliffordAction (K := K) W
+          (s : CliffordAlgebra (QuadraticForm.dualProd K W))
+          (ExteriorAlgebra.topExteriorGenerator (K := K) (M := W))) =
+        (c : K) * ↑(LinearEquiv.det g) := by
+    calc
+      ExteriorAlgebra.topExteriorCoeff (K := K) (M := W)
+          (splitCliffordAction (K := K) W
+            (s : CliffordAlgebra (QuadraticForm.dualProd K W))
+            (ExteriorAlgebra.topExteriorGenerator (K := K) (M := W))) =
+          ExteriorAlgebra.topExteriorCoeff (K := K) (M := W)
+            (((c : K) • (ExteriorAlgebra.map (g : W →ₗ[K] W)).toLinearMap)
+              (ExteriorAlgebra.topExteriorGenerator (K := K) (M := W))) := by
+            rw [hc]
+      _ = (c : K) *
+          ExteriorAlgebra.topExteriorCoeff (K := K) (M := W)
+            (ExteriorAlgebra.map (g : W →ₗ[K] W)
+              (ExteriorAlgebra.topExteriorGenerator (K := K) (M := W))) := by
+            simp [LinearMap.smul_apply]
+      _ = (c : K) * ↑(LinearEquiv.det g) := by
+            rw [ExteriorAlgebra.topExteriorCoeff_map_topExteriorGenerator]
+  have hnorm := hpair c hc
+  rw [htop] at hnorm
+  refine ⟨c⁻¹, ?_⟩
+  apply Units.ext
+  have hdet :
+      ((LinearEquiv.det g : Kˣ) : K) = ((c⁻¹ ^ 2 : Kˣ) : K) := by
+    have hc_ne : (c : K) ≠ 0 := c.ne_zero
+    have hnorm' : (c : K) ^ 2 * ((LinearEquiv.det g : Kˣ) : K) = 1 := by
+      simpa [pow_two, mul_assoc] using hnorm
+    calc
+      ((LinearEquiv.det g : Kˣ) : K) =
+          1 / ((c : K) ^ 2) := by
+            rw [eq_div_iff (pow_ne_zero 2 hc_ne)]
+            simpa [mul_comm] using hnorm'
+      _ = ((c⁻¹ ^ 2 : Kˣ) : K) := by
+            simp [pow_two]
+  exact hdet
+
+/-- For any spin lift of a split Levi element, the Levi determinant is a square. -/
+theorem exists_det_eq_sq_of_spinSpecialOrthogonalRepresentation_eq
+    {W : Submodule K V} [FiniteDimensional K W]
+    (s : spinGroup (QuadraticForm.dualProd K W)) (g : W ≃ₗ[K] W)
+    (hs : spinSpecialOrthogonalRepresentationFiniteDimensional
+          (Q := QuadraticForm.dualProd K W) s =
+        dualProdSpecialOrthogonalOfLinearEquiv (K := K) g) :
+    ∃ u : Kˣ, LinearEquiv.det g = u ^ 2 :=
+  exists_det_eq_sq_of_spinSpecialOrthogonalRepresentation_eq_of_topExteriorCoeff_pairing
+    (K := K) (V := V) s g hs
+    (fun c hc =>
+      splitCliffordAction_topExteriorCoeff_pairing_of_units_smul_exteriorMap
+        (K := K) (V := V) s g c hc)
+
+/-- A split Levi element lies in the spin image exactly when its determinant is a square. -/
+theorem dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_iff_exists_det_eq_sq
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) (g : W ≃ₗ[K] W) :
+    dualProdSpecialOrthogonalOfLinearEquiv (K := K) g ∈
+        MonoidHom.range
+          (spinSpecialOrthogonalRepresentationFiniteDimensional
+            (Q := QuadraticForm.dualProd K W)) ↔
+      ∃ u : Kˣ, LinearEquiv.det g = u ^ 2 := by
+  constructor
+  · intro h
+    rcases h with ⟨s, hs⟩
+    exact exists_det_eq_sq_of_spinSpecialOrthogonalRepresentation_eq
+      (K := K) (V := V) (W := W) s g hs
+  · rintro ⟨u, hdet⟩
+    exact dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_det_eq_sq
+      (K := K) (W := W) b i g u hdet
+
 omit [FiniteDimensional K V] in
 /-- The explicit hyperbolic transvection Clifford unit acts exactly as the corresponding linear
 transvection on the split exterior model. -/
@@ -1834,6 +2055,32 @@ theorem exists_linearEquivCliffordUnit_eq_smul_exteriorMap_of_det_eq_sq
     have he' : ((eL * eM) * eR : W ≃ₗ[K] W) = e := by
       simpa [eL, eM, eR, mul_assoc] using he.symm
     simpa [he', mul_assoc] using hxLMR
+
+/-- If every unit of the base field is a square, then every higher-rank Levi automorphism admits
+an explicit even unitary Clifford lift whose split action is a normalized exterior action. This
+removes the square-determinant hypothesis from
+`exists_linearEquivCliffordUnit_eq_smul_exteriorMap_of_det_eq_sq`, while still staying at the
+chosen Clifford-unit level rather than asserting membership in the ambient spin image. -/
+theorem exists_linearEquivCliffordUnit_eq_smul_exteriorMap_of_square_surjective
+    {ι : Type*} {W : Submodule K V} [FiniteDimensional K W] [Fintype ι] [DecidableEq ι]
+    (hsq : Function.Surjective (powMonoidHom (α := Kˣ) 2))
+    (b : Module.Basis ι K W) (i : ι) (e : W ≃ₗ[K] W) :
+    ∃ (u : Kˣ) (x : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ),
+      LinearEquiv.det e = u ^ 2 ∧
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          unitary (CliffordAlgebra (QuadraticForm.dualProd K W)) ∧
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          CliffordAlgebra.even (QuadraticForm.dualProd K W) ∧
+      splitCliffordAction (K := K) W
+          (x : CliffordAlgebra (QuadraticForm.dualProd K W)) =
+        (-(1 / (u : K) : K)) •
+          (ExteriorAlgebra.map ((e : W →ₗ[K] W))).toLinearMap := by
+  rcases hsq (LinearEquiv.det e) with ⟨u, hu⟩
+  rcases
+      exists_linearEquivCliffordUnit_eq_smul_exteriorMap_of_det_eq_sq
+        (K := K) (V := V) (W := W) (b := b) (i := i) (e := e) (u := u) hu.symm with
+    ⟨x, hx_unitary, hx_even, hx_action⟩
+  exact ⟨u, x, hu.symm, hx_unitary, hx_even, hx_action⟩
 
 end SplitTransport
 
