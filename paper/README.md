@@ -39,17 +39,19 @@ Per `ROADMAP.md` §5.3, the intended submission targets are:
 
 ## Status
 
-This is a **submission-ready manuscript and artifact package for the current
-formalized theorem package**. The paper contains the introduction, related-work
-context, architecture, results, proof-highlight, limitations/future-work scope,
-keywords/MSC metadata, reproducibility instructions, and companion theorem index
-tied to the current Lean files and theorem names.
+This is a **submission-ready manuscript and artifact package for the exact
+finite-basis split-Levi theorem package**. The paper contains the introduction,
+related-work context, architecture, results, proof highlights, precise formal
+result boundary, keywords/MSC metadata, reproducibility instructions, and
+companion theorem index tied to the current Lean files and theorem names.
 
-The scope is explicit: the submitted theorem package covers the chosen-model
-spinor construction, split-rank kernel/non-descent, Levi-projective action,
-square-determinant Levi lifts, and the exact split-line image / double-cover
-criterion. The full Bott-period-8 table and unrestricted higher-rank image
-theorem are future extensions, not claims of this manuscript.
+The formal result boundary is explicit: the submitted theorem package covers the
+chosen-model spinor construction, split-rank kernel/non-descent,
+Levi-projective action, square-determinant Levi lifts, the determinant-square
+necessity theorem, the exact finite-basis split-Levi spin-image iff criterion,
+and the exact split-line image / double-cover criterion. The full Bott-period-8
+table and a full all-orthogonal-group image classification are separate
+projects, not dependencies in the claimed theorem package.
 
 ## Final preflight
 

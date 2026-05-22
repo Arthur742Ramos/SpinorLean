@@ -91,6 +91,112 @@ theorem finrank_eq_two_pow :
 noncomputable abbrev topExteriorGenerator : ExteriorAlgebra K M :=
   ιMulti K (Module.finrank K M) (Module.finBasis K M)
 
+/-- The coefficient of the canonical top exterior basis vector. This basis-fixed functional is the
+starting point for the top-degree pairing needed to compare Clifford `star` with adjoints on the
+chosen exterior model. -/
+noncomputable def topExteriorCoeff :
+    ExteriorAlgebra K M →ₗ[K] K :=
+  (Finsupp.lapply (Finset.univ : Finset (Fin (Module.finrank K M)))).comp
+    (Module.finBasis K M).ExteriorAlgebra.repr.toLinearMap
+
+@[simp]
+theorem topExteriorCoeff_finBasis_univ :
+    topExteriorCoeff (K := K) (M := M)
+        ((Module.finBasis K M).ExteriorAlgebra
+          (Finset.univ : Finset (Fin (Module.finrank K M)))) = 1 := by
+  simp [topExteriorCoeff]
+
+@[simp]
+theorem topExteriorCoeff_finBasis_ne_univ
+    {s : Finset (Fin (Module.finrank K M))}
+    (hs : s ≠ Finset.univ) :
+    topExteriorCoeff (K := K) (M := M)
+        ((Module.finBasis K M).ExteriorAlgebra s) = 0 := by
+  simp [topExteriorCoeff, hs]
+
+theorem topExteriorCoeff_eq_zero_of_mem_exteriorPower_ne
+    {m : ℕ} (hm : m ≠ Module.finrank K M)
+    {x : ExteriorAlgebra K M} (hx : x ∈ ⋀[K]^m M) :
+    topExteriorCoeff (K := K) (M := M) x = 0 := by
+  let b := Module.finBasis K M
+  let F : ↥(⋀[K]^m M) →ₗ[K] K :=
+    (topExteriorCoeff (K := K) (M := M)).comp (Submodule.subtype (⋀[K]^m M))
+  have hF : F = 0 := by
+    refine (b.exteriorPower m).ext fun s => ?_
+    change topExteriorCoeff (K := K) (M := M)
+        (((b.exteriorPower m) s : ↥(⋀[K]^m M)) : ExteriorAlgebra K M) = 0
+    rw [← ExteriorAlgebra.basis_eq_coe_basis]
+    apply topExteriorCoeff_finBasis_ne_univ
+    intro hs
+    apply hm
+    calc
+      m = s.val.card := s.property.symm
+      _ = (Finset.univ : Finset (Fin (Module.finrank K M))).card := by rw [hs]
+      _ = Module.finrank K M := by simp
+
+  simpa [F] using congrArg (fun f : ↥(⋀[K]^m M) →ₗ[K] K => f ⟨x, hx⟩) hF
+
+@[simp]
+theorem topExteriorCoeff_topExteriorGenerator :
+    topExteriorCoeff (K := K) (M := M) (topExteriorGenerator (K := K) (M := M)) = 1 := by
+  let b := Module.finBasis K M
+  let s : Set.powersetCard (Fin (Module.finrank K M)) (Module.finrank K M) :=
+    Set.powersetCard.ofCard
+      (s := (Finset.univ : Finset (Fin (Module.finrank K M)))) (by simp)
+  have hs :
+      Set.powersetCard.ofFinEmbEquiv.symm s =
+        (OrderIso.refl (Fin (Module.finrank K M))).toOrderEmbedding := by
+    dsimp [s]
+    rw [Set.powersetCard.ofFinEmbEquiv_symm_apply]
+    symm
+    apply Finset.orderEmbOfFin_unique'
+    intro i
+    simp
+  have htop :
+      topExteriorGenerator (K := K) (M := M) =
+        b.ExteriorAlgebra (Finset.univ : Finset (Fin (Module.finrank K M))) := by
+    rw [topExteriorGenerator]
+    rw [ExteriorAlgebra.basis_apply_ofCard
+      (R := K) (n := Module.finrank K M) (b := b)
+      (s := (Finset.univ : Finset (Fin (Module.finrank K M)))) (by simp)]
+    simp [ExteriorAlgebra.ιMulti_family, s, hs, b]
+  rw [htop]
+  simp [topExteriorCoeff, b]
+
+/-- The basis-fixed top exterior pairing `⟨x,y⟩ = [top](reverse x * y)`. This is the
+chosen-model pairing used to compare Clifford reversion with adjoints on `⋀M`. -/
+noncomputable def topExteriorPairing :
+    ExteriorAlgebra K M →ₗ[K] ExteriorAlgebra K M →ₗ[K] K where
+  toFun x :=
+    { toFun := fun y =>
+        topExteriorCoeff (K := K) (M := M)
+          (CliffordAlgebra.reverse (Q := (0 : QuadraticForm K M)) x * y)
+      map_add' := by
+        intro y z
+        simp [mul_add]
+      map_smul' := by
+        intro r y
+        simp [mul_smul_comm] }
+  map_add' := by
+    intro x z
+    ext y
+    simp [map_add, add_mul]
+  map_smul' := by
+    intro r x
+    ext y
+    simp [map_smul, smul_mul_assoc]
+
+@[simp]
+theorem topExteriorPairing_apply (x y : ExteriorAlgebra K M) :
+    topExteriorPairing (K := K) (M := M) x y =
+      topExteriorCoeff (K := K) (M := M)
+        (CliffordAlgebra.reverse (Q := (0 : QuadraticForm K M)) x * y) := rfl
+
+@[simp]
+theorem topExteriorPairing_one_topExteriorGenerator :
+    topExteriorPairing (K := K) (M := M) 1 (topExteriorGenerator (K := K) (M := M)) = 1 := by
+  simp [topExteriorPairing]
+
 /-- The exterior action of a linear automorphism on the top exterior line is multiplication by its
 determinant. -/
 theorem map_topExteriorGenerator (f : M ≃ₗ[K] M) :
@@ -115,6 +221,14 @@ theorem map_topExteriorGenerator (f : M ≃ₗ[K] M) :
       _ = ↑(LinearEquiv.det f) := by rw [← LinearEquiv.coe_det]
   rw [hdet] at h'
   simpa [← LinearEquiv.coe_det] using h'
+
+@[simp]
+theorem topExteriorCoeff_map_topExteriorGenerator (f : M ≃ₗ[K] M) :
+    topExteriorCoeff (K := K) (M := M)
+        (map (f : M →ₗ[K] M) (topExteriorGenerator (K := K) (M := M))) =
+      ↑(LinearEquiv.det f) := by
+  rw [map_topExteriorGenerator]
+  simp [Units.smul_def, LinearEquiv.coe_det]
 
 end ExteriorAlgebra
 
@@ -153,6 +267,14 @@ theorem wedgeAction_apply (W : Submodule K V) (w : W) (x : IsotropicExteriorMode
 theorem wedgeAction_sq_apply (W : Submodule K V) (w : W) (x : IsotropicExteriorModel (K := K) W) :
     wedgeAction (K := K) W w (wedgeAction (K := K) W w x) = 0 := by
   rw [wedgeAction_apply, wedgeAction_apply, ← mul_assoc, ExteriorAlgebra.ι_sq_zero, zero_mul]
+
+theorem topExteriorPairing_wedgeAction_left (W : Submodule K V)
+    [FiniteDimensional K W] (w : W) (x y : IsotropicExteriorModel (K := K) W) :
+    ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+        (wedgeAction (K := K) W w x) y =
+      ExteriorAlgebra.topExteriorPairing (K := K) (M := W) x
+        (wedgeAction (K := K) W w y) := by
+  simp [ExteriorAlgebra.topExteriorPairing, wedgeAction_apply, mul_assoc]
 
 theorem wedgeAction_sq_apply_of_totallyIsotropic {Q : QuadraticForm K V} {W : Submodule K V}
     (hW : Q.IsTotallyIsotropic W) (w : W) (x : IsotropicExteriorModel (K := K) W) :
@@ -660,6 +782,108 @@ theorem contractionAction_mem_exteriorPower_pred (W : Submodule K V) (d : Module
     contractionAction (K := K) W d x ∈ ⋀[K]^(n - 1) W :=
   (contractionAction_mem_exteriorPower_pred_and_zero (K := K) W d x.2).1
 
+theorem topExteriorCoeff_contractionAction_eq_zero (W : Submodule K V)
+    [FiniteDimensional K W] (d : Module.Dual K W) (x : IsotropicExteriorModel (K := K) W) :
+    ExteriorAlgebra.topExteriorCoeff (K := K) (M := W)
+      (contractionAction (K := K) W d x) = 0 := by
+  let b := Module.finBasis K W
+  let F : IsotropicExteriorModel (K := K) W →ₗ[K] K :=
+    (ExteriorAlgebra.topExteriorCoeff (K := K) (M := W)).comp
+      (contractionAction (K := K) W d)
+  have hF : F = 0 := by
+    refine b.ExteriorAlgebra.ext fun s => ?_
+    change ExteriorAlgebra.topExteriorCoeff (K := K) (M := W)
+        (contractionAction (K := K) W d (b.ExteriorAlgebra s)) = 0
+    by_cases hs0 : s.card = 0
+    · have hs : s = ∅ := Finset.card_eq_zero.mp hs0
+      subst hs
+      have hzero :
+          contractionAction (K := K) W d (1 : IsotropicExteriorModel (K := K) W) = 0 := by
+        simpa using contractionAction_algebraMap (K := K) (W := W) (d := d) (r := 1)
+      rw [basis_empty, hzero]
+      simp
+    · have hbasis_mem : b.ExteriorAlgebra s ∈ ⋀[K]^s.card W := by
+        have hbasis_eq :
+            b.ExteriorAlgebra s =
+              ((b.exteriorPower s.card)
+                (Set.powersetCard.ofCard (s := s) rfl) :
+                ExteriorAlgebra K W) := by
+          exact ExteriorAlgebra.basis_eq_coe_basis
+            (R := K) (m := s.card) (b := b)
+            (s := Set.powersetCard.ofCard (s := s) rfl)
+        rw [hbasis_eq]
+        exact ((b.exteriorPower s.card)
+          (Set.powersetCard.ofCard (s := s) rfl)).2
+      have hpred :
+          contractionAction (K := K) W d (b.ExteriorAlgebra s) ∈ ⋀[K]^(s.card - 1) W :=
+        contractionAction_mem_exteriorPower_pred (K := K) (W := W) d
+          ⟨b.ExteriorAlgebra s, hbasis_mem⟩
+      have hdeg : s.card - 1 ≠ Module.finrank K W := by
+        have hle : s.card ≤ Module.finrank K W := by
+          simpa using Finset.card_le_univ s
+        have hpos : 0 < s.card := Nat.pos_of_ne_zero hs0
+        omega
+      exact ExteriorAlgebra.topExteriorCoeff_eq_zero_of_mem_exteriorPower_ne
+        (K := K) (M := W) hdeg hpred
+  simpa [F] using congrArg (fun f : IsotropicExteriorModel (K := K) W →ₗ[K] K => f x) hF
+
+theorem topExteriorPairing_contractionAction_left (W : Submodule K V)
+    [FiniteDimensional K W] (d : Module.Dual K W)
+    (x y : IsotropicExteriorModel (K := K) W) :
+    ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+        (contractionAction (K := K) W d x) y =
+      ExteriorAlgebra.topExteriorPairing (K := K) (M := W) x
+        (contractionAction (K := K) W d y) := by
+  revert y
+  induction x using CliffordAlgebra.left_induction with
+  | algebraMap r =>
+      intro y
+      rw [contractionAction_algebraMap]
+      simp only [map_zero, ExteriorAlgebra.topExteriorPairing_apply,
+        CliffordAlgebra.reverse.commutes, zero_mul]
+      rw [← Algebra.smul_def]
+      simp [topExteriorCoeff_contractionAction_eq_zero (K := K) (W := W) d y]
+  | add x z hx hz =>
+      intro y
+      simp [map_add, hx, hz]
+  | ι_mul x w hx =>
+      intro y
+      calc
+        ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+            (contractionAction (K := K) W d ((ExteriorAlgebra.ι K) w * x)) y =
+          ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+            (d w • x - (ExteriorAlgebra.ι K) w * contractionAction (K := K) W d x) y := by
+              rw [contractionAction_ι_mul]
+        _ = d w * ExteriorAlgebra.topExteriorPairing (K := K) (M := W) x y -
+            ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+              ((ExteriorAlgebra.ι K) w * contractionAction (K := K) W d x) y := by
+              simp
+        _ = d w * ExteriorAlgebra.topExteriorPairing (K := K) (M := W) x y -
+            ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+              (contractionAction (K := K) W d x) ((ExteriorAlgebra.ι K) w * y) := by
+              have hwedge :=
+                topExteriorPairing_wedgeAction_left (K := K) (W := W) w
+                  (contractionAction (K := K) W d x) y
+              simpa [wedgeAction_apply] using
+                congrArg
+                  (fun t =>
+                    d w * ExteriorAlgebra.topExteriorPairing (K := K) (M := W) x y - t)
+                  hwedge
+        _ = d w * ExteriorAlgebra.topExteriorPairing (K := K) (M := W) x y -
+            ExteriorAlgebra.topExteriorPairing (K := K) (M := W) x
+              (contractionAction (K := K) W d ((ExteriorAlgebra.ι K) w * y)) := by
+              rw [hx ((ExteriorAlgebra.ι K) w * y)]
+        _ = ExteriorAlgebra.topExteriorPairing (K := K) (M := W) x
+            ((ExteriorAlgebra.ι K) w * contractionAction (K := K) W d y) := by
+              rw [contractionAction_ι_mul]
+              simp only [map_sub, map_smul]
+              ring
+        _ = ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+            ((ExteriorAlgebra.ι K) w * x) (contractionAction (K := K) W d y) := by
+              simpa [wedgeAction_apply] using
+                (topExteriorPairing_wedgeAction_left (K := K) (W := W) w x
+                  (contractionAction (K := K) W d y)).symm
+
 theorem contractionAction_eq_zero_of_mem_exteriorPower_zero (W : Submodule K V) (d : Module.Dual K W)
     {x : IsotropicExteriorModel (K := K) W} (hx : x ∈ ⋀[K]^0 W) :
     contractionAction (K := K) W d x = 0 :=
@@ -798,6 +1022,18 @@ theorem splitGeneratorAction_sq (W : Submodule K V) (x : Module.Dual K W × W) :
   intro y
   simpa using splitGeneratorAction_sq_apply (K := K) (W := W) (d := x.1) (w := x.2) (x := y)
 
+theorem topExteriorPairing_splitGeneratorAction_left (W : Submodule K V)
+    [FiniteDimensional K W] (z : Module.Dual K W × W)
+    (x y : IsotropicExteriorModel (K := K) W) :
+    ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+        (splitGeneratorAction (K := K) W z x) y =
+      ExteriorAlgebra.topExteriorPairing (K := K) (M := W) x
+        (splitGeneratorAction (K := K) W z y) := by
+  rcases z with ⟨d, w⟩
+  simp [splitGeneratorAction, LinearMap.coprod_apply, map_add,
+    topExteriorPairing_contractionAction_left (K := K) (W := W) d,
+    topExteriorPairing_wedgeAction_left (K := K) (W := W) w]
+
 /--
 The induced Clifford action of the split hyperbolic quadratic form on `W* × W`, acting on `⋀W`.
 -/
@@ -823,6 +1059,47 @@ theorem splitClifford_smul_def (W : Submodule K V)
     (a : CliffordAlgebra (QuadraticForm.dualProd K W))
     (x : IsotropicExteriorModel (K := K) W) :
     a • x = splitCliffordAction (K := K) W a x := rfl
+
+theorem topExteriorPairing_splitCliffordAction_reverse_left (W : Submodule K V)
+    [FiniteDimensional K W]
+    (a : CliffordAlgebra (QuadraticForm.dualProd K W))
+    (x y : IsotropicExteriorModel (K := K) W) :
+    ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+        (splitCliffordAction (K := K) W (CliffordAlgebra.reverse a) x) y =
+      ExteriorAlgebra.topExteriorPairing (K := K) (M := W) x
+        (splitCliffordAction (K := K) W a y) := by
+  revert x y
+  induction a using CliffordAlgebra.left_induction with
+  | algebraMap r =>
+      intro x y
+      simp [ExteriorAlgebra.topExteriorPairing, Algebra.smul_def, mul_assoc]
+  | add a b ha hb =>
+      intro x y
+      simp [map_add, ha, hb]
+  | ι_mul a z ha =>
+      intro x y
+      calc
+        ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+            (splitCliffordAction (K := K) W
+              (CliffordAlgebra.reverse
+                (CliffordAlgebra.ι (QuadraticForm.dualProd K W) z * a)) x) y =
+          ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+            (splitCliffordAction (K := K) W (CliffordAlgebra.reverse a)
+              (splitGeneratorAction (K := K) W z x)) y := by
+            simp [CliffordAlgebra.reverse.map_mul, map_mul]
+        _ = ExteriorAlgebra.topExteriorPairing (K := K) (M := W)
+            (splitGeneratorAction (K := K) W z x)
+            (splitCliffordAction (K := K) W a y) := by
+            exact ha (splitGeneratorAction (K := K) W z x) y
+        _ = ExteriorAlgebra.topExteriorPairing (K := K) (M := W) x
+            (splitGeneratorAction (K := K) W z
+              (splitCliffordAction (K := K) W a y)) := by
+            exact topExteriorPairing_splitGeneratorAction_left (K := K) (W := W)
+              z x (splitCliffordAction (K := K) W a y)
+        _ = ExteriorAlgebra.topExteriorPairing (K := K) (M := W) x
+            (splitCliffordAction (K := K) W
+              (CliffordAlgebra.ι (QuadraticForm.dualProd K W) z * a) y) := by
+            simp [map_mul]
 
 section SplitFaithfulness
 
