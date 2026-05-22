@@ -48,7 +48,7 @@
 
 % --- Metadata -------------------------------------------------------------
 \title{Formalized Exterior-Model Spinors in Split Rank:\\
-       Levi Actions, Non-Descent, and the Exact Split-Line Image}
+       Levi Actions, Non-Descent, and Exact Split-Line/Levi Images}
 
 \author{%
   Arthur F.~Ramos\thanks{Microsoft, USA.
@@ -176,20 +176,18 @@ $x\in \Spin(V,Q)$ satisfies $x\tilde x=1$.
 All statements about the map $\Spin(V,Q)\to\SO(V,Q)$ concern the corresponding
 groups of $K$-points; no stronger scheme-theoretic claim is intended.
 
-\paragraph{Scope and limitations.}
-The paper is submission-ready for the theorem package stated here, but its scope
-is deliberately bounded. It does not claim a full Bott-period-$8$ real
-classification, a full all-orthogonal-group image classification, or a
-scheme-theoretic spin-cover statement. Instead, it gives a machine-checked
-chosen-model spinor interface, the split-rank kernel/projective-descent package,
-explicit transvection and chosen-line square-scaling lifts, the
-Levi-projective exterior-action bridge, the exact split-line image criterion,
-and the exact finite-basis split-Levi spin-image criterion: within that Levi
-subgroup, spin-image membership is equivalent to the determinant being a square,
-with the square-surjective corollary removing the side condition for all Levi
-elements.
-The excluded generalizations are recorded as future work rather than used as
-unproved assumptions.
+\paragraph{Formalized result boundary.}
+The submission package proves the theorem package stated here. Its central
+image theorem is exact on the finite-basis split Levi subgroup: spin-image
+membership is equivalent to the determinant being a square, and the
+square-surjective corollary removes that side condition for all Levi elements.
+The same artifact also proves the chosen-model spinor interface, the split-rank
+kernel/projective-descent package, explicit transvection and chosen-line
+square-scaling lifts, the Levi-projective exterior-action bridge, and the exact
+split-line image criterion. Full Bott-period-$8$ real classification,
+all-orthogonal-group image classification, and scheme-theoretic spin-cover
+statements are separate projects, not assumptions behind the results claimed
+below.
 
 The split line is the smallest test case. When $\dim W=1$, the exact image
 theorem shows that $\Spin(H(W)) \to \SO(H(W))$ hits precisely the
@@ -364,7 +362,7 @@ Lean interface:
 together with the factorization theorems in \code{OrthogonalAction.lean} and
 the determinant-square necessity theorem in \code{HyperbolicAction.lean}. This
 exposes theorem-level covering/image results and explicit root/torus generators
-that future work can reuse when extending the Levi criterion beyond the
+that subsequent developments can reuse when extending the Levi criterion beyond the
 chosen-model finite-basis setting.
 
 \paragraph{Downstream reuse already present in the repository.}
@@ -666,13 +664,8 @@ The same square-determinant condition also gives actual spin-image membership:
 \]
 Conversely, if $\Lambda(g)$ lies in this spin image, then
 \(\det(g)=u^2\) for some \(u\in K^\times\). Hence, for finite-basis Levi
-elements with a distinguished basis line,
-\[
-  \Lambda(g)\in
-  \operatorname{im}\bigl(\Spin(\dualProd_K W)\to\SO(\dualProd_K W)\bigr)
-  \quad\Longleftrightarrow\quad
-  \det(g)\in (K^\times)^2 .
-\]
+elements with a distinguished basis line, \(\Lambda(g)\) is in the spin image
+precisely when \(\det(g)\in (K^\times)^2\).
 In particular, square-surjectivity of
 $K^\times\xrightarrow{(-)^2}K^\times$ implies that every finite-basis Levi element
 $\Lambda(g)$ lies in the spin image.
@@ -895,11 +888,9 @@ formal content of the slogan
 $S^{\pm} = \bigwedge^{\mathrm{even}/\mathrm{odd}} W$.
 
 \paragraph{Covering-map package: exact kernel, spinorial descent, explicit transvections, chosen-line square scaling, and exact split-line image.}
-The covering map $\Spin(V,Q) \to \SO(V,Q)$ is not claimed here in
-unrestricted generality. Instead, the present manuscript isolates the exact
-field-sensitive pieces needed for the chosen-model theorem package. All of these
-statements live under the standing $2\in K^\times$ hypothesis. In the split-rank
-setting treated here, if an
+The formalized covering-map package isolates the exact field-sensitive pieces
+needed for the chosen-model theorem package, under the standing
+$2\in K^\times$ hypothesis. In the split-rank setting treated here, if an
 element lies in the kernel of the spin-to-isometry representation, then its
 conjugation action is trivial on the Clifford generators, hence on the whole
 Clifford algebra. The matrix model then forces such an element to be scalar,
@@ -1398,11 +1389,11 @@ membership is exactly the square-determinant condition. Over fields with
 square-surjective unit group, every finite-basis Levi element lies in that spin
 image. Read that way, our contribution is less about rederiving
 $\bigwedge W$ and more about identifying how much of the split Levi picture is
-already visible inside explicit Clifford formulas over a general field. The next
-mathematical frontier is to extend this exact Levi criterion to broader
-orthogonal subgroups, ideally phrased in terms of explicit root/torus generators
-or the corresponding spinor-norm condition, and to connect the chosen-model
-interfaces here with future Bott-periodic and scheme-theoretic developments.
+already visible inside explicit Clifford formulas over a general field. Beyond
+the present theorem package, the natural extensions are to broader orthogonal
+subgroups, ideally phrased in terms of explicit root/torus generators or the
+corresponding spinor-norm condition, and to connect the chosen-model interfaces
+here with Bott-periodic and scheme-theoretic developments.
 
 % --- Bibliography --------------------------------------------------------
 \bibliographystyle{alpha}

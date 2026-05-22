@@ -358,7 +358,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - done on the ambient API by
     `Spinor.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one`, extending the earlier
     split/hyperbolic chosen-model theorem `splitSpinorCoveringKernel_eq_one_or_neg_one`
-  - the remaining open image-classification work is now outside the finite-basis Levi subgroup:
+  - further image-classification work is now outside the finite-basis Levi subgroup:
     broaden the exact criterion to larger orthogonal subgroups or spinor-norm formulations
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
@@ -376,8 +376,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 
 ### 5.1 Paper Writing
 - submission-ready paper package now lives at `paper/` (`main.tex`, `refs.bib`, `README.md`) with
-  venue-neutral prose tied to the current theorem package; broad Bott-periodicity and full
-  all-orthogonal-group image classifications are framed as future extensions rather than claims
+  venue-neutral prose tied to the exact finite-basis split-Levi theorem package; broad
+  Bott-periodicity and full all-orthogonal-group image classifications are framed as separate
+  projects rather than dependencies of the claimed results
 - [x] Introduction: why spinors matter, why formalization is novel
 - [x] Related work: lean-ga, Mathlib Clifford, what's missing
 - [x] Formalization architecture

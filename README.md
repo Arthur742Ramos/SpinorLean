@@ -258,10 +258,10 @@ Implemented so far:
   in the formalized theorem package, with target venues recorded for CPP 2027 / ITP 2027 /
   *Advances in Applied Clifford Algebras* (Phase 5.1)
 
-Out of scope for the current submission package:
+Separate from the current submission package:
 
 - real classification beyond the split foundation and canonical low-signature entries, i.e. the
-  full Bott period-8 table as a future extension
+  full Bott period-8 table
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
   non-factorization, projective descent, exact split-line iff criterion, and exact finite-basis
   split-Levi spin-image iff theorem
