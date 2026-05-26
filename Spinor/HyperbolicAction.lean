@@ -1401,6 +1401,27 @@ theorem dualProdLeviDetSquareClassHom_apply_equiv_eq_one_iff_mem_spin_range
     (linearEquivDetSquareClassHom_eq_one_iff_mem_spin_range
       (K := K) (V := V) b i g)
 
+/-- The kernel of the determinant square-class character on the canonical split Levi subgroup is
+exactly the spin image pulled back to that Levi subgroup. -/
+theorem dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    MonoidHom.ker (dualProdLeviDetSquareClassHom (K := K) (W := W)) =
+      Subgroup.comap (dualProdLeviSubgroup (K := K) (W := W)).subtype
+        (MonoidHom.range
+          (spinSpecialOrthogonalRepresentationFiniteDimensional
+            (Q := QuadraticForm.dualProd K W))) := by
+  ext x
+  let e := dualProdLeviSubgroupEquivLinearEquiv (K := K) (W := W)
+  let g := e.symm x
+  have hx : x = e g := by
+    simp [g, e]
+  rw [hx]
+  simpa [MonoidHom.mem_ker, Subgroup.mem_subgroupOf] using
+    (dualProdLeviDetSquareClassHom_apply_equiv_eq_one_iff_mem_spin_range
+      (K := K) (V := V) b i g)
+
 omit [FiniteDimensional K V] in
 /-- The explicit hyperbolic transvection Clifford unit acts exactly as the corresponding linear
 transvection on the split exterior model. -/

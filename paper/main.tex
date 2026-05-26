@@ -102,8 +102,8 @@ explicit chosen-model Levi-lift, and finite-basis split-Levi image corollaries
 become unconditional there.
 The artifact comprises
 $23$ Lean source files totaling
-$20{,}247$ physical lines across the repository, of which $21$ files and
-$20{,}205$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$20{,}269$ physical lines across the repository, of which $21$ files and
+$20{,}227$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
@@ -186,8 +186,9 @@ The submission package proves the theorem package stated here. Its central
 image theorem is exact on the finite-basis split Levi subgroup: spin-image
 membership is equivalent to the determinant being a square, and the
 corresponding determinant square-class quotient homomorphism has the spin image
-as its kernel. The square-surjective corollary removes that side condition for
-all Levi elements.
+as its kernel, formalized as an equality of subgroups after pulling the spin
+image back to the canonical Levi subgroup. The square-surjective corollary
+removes that side condition for all Levi elements.
 The same artifact also proves the chosen-model spinor interface, the split-rank
 kernel/projective-descent package, explicit transvection and chosen-line
 square-scaling lifts, the Levi-projective exterior-action bridge, and the exact
@@ -709,7 +710,7 @@ Equivalently, for the formalized homomorphism
 \]
 and for its transport to the canonical split Levi subgroup through
 \(\operatorname{GL}(W)\simeq \Lambda(\operatorname{GL}(W))\), the kernel of
-\(\chi\) is exactly the split-Levi spin image.
+\(\chi\) is exactly the split-Levi spin image, as a subgroup equality.
 In particular, square-surjectivity of
 $K^\times\xrightarrow{(-)^2}K^\times$ implies that every finite-basis Levi element
 $\Lambda(g)$ lies in the spin image.
