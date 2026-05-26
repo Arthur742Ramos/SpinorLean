@@ -8,6 +8,7 @@
 
 import Spinor.ExteriorModel
 import Spinor.OrthogonalAction
+import Mathlib.GroupTheory.QuotientGroup.Basic
 
 /-!
 # Transport of the chosen `⋀W` model along an explicit hyperbolic isometry
@@ -1310,6 +1311,95 @@ theorem dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_iff_exists_det_eq_
   · rintro ⟨u, hdet⟩
     exact dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_det_eq_sq
       (K := K) (W := W) b i g u hdet
+
+omit [FiniteDimensional K V] [Invertible (2 : K)] in
+/-- The determinant of `GL(W)`, reduced modulo the subgroup of square units. -/
+noncomputable def linearEquivDetSquareClassHom
+    {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W] :
+    (W ≃ₗ[K] W) →* Kˣ ⧸ MonoidHom.range (powMonoidHom (α := Kˣ) 2) :=
+  (QuotientGroup.mk' (MonoidHom.range (powMonoidHom (α := Kˣ) 2))).comp
+    (LinearEquiv.det : (W ≃ₗ[K] W) →* Kˣ)
+
+omit [FiniteDimensional K V] [Invertible (2 : K)] in
+@[simp]
+theorem linearEquivDetSquareClassHom_apply
+    {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
+    (g : W ≃ₗ[K] W) :
+    linearEquivDetSquareClassHom (K := K) g =
+      (LinearEquiv.det g :
+        Kˣ ⧸ MonoidHom.range (powMonoidHom (α := Kˣ) 2)) := rfl
+
+omit [FiniteDimensional K V] [Invertible (2 : K)] in
+/-- The determinant square class of `g` is trivial exactly when `det g` is a square unit. -/
+theorem linearEquivDetSquareClassHom_eq_one_iff_exists_det_eq_sq
+    {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
+    (g : W ≃ₗ[K] W) :
+    linearEquivDetSquareClassHom (K := K) g = 1 ↔
+      ∃ u : Kˣ, LinearEquiv.det g = u ^ 2 := by
+  rw [linearEquivDetSquareClassHom_apply, QuotientGroup.eq_one_iff]
+  constructor
+  · rintro ⟨u, hu⟩
+    exact ⟨u, by simpa using hu.symm⟩
+  · rintro ⟨u, hu⟩
+    exact ⟨u, by simpa using hu.symm⟩
+
+/-- The split-Levi spin-image obstruction is exactly the determinant square class. -/
+theorem linearEquivDetSquareClassHom_eq_one_iff_mem_spin_range
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) (g : W ≃ₗ[K] W) :
+    linearEquivDetSquareClassHom (K := K) g = 1 ↔
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K) g ∈
+        MonoidHom.range
+          (spinSpecialOrthogonalRepresentationFiniteDimensional
+            (Q := QuadraticForm.dualProd K W)) := by
+  rw [linearEquivDetSquareClassHom_eq_one_iff_exists_det_eq_sq]
+  exact
+    (dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_iff_exists_det_eq_sq
+      (K := K) (V := V) b i g).symm
+
+omit [FiniteDimensional K V] [Invertible (2 : K)] in
+/-- The determinant square-class character on the canonical split Levi subgroup. -/
+noncomputable def dualProdLeviDetSquareClassHom
+    {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W] :
+    dualProdLeviSubgroup (K := K) (W := W) →*
+      Kˣ ⧸ MonoidHom.range (powMonoidHom (α := Kˣ) 2) :=
+  (linearEquivDetSquareClassHom (K := K) (W := W)).comp
+    (dualProdLeviSubgroupEquivLinearEquiv (K := K) (W := W)).symm.toMonoidHom
+
+omit [FiniteDimensional K V] [Invertible (2 : K)] in
+@[simp]
+theorem dualProdLeviDetSquareClassHom_apply_equiv
+    {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
+    (g : W ≃ₗ[K] W) :
+    dualProdLeviDetSquareClassHom (K := K)
+        (dualProdLeviSubgroupEquivLinearEquiv (K := K) (W := W) g) =
+      linearEquivDetSquareClassHom (K := K) g := by
+  change
+    linearEquivDetSquareClassHom (K := K) (W := W)
+      ((dualProdLeviSubgroupEquivLinearEquiv (K := K) (W := W)).symm
+        ((dualProdLeviSubgroupEquivLinearEquiv (K := K) (W := W)) g)) =
+    linearEquivDetSquareClassHom (K := K) g
+  rw [MulEquiv.symm_apply_apply]
+
+/-- On the canonical split Levi subgroup, membership in the spin image is the kernel of the
+determinant square-class character. -/
+theorem dualProdLeviDetSquareClassHom_apply_equiv_eq_one_iff_mem_spin_range
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) (g : W ≃ₗ[K] W) :
+    dualProdLeviDetSquareClassHom (K := K)
+        (dualProdLeviSubgroupEquivLinearEquiv (K := K) (W := W) g) = 1 ↔
+      ((dualProdLeviSubgroupEquivLinearEquiv (K := K) (W := W) g :
+          dualProdLeviSubgroup (K := K) (W := W)) :
+        (QuadraticForm.dualProd K W).specialOrthogonalGroup) ∈
+        MonoidHom.range
+          (spinSpecialOrthogonalRepresentationFiniteDimensional
+            (Q := QuadraticForm.dualProd K W)) := by
+  rw [dualProdLeviDetSquareClassHom_apply_equiv]
+  simpa [dualProdLeviSubgroupEquivLinearEquiv_apply] using
+    (linearEquivDetSquareClassHom_eq_one_iff_mem_spin_range
+      (K := K) (V := V) b i g)
 
 omit [FiniteDimensional K V] in
 /-- The explicit hyperbolic transvection Clifford unit acts exactly as the corresponding linear
