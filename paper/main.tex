@@ -90,7 +90,9 @@ when every unit of $K$ is a square, and a nonsquare unit gives a formal
 non-surjectivity theorem. For any finite basis with a distinguished line, the
 split Levi image admits an exact square-determinant criterion: a Levi element
 $\Lambda(g)$ lies in the spin image if and only if $\det(g)$ is a square in
-$K^\times$. The proof combines an orthogonal factorization into transported
+$K^\times$. Equivalently, the formalized square-class character
+$g\mapsto[\det(g)]\in K^\times/(K^\times)^2$ has kernel exactly the spin image
+on the canonical split Levi subgroup. The proof combines an orthogonal factorization into transported
 transvections plus one chosen-line square scaling, explicit even unitary
 Clifford lifts acting by scalar-normalized exterior maps, and a top-degree
 pairing normalization that proves the determinant-square necessity direction.
@@ -100,8 +102,8 @@ explicit chosen-model Levi-lift, and finite-basis split-Levi image corollaries
 become unconditional there.
 The artifact comprises
 $23$ Lean source files totaling
-$20{,}152$ physical lines across the repository, of which $21$ files and
-$20{,}110$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$20{,}247$ physical lines across the repository, of which $21$ files and
+$20{,}205$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
@@ -183,14 +185,17 @@ groups of $K$-points; no stronger scheme-theoretic claim is intended.
 The submission package proves the theorem package stated here. Its central
 image theorem is exact on the finite-basis split Levi subgroup: spin-image
 membership is equivalent to the determinant being a square, and the
-square-surjective corollary removes that side condition for all Levi elements.
+corresponding determinant square-class quotient homomorphism has the spin image
+as its kernel. The square-surjective corollary removes that side condition for
+all Levi elements.
 The same artifact also proves the chosen-model spinor interface, the split-rank
 kernel/projective-descent package, explicit transvection and chosen-line
 square-scaling lifts, the Levi-projective exterior-action bridge, and the exact
 split-line image criterion. Full Bott-period-$8$ real classification beyond
-the packaged low-signature entries, all-orthogonal-group image classification,
-and scheme-theoretic spin-cover statements are explicit scope boundaries, not
-assumptions behind the results claimed below.
+the packaged low-signature entries, full all-orthogonal-group image
+classification and spinor-norm formulation, and scheme-theoretic spin-cover
+statements are explicit scope boundaries, not assumptions behind the results
+claimed below.
 
 The split line is the smallest test case. When $\dim W=1$, the exact image
 theorem shows that $\Spin(H(W)) \to \SO(H(W))$ hits precisely the
@@ -243,7 +248,8 @@ semidirect structure together with the exact normalized exterior action of the
 torus lift; the theorem that split Levi lifts act projectively as the natural
 exterior action; the finite-basis square-determinant factorization and its
 explicit even unitary chosen-model lift; the determinant-square necessity
-theorem and resulting exact finite-basis Levi image criterion; the
+theorem, resulting exact finite-basis Levi image criterion, and determinant
+square-class quotient obstruction; the
 square-surjective all-Levi corollary; and the exact split-line image theorem.
 The point is not abstract generation by itself,
 but a concrete chosen-model realization of a root subgroup, its square torus,
@@ -263,8 +269,9 @@ alongside them:
   Proposition~\ref{prop:split-line-square};
 \item the finite-basis square-determinant Levi factorization, explicit
   chosen-model lift, determinant-square necessity theorem, and exact spin-image
-  iff of Theorem~\ref{thm:square-det-levi}, together with its square-surjective
-  all-Levi Clifford-unit and spin-image corollaries;
+  iff of Theorem~\ref{thm:square-det-levi}, including the determinant
+  square-class quotient obstruction and its square-surjective all-Levi
+  Clifford-unit and spin-image corollaries;
 \item the explicit hyperbolic transvection Clifford unit
   $x_{\delta,w}=1+\iota(\delta,0)\iota(0,w)$ from
   Proposition~\ref{prop:transvection-unit} together with the explicit chosen-line
@@ -695,6 +702,14 @@ Conversely, if $\Lambda(g)$ lies in this spin image, then
 \(\det(g)=u^2\) for some \(u\in K^\times\). Hence, for finite-basis Levi
 elements with a distinguished basis line, \(\Lambda(g)\) is in the spin image
 precisely when \(\det(g)\in (K^\times)^2\).
+Equivalently, for the formalized homomorphism
+\[
+  \chi:\operatorname{GL}(W)\longrightarrow K^\times/(K^\times)^2,\qquad
+  \chi(g)=[\det(g)],
+\]
+and for its transport to the canonical split Levi subgroup through
+\(\operatorname{GL}(W)\simeq \Lambda(\operatorname{GL}(W))\), the kernel of
+\(\chi\) is exactly the split-Levi spin image.
 In particular, square-surjectivity of
 $K^\times\xrightarrow{(-)^2}K^\times$ implies that every finite-basis Levi element
 $\Lambda(g)$ lies in the spin image.
@@ -1421,10 +1436,10 @@ the image theorem in this common case without an extra square-surjectivity
 argument. Read that way, our contribution is less about rederiving
 $\bigwedge W$ and more about identifying how much of the split Levi picture is
 already visible inside explicit Clifford formulas over a general field. The
-artifact boundary is consequently sharp: broader orthogonal subgroups, spinor
-norm formulations, Bott-periodic classification, and scheme-theoretic spin-cover
-developments are not used by the stated results and are kept outside this
-algebraic submission package.
+artifact boundary is consequently sharp: broader orthogonal subgroups, full
+spinor-norm formulations, Bott-periodic classification, and scheme-theoretic
+spin-cover developments are not used by the stated results and are kept outside
+this algebraic submission package.
 
 % --- Bibliography --------------------------------------------------------
 \bibliographystyle{alpha}

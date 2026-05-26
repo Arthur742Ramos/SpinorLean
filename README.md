@@ -225,7 +225,10 @@ Implemented so far:
   `splitCliffordAction_eq_units_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq`, and
   packages explicit transvection Clifford units, chosen-line square-scaling lifts, and the
   square-determinant Levi factorization/lift, determinant-square necessity theorem, and exact
-  finite-basis split-Levi spin-image iff API used by the paper
+  finite-basis split-Levi spin-image iff API used by the paper; the same theorem surface now
+  exposes the determinant square-class homomorphisms
+  `linearEquivDetSquareClassHom` and `dualProdLeviDetSquareClassHom`, whose kernel is exactly the
+  packaged split-Levi spin image
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
   subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
   a nonsquare unit gives a formal non-surjectivity theorem; over algebraically closed fields,
@@ -292,7 +295,7 @@ Explicit scope boundaries for this algebraic submission package:
   split entries, i.e. the
   full Bott period-8 table
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
-  non-factorization, projective descent, exact split-line iff criterion, and exact finite-basis
-  split-Levi spin-image iff theorem
+  non-factorization, projective descent, exact split-line iff criterion, exact finite-basis
+  split-Levi spin-image iff theorem, and split-Levi determinant square-class obstruction
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.
