@@ -398,19 +398,22 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.splitCliffordAction_topExteriorCoeff_pairing_of_units_smul_exteriorMap`,
     `Spinor.exists_det_eq_sq_of_spinSpecialOrthogonalRepresentation_eq`, and
     `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_iff_exists_det_eq_sq`
-  - [x] package the split-Levi determinant square-class obstruction as an actual quotient
+  - [x] package the split-Levi determinant square-class character as an actual quotient
     homomorphism: `Spinor.linearEquivDetSquareClassHom` and
-    `Spinor.dualProdLeviDetSquareClassHom` have trivial class exactly on the finite-basis
-    split-Levi spin image, and
-    `Spinor.dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap` records the corresponding
-    subgroup-kernel equality
+    `Spinor.dualProdLeviDetSquareClassHom` are onto the square-class quotient after choosing a
+    basis line, have trivial class exactly on the finite-basis split-Levi spin image, and
+    `Spinor.linearEquivDetSquareClassHom_surjective`,
+    `Spinor.dualProdLeviDetSquareClassHom_surjective`, and
+    `Spinor.dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap` record the corresponding
+    quotient and subgroup-kernel statements
   - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
   - done on the ambient API by
     `Spinor.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one`, extending the earlier
     split/hyperbolic chosen-model theorem `splitSpinorCoveringKernel_eq_one_or_neg_one`
   - image-classification statements claimed by this artifact are exact on the split line and
-    finite-basis split Levi subgroup, including the determinant square-class quotient obstruction;
+    finite-basis split Levi subgroup, including the onto determinant square-class quotient
+    character;
     broader orthogonal subgroups and full spinor-norm formulations are intentionally outside the
     submitted theorem surface
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
@@ -431,7 +434,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 ### 5.1 Paper Writing
 - submission-ready paper package now lives at `paper/` (`main.tex`, `refs.bib`, `README.md`) with
   venue-neutral prose tied to the exact finite-basis split-Levi theorem package and its
-  determinant square-class quotient obstruction; broad Bott-periodicity and full
+  onto determinant square-class quotient character; broad Bott-periodicity and full
   all-orthogonal-group image classifications are framed as separate projects rather than
   dependencies of the claimed results
 - [x] Introduction: why spinors matter, why formalization is novel

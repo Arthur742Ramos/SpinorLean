@@ -2721,6 +2721,40 @@ omit [Invertible (2 : K)] in
         (basisScalingLinearEquiv_apply_basis (K := K) (W := W) (b := b) (t := t) (i := j))
 
 omit [Invertible (2 : K)] in
+@[simp] theorem basisScalingLinearEquiv_det
+    (b : Module.Basis ι K W) (t : ι → Kˣ) :
+    LinearEquiv.det (basisScalingLinearEquiv (K := K) (W := W) b t) = ∏ i, t i := by
+  apply Units.ext
+  calc
+    (LinearEquiv.det (basisScalingLinearEquiv (K := K) (W := W) b t) : K) =
+        LinearMap.det
+          ((basisScalingLinearEquiv (K := K) (W := W) b t : W ≃ₗ[K] W) : W →ₗ[K] W) := by
+          simp [LinearEquiv.coe_det]
+    _ = Matrix.det
+          (LinearMap.toMatrix b b
+            ((basisScalingLinearEquiv (K := K) (W := W) b t : W ≃ₗ[K] W) : W →ₗ[K] W)) := by
+          rw [LinearMap.det_toMatrix]
+    _ = Matrix.det (Matrix.diagonal fun i => (t i : K)) := by
+          rw [basisScalingLinearEquiv_toMatrix]
+    _ = ∏ i, (t i : K) := by
+          rw [Matrix.det_diagonal]
+    _ = ((∏ i, t i : Kˣ) : K) := by
+          simp
+
+omit [Invertible (2 : K)] in
+@[simp] theorem basisScalingLinearEquiv_det_update
+    (b : Module.Basis ι K W) (i : ι) (a : Kˣ) :
+    LinearEquiv.det
+        (basisScalingLinearEquiv (K := K) (W := W) b (Function.update (1 : ι → Kˣ) i a)) =
+      a := by
+  rw [basisScalingLinearEquiv_det]
+  apply Units.ext
+  rw [Fintype.prod_eq_single i]
+  · simp
+  · intro j hji
+    simp [Function.update, hji]
+
+omit [Invertible (2 : K)] in
 @[simp] theorem list_prod_basisTransvectionLinearEquiv_toMatrix
     (b : Module.Basis ι K W) (L : List (Matrix.TransvectionStruct ι K)) :
     LinearMap.toMatrix b b

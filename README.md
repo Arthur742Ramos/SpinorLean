@@ -227,8 +227,11 @@ Implemented so far:
   square-determinant Levi factorization/lift, determinant-square necessity theorem, and exact
   finite-basis split-Levi spin-image iff API used by the paper; the same theorem surface now
   exposes the determinant square-class homomorphisms
-  `linearEquivDetSquareClassHom` and `dualProdLeviDetSquareClassHom`, whose kernel is exactly the
+  `linearEquivDetSquareClassHom` and `dualProdLeviDetSquareClassHom`; both are surjective onto
+  the square-class quotient once a basis line is chosen, and the latter has kernel exactly the
   packaged split-Levi spin image by
+  `linearEquivDetSquareClassHom_surjective`,
+  `dualProdLeviDetSquareClassHom_surjective` and
   `dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap`
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
   subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
@@ -297,6 +300,7 @@ Explicit scope boundaries for this algebraic submission package:
   full Bott period-8 table
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
   non-factorization, projective descent, exact split-line iff criterion, exact finite-basis
-  split-Levi spin-image iff theorem, and split-Levi determinant square-class obstruction
+  split-Levi spin-image iff theorem, and onto split-Levi determinant square-class quotient
+  character
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

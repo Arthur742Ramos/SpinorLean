@@ -1359,6 +1359,24 @@ theorem linearEquivDetSquareClassHom_eq_one_iff_mem_spin_range
       (K := K) (V := V) b i g).symm
 
 omit [FiniteDimensional K V] [Invertible (2 : K)] in
+/-- On a finite free space with a chosen basis vector, the determinant square-class character on
+`GL(W)` is onto the square-class quotient. -/
+theorem linearEquivDetSquareClassHom_surjective
+    {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    Function.Surjective (linearEquivDetSquareClassHom (K := K) (W := W)) := by
+  intro q
+  refine QuotientGroup.induction_on q ?_
+  intro u
+  refine ⟨basisScalingLinearEquiv (K := K) (W := W) b (Function.update (1 : ι → Kˣ) i u), ?_⟩
+  change
+    ((LinearEquiv.det
+        (basisScalingLinearEquiv (K := K) (W := W) b (Function.update (1 : ι → Kˣ) i u)) :
+      Kˣ ⧸ MonoidHom.range (powMonoidHom (α := Kˣ) 2))) = u
+  rw [basisScalingLinearEquiv_det_update]
+
+omit [FiniteDimensional K V] [Invertible (2 : K)] in
 /-- The determinant square-class character on the canonical split Levi subgroup. -/
 noncomputable def dualProdLeviDetSquareClassHom
     {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W] :
@@ -1421,6 +1439,20 @@ theorem dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap
   simpa [MonoidHom.mem_ker, Subgroup.mem_subgroupOf] using
     (dualProdLeviDetSquareClassHom_apply_equiv_eq_one_iff_mem_spin_range
       (K := K) (V := V) b i g)
+
+omit [FiniteDimensional K V] [Invertible (2 : K)] in
+/-- On a finite free split Levi subgroup with a chosen basis vector, the determinant
+square-class character is onto the square-class quotient. -/
+theorem dualProdLeviDetSquareClassHom_surjective
+    {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    Function.Surjective (dualProdLeviDetSquareClassHom (K := K) (W := W)) := by
+  intro q
+  rcases linearEquivDetSquareClassHom_surjective (K := K) (b := b) i q with ⟨g, hg⟩
+  refine ⟨dualProdLeviSubgroupEquivLinearEquiv (K := K) (W := W) g, ?_⟩
+  simpa using
+    (dualProdLeviDetSquareClassHom_apply_equiv (K := K) (W := W) g).trans hg
 
 omit [FiniteDimensional K V] in
 /-- The explicit hyperbolic transvection Clifford unit acts exactly as the corresponding linear
