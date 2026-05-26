@@ -1,13 +1,14 @@
 import Spinor.ProdNeg
 import Spinor.OddClassification
+import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.LinearAlgebra.CliffordAlgebra.Prod
 
 /-!
   Finite-dimensional kernel packaging for the ambient spin covering map.
 
-  The remaining obstruction in `Spinor.OrthogonalAction` is the step from
-  "kernel elements commute with everything" to "kernel elements are scalar".
-  This file resolves that step in finite-dimensional nondegenerate rank by
+  The obstruction addressed here is the step from "kernel elements commute with
+  everything" to "kernel elements are scalar". This file resolves that step in
+  finite-dimensional nondegenerate rank by
   passing to the canonical doubled hyperbolic presentation `Q ⊕ (-Q)`,
   where the chosen-model Clifford action is an endomorphism algebra. It also
   lifts the resulting kernel statement from the ambient isometry map to the
@@ -246,5 +247,78 @@ theorem spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLi
   · intro hsq
     exact spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLine_of_square_surjective
       (K := K) hsq
+
+section AlgebraicallyClosed
+
+variable [IsAlgClosed K]
+
+omit [Invertible (2 : K)] in
+/-- Over an algebraically closed field, every unit is a square. -/
+theorem units_square_surjective_of_isAlgClosed :
+    Function.Surjective (powMonoidHom (α := Kˣ) 2) := by
+  intro u
+  rcases IsAlgClosed.exists_eq_mul_self (u : K) with ⟨a, ha⟩
+  have ha0 : a ≠ 0 := by
+    intro hzero
+    have hu0 : (u : K) = 0 := by
+      rw [ha, hzero, zero_mul]
+    exact u.ne_zero hu0
+  refine ⟨Units.mk0 a ha0, ?_⟩
+  ext
+  simpa [pow_two] using ha.symm
+
+/-- Over an algebraically closed field, the split-line spin map is surjective onto `SO(1,1)`. -/
+theorem spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_of_isAlgClosed :
+    Function.Surjective (spinSpecialOrthogonalRepresentationFiniteDimensional
+      (Q := QuadraticForm.dualProd K K)) :=
+  spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_of_square_surjective
+    (K := K) (units_square_surjective_of_isAlgClosed (K := K))
+
+/-- Over an algebraically closed field, the split hyperbolic line carries the full double-cover
+package: surjectivity onto `SO(1,1)` and kernel `{±1}`. -/
+theorem spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLine_of_isAlgClosed :
+    Function.Surjective (spinSpecialOrthogonalRepresentationFiniteDimensional
+      (Q := QuadraticForm.dualProd K K)) ∧
+      ∀ x : spinGroup (QuadraticForm.dualProd K K),
+        spinSpecialOrthogonalRepresentationFiniteDimensional
+            (Q := QuadraticForm.dualProd K K) x = 1 ↔
+          (x : CliffordAlgebra (QuadraticForm.dualProd K K)) = 1 ∨
+            (x : CliffordAlgebra (QuadraticForm.dualProd K K)) = -1 :=
+  spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLine_of_square_surjective
+    (K := K) (units_square_surjective_of_isAlgClosed (K := K))
+
+/-- Over an algebraically closed field, every finite-basis Levi automorphism admits an explicit
+even unitary Clifford lift whose split action is a normalized exterior action. -/
+theorem exists_linearEquivCliffordUnit_eq_smul_exteriorMap_of_isAlgClosed
+    [FiniteDimensional K V] {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) (e : W ≃ₗ[K] W) :
+    ∃ (u : Kˣ) (x : (CliffordAlgebra (QuadraticForm.dualProd K W))ˣ),
+      LinearEquiv.det e = u ^ 2 ∧
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          unitary (CliffordAlgebra (QuadraticForm.dualProd K W)) ∧
+      ((x : CliffordAlgebra (QuadraticForm.dualProd K W))) ∈
+          CliffordAlgebra.even (QuadraticForm.dualProd K W) ∧
+      splitCliffordAction (K := K) W
+          (x : CliffordAlgebra (QuadraticForm.dualProd K W)) =
+        (-(1 / (u : K) : K)) •
+          (ExteriorAlgebra.map ((e : W →ₗ[K] W))).toLinearMap :=
+  exists_linearEquivCliffordUnit_eq_smul_exteriorMap_of_square_surjective
+    (K := K) (V := V) (hsq := units_square_surjective_of_isAlgClosed (K := K)) b i e
+
+variable {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+
+/-- Over an algebraically closed field, every finite-basis split-Levi element lies in the spin
+image because every determinant is a square. -/
+theorem dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_isAlgClosed
+    (b : Module.Basis ι K W) (i : ι) (e : W ≃ₗ[K] W) :
+    dualProdSpecialOrthogonalOfLinearEquiv e ∈
+      (spinSpecialOrthogonalRepresentationFiniteDimensional
+        (Q := QuadraticForm.dualProd K W)).range :=
+  dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_square_surjective
+    (K := K) (hsq := units_square_surjective_of_isAlgClosed (K := K)) b i e
+
+end AlgebraicallyClosed
 
 end Spinor

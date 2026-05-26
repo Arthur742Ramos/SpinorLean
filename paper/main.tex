@@ -11,7 +11,6 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{tabularx}
 \usepackage{url}
-\usepackage{xurl}
 \usepackage{xspace}
 \urlstyle{tt}
 \setlength{\emergencystretch}{2em}
@@ -95,10 +94,14 @@ $K^\times$. The proof combines an orthogonal factorization into transported
 transvections plus one chosen-line square scaling, explicit even unitary
 Clifford lifts acting by scalar-normalized exterior maps, and a top-degree
 pairing normalization that proves the determinant-square necessity direction.
+We also package the algebraically closed specialization: since every unit is a
+square over an algebraically closed field, the split-line double-cover,
+explicit chosen-model Levi-lift, and finite-basis split-Levi image corollaries
+become unconditional there.
 The artifact comprises
 $23$ Lean source files totaling
-$19{,}283$ physical lines across the repository, of which $21$ files and
-$19{,}241$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$20{,}152$ physical lines across the repository, of which $21$ files and
+$20{,}110$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
@@ -184,10 +187,10 @@ square-surjective corollary removes that side condition for all Levi elements.
 The same artifact also proves the chosen-model spinor interface, the split-rank
 kernel/projective-descent package, explicit transvection and chosen-line
 square-scaling lifts, the Levi-projective exterior-action bridge, and the exact
-split-line image criterion. Full Bott-period-$8$ real classification,
-all-orthogonal-group image classification, and scheme-theoretic spin-cover
-statements are separate projects, not assumptions behind the results claimed
-below.
+split-line image criterion. Full Bott-period-$8$ real classification beyond
+the packaged low-signature entries, all-orthogonal-group image classification,
+and scheme-theoretic spin-cover statements are explicit scope boundaries, not
+assumptions behind the results claimed below.
 
 The split line is the smallest test case. When $\dim W=1$, the exact image
 theorem shows that $\Spin(H(W)) \to \SO(H(W))$ hits precisely the
@@ -291,7 +294,7 @@ Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
 \Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
 Build command & \code{lake build} \\
 Lean files under \code{Spinor/} & $21$ \\
-Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $19{,}241$ \\
+Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $20{,}110$ \\
 \code{sorry} occurrences under \code{Spinor/} & $0$
 \end{tabularx}
 \end{center}
@@ -367,11 +370,37 @@ chosen-model finite-basis setting.
 
 \paragraph{Downstream reuse already present in the repository.}
 The interface is already reused beyond the core covering-map story in the
-low-dimensional identification layer: \code{LowDimensional.lean} packages
+low-dimensional identification layer: \code{RealClassification.lean} exposes
+the split-row aliases \code{cl_n_n_equivMatrix},
+\code{cl_n_n_even_equivProdMatrix}, \code{cl_succ_n_n_equivProdMatrix}, and
+\code{cl_0_0_equivReal}; \code{LowDimensional.lean} packages
 \code{realSpin02EquivUnitaryComplex} and
-\code{realSpin03EquivUnitaryQuaternion}, while
+\code{realSpin03EquivUnitaryQuaternion}, and extends \code{RealClassification}
+with the rank-one even entries \code{cl_0_1_even_equivReal} and
+\code{cl_1_0_even_equivReal}, the even entries \code{cl_0_2_even_equivComplex},
+\code{cl_2_0_equivMatrix2}, \code{cl_2_0_even_equivComplex},
+\code{cl_3_0_equivComplexMatrix2}, \code{cl_3_0_even_equivQuaternion}, and the split entries
+\code{cl_1_1_equivMatrix2}, \code{cl_1_1_even_equivRealProd},
+\code{cl_2_2_equivMatrix4}, \code{cl_2_2_even_equivProdMatrix2}, while
 \code{Cl03QuaternionProd.lean} packages
-\code{realSpin04EquivUnitaryQuaternionPair}. These results are not analyzed in
+\code{realSpin04EquivUnitaryQuaternionPair} and extends the
+\code{RealClassification} namespace with the canonical
+\code{cl_0_3_equivQuaternionProd},
+\code{cl_0_3_even_equivQuaternion},
+\code{cl_0_4_equivQuaternionMatrix2} and
+\code{cl_0_4_even_equivQuaternionProd} Bott-table entries. The positive companions
+\code{cl_4_0_equivQuaternionMatrix2} and
+\code{cl_4_0_even_equivQuaternionProd} add the corresponding positive-signature rows; together
+these give the explicit
+$\Cl(0,4) \simeq \Mat_2(\mathbb{H})$,
+$\Cl(4,0) \simeq \Mat_2(\mathbb{H})$, and even
+$\Cl^+(4,0) \simeq \mathbb{H} \times \mathbb{H}$ rows. The same
+\code{equivEven} interface now also gives
+\code{cl_0_5_even_equivQuaternionMatrix2} and
+\code{cl_5_0_even_equivQuaternionMatrix2}, i.e.
+$\Cl^+(0,5) \simeq \Mat_2(\mathbb{H})$ and
+$\Cl^+(5,0) \simeq \Mat_2(\mathbb{H})$. These
+results are not analyzed in
 the present paper, but they show that the chosen-model and orthogonal-action
 APIs are already sufficient for later formal developments connecting the
 split-model infrastructure to classical compact spin identifications.
@@ -1387,13 +1416,15 @@ $\det(g)=u^2$. The top exterior pairing and spin star-normalization prove the
 converse determinant-square obstruction, so finite-basis split-Levi spin-image
 membership is exactly the square-determinant condition. Over fields with
 square-surjective unit group, every finite-basis Levi element lies in that spin
-image. Read that way, our contribution is less about rederiving
+image; the new algebraically closed wrappers expose both the explicit lift and
+the image theorem in this common case without an extra square-surjectivity
+argument. Read that way, our contribution is less about rederiving
 $\bigwedge W$ and more about identifying how much of the split Levi picture is
-already visible inside explicit Clifford formulas over a general field. Beyond
-the present theorem package, the natural extensions are to broader orthogonal
-subgroups, ideally phrased in terms of explicit root/torus generators or the
-corresponding spinor-norm condition, and to connect the chosen-model interfaces
-here with Bott-periodic and scheme-theoretic developments.
+already visible inside explicit Clifford formulas over a general field. The
+artifact boundary is consequently sharp: broader orthogonal subgroups, spinor
+norm formulations, Bott-periodic classification, and scheme-theoretic spin-cover
+developments are not used by the stated results and are kept outside this
+algebraic submission package.
 
 % --- Bibliography --------------------------------------------------------
 \bibliographystyle{alpha}

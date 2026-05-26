@@ -168,21 +168,61 @@ noncomputable def realClifford_1_1_equivMatrix2 :
 /-!
 ## Canonical low-signature entries in the real classification table
 
-These entries package the canonical positive one-square algebra `Cl(1,0) ≃ ℝ × ℝ`
-together with the standard negative-definite `Cl(0,n)` Clifford algebras as
-algebra isomorphisms against their classical targets, starting the rows
-`Cl(1,0) ≃ ℝ × ℝ`, `Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ` of the real classification
-table that underlies the Bott-period-8 theorem (ROADMAP §4.1).
+These entries package the zero-dimensional algebra, the canonical positive
+one-square algebra `Cl(1,0) ≃ ℝ × ℝ`, and the standard negative-definite
+`Cl(0,n)` Clifford algebras as algebra isomorphisms against their classical
+targets, starting the rows `Cl(0,0) ≃ ℝ`, `Cl(1,0) ≃ ℝ × ℝ`,
+`Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ` of the real classification table that underlies
+the Bott-period-8 theorem (ROADMAP §4.1).
 
 They are named inside the dedicated `Spinor.RealClassification` namespace so the
-`Spinor.RealClassification` module is the source of truth for future Bott-period
-work, independent of — and compatible with — the concrete low-dimensional models
-in `Spinor.LowDimensional`.
+real-classification surface is stable. Downstream files extend the same namespace
+with canonical aliases for entries whose proofs require concrete low-dimensional
+models from `Spinor.LowDimensional`.
 -/
 
 namespace RealClassification
 
 open scoped Quaternion
+
+/-- Canonical zero-dimensional quadratic form for `Cl(0,0)`. -/
+abbrev Q_0_0 : QuadraticForm ℝ Unit :=
+  0
+
+/-- Canonical real-classification entry: `Cl(0,0) ≃ ℝ`. -/
+noncomputable def cl_0_0_equivReal :
+    CliffordAlgebra Q_0_0 ≃ₐ[ℝ] ℝ := by
+  simpa [Q_0_0] using (CliffordAlgebraRing.equiv (R := ℝ))
+
+/-- Canonical split-signature form for `Cl(n,n)`. -/
+abbrev Q_n_n (n : ℕ) : QuadraticForm ℝ ((Fin n ⊕ Fin n) → ℝ) :=
+  standardSignatureForm n n
+
+/-- Canonical real-classification split row: `Cl(n,n) ≃ Mat_(2^n)(ℝ)`. -/
+noncomputable def cl_n_n_equivMatrix (n : ℕ) :
+    CliffordAlgebra (Q_n_n n) ≃ₐ[ℝ] Matrix (Fin (2 ^ n)) (Fin (2 ^ n)) ℝ := by
+  simpa [Q_n_n] using realSplitCliffordEquivMatrix n
+
+/-- Canonical even split row:
+`Cl⁺(n,n) ≃ Mat_(2^(n-1))(ℝ) × Mat_(2^(n-1))(ℝ)` for `0 < n`. -/
+noncomputable def cl_n_n_even_equivProdMatrix (n : ℕ) (hn : 0 < n) :
+    CliffordAlgebra.even (Q_n_n n) ≃ₐ[ℝ]
+      Matrix (Fin (2 ^ (n - 1))) (Fin (2 ^ (n - 1))) ℝ ×
+        Matrix (Fin (2 ^ (n - 1))) (Fin (2 ^ (n - 1))) ℝ := by
+  simpa [Q_n_n] using realSplitEvenCliffordEquivProdMatrix n hn
+
+/-- Canonical grouped odd split-signature form for `Cl(n+1,n)`. -/
+abbrev Q_succ_n_n (n : ℕ) :
+    QuadraticForm ℝ (((Fin n ⊕ Fin n) → ℝ) × ℝ) :=
+  realOddSplitPositiveForm n
+
+/-- Canonical grouped odd split row:
+`Cl(n+1,n) ≃ Mat_(2^n)(ℝ) × Mat_(2^n)(ℝ)`. -/
+noncomputable def cl_succ_n_n_equivProdMatrix (n : ℕ) :
+    CliffordAlgebra (Q_succ_n_n n) ≃ₐ[ℝ]
+      Matrix (Fin (2 ^ n)) (Fin (2 ^ n)) ℝ ×
+        Matrix (Fin (2 ^ n)) (Fin (2 ^ n)) ℝ := by
+  simpa [Q_succ_n_n] using realOddSplitPositiveCliffordEquivProdMatrix n
 
 /-- Canonical quadratic form for `Cl(1,0)` — the unit positive square on `ℝ`. -/
 abbrev Q_1_0 : QuadraticForm ℝ ℝ :=
@@ -236,12 +276,9 @@ noncomputable def cl_0_2_equivQuaternion :
   CliffordAlgebraQuaternion.equiv (R := ℝ) (c₁ := (-1 : ℝ)) (c₂ := (-1 : ℝ))
 
 /-!
-Further canonical real-classification entries `Cl(0,3) ≃ ℍ × ℍ` and
-`Cl⁺(0,4) ≃ ℍ × ℍ` live in `Spinor.Cl03QuaternionProd` (as
-`realCl03EquivQuaternionProd` and `realEvenCl04EquivQuaternionProd`),
-which is downstream of `Spinor.LowDimensional` and therefore cannot be
-imported here without creating a cycle. The forms used there are
-`realCl03Form` and `realCl04Form` from `Spinor.LowDimensional`.
+Further canonical low-dimensional entries are added to this namespace downstream
+in `Spinor.LowDimensional` and `Spinor.Cl03QuaternionProd`, where the concrete
+forms and compact-spin models used by those proofs are already available.
 -/
 
 end RealClassification

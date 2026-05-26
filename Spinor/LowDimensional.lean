@@ -1,7 +1,12 @@
 import Spinor.ComplexClassification
 import Spinor.OrthogonalAction
 import Spinor.RealClassification
+import Mathlib.LinearAlgebra.Basis.Fin
 import Mathlib.LinearAlgebra.CliffordAlgebra.Equivs
+import Mathlib.LinearAlgebra.CliffordAlgebra.Contraction
+import Mathlib.LinearAlgebra.ExteriorAlgebra.Basis
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
+import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.LinearAlgebra.Matrix.Unique
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
@@ -116,6 +121,15 @@ noncomputable def complexCl4EquivMatrix4 :
 abbrev realCl11Form : QuadraticForm ℝ ((Fin 1 ⊕ Fin 1) → ℝ) :=
   standardSignatureForm 1 1
 
+/-- The standard zero-dimensional real quadratic form. -/
+abbrev realCl00Form : QuadraticForm ℝ Unit :=
+  0
+
+/-- The real Clifford algebra `Cl(0,0)` is `ℝ`. -/
+noncomputable def realCl00EquivReal :
+    CliffordAlgebra realCl00Form ≃ₐ[ℝ] ℝ := by
+  simpa [realCl00Form] using (CliffordAlgebraRing.equiv (R := ℝ))
+
 /-- The standard negative real 1-dimensional quadratic form. -/
 abbrev realCl01Form : QuadraticForm ℝ ℝ :=
   CliffordAlgebraComplex.Q
@@ -131,6 +145,38 @@ theorem realCl01EquivComplex_apply_star (x : CliffordAlgebra realCl01Form) :
   change CliffordAlgebraComplex.toComplex (CliffordAlgebra.reverse (CliffordAlgebra.involute x)) =
     star (CliffordAlgebraComplex.toComplex x)
   rw [CliffordAlgebraComplex.reverse_apply, CliffordAlgebraComplex.toComplex_involute, Complex.star_def]
+
+/-- The one-up zero form is isometric to the standard negative real line. -/
+noncomputable def realCl01EvenIsometry :
+    (CliffordAlgebra.EquivEven.Q' (0 : QuadraticForm ℝ Unit)).IsometryEquiv realCl01Form where
+  toLinearEquiv :=
+    { toFun := fun x => x.2
+      invFun := fun r => ((), r)
+      left_inv := by
+        intro x
+        rcases x with ⟨u, r⟩
+        cases u
+        rfl
+      right_inv := by
+        intro r
+        rfl
+      map_add' := by
+        intro x y
+        rfl
+      map_smul' := by
+        intro a x
+        rfl }
+  map_app' := by
+    intro x
+    rcases x with ⟨u, r⟩
+    simp [CliffordAlgebra.EquivEven.Q', realCl01Form, CliffordAlgebraComplex.Q]
+
+/-- The even real Clifford algebra `Cl⁺(0,1)` is `ℝ`. -/
+noncomputable def realEvenCl01EquivReal :
+    CliffordAlgebra.even realCl01Form ≃ₐ[ℝ] ℝ :=
+  ((evenCliffordEquivOfIsometry realCl01EvenIsometry.symm).trans
+    (CliffordAlgebra.equivEven (0 : QuadraticForm ℝ Unit)).symm).trans
+    (CliffordAlgebraRing.equiv (R := ℝ))
 
 /-- The standard negative real 2-dimensional quadratic form on `ℝ × ℝ`. -/
 abbrev realCl02Form : QuadraticForm ℝ (ℝ × ℝ) :=
@@ -326,6 +372,13 @@ noncomputable def realSpin02EquivUnitaryComplex :
 abbrev realCl20Form : QuadraticForm ℝ (ℝ × ℝ) :=
   -realCl02Form
 
+@[simp]
+theorem realCl20Form_apply (x : ℝ × ℝ) :
+    realCl20Form x = x.1 * x.1 + x.2 * x.2 := by
+  rw [realCl20Form]
+  simp
+  ring
+
 /-- The even real Clifford algebra `Cl⁺(2,0)` is `ℂ`. -/
 noncomputable def realEvenCl20EquivComplex :
     CliffordAlgebra.even realCl20Form ≃ₐ[ℝ] ℂ := by
@@ -333,6 +386,91 @@ noncomputable def realEvenCl20EquivComplex :
     (((CliffordAlgebra.evenEquivEvenNeg (Q := realCl02Form)).symm.trans
       (CliffordAlgebra.equivEven realCl01Form).symm).trans
       realCl01EquivComplex)
+
+set_option linter.unnecessarySeqFocus false in
+/-- The generator map for the explicit `Cl(2,0) ≃ Mat₂(ℝ)` model. -/
+def realCl20ToMatrixLin : (ℝ × ℝ) →ₗ[ℝ] Matrix (Fin 2) (Fin 2) ℝ where
+  toFun v := !![v.1, v.2; v.2, -v.1]
+  map_add' x y := by
+    ext i j
+    fin_cases i <;> fin_cases j <;> simp <;> ring
+  map_smul' a x := by
+    ext i j
+    fin_cases i <;> fin_cases j <;> simp
+
+set_option linter.unnecessarySeqFocus false in
+theorem realCl20ToMatrixLin_sq (v : ℝ × ℝ) :
+    realCl20ToMatrixLin v * realCl20ToMatrixLin v =
+      algebraMap ℝ (Matrix (Fin 2) (Fin 2) ℝ) (realCl20Form v) := by
+  obtain ⟨a, b⟩ := v
+  ext i j <;> fin_cases i <;> fin_cases j <;>
+    simp [realCl20ToMatrixLin, Matrix.mul_apply, Matrix.algebraMap_matrix_apply] <;> ring_nf
+
+/-- The explicit matrix representation of the real Clifford algebra `Cl(2,0)`. -/
+noncomputable def realCl20ToMatrix :
+    CliffordAlgebra realCl20Form →ₐ[ℝ] Matrix (Fin 2) (Fin 2) ℝ :=
+  CliffordAlgebra.lift realCl20Form ⟨realCl20ToMatrixLin, realCl20ToMatrixLin_sq⟩
+
+@[simp]
+theorem realCl20ToMatrix_ι (v : ℝ × ℝ) :
+    realCl20ToMatrix (CliffordAlgebra.ι realCl20Form v) =
+      !![v.1, v.2; v.2, -v.1] := by
+  simpa [realCl20ToMatrix, realCl20ToMatrixLin] using
+    (CliffordAlgebra.lift_ι_apply realCl20ToMatrixLin realCl20ToMatrixLin_sq v)
+
+set_option linter.unnecessarySeqFocus false in
+set_option maxHeartbeats 800000 in
+theorem realCl20ToMatrix_surjective : Function.Surjective realCl20ToMatrix := by
+  intro A
+  let e1 : CliffordAlgebra realCl20Form := CliffordAlgebra.ι realCl20Form ((1 : ℝ), 0)
+  let e2 : CliffordAlgebra realCl20Form := CliffordAlgebra.ι realCl20Form ((0 : ℝ), 1)
+  refine ⟨((A 0 0 + A 1 1) / 2) • (1 : CliffordAlgebra realCl20Form) +
+      ((A 0 0 - A 1 1) / 2) • e1 +
+      ((A 0 1 + A 1 0) / 2) • e2 +
+      ((A 0 1 - A 1 0) / 2) • (e1 * e2), ?_⟩
+  ext i j <;> fin_cases i <;> fin_cases j <;>
+    simp [e1, e2] <;> ring_nf
+
+theorem realCl20Clifford_finrank :
+    Module.finrank ℝ (CliffordAlgebra realCl20Form) = 4 := by
+  letI : Invertible (2 : ℝ) := invertibleOfNonzero (by norm_num)
+  calc
+    Module.finrank ℝ (CliffordAlgebra realCl20Form) =
+        Module.finrank ℝ (ExteriorAlgebra ℝ (ℝ × ℝ)) := by
+      exact LinearEquiv.finrank_eq (CliffordAlgebra.equivExterior realCl20Form)
+    _ = Fintype.card (Finset (Fin 2)) := by
+      exact Module.finrank_eq_card_basis ((Module.Basis.finTwoProd ℝ).ExteriorAlgebra)
+    _ = 4 := by
+      simp
+
+theorem realCl20Matrix_finrank :
+    Module.finrank ℝ (Matrix (Fin 2) (Fin 2) ℝ) = 4 := by
+  rw [Module.finrank_matrix]
+  norm_num
+
+theorem realCl20ToMatrix_injective : Function.Injective realCl20ToMatrix := by
+  have hcl_succ : Module.finrank ℝ (CliffordAlgebra realCl20Form) = Nat.succ 3 := by
+    simpa using realCl20Clifford_finrank
+  letI : FiniteDimensional ℝ (CliffordAlgebra realCl20Form) :=
+    FiniteDimensional.of_finrank_eq_succ hcl_succ
+  have hdim : Module.finrank ℝ (CliffordAlgebra realCl20Form) =
+      Module.finrank ℝ (Matrix (Fin 2) (Fin 2) ℝ) := by
+    rw [realCl20Clifford_finrank, realCl20Matrix_finrank]
+  simpa using
+    ((LinearMap.injective_iff_surjective_of_finrank_eq_finrank
+      (f := realCl20ToMatrix.toLinearMap) hdim).mpr realCl20ToMatrix_surjective)
+
+/-- The real Clifford algebra `Cl(2,0)` is the full `2 × 2` real matrix algebra. -/
+noncomputable def realCl20EquivMatrix2 :
+    CliffordAlgebra realCl20Form ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) ℝ :=
+  AlgEquiv.ofBijective realCl20ToMatrix
+    ⟨realCl20ToMatrix_injective, realCl20ToMatrix_surjective⟩
+
+@[simp]
+theorem realCl20EquivMatrix2_apply_ι (v : ℝ × ℝ) :
+    realCl20EquivMatrix2 (CliffordAlgebra.ι realCl20Form v) =
+      !![v.1, v.2; v.2, -v.1] := by
+  simp [realCl20EquivMatrix2]
 
 /-- The standard negative real 3-dimensional quadratic form on `((ℝ × ℝ) × ℝ)`. -/
 abbrev realCl03Form : QuadraticForm ℝ ((ℝ × ℝ) × ℝ) :=
@@ -349,6 +487,13 @@ theorem realCl03Form_apply (x : ((ℝ × ℝ) × ℝ)) :
 abbrev realCl30Form : QuadraticForm ℝ ((ℝ × ℝ) × ℝ) :=
   -realCl03Form
 
+@[simp]
+theorem realCl30Form_apply (x : ((ℝ × ℝ) × ℝ)) :
+    realCl30Form x = x.1.1 * x.1.1 + x.1.2 * x.1.2 + x.2 * x.2 := by
+  rw [realCl30Form]
+  simp
+  ring
+
 /-- The even real Clifford algebra `Cl⁺(3,0)` is Hamilton's quaternion algebra. -/
 noncomputable def realEvenCl30EquivQuaternion :
     CliffordAlgebra.even realCl30Form ≃ₐ[ℝ] ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)] := by
@@ -356,6 +501,123 @@ noncomputable def realEvenCl30EquivQuaternion :
     (((CliffordAlgebra.evenEquivEvenNeg (Q := realCl03Form)).symm.trans
       (CliffordAlgebra.equivEven realCl02Form).symm).trans
       realCl02EquivQuaternion)
+
+set_option linter.unnecessarySeqFocus false in
+/-- The generator map for the explicit `Cl(3,0) ≃ Mat₂(ℂ)` model. -/
+def realCl30ToComplexMatrixLin :
+    ((ℝ × ℝ) × ℝ) →ₗ[ℝ] Matrix (Fin 2) (Fin 2) ℂ where
+  toFun v := !![(v.1.1 : ℂ), (v.1.2 : ℂ) - (v.2 : ℂ) * Complex.I;
+      (v.1.2 : ℂ) + (v.2 : ℂ) * Complex.I, -(v.1.1 : ℂ)]
+  map_add' x y := by
+    ext i j
+    fin_cases i <;> fin_cases j <;> simp <;> ring
+  map_smul' a x := by
+    ext i j
+    fin_cases i <;> fin_cases j <;> simp
+    · change (a : ℂ) * (x.1.1 : ℂ) = (a : ℂ) * (x.1.1 : ℂ)
+      rfl
+    · change (a : ℂ) * (x.1.2 : ℂ) - (a : ℂ) * (x.2 : ℂ) * Complex.I =
+        (a : ℂ) * ((x.1.2 : ℂ) - (x.2 : ℂ) * Complex.I)
+      ring
+    · change (a : ℂ) * (x.1.2 : ℂ) + (a : ℂ) * (x.2 : ℂ) * Complex.I =
+        (a : ℂ) * (x.1.2 : ℂ) + (a : ℂ) * ((x.2 : ℂ) * Complex.I)
+      ring
+    · change (a : ℂ) * (x.1.1 : ℂ) = (a : ℂ) * (x.1.1 : ℂ)
+      rfl
+
+set_option linter.unnecessarySeqFocus false in
+theorem realCl30ToComplexMatrixLin_sq (v : ((ℝ × ℝ) × ℝ)) :
+    realCl30ToComplexMatrixLin v * realCl30ToComplexMatrixLin v =
+      algebraMap ℝ (Matrix (Fin 2) (Fin 2) ℂ) (realCl30Form v) := by
+  obtain ⟨⟨a, b⟩, c⟩ := v
+  ext i j <;> fin_cases i <;> fin_cases j <;>
+    simp [realCl30ToComplexMatrixLin, Matrix.mul_apply, Matrix.algebraMap_matrix_apply] <;>
+    ring_nf <;>
+    simp [Complex.I_sq]
+
+/-- The explicit Pauli-matrix representation of the real Clifford algebra `Cl(3,0)`. -/
+noncomputable def realCl30ToComplexMatrix :
+    CliffordAlgebra realCl30Form →ₐ[ℝ] Matrix (Fin 2) (Fin 2) ℂ :=
+  CliffordAlgebra.lift realCl30Form ⟨realCl30ToComplexMatrixLin,
+    realCl30ToComplexMatrixLin_sq⟩
+
+@[simp]
+theorem realCl30ToComplexMatrix_ι (v : ((ℝ × ℝ) × ℝ)) :
+    realCl30ToComplexMatrix (CliffordAlgebra.ι realCl30Form v) =
+      !![(v.1.1 : ℂ), (v.1.2 : ℂ) - (v.2 : ℂ) * Complex.I;
+        (v.1.2 : ℂ) + (v.2 : ℂ) * Complex.I, -(v.1.1 : ℂ)] := by
+  simpa [realCl30ToComplexMatrix, realCl30ToComplexMatrixLin] using
+    (CliffordAlgebra.lift_ι_apply realCl30ToComplexMatrixLin
+      realCl30ToComplexMatrixLin_sq v)
+
+set_option linter.unnecessarySeqFocus false in
+set_option maxHeartbeats 1200000 in
+theorem realCl30ToComplexMatrix_surjective : Function.Surjective realCl30ToComplexMatrix := by
+  intro A
+  let e1 : CliffordAlgebra realCl30Form := CliffordAlgebra.ι realCl30Form (((1 : ℝ), 0), 0)
+  let e2 : CliffordAlgebra realCl30Form := CliffordAlgebra.ι realCl30Form (((0 : ℝ), 1), 0)
+  let e3 : CliffordAlgebra realCl30Form := CliffordAlgebra.ι realCl30Form (((0 : ℝ), 0), 1)
+  refine ⟨((((A 0 0).re + (A 1 1).re) / 2) • (1 : CliffordAlgebra realCl30Form)) +
+      ((((A 0 0).re - (A 1 1).re) / 2) • e1) +
+      ((((A 0 1).re + (A 1 0).re) / 2) • e2) +
+      ((((A 0 1).re - (A 1 0).re) / 2) • (e1 * e2)) +
+      ((((A 1 0).im - (A 0 1).im) / 2) • e3) +
+      ((-((A 0 1).im + (A 1 0).im) / 2) • (e1 * e3)) +
+      ((((A 0 0).im - (A 1 1).im) / 2) • (e2 * e3)) +
+      ((((A 0 0).im + (A 1 1).im) / 2) • (e1 * e2 * e3)), ?_⟩
+  ext i j <;> fin_cases i <;> fin_cases j <;>
+    apply Complex.ext <;>
+    simp [e1, e2, e3] <;>
+    ring_nf
+
+theorem realCl30Clifford_finrank :
+    Module.finrank ℝ (CliffordAlgebra realCl30Form) = 8 := by
+  letI : Invertible (2 : ℝ) := invertibleOfNonzero (by norm_num)
+  let b : Module.Basis (Fin 2 ⊕ Unit) ℝ ((ℝ × ℝ) × ℝ) :=
+    (Module.Basis.finTwoProd ℝ).prod (Module.Basis.singleton Unit ℝ)
+  let e : Fin 2 ⊕ Unit ≃ Fin 3 :=
+    (Equiv.sumCongr (Equiv.refl (Fin 2)) finOneEquiv.symm).trans finSumFinEquiv
+  let b3 : Module.Basis (Fin 3) ℝ ((ℝ × ℝ) × ℝ) := b.reindex e
+  calc
+    Module.finrank ℝ (CliffordAlgebra realCl30Form) =
+        Module.finrank ℝ (ExteriorAlgebra ℝ ((ℝ × ℝ) × ℝ)) := by
+      exact LinearEquiv.finrank_eq (CliffordAlgebra.equivExterior realCl30Form)
+    _ = Fintype.card (Finset (Fin 3)) := by
+      exact Module.finrank_eq_card_basis b3.ExteriorAlgebra
+    _ = 8 := by
+      simp
+
+theorem realCl30ComplexMatrix_finrank :
+    Module.finrank ℝ (Matrix (Fin 2) (Fin 2) ℂ) = 8 := by
+  rw [finrank_real_of_complex]
+  rw [Module.finrank_matrix]
+  norm_num
+
+theorem realCl30ToComplexMatrix_injective : Function.Injective realCl30ToComplexMatrix := by
+  have hcl_succ : Module.finrank ℝ (CliffordAlgebra realCl30Form) = Nat.succ 7 := by
+    simpa using realCl30Clifford_finrank
+  letI : FiniteDimensional ℝ (CliffordAlgebra realCl30Form) :=
+    FiniteDimensional.of_finrank_eq_succ hcl_succ
+  have hdim : Module.finrank ℝ (CliffordAlgebra realCl30Form) =
+      Module.finrank ℝ (Matrix (Fin 2) (Fin 2) ℂ) := by
+    rw [realCl30Clifford_finrank, realCl30ComplexMatrix_finrank]
+  simpa using
+    ((LinearMap.injective_iff_surjective_of_finrank_eq_finrank
+      (f := realCl30ToComplexMatrix.toLinearMap) hdim).mpr
+      realCl30ToComplexMatrix_surjective)
+
+/-- The real Clifford algebra `Cl(3,0)` is the full `2 × 2` complex matrix algebra. -/
+noncomputable def realCl30EquivComplexMatrix2 :
+    CliffordAlgebra realCl30Form ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) ℂ :=
+  AlgEquiv.ofBijective realCl30ToComplexMatrix
+    ⟨realCl30ToComplexMatrix_injective, realCl30ToComplexMatrix_surjective⟩
+
+@[simp]
+theorem realCl30EquivComplexMatrix2_apply_ι (v : ((ℝ × ℝ) × ℝ)) :
+    realCl30EquivComplexMatrix2 (CliffordAlgebra.ι realCl30Form v) =
+      !![(v.1.1 : ℂ), (v.1.2 : ℂ) - (v.2 : ℂ) * Complex.I;
+        (v.1.2 : ℂ) + (v.2 : ℂ) * Complex.I, -(v.1.1 : ℂ)] := by
+  simp [realCl30EquivComplexMatrix2]
 
 /-- The even real Clifford algebra `Cl⁺(0,3)` is Hamilton's quaternion algebra.
 
@@ -669,8 +931,8 @@ algebra `Cl(0,3)` via Mathlib's `CliffordAlgebra.equivEven`.
 
 This is the standard "drop one negative-signature dimension into the even part"
 identification and is the algebraic entry point for the classical
-`Cl⁺(0,4) ≃ ℍ × ℍ` identification (which further requires `Cl(0,3) ≃ ℍ × ℍ`,
-a classical fact currently outside the Mathlib library). -/
+`Cl⁺(0,4) ≃ ℍ × ℍ` identification, which is packaged downstream in
+`Spinor.Cl03QuaternionProd` after the explicit `Cl(0,3) ≃ ℍ × ℍ` model is available. -/
 noncomputable def realEvenCl04EquivCl03 :
     CliffordAlgebra.even realCl04Form ≃ₐ[ℝ] CliffordAlgebra realCl03Form :=
   (CliffordAlgebra.equivEven realCl03Form).symm
@@ -708,6 +970,97 @@ noncomputable def realEvenCl22EquivProdMatrix2 :
     CliffordAlgebra.even realCl22Form ≃ₐ[ℝ]
       Matrix (Fin 2) (Fin 2) ℝ × Matrix (Fin 2) (Fin 2) ℝ := by
   simpa [realCl22Form] using realSplitEvenCliffordEquivProdMatrix 2 (by decide)
+
+namespace RealClassification
+
+open scoped Quaternion
+
+/-!
+These aliases extend the stable `Spinor.RealClassification` theorem surface with
+low-dimensional entries whose proofs use the concrete forms and compact-spin
+models in this file.
+-/
+
+/-- Canonical even real-classification entry: `Cl⁺(0,1) ≃ ℝ`. -/
+noncomputable def cl_0_1_even_equivReal :
+    CliffordAlgebra.even Q_0_1 ≃ₐ[ℝ] ℝ := by
+  simpa [Q_0_1, realCl01Form] using realEvenCl01EquivReal
+
+/-- Canonical even real-classification entry: `Cl⁺(1,0) ≃ ℝ`. -/
+noncomputable def cl_1_0_even_equivReal :
+    CliffordAlgebra.even Q_1_0 ≃ₐ[ℝ] ℝ := by
+  change CliffordAlgebra.even (QuadraticMap.sq (R := ℝ)) ≃ₐ[ℝ] ℝ
+  rw [show QuadraticMap.sq (R := ℝ) = -Q_0_1 by
+    ext r
+    simp [Q_0_1, CliffordAlgebraComplex.Q]]
+  exact (CliffordAlgebra.evenEquivEvenNeg (Q := Q_0_1)).symm.trans
+    cl_0_1_even_equivReal
+
+/-- Canonical even real-classification entry: `Cl⁺(0,2) ≃ ℂ`. -/
+noncomputable def cl_0_2_even_equivComplex :
+    CliffordAlgebra.even Q_0_2 ≃ₐ[ℝ] ℂ := by
+  change CliffordAlgebra.even (CliffordAlgebraQuaternion.Q (-1 : ℝ) (-1 : ℝ)) ≃ₐ[ℝ] ℂ
+  rw [← realCl02Form_eq_quaternionQ]
+  exact realEvenCl02EquivComplex
+
+/-- Canonical quadratic form for `Cl(2,0)`: two positive squares on `ℝ × ℝ`. -/
+abbrev Q_2_0 : QuadraticForm ℝ (ℝ × ℝ) :=
+  realCl20Form
+
+/-- Canonical real-classification entry: `Cl(2,0) ≃ Mat₂(ℝ)`. -/
+noncomputable def cl_2_0_equivMatrix2 :
+    CliffordAlgebra Q_2_0 ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) ℝ := by
+  simpa [Q_2_0] using realCl20EquivMatrix2
+
+/-- Canonical even real-classification entry: `Cl⁺(2,0) ≃ ℂ`. -/
+noncomputable def cl_2_0_even_equivComplex :
+    CliffordAlgebra.even Q_2_0 ≃ₐ[ℝ] ℂ := by
+  simpa [Q_2_0] using realEvenCl20EquivComplex
+
+/-- Canonical quadratic form for `Cl(3,0)`: three positive squares. -/
+abbrev Q_3_0 : QuadraticForm ℝ ((ℝ × ℝ) × ℝ) :=
+  realCl30Form
+
+/-- Canonical real-classification entry: `Cl(3,0) ≃ Mat₂(ℂ)`. -/
+noncomputable def cl_3_0_equivComplexMatrix2 :
+    CliffordAlgebra Q_3_0 ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) ℂ := by
+  simpa [Q_3_0] using realCl30EquivComplexMatrix2
+
+/-- Canonical even real-classification entry: `Cl⁺(3,0) ≃ ℍ`. -/
+noncomputable def cl_3_0_even_equivQuaternion :
+    CliffordAlgebra.even Q_3_0 ≃ₐ[ℝ] ℍ[ℝ, (-1 : ℝ), 0, (-1 : ℝ)] := by
+  simpa [Q_3_0] using realEvenCl30EquivQuaternion
+
+/-- Canonical split-signature form for `Cl(1,1)`. -/
+abbrev Q_1_1 : QuadraticForm ℝ ((Fin 1 ⊕ Fin 1) → ℝ) :=
+  realCl11Form
+
+/-- Canonical real-classification entry: `Cl(1,1) ≃ Mat₂(ℝ)`. -/
+noncomputable def cl_1_1_equivMatrix2 :
+    CliffordAlgebra Q_1_1 ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) ℝ := by
+  simpa [Q_1_1] using realCl11EquivMatrix2
+
+/-- Canonical even real-classification entry: `Cl⁺(1,1) ≃ ℝ × ℝ`. -/
+noncomputable def cl_1_1_even_equivRealProd :
+    CliffordAlgebra.even Q_1_1 ≃ₐ[ℝ] ℝ × ℝ := by
+  simpa [Q_1_1] using realEvenCl11EquivProd
+
+/-- Canonical split-signature form for `Cl(2,2)`. -/
+abbrev Q_2_2 : QuadraticForm ℝ ((Fin 2 ⊕ Fin 2) → ℝ) :=
+  realCl22Form
+
+/-- Canonical real-classification entry: `Cl(2,2) ≃ Mat₄(ℝ)`. -/
+noncomputable def cl_2_2_equivMatrix4 :
+    CliffordAlgebra Q_2_2 ≃ₐ[ℝ] Matrix (Fin 4) (Fin 4) ℝ := by
+  simpa [Q_2_2] using realCl22EquivMatrix4
+
+/-- Canonical even real-classification entry: `Cl⁺(2,2) ≃ Mat₂(ℝ) × Mat₂(ℝ)`. -/
+noncomputable def cl_2_2_even_equivProdMatrix2 :
+    CliffordAlgebra.even Q_2_2 ≃ₐ[ℝ]
+      Matrix (Fin 2) (Fin 2) ℝ × Matrix (Fin 2) (Fin 2) ℝ := by
+  simpa [Q_2_2] using realEvenCl22EquivProdMatrix2
+
+end RealClassification
 
 end
 

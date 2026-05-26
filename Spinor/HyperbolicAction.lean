@@ -3,7 +3,7 @@
 
   This provides the ambient Clifford and spin actions on `⋀W` whenever the quadratic form `Q`
   is presented by an explicit isometry `Q ≃ dualProd K W`. It is the split/hyperbolic transport
-  layer that sits between the raw `W* × W` model and the still-open full Witt decomposition.
+  layer that sits between the raw `W* × W` model and the first-class Witt presentation API.
 -/
 
 import Spinor.ExteriorModel
@@ -231,7 +231,7 @@ theorem hyperbolicClifford_smul_def (e : Q.IsometryEquiv (QuadraticForm.dualProd
     letI := hyperbolicModule (K := K) (W := W) e
     a • x = hyperbolicCliffordAction (K := K) (W := W) e a x := rfl
 
-/-- In the finite-dimensional hyperbolic case, the transported Clifford action on `⋀W` still hits
+/-- In the finite-dimensional hyperbolic case, the transported Clifford action on `⋀W` hits
 the full endomorphism algebra. -/
 theorem hyperbolicCliffordAction_surjective [FiniteDimensional K V]
     (e : Q.IsometryEquiv (QuadraticForm.dualProd K W)) :

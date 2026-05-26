@@ -565,6 +565,374 @@ noncomputable def realEvenCl04EquivQuaternionProd :
       H × H :=
   realEvenCl04EquivCl03.trans Cl03QuaternionProd.realCl03EquivQuaternionProd
 
+set_option linter.unnecessarySeqFocus false in
+/-- The generator map for the explicit `Cl(0,4) ≃ Mat₂(ℍ)` model. -/
+def realCl04ToQuaternionMatrixLin :
+    (((ℝ × ℝ) × ℝ) × ℝ) →ₗ[ℝ] Matrix (Fin 2) (Fin 2) H where
+  toFun v := !![⟨0, v.1.1.1, v.1.1.2, v.1.2⟩, (v.2 : H);
+      -(v.2 : H), ⟨0, -v.1.1.1, -v.1.1.2, -v.1.2⟩]
+  map_add' x y := by
+    obtain ⟨⟨⟨a, b⟩, c⟩, d⟩ := x
+    obtain ⟨⟨⟨e, f⟩, g⟩, h⟩ := y
+    ext i j <;> fin_cases i <;> fin_cases j <;> simp <;> ring
+  map_smul' a x := by
+    obtain ⟨⟨⟨b, c⟩, d⟩, e⟩ := x
+    ext i j <;> fin_cases i <;> fin_cases j <;> simp
+
+set_option linter.unnecessarySeqFocus false in
+theorem realCl04ToQuaternionMatrixLin_sq (v : (((ℝ × ℝ) × ℝ) × ℝ)) :
+    realCl04ToQuaternionMatrixLin v * realCl04ToQuaternionMatrixLin v =
+      algebraMap ℝ (Matrix (Fin 2) (Fin 2) H) (realCl04Form v) := by
+  obtain ⟨⟨⟨a, b⟩, c⟩, d⟩ := v
+  ext i j <;> fin_cases i <;> fin_cases j <;>
+    simp [realCl04ToQuaternionMatrixLin, Matrix.mul_apply, Matrix.algebraMap_matrix_apply,
+      QuaternionAlgebra.mk_mul_mk] <;>
+    ring_nf
+
+/-- The explicit quaternionic matrix representation of the real Clifford algebra `Cl(0,4)`. -/
+noncomputable def realCl04ToQuaternionMatrix :
+    CliffordAlgebra realCl04Form →ₐ[ℝ] Matrix (Fin 2) (Fin 2) H :=
+  CliffordAlgebra.lift realCl04Form ⟨realCl04ToQuaternionMatrixLin,
+    realCl04ToQuaternionMatrixLin_sq⟩
+
+@[simp]
+theorem realCl04ToQuaternionMatrix_ι (v : (((ℝ × ℝ) × ℝ) × ℝ)) :
+    realCl04ToQuaternionMatrix (CliffordAlgebra.ι realCl04Form v) =
+      !![⟨0, v.1.1.1, v.1.1.2, v.1.2⟩, (v.2 : H);
+        -(v.2 : H), ⟨0, -v.1.1.1, -v.1.1.2, -v.1.2⟩] := by
+  simpa [realCl04ToQuaternionMatrix, realCl04ToQuaternionMatrixLin] using
+    (CliffordAlgebra.lift_ι_apply realCl04ToQuaternionMatrixLin
+      realCl04ToQuaternionMatrixLin_sq v)
+
+set_option linter.unnecessarySeqFocus false in
+set_option maxHeartbeats 4000000 in
+theorem realCl04ToQuaternionMatrix_surjective :
+    Function.Surjective realCl04ToQuaternionMatrix := by
+  intro A
+  let e1 : CliffordAlgebra realCl04Form :=
+    CliffordAlgebra.ι realCl04Form ((((1 : ℝ), 0), 0), 0)
+  let e2 : CliffordAlgebra realCl04Form :=
+    CliffordAlgebra.ι realCl04Form ((((0 : ℝ), 1), 0), 0)
+  let e3 : CliffordAlgebra realCl04Form :=
+    CliffordAlgebra.ι realCl04Form ((((0 : ℝ), 0), 1), 0)
+  let e4 : CliffordAlgebra realCl04Form :=
+    CliffordAlgebra.ι realCl04Form ((((0 : ℝ), 0), 0), 1)
+  refine ⟨((((A 0 0).re + (A 1 1).re) / 2) • (1 : CliffordAlgebra realCl04Form)) +
+      ((((A 0 0).imI - (A 1 1).imI) / 2) • e1) +
+      ((((A 0 0).imJ - (A 1 1).imJ) / 2) • e2) +
+      ((((A 0 0).imK - (A 1 1).imK) / 2) • e3) +
+      ((((A 0 1).re - (A 1 0).re) / 2) • e4) +
+      ((((A 0 0).imK + (A 1 1).imK) / 2) • (e1 * e2)) +
+      ((-((A 0 0).imJ + (A 1 1).imJ) / 2) • (e1 * e3)) +
+      ((((A 0 1).imI + (A 1 0).imI) / 2) • (e1 * e4)) +
+      ((((A 0 0).imI + (A 1 1).imI) / 2) • (e2 * e3)) +
+      ((((A 0 1).imJ + (A 1 0).imJ) / 2) • (e2 * e4)) +
+      ((((A 0 1).imK + (A 1 0).imK) / 2) • (e3 * e4)) +
+      ((((A 1 1).re - (A 0 0).re) / 2) • (e1 * e2 * e3)) +
+      ((((A 0 1).imK - (A 1 0).imK) / 2) • (e1 * e2 * e4)) +
+      ((((A 1 0).imJ - (A 0 1).imJ) / 2) • (e1 * e3 * e4)) +
+      ((((A 0 1).imI - (A 1 0).imI) / 2) • (e2 * e3 * e4)) +
+      ((-((A 0 1).re + (A 1 0).re) / 2) • (e1 * e2 * e3 * e4)), ?_⟩
+  ext i j <;> fin_cases i <;> fin_cases j <;>
+    simp [e1, e2, e3, e4, QuaternionAlgebra.mk_mul_mk] <;>
+    ring_nf
+
+theorem realCl04Clifford_finrank :
+    Module.finrank ℝ (CliffordAlgebra realCl04Form) = 16 := by
+  letI : Invertible (2 : ℝ) := invertibleOfNonzero (by norm_num)
+  let b3raw : Module.Basis (Fin 2 ⊕ Unit) ℝ ((ℝ × ℝ) × ℝ) :=
+    (Module.Basis.finTwoProd ℝ).prod (Module.Basis.singleton Unit ℝ)
+  let b : Module.Basis ((Fin 2 ⊕ Unit) ⊕ Unit) ℝ ((((ℝ × ℝ) × ℝ) × ℝ)) :=
+    b3raw.prod (Module.Basis.singleton Unit ℝ)
+  let e3 : Fin 2 ⊕ Unit ≃ Fin 3 :=
+    (Equiv.sumCongr (Equiv.refl (Fin 2)) finOneEquiv.symm).trans finSumFinEquiv
+  let e4 : (Fin 2 ⊕ Unit) ⊕ Unit ≃ Fin 4 :=
+    (Equiv.sumCongr e3 finOneEquiv.symm).trans finSumFinEquiv
+  let b4 : Module.Basis (Fin 4) ℝ ((((ℝ × ℝ) × ℝ) × ℝ)) := b.reindex e4
+  calc
+    Module.finrank ℝ (CliffordAlgebra realCl04Form) =
+        Module.finrank ℝ (ExteriorAlgebra ℝ ((((ℝ × ℝ) × ℝ) × ℝ))) := by
+      exact LinearEquiv.finrank_eq (CliffordAlgebra.equivExterior realCl04Form)
+    _ = Fintype.card (Finset (Fin 4)) := by
+      exact Module.finrank_eq_card_basis b4.ExteriorAlgebra
+    _ = 16 := by
+      simp
+
+theorem realCl04QuaternionMatrix_finrank :
+    Module.finrank ℝ (Matrix (Fin 2) (Fin 2) H) = 16 := by
+  rw [Module.finrank_matrix]
+  rw [QuaternionAlgebra.finrank_eq_four (-1 : ℝ) 0 (-1 : ℝ)]
+  norm_num
+
+theorem realCl04ToQuaternionMatrix_injective : Function.Injective realCl04ToQuaternionMatrix := by
+  have hcl_succ : Module.finrank ℝ (CliffordAlgebra realCl04Form) = Nat.succ 15 := by
+    simpa using realCl04Clifford_finrank
+  letI : FiniteDimensional ℝ (CliffordAlgebra realCl04Form) :=
+    FiniteDimensional.of_finrank_eq_succ hcl_succ
+  have hdim : Module.finrank ℝ (CliffordAlgebra realCl04Form) =
+      Module.finrank ℝ (Matrix (Fin 2) (Fin 2) H) := by
+    rw [realCl04Clifford_finrank, realCl04QuaternionMatrix_finrank]
+  simpa using
+    ((LinearMap.injective_iff_surjective_of_finrank_eq_finrank
+      (f := realCl04ToQuaternionMatrix.toLinearMap) hdim).mpr
+      realCl04ToQuaternionMatrix_surjective)
+
+/-- The real Clifford algebra `Cl(0,4)` is the full `2 × 2` quaternionic matrix algebra. -/
+noncomputable def realCl04EquivQuaternionMatrix2 :
+    CliffordAlgebra realCl04Form ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) H :=
+  AlgEquiv.ofBijective realCl04ToQuaternionMatrix
+    ⟨realCl04ToQuaternionMatrix_injective, realCl04ToQuaternionMatrix_surjective⟩
+
+@[simp]
+theorem realCl04EquivQuaternionMatrix2_apply_ι (v : (((ℝ × ℝ) × ℝ) × ℝ)) :
+    realCl04EquivQuaternionMatrix2 (CliffordAlgebra.ι realCl04Form v) =
+      !![⟨0, v.1.1.1, v.1.1.2, v.1.2⟩, (v.2 : H);
+        -(v.2 : H), ⟨0, -v.1.1.1, -v.1.1.2, -v.1.2⟩] := by
+  simp [realCl04EquivQuaternionMatrix2]
+
+/-- The standard positive real 4-dimensional quadratic form on `(((ℝ × ℝ) × ℝ) × ℝ)`. -/
+noncomputable abbrev realCl40Form : QuadraticForm ℝ (((ℝ × ℝ) × ℝ) × ℝ) :=
+  -realCl04Form
+
+@[simp] theorem realCl40Form_apply (a b c d : ℝ) :
+    realCl40Form (((a, b), c), d) = a * a + b * b + c * c + d * d := by
+  simp [realCl40Form, realCl04Form]
+  ring
+
+/-- The even real Clifford algebra `Cl⁺(4,0)` is isomorphic to `ℍ × ℍ`. -/
+noncomputable def realEvenCl40EquivQuaternionProd :
+    CliffordAlgebra.even realCl40Form ≃ₐ[ℝ] H × H := by
+  simpa [realCl40Form] using
+    ((CliffordAlgebra.evenEquivEvenNeg (Q := realCl04Form)).symm.trans
+      realEvenCl04EquivQuaternionProd)
+
+set_option linter.unnecessarySeqFocus false in
+/-- The generator map for the explicit `Cl(4,0) ≃ Mat₂(ℍ)` model. -/
+def realCl40ToQuaternionMatrixLin :
+    (((ℝ × ℝ) × ℝ) × ℝ) →ₗ[ℝ] Matrix (Fin 2) (Fin 2) H where
+  toFun v := !![(v.2 : H), ⟨v.1.1.1, v.1.1.2, v.1.2, 0⟩;
+      ⟨v.1.1.1, -v.1.1.2, -v.1.2, 0⟩, -(v.2 : H)]
+  map_add' x y := by
+    obtain ⟨⟨⟨a, b⟩, c⟩, d⟩ := x
+    obtain ⟨⟨⟨e, f⟩, g⟩, h⟩ := y
+    ext i j <;> fin_cases i <;> fin_cases j <;> simp <;> ring
+  map_smul' a x := by
+    obtain ⟨⟨⟨b, c⟩, d⟩, e⟩ := x
+    ext i j <;> fin_cases i <;> fin_cases j <;> simp
+
+set_option linter.unnecessarySeqFocus false in
+theorem realCl40ToQuaternionMatrixLin_sq (v : (((ℝ × ℝ) × ℝ) × ℝ)) :
+    realCl40ToQuaternionMatrixLin v * realCl40ToQuaternionMatrixLin v =
+      algebraMap ℝ (Matrix (Fin 2) (Fin 2) H) (realCl40Form v) := by
+  obtain ⟨⟨⟨a, b⟩, c⟩, d⟩ := v
+  ext i j <;> fin_cases i <;> fin_cases j <;>
+    simp [realCl40ToQuaternionMatrixLin, Matrix.mul_apply, Matrix.algebraMap_matrix_apply,
+      QuaternionAlgebra.mk_mul_mk] <;>
+    ring_nf
+
+/-- The explicit quaternionic matrix representation of the real Clifford algebra `Cl(4,0)`. -/
+noncomputable def realCl40ToQuaternionMatrix :
+    CliffordAlgebra realCl40Form →ₐ[ℝ] Matrix (Fin 2) (Fin 2) H :=
+  CliffordAlgebra.lift realCl40Form ⟨realCl40ToQuaternionMatrixLin,
+    realCl40ToQuaternionMatrixLin_sq⟩
+
+@[simp]
+theorem realCl40ToQuaternionMatrix_ι (v : (((ℝ × ℝ) × ℝ) × ℝ)) :
+    realCl40ToQuaternionMatrix (CliffordAlgebra.ι realCl40Form v) =
+      !![(v.2 : H), ⟨v.1.1.1, v.1.1.2, v.1.2, 0⟩;
+        ⟨v.1.1.1, -v.1.1.2, -v.1.2, 0⟩, -(v.2 : H)] := by
+  simpa [realCl40ToQuaternionMatrix, realCl40ToQuaternionMatrixLin] using
+    (CliffordAlgebra.lift_ι_apply realCl40ToQuaternionMatrixLin
+      realCl40ToQuaternionMatrixLin_sq v)
+
+set_option linter.unnecessarySeqFocus false in
+set_option maxHeartbeats 4000000 in
+theorem realCl40ToQuaternionMatrix_surjective :
+    Function.Surjective realCl40ToQuaternionMatrix := by
+  intro A
+  let e1 : CliffordAlgebra realCl40Form :=
+    CliffordAlgebra.ι realCl40Form ((((1 : ℝ), 0), 0), 0)
+  let e2 : CliffordAlgebra realCl40Form :=
+    CliffordAlgebra.ι realCl40Form ((((0 : ℝ), 1), 0), 0)
+  let e3 : CliffordAlgebra realCl40Form :=
+    CliffordAlgebra.ι realCl40Form ((((0 : ℝ), 0), 1), 0)
+  let e4 : CliffordAlgebra realCl40Form :=
+    CliffordAlgebra.ι realCl40Form ((((0 : ℝ), 0), 0), 1)
+  refine ⟨((((A 0 0).re + (A 1 1).re) / 2) • (1 : CliffordAlgebra realCl40Form)) +
+      ((((A 0 1).re + (A 1 0).re) / 2) • e1) +
+      ((((A 0 1).imI - (A 1 0).imI) / 2) • e2) +
+      ((((A 0 1).imJ - (A 1 0).imJ) / 2) • e3) +
+      ((((A 0 0).re - (A 1 1).re) / 2) • e4) +
+      ((((A 1 1).imI - (A 0 0).imI) / 2) • (e1 * e2)) +
+      ((((A 1 1).imJ - (A 0 0).imJ) / 2) • (e1 * e3)) +
+      ((((A 1 0).re - (A 0 1).re) / 2) • (e1 * e4)) +
+      ((-((A 0 0).imK + (A 1 1).imK) / 2) • (e2 * e3)) +
+      ((-((A 0 1).imI + (A 1 0).imI) / 2) • (e2 * e4)) +
+      ((-((A 0 1).imJ + (A 1 0).imJ) / 2) • (e3 * e4)) +
+      ((-((A 0 1).imK + (A 1 0).imK) / 2) • (e1 * e2 * e3)) +
+      ((-((A 0 0).imI + (A 1 1).imI) / 2) • (e1 * e2 * e4)) +
+      ((-((A 0 0).imJ + (A 1 1).imJ) / 2) • (e1 * e3 * e4)) +
+      ((((A 1 1).imK - (A 0 0).imK) / 2) • (e2 * e3 * e4)) +
+      ((((A 0 1).imK - (A 1 0).imK) / 2) • (e1 * e2 * e3 * e4)), ?_⟩
+  ext i j <;> fin_cases i <;> fin_cases j <;>
+    simp [e1, e2, e3, e4, QuaternionAlgebra.mk_mul_mk] <;>
+    ring_nf
+
+theorem realCl40Clifford_finrank :
+    Module.finrank ℝ (CliffordAlgebra realCl40Form) = 16 := by
+  letI : Invertible (2 : ℝ) := invertibleOfNonzero (by norm_num)
+  let b3raw : Module.Basis (Fin 2 ⊕ Unit) ℝ ((ℝ × ℝ) × ℝ) :=
+    (Module.Basis.finTwoProd ℝ).prod (Module.Basis.singleton Unit ℝ)
+  let b : Module.Basis ((Fin 2 ⊕ Unit) ⊕ Unit) ℝ ((((ℝ × ℝ) × ℝ) × ℝ)) :=
+    b3raw.prod (Module.Basis.singleton Unit ℝ)
+  let e3 : Fin 2 ⊕ Unit ≃ Fin 3 :=
+    (Equiv.sumCongr (Equiv.refl (Fin 2)) finOneEquiv.symm).trans finSumFinEquiv
+  let e4 : (Fin 2 ⊕ Unit) ⊕ Unit ≃ Fin 4 :=
+    (Equiv.sumCongr e3 finOneEquiv.symm).trans finSumFinEquiv
+  let b4 : Module.Basis (Fin 4) ℝ ((((ℝ × ℝ) × ℝ) × ℝ)) := b.reindex e4
+  calc
+    Module.finrank ℝ (CliffordAlgebra realCl40Form) =
+        Module.finrank ℝ (ExteriorAlgebra ℝ ((((ℝ × ℝ) × ℝ) × ℝ))) := by
+      exact LinearEquiv.finrank_eq (CliffordAlgebra.equivExterior realCl40Form)
+    _ = Fintype.card (Finset (Fin 4)) := by
+      exact Module.finrank_eq_card_basis b4.ExteriorAlgebra
+    _ = 16 := by
+      simp
+
+theorem realCl40QuaternionMatrix_finrank :
+    Module.finrank ℝ (Matrix (Fin 2) (Fin 2) H) = 16 := by
+  rw [Module.finrank_matrix]
+  rw [QuaternionAlgebra.finrank_eq_four (-1 : ℝ) 0 (-1 : ℝ)]
+  norm_num
+
+theorem realCl40ToQuaternionMatrix_injective : Function.Injective realCl40ToQuaternionMatrix := by
+  have hcl_succ : Module.finrank ℝ (CliffordAlgebra realCl40Form) = Nat.succ 15 := by
+    simpa using realCl40Clifford_finrank
+  letI : FiniteDimensional ℝ (CliffordAlgebra realCl40Form) :=
+    FiniteDimensional.of_finrank_eq_succ hcl_succ
+  have hdim : Module.finrank ℝ (CliffordAlgebra realCl40Form) =
+      Module.finrank ℝ (Matrix (Fin 2) (Fin 2) H) := by
+    rw [realCl40Clifford_finrank, realCl40QuaternionMatrix_finrank]
+  simpa using
+    ((LinearMap.injective_iff_surjective_of_finrank_eq_finrank
+      (f := realCl40ToQuaternionMatrix.toLinearMap) hdim).mpr
+      realCl40ToQuaternionMatrix_surjective)
+
+/-- The real Clifford algebra `Cl(4,0)` is the full `2 × 2` quaternionic matrix algebra. -/
+noncomputable def realCl40EquivQuaternionMatrix2 :
+    CliffordAlgebra realCl40Form ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) H :=
+  AlgEquiv.ofBijective realCl40ToQuaternionMatrix
+    ⟨realCl40ToQuaternionMatrix_injective, realCl40ToQuaternionMatrix_surjective⟩
+
+@[simp]
+theorem realCl40EquivQuaternionMatrix2_apply_ι (v : (((ℝ × ℝ) × ℝ) × ℝ)) :
+    realCl40EquivQuaternionMatrix2 (CliffordAlgebra.ι realCl40Form v) =
+      !![(v.2 : H), ⟨v.1.1.1, v.1.1.2, v.1.2, 0⟩;
+        ⟨v.1.1.1, -v.1.1.2, -v.1.2, 0⟩, -(v.2 : H)] := by
+  simp [realCl40EquivQuaternionMatrix2]
+
+/-- The standard negative real 5-dimensional quadratic form on
+`((((ℝ × ℝ) × ℝ) × ℝ) × ℝ)`. -/
+noncomputable abbrev realCl05Form : QuadraticForm ℝ ((((ℝ × ℝ) × ℝ) × ℝ) × ℝ) :=
+  CliffordAlgebra.EquivEven.Q' realCl04Form
+
+@[simp] theorem realCl05Form_apply (a b c d e : ℝ) :
+    realCl05Form ((((a, b), c), d), e) =
+      -(a * a + b * b + c * c + d * d + e * e) := by
+  simp [realCl05Form, realCl04Form]
+  ring
+
+/-- The even real Clifford algebra `Cl⁺(0,5)` is isomorphic to `Mat₂(ℍ)`. -/
+noncomputable def realEvenCl05EquivQuaternionMatrix2 :
+    CliffordAlgebra.even realCl05Form ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) H := by
+  simpa [realCl05Form] using
+    ((CliffordAlgebra.equivEven realCl04Form).symm.trans realCl04EquivQuaternionMatrix2)
+
+/-- The standard positive real 5-dimensional quadratic form on
+`((((ℝ × ℝ) × ℝ) × ℝ) × ℝ)`. -/
+noncomputable abbrev realCl50Form : QuadraticForm ℝ ((((ℝ × ℝ) × ℝ) × ℝ) × ℝ) :=
+  -realCl05Form
+
+@[simp] theorem realCl50Form_apply (a b c d e : ℝ) :
+    realCl50Form ((((a, b), c), d), e) = a * a + b * b + c * c + d * d + e * e := by
+  simp [realCl50Form, realCl05Form]
+  ring
+
+/-- The even real Clifford algebra `Cl⁺(5,0)` is isomorphic to `Mat₂(ℍ)`. -/
+noncomputable def realEvenCl50EquivQuaternionMatrix2 :
+    CliffordAlgebra.even realCl50Form ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) H := by
+  simpa [realCl50Form] using
+    ((CliffordAlgebra.evenEquivEvenNeg (Q := realCl05Form)).symm.trans
+      realEvenCl05EquivQuaternionMatrix2)
+
+namespace RealClassification
+
+/-- Canonical quadratic form for `Cl(0,3)` in the real-classification namespace. -/
+noncomputable abbrev Q_0_3 : QuadraticForm ℝ ((ℝ × ℝ) × ℝ) :=
+  realCl03Form
+
+/-- Canonical real-classification entry: `Cl(0,3) ≃ ℍ × ℍ`. -/
+noncomputable def cl_0_3_equivQuaternionProd :
+    CliffordAlgebra Q_0_3 ≃ₐ[ℝ] H × H := by
+  simpa [Q_0_3] using Cl03QuaternionProd.realCl03EquivQuaternionProd
+
+/-- Canonical even real-classification entry: `Cl⁺(0,3) ≃ ℍ`. -/
+noncomputable def cl_0_3_even_equivQuaternion :
+    CliffordAlgebra.even Q_0_3 ≃ₐ[ℝ] H := by
+  simpa [Q_0_3] using realEvenCl03EquivQuaternion
+
+/-- Canonical quadratic form for the even algebra `Cl⁺(0,4)` in the real-classification
+namespace. -/
+noncomputable abbrev Q_0_4 : QuadraticForm ℝ (((ℝ × ℝ) × ℝ) × ℝ) :=
+  realCl04Form
+
+/-- Canonical real-classification entry: `Cl⁺(0,4) ≃ ℍ × ℍ`. -/
+noncomputable def cl_0_4_even_equivQuaternionProd :
+    CliffordAlgebra.even Q_0_4 ≃ₐ[ℝ] H × H := by
+  simpa [Q_0_4] using realEvenCl04EquivQuaternionProd
+
+/-- Canonical real-classification entry: `Cl(0,4) ≃ Mat₂(ℍ)`. -/
+noncomputable def cl_0_4_equivQuaternionMatrix2 :
+    CliffordAlgebra Q_0_4 ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) H := by
+  simpa [Q_0_4] using realCl04EquivQuaternionMatrix2
+
+/-- Canonical quadratic form for `Cl(0,5)` and its even algebra in the real-classification
+namespace. -/
+noncomputable abbrev Q_0_5 : QuadraticForm ℝ ((((ℝ × ℝ) × ℝ) × ℝ) × ℝ) :=
+  realCl05Form
+
+/-- Canonical even real-classification entry: `Cl⁺(0,5) ≃ Mat₂(ℍ)`. -/
+noncomputable def cl_0_5_even_equivQuaternionMatrix2 :
+    CliffordAlgebra.even Q_0_5 ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) H := by
+  simpa [Q_0_5] using realEvenCl05EquivQuaternionMatrix2
+
+/-- Canonical quadratic form for `Cl(4,0)` and its even algebra in the real-classification
+namespace. -/
+noncomputable abbrev Q_4_0 : QuadraticForm ℝ (((ℝ × ℝ) × ℝ) × ℝ) :=
+  realCl40Form
+
+/-- Canonical even real-classification entry: `Cl⁺(4,0) ≃ ℍ × ℍ`. -/
+noncomputable def cl_4_0_even_equivQuaternionProd :
+    CliffordAlgebra.even Q_4_0 ≃ₐ[ℝ] H × H := by
+  simpa [Q_4_0] using realEvenCl40EquivQuaternionProd
+
+/-- Canonical real-classification entry: `Cl(4,0) ≃ Mat₂(ℍ)`. -/
+noncomputable def cl_4_0_equivQuaternionMatrix2 :
+    CliffordAlgebra Q_4_0 ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) H := by
+  simpa [Q_4_0] using realCl40EquivQuaternionMatrix2
+
+/-- Canonical quadratic form for `Cl(5,0)` and its even algebra in the real-classification
+namespace. -/
+noncomputable abbrev Q_5_0 : QuadraticForm ℝ ((((ℝ × ℝ) × ℝ) × ℝ) × ℝ) :=
+  realCl50Form
+
+/-- Canonical even real-classification entry: `Cl⁺(5,0) ≃ Mat₂(ℍ)`. -/
+noncomputable def cl_5_0_even_equivQuaternionMatrix2 :
+    CliffordAlgebra.even Q_5_0 ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) H := by
+  simpa [Q_5_0] using realEvenCl50EquivQuaternionMatrix2
+
+end RealClassification
+
 @[simp] theorem realEvenCl04EquivQuaternionProd_apply_star (x : CliffordAlgebra.even realCl04Form) :
     realEvenCl04EquivQuaternionProd
         ⟨star (x : CliffordAlgebra realCl04Form), by
