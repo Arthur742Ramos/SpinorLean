@@ -697,8 +697,9 @@ theorem pinIsometryRepresentation_comp_spinGroupToPinGroup :
 section SpecialOrthogonal
 
 /-- Once the determinant-one step is established, the ambient spin-to-isometry map factors through
-the packaged special orthogonal subgroup. This isolates the remaining determinant/surjectivity gap
-in the roadmap's double-cover statement. -/
+the packaged special orthogonal subgroup. Downstream covering statements add either a concrete
+generator-closure hypothesis or the exact split-line/Levi image criteria proved in this module
+and its dependents. -/
 noncomputable def spinSpecialOrthogonalRepresentation
     [Module.Free R M] [Module.Finite R M]
     (hdet : ∀ x : spinGroup Q, LinearEquiv.det (spinLinearRepresentation (Q := Q) x) = 1) :
@@ -834,8 +835,7 @@ theorem spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one_of_coe_eq_al
           (by simpa using hneg)
 
 /-- Once one knows that every kernel element is scalar, the ambient isometry kernel is exactly
-`{1, -1}` over a domain. This isolates the remaining central/scalar step in the full double-cover
-theorem. -/
+`{1, -1}` over a domain. This packages the scalar-reduction step used by the full kernel theorem. -/
 theorem spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one_of_kernel_scalars
     [NoZeroDivisors R]
     (hscalar : ∀ x : spinGroup Q, spinIsometryRepresentation (Q := Q) x = 1 →
@@ -1627,8 +1627,9 @@ theorem spinIsometryRepresentation_spinIotaPairOfQuadraticEqNegOne
           pinIsometryRepresentation (Q := Q) (pinIotaOfQuadraticEqNegOne (Q := Q) b hb) := by
           rw [(pinIsometryRepresentation (Q := Q)).map_mul]
 
-/-- A packaged pair-reflection lift in the special orthogonal target. Proving these generators span
-`SO(V,Q)` is the remaining surjectivity gap for the ambient covering map. -/
+/-- A packaged pair-reflection lift in the special orthogonal target. These generators feed the
+conditional covering theorem; the split-line results below show that unrestricted generation can
+fail over fields with nonsquare units. -/
 noncomputable def spinSpecialOrthogonalPairGenerator
     (a b : V) (ha : Q a = -1) (hb : Q b = -1) : Q.specialOrthogonalGroup :=
   spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q)
@@ -2050,9 +2051,8 @@ theorem dualProdTransvectionCliffordUnit_mem_even
 
 omit [Invertible (2 : K)] in
 /-- Conjugation by the explicit unipotent Clifford unit `1 + ι(δ,0)ι(0,w)` realizes the transported
-hyperbolic transvection on vectors. The remaining gap to a genuine spin-image theorem is showing
-that this unit belongs to `spinGroup`; Mathlib currently lacks the needed converse Lipschitz
-criterion. -/
+hyperbolic transvection on vectors. Later theorems package spin-group membership under the
+orthogonal-normalization hypotheses needed for the finite-basis Levi image results. -/
 theorem dualProdTransvectionCliffordUnit_conjAct_ι
     (δ : Module.Dual K W) (w : W) (hδ : δ w = 0)
     (d : Module.Dual K W) (u : W) :
@@ -3587,7 +3587,7 @@ theorem spinIotaPairOfQuadraticEqNegOne_conj_dualProdTransvectionCliffordUnit
 
 /-- In the split hyperbolic form, the pair generator built from `(-(f + δ), w)` and `(-f, w)`
 has an explicit coordinate action on arbitrary `(d, u)`. This packages the basic hyperbolic
-transvection pattern behind the remaining split-rank surjectivity theorem. -/
+transvection pattern used by the split-rank image theorems. -/
 theorem spinSpecialOrthogonalPairGenerator_apply_dualProd
     (f δ : Module.Dual K W) (w : W) (hf : f w = 1) (hδ : δ w = 0)
     (d : Module.Dual K W) (u : W) :
@@ -3623,7 +3623,7 @@ theorem spinSpecialOrthogonalPairGenerator_apply_dualProd
 
 /-- In the split hyperbolic form, the pair generator built from `(-(f + δ), w)` and `(-f, w)`
 acts on the primal vector `(0, w)` by adding the dual correction `-δ`. This is the basic
-hyperbolic transvection pattern behind the remaining split-rank surjectivity theorem. -/
+hyperbolic transvection pattern used by the split-rank image theorems. -/
 theorem spinSpecialOrthogonalPairGenerator_apply_dualProd_primal_transvection
     (f δ : Module.Dual K W) (w : W) (hf : f w = 1) (hδ : δ w = 0) :
     (spinSpecialOrthogonalPairGenerator (Q := QuadraticForm.dualProd K W)

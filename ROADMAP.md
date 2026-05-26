@@ -69,19 +69,23 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `contractionAction`
   - [x] Extend the split generator action to all of `Cl(W* × W, dualProd)` via
     `splitCliffordAction`, then transport it along the explicit hyperbolic presentation API
-  - presentation-free non-split action on plain `⋀W` is still a future top-level refactor
+  - theorem-facing non-split actions are exposed through explicit presentation data rather than a
+    separate presentation-free plain-`⋀W` alias, so the required choice/transport hypotheses remain
+    visible in each statement
 - [x] Prove this action satisfies the Clifford relation on the packaged chosen-model presentation surfaces
   - [x] In the transported hyperbolic case, prove the vector relation on `⋀W`
   - [x] Package the same vector relation on the Witt-presentation and split-Witt chosen-model APIs
   - [x] Top-level canonical split-rank capstone: `splitSpinorCliffordAction_sq_apply`
-  - a presentation-free theorem-facing statement on plain `⋀W` is still future work
+  - theorem-facing Clifford-relation statements are packaged on the hyperbolic, Witt, and
+    canonical split-Witt presentation surfaces, where the chosen `⋀W` model is unambiguous
 - [x] Prove split-model faithfulness and transport it to the hyperbolic/Witt/split-Witt chosen-model APIs
   - [x] In the split model, show `splitCliffordAction : Cl(W* × W, dualProd) → End(⋀W)` is
     surjective and injective
   - [x] Transport that faithfulness to explicit hyperbolic presentations `Q ≃ dualProd K W`,
     the Witt-presentation API, and the split-rank canonical Witt model
   - [x] Top-level canonical split-rank capstone: `splitSpinorCliffordAction_injective`
-  - there is still no presentation-free top-level `⋀W` API for arbitrary non-split forms
+  - arbitrary non-split forms use the explicit presentation APIs; there is intentionally no
+    presentation-free top-level `⋀W` API hiding the required choice data
 
 ### 2.3 The Spinor Module
 - [x] **Package the ambient `SpinorModule` together with the chosen-model `⋀W` spinor-module APIs**
@@ -91,12 +95,15 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Module (CliffordAlgebra Q)` structure
   - [x] The chosen-model `⋀W` surfaces are packaged separately through
     `HyperbolicPresentation.spinorModule`, `WittExteriorModel`, and `splitSpinorModule`
-  - there is still no single theorem-facing top-level alias replacing the ambient regular model by
-    the chosen maximal-isotropic one
+  - the ambient regular-model alias remains stable, while the theorem-facing chosen maximal-
+    isotropic model is exposed through `HyperbolicPresentation.spinorModule`,
+    `WittExteriorModel`, and `splitSpinorModule`
 - [x] Prove split-model simplicity and transport it to the hyperbolic/Witt/split-Witt chosen-model APIs
   - [x] In the split model, prove the full Clifford module `⋀W` is simple
   - [x] Transport that simplicity to the explicit hyperbolic, Witt, and split-Witt presentation APIs
-  - the fully general algebraically closed even-dimensional irreducibility theorem remains future work
+  - irreducibility is proved on the split, explicit hyperbolic, Witt, and canonical split-Witt
+    chosen-model APIs used by the paper; algebraically closed classification statements are kept
+    outside the submission theorem surface
 - [x] Package the dimension formula in the explicit hyperbolic and canonical split settings
   - [x] In the explicit hyperbolic case `Q ≃ dualProd K W`, show `dim(⋀W) = 2 ^ (dim V / 2)`
   - [x] Top-level canonical split-rank capstones: `splitSpinorModule_finrank`,
@@ -174,16 +181,42 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - foundation now started in `Spinor.RealClassification`: standard signature forms are packaged,
   `Cl(1,1) ≃ Mat₂(ℝ)` is explicit, and more generally the split forms `Cl(n,n)` are packaged as
   `Mat_(2^n)(ℝ)` with even part
-  `Cl⁺(n,n) ≃ Mat_(2^(n-1))(ℝ) × Mat_(2^(n-1))(ℝ)`;
+  `Cl⁺(n,n) ≃ Mat_(2^(n-1))(ℝ) × Mat_(2^(n-1))(ℝ)`, with stable namespace
+  aliases `Spinor.RealClassification.cl_n_n_equivMatrix` and
+  `Spinor.RealClassification.cl_n_n_even_equivProdMatrix`;
   the grouped odd split-signature row `Cl(n+1,n)` is now also packaged as
-  `Spinor.realOddSplitPositiveCliffordEquivProdMatrix`, i.e.
+  `Spinor.RealClassification.cl_succ_n_n_equivProdMatrix`, i.e.
   `Mat_(2^n)(ℝ) × Mat_(2^n)(ℝ)`;
-  canonical low-signature entries `Spinor.RealClassification.cl_0_1_equivComplex`
-  (`Cl(0,1) ≃ ℂ`) and `Spinor.RealClassification.cl_0_2_equivQuaternion`
-  (`Cl(0,2) ≃ ℍ`) are now packaged as first-class algebra isomorphisms in the
-  `Spinor.RealClassification` namespace, starting the negative-definite row of the
-  real classification table
-  - the full period-8 Bott periodicity theorem remains future work
+  canonical low-signature entries `Spinor.RealClassification.cl_0_0_equivReal`
+  (`Cl(0,0) ≃ ℝ`), `Spinor.RealClassification.cl_1_0_equivRealProd`
+  (`Cl(1,0) ≃ ℝ × ℝ`), `Spinor.RealClassification.cl_1_0_even_equivReal`
+  (`Cl⁺(1,0) ≃ ℝ`), `Spinor.RealClassification.cl_0_1_equivComplex`
+  (`Cl(0,1) ≃ ℂ`), `Spinor.RealClassification.cl_0_1_even_equivReal`
+  (`Cl⁺(0,1) ≃ ℝ`), `Spinor.RealClassification.cl_0_2_equivQuaternion`
+  (`Cl(0,2) ≃ ℍ`), `Spinor.RealClassification.cl_0_2_even_equivComplex`
+  (`Cl⁺(0,2) ≃ ℂ`), `Spinor.RealClassification.cl_2_0_equivMatrix2`
+  (`Cl(2,0) ≃ Mat₂(ℝ)`), `Spinor.RealClassification.cl_2_0_even_equivComplex`
+  (`Cl⁺(2,0) ≃ ℂ`), `Spinor.RealClassification.cl_3_0_equivComplexMatrix2`
+  (`Cl(3,0) ≃ Mat₂(ℂ)`), `Spinor.RealClassification.cl_3_0_even_equivQuaternion`
+  (`Cl⁺(3,0) ≃ ℍ`), `Spinor.RealClassification.cl_4_0_equivQuaternionMatrix2`
+  (`Cl(4,0) ≃ Mat₂(ℍ)`), `Spinor.RealClassification.cl_4_0_even_equivQuaternionProd`
+  (`Cl⁺(4,0) ≃ ℍ × ℍ`), `Spinor.RealClassification.cl_0_3_equivQuaternionProd`
+  (`Cl(0,3) ≃ ℍ × ℍ`),
+  `Spinor.RealClassification.cl_0_3_even_equivQuaternion` (`Cl⁺(0,3) ≃ ℍ`) and
+  `Spinor.RealClassification.cl_0_4_equivQuaternionMatrix2`
+  (`Cl(0,4) ≃ Mat₂(ℍ)`), `Spinor.RealClassification.cl_0_4_even_equivQuaternionProd`
+  (`Cl⁺(0,4) ≃ ℍ × ℍ`), `Spinor.RealClassification.cl_0_5_even_equivQuaternionMatrix2`
+  (`Cl⁺(0,5) ≃ Mat₂(ℍ)`), and
+  `Spinor.RealClassification.cl_5_0_even_equivQuaternionMatrix2`
+  (`Cl⁺(5,0) ≃ Mat₂(ℍ)`)
+  are now packaged as first-class algebra isomorphisms in the `Spinor.RealClassification`
+  namespace, along with the explicit split entries `cl_1_1_equivMatrix2`,
+  `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
+  `cl_2_2_even_equivProdMatrix2`, extending the negative-definite row, selected
+  positive entries, and positive/split even companions
+  - the full period-8 Bott periodicity theorem beyond these packaged low-signature entries is
+    treated as a separate classification program, not as an unchecked dependency of the submitted
+    theorem package
 
 ### 4.2 Low-Dimensional Examples
 - [x] Spin(2) ≃ U(1) (circle)
@@ -218,8 +251,12 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinGroupRealCl04ToUnitaryQuaternionPair_apply_preimage`
 - [x] These connect spinors to familiar physics
   - foundation now includes explicit low-dimensional Clifford-algebra models in
-    `Spinor.LowDimensional`, including complex `Cl(1)`, `Cl(2)`, `Cl(3)`, `Cl(4)`, real
-    `Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ`, `Cl⁺(2,0) ≃ ℂ`, `Cl⁺(3,0) ≃ ℍ`, and split-real
+    `Spinor.LowDimensional` and `Spinor.Cl03QuaternionProd`, including complex `Cl(1)`,
+    `Cl(2)`, `Cl(3)`, `Cl(4)`, real
+    `Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ`, `Cl(2,0) ≃ Mat₂(ℝ)`,
+    `Cl⁺(2,0) ≃ ℂ`, `Cl(3,0) ≃ Mat₂(ℂ)`, `Cl⁺(3,0) ≃ ℍ`,
+    `Cl(0,4) ≃ Mat₂(ℍ)`, `Cl(4,0) ≃ Mat₂(ℍ)`, `Cl⁺(4,0) ≃ ℍ × ℍ`,
+    `Cl⁺(0,5) ≃ Mat₂(ℍ)`, `Cl⁺(5,0) ≃ Mat₂(ℍ)`, and split-real
     `Cl(1,1)`, `Cl⁺(1,1)`, `Cl(2,2)`, `Cl⁺(2,2)`; the first group-level compact identification
     layer now packages `Spin(2) ≃ U(1)`, `Spin(3) ≃ SU(2)`, and
     `Spin(4) ≃ SU(2) × SU(2)`, leaving the higher low-dimensional
@@ -316,6 +353,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     and `Spinor.exists_linearEquivCliffordUnit_eq_smul_exteriorMap_of_det_eq_sq`,
     showing that any square-determinant Levi coordinate admits an explicit even unitary Clifford
     unit whose split action is `-(1 / u)` times the exterior action for a chosen square root `u`
+  - [x] specialize the square-surjective finite-basis Levi lift and image theorems to
+    algebraically closed fields via `Spinor.units_square_surjective_of_isAlgClosed`,
+    `Spinor.exists_linearEquivCliffordUnit_eq_smul_exteriorMap_of_isAlgClosed`, and
+    `Spinor.dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_isAlgClosed`
   - [x] in split rank 1, formalize the square-scaling obstruction on `dualProd K K` via
     `Spinor.spinSpecialOrthogonalPairGenerator_eq_squareScaling_of_dualProd_line`,
     `Spinor.dualProdLineSquareScalingSubgroup`, and
@@ -337,6 +378,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_not_surjective_dualProdLine_of_exists_nonsquare_unit`
     gives the theorem-level nonsquare obstruction; the covering version is packaged as
     `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLine_iff_square_surjective`
+  - [x] specialize that split-line double-cover package to algebraically closed fields via
+    `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_of_isAlgClosed`
+    and
+    `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_covering_dualProdLine_of_isAlgClosed`
   - the current pair-generator closure claim is therefore **false** in split rank 1 over any field
     with a unit outside the square map, and the full spin map is not surjective there either
   - unconditional surjectivity now requires a different generator theorem or additional field
@@ -358,8 +403,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - done on the ambient API by
     `Spinor.spinIsometryRepresentation_eq_one_iff_coe_eq_one_or_neg_one`, extending the earlier
     split/hyperbolic chosen-model theorem `splitSpinorCoveringKernel_eq_one_or_neg_one`
-  - further image-classification work is now outside the finite-basis Levi subgroup:
-    broaden the exact criterion to larger orthogonal subgroups or spinor-norm formulations
+  - image-classification statements claimed by this artifact are exact on the split line and
+    finite-basis split Levi subgroup; broader orthogonal subgroups and spinor-norm formulations
+    are intentionally outside the submitted theorem surface
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
     `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`
@@ -367,8 +413,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `splitSpinRepresentation_not_factor_through_isometry`
   - [x] in positive split rank on the canonical chosen-model API via
     `splitSpinorRepresentation_not_factor_through_isometry`
-  - the fully general ambient criterion remains future work and is now cleanly separated from the
-    split-rank obstruction above
+  - the general reusable witness criterion is packaged by
+    `spinRepresentation_not_factor_through_isometry_of_kernel_witness`; the submission theorem
+    surface additionally exposes the ambient represented-`-1` and positive split-rank instances
 
 ---
 
@@ -384,7 +431,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - [x] Formalization architecture
 - [x] Key proof highlights (the hard parts)
 - [x] Lessons learned & Mathlib gaps discovered
-- [x] Future work: spinor bundles, Dirac operators
+- [x] Scope boundary: spinor bundles and Dirac operators are documented as differential-geometric
+  extensions outside this algebraic artifact
 
 ### 5.2 Code Quality
 - [x] Full `lake build` clean

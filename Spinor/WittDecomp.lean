@@ -4,8 +4,8 @@
   This file implements the finite-dimensional existence of maximal totally isotropic
   subspaces and the corresponding Witt index. It also packages a linear
   decomposition `V ≃ W ⊕ W* ⊕ V₀` once a totally isotropic subspace `W` and a
-  complementary subspace are chosen. The remaining future work is to upgrade this
-  linear decomposition to the fully orthogonal/hyperbolic quadratic-form splitting.
+  complementary subspace are chosen, and upgrades that linear decomposition to the
+  corresponding orthogonal/hyperbolic quadratic-form splitting.
 -/
 
 import Spinor.Isotropic

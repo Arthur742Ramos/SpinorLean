@@ -192,10 +192,14 @@ Implemented so far:
 - over `ℂ`, the corresponding odd-dimensional grouped sum-of-squares form is now packaged as
   `Cl(2n+1, ℂ) ≃ Mat_(2^n)(ℂ) × Mat_(2^n)(ℂ)` in
   `Spinor.complexOddCliffordEquivProdMatrix`
-- `Spinor.LowDimensional` now records explicit low-dimensional specializations of those algebraic
-  models, including `Cl(1, ℂ) ≃ ℂ × ℂ`, `Cl(2, ℂ) ≃ Mat₂(ℂ)`, `Cl(3, ℂ) ≃ Mat₂(ℂ) × Mat₂(ℂ)`,
-  `Cl(4, ℂ) ≃ Mat₄(ℂ)`, `Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ`, `Cl⁺(2,0) ≃ ℂ`,
-  `Cl⁺(3,0) ≃ ℍ`, `Cl(1,1) ≃ Mat₂(ℝ)`, `Cl⁺(1,1) ≃ ℝ × ℝ`, `Cl(2,2) ≃ Mat₄(ℝ)`, and
+- the low-dimensional files now record explicit specializations of those algebraic models,
+  including `Cl(1, ℂ) ≃ ℂ × ℂ`, `Cl(2, ℂ) ≃ Mat₂(ℂ)`, `Cl(3, ℂ) ≃ Mat₂(ℂ) × Mat₂(ℂ)`,
+  `Cl(4, ℂ) ≃ Mat₄(ℂ)`, `Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ`, `Cl(2,0) ≃ Mat₂(ℝ)`,
+  `Cl⁺(2,0) ≃ ℂ`, `Cl(3,0) ≃ Mat₂(ℂ)`,
+  `Cl⁺(3,0) ≃ ℍ`, `Cl(0,4) ≃ Mat₂(ℍ)`, `Cl(4,0) ≃ Mat₂(ℍ)`,
+  `Cl⁺(4,0) ≃ ℍ × ℍ`, `Cl⁺(0,5) ≃ Mat₂(ℍ)`, `Cl⁺(5,0) ≃ Mat₂(ℍ)`,
+  `Cl(1,1) ≃ Mat₂(ℝ)`,
+  `Cl⁺(1,1) ≃ ℝ × ℝ`, `Cl(2,2) ≃ Mat₄(ℝ)`, and
   `Cl⁺(2,2) ≃ Mat₂(ℝ) × Mat₂(ℝ)`
 - `Spinor.LowDimensional` now also packages the first compact low-dimensional group
   identifications:
@@ -224,7 +228,9 @@ Implemented so far:
   finite-basis split-Levi spin-image iff API used by the paper
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
   subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
-  a nonsquare unit gives a formal non-surjectivity theorem
+  a nonsquare unit gives a formal non-surjectivity theorem; over algebraically closed fields,
+  `units_square_surjective_of_isAlgClosed` specializes this to full split-line double-cover and
+  finite-basis split-Levi lift/image corollaries
 
 - the ambient chiral identification is now closed: the canonical chosen-model positive and
   negative half-spin modules are, by construction, the ambient `positiveChiral` /
@@ -240,11 +246,31 @@ Implemented so far:
   `splitSpinorCliffordAction_sq_apply` (top-level Clifford relation, Phase 2.2), and
   `splitSpinorCliffordAction_injective` (top-level faithfulness, Phase 2.2)
 - `Spinor.RealClassification` now also records the canonical low-signature entries
-  `cl_0_1_equivComplex : Cl(0,1) ≃ₐ[ℝ] ℂ` and
-  `cl_0_2_equivQuaternion : Cl(0,2) ≃ₐ[ℝ] ℍ[ℝ, -1, -1]`, starting the negative-definite
-  row of the Bott periodicity table (Phase 4.1); the same module also packages the grouped odd
-  split-signature row `Cl(n+1,n) ≃ Mat_(2^n)(ℝ) × Mat_(2^n)(ℝ)` as
-  `realOddSplitPositiveCliffordEquivProdMatrix`
+  `cl_n_n_equivMatrix`, `cl_n_n_even_equivProdMatrix`, and
+  `cl_succ_n_n_equivProdMatrix` for the split `Cl(n,n)`, even split `Cl⁺(n,n)`,
+  and grouped odd split `Cl(n+1,n)` rows,
+  `cl_0_0_equivReal : Cl(0,0) ≃ₐ[ℝ] ℝ`,
+  `cl_1_0_equivRealProd : Cl(1,0) ≃ₐ[ℝ] ℝ × ℝ`,
+  `cl_1_0_even_equivReal : Cl⁺(1,0) ≃ₐ[ℝ] ℝ`,
+  `cl_0_1_equivComplex : Cl(0,1) ≃ₐ[ℝ] ℂ`,
+  `cl_0_1_even_equivReal : Cl⁺(0,1) ≃ₐ[ℝ] ℝ`,
+  `cl_0_2_equivQuaternion : Cl(0,2) ≃ₐ[ℝ] ℍ[ℝ, -1, -1]`,
+  `cl_0_2_even_equivComplex : Cl⁺(0,2) ≃ₐ[ℝ] ℂ`,
+  `cl_2_0_equivMatrix2 : Cl(2,0) ≃ₐ[ℝ] Mat₂(ℝ)`,
+  `cl_2_0_even_equivComplex : Cl⁺(2,0) ≃ₐ[ℝ] ℂ`,
+  `cl_3_0_equivComplexMatrix2 : Cl(3,0) ≃ₐ[ℝ] Mat₂(ℂ)`,
+  `cl_3_0_even_equivQuaternion : Cl⁺(3,0) ≃ₐ[ℝ] ℍ`,
+  `cl_0_3_equivQuaternionProd : Cl(0,3) ≃ₐ[ℝ] ℍ × ℍ`,
+  `cl_0_3_even_equivQuaternion : Cl⁺(0,3) ≃ₐ[ℝ] ℍ`,
+  `cl_0_4_equivQuaternionMatrix2 : Cl(0,4) ≃ₐ[ℝ] Mat₂(ℍ)`,
+  `cl_0_4_even_equivQuaternionProd : Cl⁺(0,4) ≃ₐ[ℝ] ℍ × ℍ`,
+  `cl_0_5_even_equivQuaternionMatrix2 : Cl⁺(0,5) ≃ₐ[ℝ] Mat₂(ℍ)`,
+  `cl_4_0_equivQuaternionMatrix2 : Cl(4,0) ≃ₐ[ℝ] Mat₂(ℍ)`,
+  `cl_4_0_even_equivQuaternionProd : Cl⁺(4,0) ≃ₐ[ℝ] ℍ × ℍ`,
+  and `cl_5_0_even_equivQuaternionMatrix2 : Cl⁺(5,0) ≃ₐ[ℝ] Mat₂(ℍ)`, plus the split entries
+  `cl_1_1_equivMatrix2`, `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
+  `cl_2_2_even_equivProdMatrix2`, extending the packaged low-signature portion of
+  the Bott periodicity table (Phase 4.1)
 - `Spinor.Cl03QuaternionProd` now packages the compact quaternionic identification
   `realSpin04EquivUnitaryQuaternionPair :
   spinGroup realCl04Form ≃* unitary ℍ[ℝ, -1, -1] × unitary ℍ[ℝ, -1, -1]`,
@@ -258,9 +284,12 @@ Implemented so far:
   in the formalized theorem package, with target venues recorded for CPP 2027 / ITP 2027 /
   *Advances in Applied Clifford Algebras* (Phase 5.1)
 
-Separate from the current submission package:
+Explicit scope boundaries for this algebraic submission package:
 
-- real classification beyond the split foundation and canonical low-signature entries, i.e. the
+- real classification beyond the split foundation and packaged low-signature entries through
+  `Cl(0,3)`, `Cl(0,4)`, `Cl(3,0)`, and `Cl(4,0)`, selected even positive/negative
+  companions through `Cl⁺(0,5)` and `Cl⁺(5,0)`, and the explicit `Cl(2,2)` / `Cl⁺(2,2)`
+  split entries, i.e. the
   full Bott period-8 table
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
   non-factorization, projective descent, exact split-line iff criterion, and exact finite-basis
