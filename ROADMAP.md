@@ -401,7 +401,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - [x] package the split-Levi determinant square-class obstruction as an actual quotient
     homomorphism: `Spinor.linearEquivDetSquareClassHom` and
     `Spinor.dualProdLeviDetSquareClassHom` have trivial class exactly on the finite-basis
-    split-Levi spin image
+    split-Levi spin image, and
+    `Spinor.dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap` records the corresponding
+    subgroup-kernel equality
   - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
   - done on the ambient API by

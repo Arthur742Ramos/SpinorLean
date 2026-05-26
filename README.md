@@ -228,7 +228,8 @@ Implemented so far:
   finite-basis split-Levi spin-image iff API used by the paper; the same theorem surface now
   exposes the determinant square-class homomorphisms
   `linearEquivDetSquareClassHom` and `dualProdLeviDetSquareClassHom`, whose kernel is exactly the
-  packaged split-Levi spin image
+  packaged split-Levi spin image by
+  `dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap`
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
   subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
   a nonsquare unit gives a formal non-surjectivity theorem; over algebraically closed fields,
