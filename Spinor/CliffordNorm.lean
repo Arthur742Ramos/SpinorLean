@@ -30,6 +30,7 @@ orthogonal-group spinor-norm API.
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_perm`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons`
+* `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self`
 -/
 
 namespace Spinor
@@ -268,6 +269,23 @@ theorem cliffordInvertibleVectorNormUnit_sq_spinorNormClass_eq_one
   rw [QuotientGroup.eq_one_iff]
   exact ⟨cliffordInvertibleVectorNormUnit Q m, rfl⟩
 
+theorem cliffordInvertibleVectorProductNormUnit_sq_spinorNormClass_eq_one
+    (Q : QuadraticForm R M) (l : List (InvertibleQuadraticVector Q)) :
+    ((cliffordInvertibleVectorProductNormUnit Q l ^ 2 : Rˣ) :
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2)) = 1 := by
+  rw [QuotientGroup.eq_one_iff]
+  exact ⟨cliffordInvertibleVectorProductNormUnit Q l, rfl⟩
+
+theorem cliffordInvertibleVectorProductSpinorNormClass_sq_eq_one
+    (Q : QuadraticForm R M) (l : List (InvertibleQuadraticVector Q)) :
+    cliffordInvertibleVectorProductSpinorNormClass Q l ^ 2 = 1 := by
+  let u := cliffordInvertibleVectorProductNormUnit Q l
+  change ((u : Rˣ) :
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2)) ^ 2 = 1
+  change ((u ^ 2 : Rˣ) :
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2)) = 1
+  exact cliffordInvertibleVectorProductNormUnit_sq_spinorNormClass_eq_one Q l
+
 @[simp]
 theorem cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons
     (Q : QuadraticForm R M) (m : InvertibleQuadraticVector Q)
@@ -295,5 +313,13 @@ theorem cliffordInvertibleVectorProductSpinorNormClass_append_cons_self_cons
   rw [cliffordInvertibleVectorProductSpinorNormClass_append,
     cliffordInvertibleVectorProductSpinorNormClass_append,
     cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons]
+
+@[simp]
+theorem cliffordInvertibleVectorProductSpinorNormClass_append_self
+    (Q : QuadraticForm R M) (l : List (InvertibleQuadraticVector Q)) :
+    cliffordInvertibleVectorProductSpinorNormClass Q (l ++ l) = 1 := by
+  rw [cliffordInvertibleVectorProductSpinorNormClass_append]
+  simpa [pow_two] using
+    cliffordInvertibleVectorProductSpinorNormClass_sq_eq_one Q l
 
 end Spinor

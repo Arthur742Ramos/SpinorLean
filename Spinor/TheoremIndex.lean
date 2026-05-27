@@ -174,8 +174,11 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_perm
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_reverse
 #check Spinor.cliffordInvertibleVectorNormUnit_sq_spinorNormClass_eq_one
+#check Spinor.cliffordInvertibleVectorProductNormUnit_sq_spinorNormClass_eq_one
+#check Spinor.cliffordInvertibleVectorProductSpinorNormClass_sq_eq_one
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_cons_self_cons
+#check Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self
 
 #check Spinor.complexEvenCliffordEquivMatrix
 #check Spinor.complexOddCliffordEquivProdMatrix

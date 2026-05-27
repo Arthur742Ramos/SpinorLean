@@ -262,10 +262,10 @@ Implemented so far:
   `cliffordVectorProductNormScalar_perm`,
   `cliffordInvertibleVectorProductNormUnit_perm`, and
   `cliffordInvertibleVectorProductSpinorNormClass_perm`, and inserting a repeated invertible
-  vector pair is square-class-trivial via
-  `cliffordInvertibleVectorProductSpinorNormClass_append_cons_self_cons`; this is a
-  reflection-product substrate, not an independence theorem for arbitrary orthogonal
-  decompositions
+  vector pair or duplicating an entire invertible-vector product is square-class-trivial via
+  `cliffordInvertibleVectorProductSpinorNormClass_append_cons_self_cons` and
+  `cliffordInvertibleVectorProductSpinorNormClass_append_self`; this is a reflection-product
+  substrate, not an independence theorem for arbitrary orthogonal decompositions
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
   subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
   a nonsquare unit gives a formal non-surjectivity theorem; over algebraically closed fields,
@@ -350,8 +350,8 @@ Explicit scope boundaries for this algebraic submission package:
   non-factorization, projective descent, exact split-line iff criterion, exact finite-basis
   split-Levi spin-image iff theorem, and onto split-Levi determinant square-class quotient
   character / quotient isomorphism with its split-Levi spinor-norm-facing wrappers and the
-  global Clifford-level vector-product norm formula with product-order invariance and repeated-pair
-  square-class cancellation
+  global Clifford-level vector-product norm formula with product-order invariance, repeated-pair
+  square-class cancellation, and duplicated-product square-class triviality
 - a full global orthogonal-group spinor-norm theory beyond the product-level Clifford norm and
   finite-basis split-Levi square-class APIs
 
