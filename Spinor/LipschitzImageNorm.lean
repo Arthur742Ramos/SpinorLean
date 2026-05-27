@@ -25,7 +25,10 @@ Lipschitz-image level without claiming a descended orthogonal-group spinor norm.
 * `Spinor.lipschitzLinearImageChosenSpinorNormClass`
 * `Spinor.LipschitzLinearImageSpinorNormLiftIndependent`
 * `Spinor.LipschitzLinearImageSpinorNormDescends`
+* `Spinor.LipschitzSpinorNormClassTrivialOnLinearKernel`
+* `Spinor.lipschitzLinearImageSpinorNormLiftIndependent_of_factorizationIndependent_of_trivialOnLinearKernel`
 * `Spinor.lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent`
+* `Spinor.lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel`
 * `Spinor.lipschitzLinearImageSpinorNormClassHomOfDescends`
 -/
 
@@ -118,6 +121,21 @@ structure LipschitzLinearImageSpinorNormDescends [Invertible (2 : R)]
     chosenLipschitzSpinorNormClass Q x = chosenLipschitzSpinorNormClass Q y
 
 /--
+The kernel-triviality obligation for descending the factorization-independent Lipschitz
+spinor norm through the linear representation.
+
+Given factorization independence, the chosen square class is already a monoid homomorphism
+on `lipschitzGroup Q`. This structure records the extra condition that this homomorphism is
+trivial on the kernel of `lipschitzLinearRepresentation`.
+-/
+structure LipschitzSpinorNormClassTrivialOnLinearKernel [Invertible (2 : R)]
+    (Q : QuadraticForm R M)
+    (hfac : LipschitzSpinorNormClassFactorizationIndependent Q) : Prop where
+  eq_one_of_linearRepresentation_eq_one : ∀ x : lipschitzGroup Q,
+    lipschitzLinearRepresentation (Q := Q) x = 1 →
+    lipschitzSpinorNormClassHomOfFactorizationIndependent Q hfac x = 1
+
+/--
 Under lift independence, the chosen image-level square class agrees with any Lipschitz lift of
 the same image element.
 -/
@@ -131,6 +149,27 @@ theorem lipschitzLinearImageChosenSpinorNormClass_eq_chosenLipschitzSpinorNormCl
     ((lipschitzLinearImageChosenLift_spec Q g).trans hx.symm)
 
 /--
+Factorization independence plus kernel-triviality of the induced Lipschitz-group hom imply
+lift independence on the image of `lipschitzLinearRepresentation`.
+-/
+theorem lipschitzLinearImageSpinorNormLiftIndependent_of_factorizationIndependent_of_trivialOnLinearKernel
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hfac : LipschitzSpinorNormClassFactorizationIndependent Q)
+    (hker : LipschitzSpinorNormClassTrivialOnLinearKernel Q hfac) :
+    LipschitzLinearImageSpinorNormLiftIndependent Q where
+  eq_of_linearRepresentation_eq x y hx := by
+    let φ := lipschitzSpinorNormClassHomOfFactorizationIndependent Q hfac
+    change φ x = φ y
+    apply mul_inv_eq_one.mp
+    have hlin : lipschitzLinearRepresentation (Q := Q) (x * y⁻¹) = 1 := by
+      rw [(lipschitzLinearRepresentation (Q := Q)).map_mul,
+        (lipschitzLinearRepresentation (Q := Q)).map_inv, hx]
+      exact mul_inv_cancel _
+    have hφ : φ (x * y⁻¹) = 1 :=
+      hker.eq_one_of_linearRepresentation_eq_one (x * y⁻¹) hlin
+    simpa [φ, map_mul, map_inv] using hφ
+
+/--
 Factorization independence plus lift independence imply the chosen-level descent obligations
 for the Lipschitz linear image.
 -/
@@ -142,6 +181,19 @@ theorem lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent
   map_one := chosenLipschitzSpinorNormClass_one_of_factorizationIndependent Q hfac
   map_mul := chosenLipschitzSpinorNormClass_mul_of_factorizationIndependent Q hfac
   eq_of_linearRepresentation_eq := hlift.eq_of_linearRepresentation_eq
+
+/--
+Factorization independence plus kernel-triviality imply the chosen-level descent obligations
+for the Lipschitz linear image.
+-/
+theorem lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hfac : LipschitzSpinorNormClassFactorizationIndependent Q)
+    (hker : LipschitzSpinorNormClassTrivialOnLinearKernel Q hfac) :
+    LipschitzLinearImageSpinorNormDescends Q :=
+  lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent Q hfac
+    (lipschitzLinearImageSpinorNormLiftIndependent_of_factorizationIndependent_of_trivialOnLinearKernel
+      Q hfac hker)
 
 /--
 Under the explicit descent obligations, the chosen image-level square class agrees with any

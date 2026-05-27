@@ -43,6 +43,7 @@ an orthogonal-group spinor-norm API.
 * `Spinor.lipschitzVectorFactorization`
 * `Spinor.chosenLipschitzSpinorNormClass`
 * `Spinor.LipschitzSpinorNormClassFactorizationIndependent`
+* `Spinor.lipschitzSpinorNormClassHomOfFactorizationIndependent`
 * `Spinor.exists_lipschitzVectorFactorization_mul_chosenSpinorNormClass_eq`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self`
@@ -699,6 +700,29 @@ theorem chosenLipschitzSpinorNormClass_mul_of_factorizationIndependent
             ((lipschitzVectorFactorization Q x).mul (lipschitzVectorFactorization Q y))
     _ = chosenLipschitzSpinorNormClass Q x * chosenLipschitzSpinorNormClass Q y := by
           simp [chosenLipschitzSpinorNormClass]
+
+/--
+Under factorization independence, the chosen Lipschitz square-class API is a monoid
+homomorphism on the full Lipschitz group.
+
+This is still conditional: the input hypothesis is exactly the missing global
+factorization-independence theorem for Lipschitz vector products.
+-/
+noncomputable def lipschitzSpinorNormClassHomOfFactorizationIndependent
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (h : LipschitzSpinorNormClassFactorizationIndependent Q) :
+    lipschitzGroup Q →*
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2) where
+  toFun := chosenLipschitzSpinorNormClass Q
+  map_one' := chosenLipschitzSpinorNormClass_one_of_factorizationIndependent Q h
+  map_mul' := chosenLipschitzSpinorNormClass_mul_of_factorizationIndependent Q h
+
+@[simp]
+theorem lipschitzSpinorNormClassHomOfFactorizationIndependent_apply
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (h : LipschitzSpinorNormClassFactorizationIndependent Q) (x : lipschitzGroup Q) :
+    lipschitzSpinorNormClassHomOfFactorizationIndependent Q h x =
+      chosenLipschitzSpinorNormClass Q x := rfl
 
 /-- For any two Lipschitz elements, the chosen square classes can be realized by a
 factorization of their product whose square class is the product of the chosen values. This
