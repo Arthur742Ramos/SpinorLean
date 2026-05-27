@@ -199,7 +199,7 @@ The same artifact also proves the chosen-model spinor interface, the split-rank
 kernel/projective-descent package, explicit transvection and chosen-line
 square-scaling lifts, the Levi-projective exterior-action bridge, and the exact
 split-line image criterion. Full Bott-period-$8$ real classification beyond
-the packaged low-signature entries, full all-orthogonal-group image
+the packaged low-signature entries through $\Cl(0,8)$, full all-orthogonal-group image
 classification and global spinor-norm theory, and scheme-theoretic spin-cover
 statements are explicit scope boundaries, not assumptions behind the results
 claimed below.
@@ -432,7 +432,11 @@ $\Cl(6,0) \simeq \Mat_4(\mathbb{H})$. The module
 \code{Cl07RealMatrixProd.lean} adds the next negative row,
 with
 $\Cl^+(0,7) \simeq \Mat_8(\mathbb{R})$ and
-$\Cl(0,7) \simeq \Mat_8(\mathbb{R}) \times \Mat_8(\mathbb{R})$. These
+$\Cl(0,7) \simeq \Mat_8(\mathbb{R}) \times \Mat_8(\mathbb{R})$. The module
+\code{Cl08RealMatrix.lean} closes the negative period-eight row in the same
+explicit style, with
+$\Cl^+(0,8) \simeq \Mat_8(\mathbb{R}) \times \Mat_8(\mathbb{R})$ and
+$\Cl(0,8) \simeq \Mat_{16}(\mathbb{R})$. These
 supporting rows are not the main theorem of
 the present paper, but they show that the chosen-model and orthogonal-action
 APIs are already sufficient for later formal developments connecting the
@@ -1481,7 +1485,7 @@ $\bigwedge W$ and more about identifying how much of the split Levi picture is
 already visible inside explicit Clifford formulas over a general field. The
 artifact boundary is consequently sharp: broader orthogonal subgroups, full
 global spinor-norm formulations, Bott-periodic classification beyond the
-packaged low-dimensional rows, and scheme-theoretic
+packaged low-dimensional rows through $\Cl(0,8)$, and scheme-theoretic
 spin-cover developments are not used by the stated results and are kept outside
 this algebraic submission package.
 
