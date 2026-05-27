@@ -23,7 +23,9 @@ Lipschitz-image level without claiming a descended orthogonal-group spinor norm.
 * `Spinor.lipschitzLinearImageChosenLift`
 * `Spinor.lipschitzLinearImageChosenNormUnit`
 * `Spinor.lipschitzLinearImageChosenSpinorNormClass`
+* `Spinor.LipschitzLinearImageSpinorNormLiftIndependent`
 * `Spinor.LipschitzLinearImageSpinorNormDescends`
+* `Spinor.lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent`
 * `Spinor.lipschitzLinearImageSpinorNormClassHomOfDescends`
 -/
 
@@ -83,6 +85,20 @@ theorem star_mul_self_eq_algebraMap_lipschitzLinearImageChosenNormUnit
     (lipschitzLinearImageChosenLift Q g)
 
 /--
+The lift-independence obligation for the chosen Lipschitz square-class API on the image of
+`lipschitzLinearRepresentation`.
+
+This is separate from factorization independence: it says that two Lipschitz-group elements
+with the same linear representation have the same chosen square-class value.
+-/
+structure LipschitzLinearImageSpinorNormLiftIndependent [Invertible (2 : R)]
+    (Q : QuadraticForm R M) : Prop where
+  eq_of_linearRepresentation_eq : ∀ x y : lipschitzGroup Q,
+    lipschitzLinearRepresentation (Q := Q) x =
+      lipschitzLinearRepresentation (Q := Q) y →
+    chosenLipschitzSpinorNormClass Q x = chosenLipschitzSpinorNormClass Q y
+
+/--
 The exact extra obligations needed for the chosen Lipschitz square-class API to descend to a
 monoid homomorphism on the image of `lipschitzLinearRepresentation`.
 
@@ -100,6 +116,32 @@ structure LipschitzLinearImageSpinorNormDescends [Invertible (2 : R)]
     lipschitzLinearRepresentation (Q := Q) x =
       lipschitzLinearRepresentation (Q := Q) y →
     chosenLipschitzSpinorNormClass Q x = chosenLipschitzSpinorNormClass Q y
+
+/--
+Under lift independence, the chosen image-level square class agrees with any Lipschitz lift of
+the same image element.
+-/
+theorem lipschitzLinearImageChosenSpinorNormClass_eq_chosenLipschitzSpinorNormClass_of_liftIndependent
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (h : LipschitzLinearImageSpinorNormLiftIndependent Q) (g : lipschitzLinearImage Q)
+    (x : lipschitzGroup Q) (hx : lipschitzLinearRepresentation (Q := Q) x = g) :
+    lipschitzLinearImageChosenSpinorNormClass Q g =
+      chosenLipschitzSpinorNormClass Q x :=
+  h.eq_of_linearRepresentation_eq (lipschitzLinearImageChosenLift Q g) x
+    ((lipschitzLinearImageChosenLift_spec Q g).trans hx.symm)
+
+/--
+Factorization independence plus lift independence imply the chosen-level descent obligations
+for the Lipschitz linear image.
+-/
+theorem lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hfac : LipschitzSpinorNormClassFactorizationIndependent Q)
+    (hlift : LipschitzLinearImageSpinorNormLiftIndependent Q) :
+    LipschitzLinearImageSpinorNormDescends Q where
+  map_one := chosenLipschitzSpinorNormClass_one_of_factorizationIndependent Q hfac
+  map_mul := chosenLipschitzSpinorNormClass_mul_of_factorizationIndependent Q hfac
+  eq_of_linearRepresentation_eq := hlift.eq_of_linearRepresentation_eq
 
 /--
 Under the explicit descent obligations, the chosen image-level square class agrees with any

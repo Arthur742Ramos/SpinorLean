@@ -108,8 +108,11 @@ factorization; factorization-level identity and product wrappers prove
 multiplicativity for the stored norm units and square classes. The declaration
 \code{lipschitzLinearImageChosenSpinorNormClass} carries the same chosen-lift
 interface to the image of the Lipschitz linear representation, and
-\code{LipschitzLinearImageSpinorNormDescends} isolates the exact additional
-descent obligations needed to turn this image-level value into a monoid hom;
+\code{LipschitzSpinorNormClassFactorizationIndependent} and
+\code{LipschitzLinearImageSpinorNormLiftIndependent} isolate the factorization-
+and lift-independence obligations whose combination implies
+\code{LipschitzLinearImageSpinorNormDescends}, the conditional descent package
+needed to turn this image-level value into a monoid hom;
 we prove invariance of these product-level square classes under
 reordering and reversal of the chosen vector list, cancellation of
 repeated invertible-vector pairs, and triviality of duplicated products,
@@ -126,8 +129,8 @@ explicit chosen-model Levi-lift, and finite-basis split-Levi image corollaries
 become unconditional there.
 The artifact comprises
 $30$ Lean source files totaling
-$24{,}338$ physical lines across the repository, of which $28$ files and
-$24{,}289$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$24{,}427$ physical lines across the repository, of which $28$ files and
+$24{,}378$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
@@ -224,8 +227,9 @@ Lipschitz-group wrapper when \(2\) is invertible, a noncanonical chosen
 Lipschitz square-class wrapper for the selected factorization, factorization-level
 identity/product wrappers proving multiplication of stored norm units and square
 classes, a noncanonical chosen-lift wrapper on the Lipschitz linear image,
-an explicit conditional descent-obligation API for a future image-level monoid
-hom, product-order invariance, repeated-pair square-class cancellation, and
+explicit conditional factorization-independence, lift-independence, and
+descent-obligation APIs for a future image-level monoid hom, product-order
+invariance, repeated-pair square-class cancellation, and
 duplicated-product square-class triviality for products, contiguous subproducts,
 and separated repeated subproducts after permutation into the repeated shape.
 The real-classification surface also includes the theorem-facing
@@ -346,7 +350,7 @@ Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
 \Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
 Build command & \code{lake build} \\
 Lean files under \code{Spinor/} & $28$ \\
-Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $24{,}289$ \\
+Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $24{,}378$ \\
 \code{sorry} occurrences under \code{Spinor/} & $0$
 \end{tabularx}
 \end{center}
@@ -448,9 +452,12 @@ prove the expected product formulas for norm units and square classes. The compa
 chooses a Lipschitz lift of an element in the image of
 \code{lipschitzLinearRepresentation} and exposes the same noncanonical norm
 unit and square class at that image level. It also defines
-\code{LipschitzLinearImageSpinorNormDescends}, whose fields are precisely
-identity, product, and lift-independence obligations; assuming them gives the
-monoid hom \code{lipschitzLinearImageSpinorNormClassHomOfDescends}.
+\code{LipschitzSpinorNormClassFactorizationIndependent} and
+\code{LipschitzLinearImageSpinorNormLiftIndependent}; the former implies
+identity and product laws for the chosen Lipschitz square class, and together
+they imply \code{LipschitzLinearImageSpinorNormDescends}. Assuming those
+descent obligations gives the image-level monoid hom recorded in the theorem
+index.
 Decomposition-independence across different
 Cartan--Dieudonne factorizations, lift-independence on the linear image, and
 the resulting orthogonal-group spinor norm remain later work.
@@ -1561,9 +1568,10 @@ associated noncanonical chosen square class has order invariance, repeated-pair
 cancellation, duplicated-product/subproduct triviality, and factorization-level
 product formulas for concatenated Lipschitz factorizations, including separated
 repeated subproducts after permutation into the repeated shape; the companion
-noncanonical chosen-lift wrapper and conditional descent-obligation API expose
-this data on the Lipschitz linear image, but no global orthogonal-group
-spinor-norm theory is claimed. Over fields with
+noncanonical chosen-lift wrapper and conditional factorization-independence,
+lift-independence, and descent-obligation APIs expose this data on the
+Lipschitz linear image, but no global orthogonal-group spinor-norm theory is
+claimed. Over fields with
 square-surjective unit group, every finite-basis Levi element lies in that spin
 image; the new algebraically closed wrappers expose both the explicit lift and
 the image theorem in this common case without an extra square-surjectivity
@@ -1575,8 +1583,9 @@ global orthogonal-group spinor-norm formulations beyond the factorization-existe
 Clifford/Lipschitz norm and its order-invariant, repeated-pair-stable,
 duplicated-product/subproduct-stable square-class product, factorization-level
 Lipschitz product wrappers, and noncanonical Lipschitz linear-image wrapper /
-conditional descent-obligation API, including separated repeated subproducts after
-permutation into the repeated shape, recursive
+conditional factorization-independence, lift-independence, and descent-obligation
+APIs, including separated repeated subproducts after permutation into the repeated
+shape, recursive
 arbitrary-signature Bott-periodic classification beyond the packaged
 \code{periodEightTable} first-period rows, and scheme-theoretic spin-cover
 developments are not used by the stated results and are kept outside this

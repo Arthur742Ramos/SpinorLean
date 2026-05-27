@@ -203,6 +203,9 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.exists_lipschitzVectorFactorization_mul_spinorNormClass_eq
 #check Spinor.chosenLipschitzNormUnit
 #check Spinor.chosenLipschitzSpinorNormClass
+#check Spinor.LipschitzSpinorNormClassFactorizationIndependent
+#check Spinor.chosenLipschitzSpinorNormClass_one_of_factorizationIndependent
+#check Spinor.chosenLipschitzSpinorNormClass_mul_of_factorizationIndependent
 #check Spinor.exists_lipschitzVectorFactorization_mul_chosenSpinorNormClass_eq
 #check Spinor.chosenLipschitzSpinorNormClass_sq_eq_one
 #check Spinor.star_mul_self_eq_algebraMap_chosenLipschitzNormUnit
@@ -213,7 +216,10 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.lipschitzLinearImageChosenSpinorNormClass
 #check Spinor.lipschitzLinearImageChosenSpinorNormClass_sq_eq_one
 #check Spinor.star_mul_self_eq_algebraMap_lipschitzLinearImageChosenNormUnit
+#check Spinor.LipschitzLinearImageSpinorNormLiftIndependent
 #check Spinor.LipschitzLinearImageSpinorNormDescends
+#check Spinor.lipschitzLinearImageChosenSpinorNormClass_eq_chosenLipschitzSpinorNormClass_of_liftIndependent
+#check Spinor.lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent
 #check Spinor.lipschitzLinearImageChosenSpinorNormClass_eq_chosenLipschitzSpinorNormClass_of_descends
 #check Spinor.lipschitzLinearImageSpinorNormClassHomOfDescends
 #check Spinor.lipschitzLinearImageSpinorNormClassHomOfDescends_apply

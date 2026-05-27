@@ -272,10 +272,12 @@ Implemented so far:
   multiply both norm units and square classes; the noncanonical
   `chosenLipschitzNormUnit` and `chosenLipschitzSpinorNormClass` expose the resulting chosen
   Lipschitz square-class API without asserting decomposition independence, while
+  `LipschitzSpinorNormClassFactorizationIndependent` isolates the factorization-independence
+  hypothesis under which the chosen value becomes trivial at `1` and multiplicative.
   `LipschitzImageNorm` exposes the corresponding noncanonical chosen-lift API on the image of
-  `lipschitzLinearRepresentation` and packages `LipschitzLinearImageSpinorNormDescends` as the
-  exact conditional obligations that would turn the chosen image-level square class into a monoid
-  homomorphism; the scalar, unit, and
+  `lipschitzLinearRepresentation`, separates the lift-independence obligation, and packages
+  `LipschitzLinearImageSpinorNormDescends` as the conditional obligations that would turn the
+  chosen image-level square class into a monoid homomorphism; the scalar, unit, and
   square-class products
   are invariant under list permutation and reversal via
   `cliffordVectorProductNormScalar_perm`,
@@ -378,7 +380,7 @@ Explicit scope boundaries for this algebraic submission package:
   triviality, including separated repeated subproducts after permutation into the repeated shape
 - a full global orthogonal-group spinor-norm theory beyond the factorization-existence
   Clifford/Lipschitz norm package, its factorization-level Lipschitz product wrappers,
-  noncanonical Lipschitz linear-image wrapper and conditional descent-obligation API, and
-  finite-basis split-Levi square-class APIs
+  noncanonical Lipschitz linear-image wrapper and conditional factorization-independence,
+  lift-independence, and descent-obligation APIs, and finite-basis split-Levi square-class APIs
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

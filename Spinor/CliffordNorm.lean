@@ -42,6 +42,7 @@ an orthogonal-group spinor-norm API.
 * `Spinor.LipschitzVectorFactorization.spinorNormClass_mul`
 * `Spinor.lipschitzVectorFactorization`
 * `Spinor.chosenLipschitzSpinorNormClass`
+* `Spinor.LipschitzSpinorNormClassFactorizationIndependent`
 * `Spinor.exists_lipschitzVectorFactorization_mul_chosenSpinorNormClass_eq`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self`
@@ -656,6 +657,48 @@ noncomputable def chosenLipschitzSpinorNormClass [Invertible (2 : R)]
     (Q : QuadraticForm R M) (x : lipschitzGroup Q) :
     Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2) :=
   (lipschitzVectorFactorization Q x).spinorNormClass
+
+/--
+The factorization-independence theorem needed to turn the noncomputable chosen
+Lipschitz square-class value into a genuine monoid-level spinor norm on the
+Lipschitz group.
+
+This structure does not prove factorization independence. It records the exact
+Cartan--Dieudonne-style obligation: any two Lipschitz vector factorizations of
+the same Lipschitz-group element have the same square class.
+-/
+structure LipschitzSpinorNormClassFactorizationIndependent [Invertible (2 : R)]
+    (Q : QuadraticForm R M) : Prop where
+  eq_of_factorizations : ∀ {x : lipschitzGroup Q}
+    (F G : LipschitzVectorFactorization Q x), F.spinorNormClass = G.spinorNormClass
+
+/-- Under factorization independence, the chosen Lipschitz square class is trivial at `1`. -/
+theorem chosenLipschitzSpinorNormClass_one_of_factorizationIndependent
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (h : LipschitzSpinorNormClassFactorizationIndependent Q) :
+    chosenLipschitzSpinorNormClass Q (1 : lipschitzGroup Q) = 1 := by
+  calc
+    chosenLipschitzSpinorNormClass Q (1 : lipschitzGroup Q) =
+        (LipschitzVectorFactorization.one (Q := Q)).spinorNormClass := by
+          exact h.eq_of_factorizations
+            (lipschitzVectorFactorization Q (1 : lipschitzGroup Q))
+            (LipschitzVectorFactorization.one (Q := Q))
+    _ = 1 := by simp
+
+/-- Under factorization independence, the chosen Lipschitz square class is multiplicative. -/
+theorem chosenLipschitzSpinorNormClass_mul_of_factorizationIndependent
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (h : LipschitzSpinorNormClassFactorizationIndependent Q) (x y : lipschitzGroup Q) :
+    chosenLipschitzSpinorNormClass Q (x * y) =
+      chosenLipschitzSpinorNormClass Q x * chosenLipschitzSpinorNormClass Q y := by
+  calc
+    chosenLipschitzSpinorNormClass Q (x * y) =
+        ((lipschitzVectorFactorization Q x).mul
+          (lipschitzVectorFactorization Q y)).spinorNormClass := by
+          exact h.eq_of_factorizations (lipschitzVectorFactorization Q (x * y))
+            ((lipschitzVectorFactorization Q x).mul (lipschitzVectorFactorization Q y))
+    _ = chosenLipschitzSpinorNormClass Q x * chosenLipschitzSpinorNormClass Q y := by
+          simp [chosenLipschitzSpinorNormClass]
 
 /-- For any two Lipschitz elements, the chosen square classes can be realized by a
 factorization of their product whose square class is the product of the chosen values. This
