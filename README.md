@@ -30,6 +30,7 @@ SpinorLean/
 │   ├── SpinRep.lean        -- Restriction of the action to `spinGroup`
 │   ├── Chiral.lean         -- Transported chiral decomposition and spin invariance
 │   ├── OrthogonalAction.lean -- Ambient spin-vector action and isometry homomorphism
+│   ├── CliffordNorm.lean -- Clifford star-norm formulas for vector products
 │   ├── ComplexClassification.lean -- Periodicity: complex even/odd matrix models
 │   ├── RealClassification.lean -- Periodicity: split `(n,n)` real matrix models + low-signature entries
 │   ├── LowDimensional.lean -- Explicit low-dim Clifford models + Spin(2), Spin(3) group IDs
@@ -251,6 +252,13 @@ Implemented so far:
   `linearEquivSplitLeviSpinorNormHom` and `dualProdLeviSpinorNormHom` expose this proved
   finite-basis split-Levi character under spinor-norm-facing names without claiming a full
   orthogonal-group spinor-norm API
+- `Spinor.CliffordNorm` now packages the global Clifford-level product formula
+  `star_cliffordVectorProduct_mul_cliffordVectorProduct`, identifying
+  `star (ι v₁ ... ι vₙ) * (ι v₁ ... ι vₙ)` with the scalar product of the signed quadratic
+  values, together with the invertible-vector unit and square-class forms
+  `cliffordInvertibleVectorProductNormUnit` and
+  `cliffordInvertibleVectorProductSpinorNormClass`; this is a reflection-product substrate, not
+  an independence theorem for arbitrary orthogonal decompositions
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
   subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
   a nonsquare unit gives a formal non-surjectivity theorem; over algebraically closed fields,
@@ -334,6 +342,9 @@ Explicit scope boundaries for this algebraic submission package:
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
   non-factorization, projective descent, exact split-line iff criterion, exact finite-basis
   split-Levi spin-image iff theorem, and onto split-Levi determinant square-class quotient
-  character / quotient isomorphism with its split-Levi spinor-norm-facing wrappers
+  character / quotient isomorphism with its split-Levi spinor-norm-facing wrappers and the
+  global Clifford-level vector-product norm formula
+- a full global orthogonal-group spinor-norm theory beyond the product-level Clifford norm and
+  finite-basis split-Levi square-class APIs
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

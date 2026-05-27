@@ -53,7 +53,8 @@ the onto determinant square-class characters with their kernel theorems in
 linear coordinates and on the canonical split Levi, the resulting quotient
 isomorphisms modulo the corresponding spin-image subgroups to the square-class
 group, local split-Levi spinor-norm-facing wrappers for these same characters,
-and the exact split-line image / double-cover criterion. The full Bott-period-8
+the exact split-line image / double-cover criterion, and the Clifford-level
+vector-product norm formula with its invertible-vector square-class package. The full Bott-period-8
 table beyond the packaged low-signature entries, now including the explicit
 `Cl(0,5) ≃ Mat₄(ℂ)`, `Cl⁺(0,6) ≃ Mat₄(ℂ)`, `Cl(0,6) ≃ Mat₈(ℝ)`,
 `Cl⁺(6,0) ≃ Mat₄(ℂ)`, `Cl(6,0) ≃ Mat₄(ℍ)`,
@@ -61,8 +62,8 @@ table beyond the packaged low-signature entries, now including the explicit
 `Cl⁺(0,8) ≃ Mat₈(ℝ) × Mat₈(ℝ)`, `Cl(0,8) ≃ Mat₁₆(ℝ)`,
 `Cl⁺(7,0) ≃ Mat₈(ℝ)`, and `Cl⁺(8,0) ≃ Mat₈(ℝ) × Mat₈(ℝ)` rows, a full
 all-orthogonal-group image classification,
-and a global orthogonal-group spinor-norm API are separate projects, not dependencies
-in the claimed theorem package.
+and a global orthogonal-group spinor-norm API beyond this product-level substrate are separate
+projects, not dependencies in the claimed theorem package.
 
 ## Final preflight
 

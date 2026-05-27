@@ -442,7 +442,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     by the corresponding spin-image subgroup with the square-class quotient; the wrapper names
     `Spinor.linearEquivSplitLeviSpinorNormHom` and `Spinor.dualProdLeviSpinorNormHom` expose this
     proved finite-basis split-Levi character as the local spinor-norm-facing formulation, while
-    still leaving a full orthogonal-group spinor-norm API outside the submission surface
+    `Spinor.CliffordNorm` packages the global Clifford-level vector-product norm formula and its
+    invertible-vector square-class form; a full orthogonal-group spinor-norm API remains outside
+    the submission surface
   - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
   - done on the ambient API by
@@ -451,8 +453,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - image-classification statements claimed by this artifact are exact on the split line and
     finite-basis split Levi subgroup, including the onto determinant square-class quotient
     character, quotient isomorphism, and local split-Levi spinor-norm-facing wrappers;
-    broader orthogonal subgroups and global spinor-norm formulations are intentionally outside the
-    submitted theorem surface
+    broader orthogonal subgroups and global orthogonal-group spinor-norm formulations beyond the
+    Clifford vector-product norm substrate are intentionally outside the submitted theorem surface
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
     `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`
@@ -473,7 +475,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   venue-neutral prose tied to the exact finite-basis split-Levi theorem package and its
   onto determinant square-class quotient character / quotient isomorphism; broad Bott-periodicity
   beyond the packaged low-dimensional rows and positive even companions and full
-  all-orthogonal-group image classifications
+  all-orthogonal-group image classifications / global orthogonal-group spinor-norm theory
   are framed as separate projects rather than dependencies of the claimed results
 - [x] Introduction: why spinors matter, why formalization is novel
 - [x] Related work: lean-ga, Mathlib Clifford, what's missing
@@ -489,7 +491,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - style/lint polish is complete for the submission scope: the repository has a green `lake build`, zero
   `sorry`/`admit`, Mathlib-style module documentation throughout, and a machine-checked theorem
   index imported by `Spinor.lean`
-- [x] Module documentation (Mathlib-style `/-! # ... -/` blocks on all 21 `Spinor/*.lean` files)
+- [x] Module documentation (Mathlib-style `/-! # ... -/` blocks on all 26 `Spinor/*.lean` files)
 
 ### 5.3 Submission
 - [x] Target: CPP 2027 (deadline ~Sep 2026) or ITP 2027
