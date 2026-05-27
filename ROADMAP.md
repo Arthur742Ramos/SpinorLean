@@ -306,6 +306,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.spinLinearRepresentation_det_eq_one`
   - [x] record the resulting obstruction to full orthogonal-group surjectivity as
     `Spinor.spinIsometryRepresentation_not_surjective_of_exists_det_ne_one`
+  - [x] make that obstruction concrete for norm-`-1` pin generators via
+    `Spinor.pinIsometryRepresentation_det_of_quadratic_eq_neg_one` and
+    `Spinor.spinIsometryRepresentation_not_surjective_of_exists_quadratic_eq_neg_one_of_det_ne`
   - [x] factor the ambient action through that target as
     `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional`
   - [x] identify the finite-dimensional nondegenerate kernel as `{1, -1}` via

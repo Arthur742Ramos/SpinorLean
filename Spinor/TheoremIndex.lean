@@ -58,6 +58,8 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional
 #check Spinor.spinLinearRepresentation_det_eq_one
 #check Spinor.spinIsometryRepresentation_not_surjective_of_exists_det_ne_one
+#check Spinor.pinIsometryRepresentation_det_of_quadratic_eq_neg_one
+#check Spinor.spinIsometryRepresentation_not_surjective_of_exists_quadratic_eq_neg_one_of_det_ne
 #check Spinor.lipschitzLinearRepresentation
 #check Spinor.lipschitzConjAlgEquiv_eq_refl_of_lipschitzLinearRepresentation_eq_one
 #check Spinor.commute_of_lipschitzLinearRepresentation_eq_one

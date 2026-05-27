@@ -64,6 +64,10 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
 * `Spinor.spinIsometryRepresentation_not_surjective_of_exists_det_ne_one` — if the full
   orthogonal group contains an isometry with determinant different from `1`, then the ambient spin
   map is not surjective onto that full target.
+* `Spinor.pinIsometryRepresentation_det_of_quadratic_eq_neg_one` and
+  `Spinor.spinIsometryRepresentation_not_surjective_of_exists_quadratic_eq_neg_one_of_det_ne` —
+  the corresponding concrete obstruction supplied by a norm-`-1` pin generator when its determinant
+  branch is nontrivial.
 * `Spinor.spinSpecialOrthogonalRepresentation`,
   `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional` — the ambient isometry
   representation factors through `QuadraticForm.specialOrthogonalGroup Q`, either from an external
@@ -1810,6 +1814,42 @@ theorem spinIsometryRepresentation_not_surjective_of_exists_det_ne_one
     simpa [spinIsometryRepresentation_toLinearEquiv] using
       spinLinearRepresentation_det_eq_one (Q := Q) x
   exact hg (by simpa [hx] using hdetImage)
+
+/-- Unit-valued determinant of the full isometry attached to a norm-`-1` pin generator. -/
+theorem pinIsometryRepresentation_det_of_quadratic_eq_neg_one
+    (a : V) (hq : Q a = -1) :
+    LinearEquiv.det
+        ((pinIsometryRepresentation (Q := Q)
+            (pinIotaOfQuadraticEqNegOne (Q := Q) a hq) : Q.IsometryEquiv Q) : V ≃ₗ[K] V) =
+      (-1 : Kˣ) ^ (Module.finrank K V - 1) := by
+  apply Units.ext
+  rw [LinearEquiv.coe_det, pinIsometryRepresentation_toLinearEquiv]
+  have ha : a ≠ 0 := by
+    intro hzeroVec
+    have hneg : (-1 : K) ≠ 0 := by simp
+    apply hneg
+    simpa [hzeroVec] using hq.symm
+  have hfin : Module.finrank K (V ⧸ (K ∙ a)) = Module.finrank K V - 1 := by
+    have hdim : Module.finrank K (V ⧸ (K ∙ a)) + 1 = Module.finrank K V := by
+      simpa [finrank_span_singleton ha] using
+        (K ∙ a : Submodule K V).finrank_quotient_add_finrank
+    exact Nat.eq_sub_of_add_eq hdim
+  simpa [pinIotaOfQuadraticEqNegOne, hfin] using
+    pinLinearRepresentation_det_of_quadratic_eq_neg_one (Q := Q) a hq
+
+/-- A norm-`-1` vector gives a concrete full-orthogonal obstruction to spin-map surjectivity
+whenever the corresponding pin-generator determinant branch is not `1`. -/
+theorem spinIsometryRepresentation_not_surjective_of_exists_quadratic_eq_neg_one_of_det_ne
+    (hQ : ∃ a : V, Q a = -1)
+    (hdet : (-1 : Kˣ) ^ (Module.finrank K V - 1) ≠ 1) :
+    ¬ Function.Surjective (spinIsometryRepresentation (Q := Q)) := by
+  rcases hQ with ⟨a, hqa⟩
+  refine spinIsometryRepresentation_not_surjective_of_exists_det_ne_one (Q := Q) ?_
+  refine ⟨pinIsometryRepresentation (Q := Q) (pinIotaOfQuadraticEqNegOne (Q := Q) a hqa), ?_⟩
+  intro hg
+  exact hdet
+    ((pinIsometryRepresentation_det_of_quadratic_eq_neg_one (Q := Q) a hqa).symm.trans
+      (by simpa [pinIsometryRepresentation_apply] using hg))
 
 omit [Invertible (2 : K)] [FiniteDimensional K V] in
 @[simp]
