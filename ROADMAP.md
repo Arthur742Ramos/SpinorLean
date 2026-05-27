@@ -448,12 +448,13 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     invertible-vector square-class form, factorization-existence Lipschitz wrapper when `2` is
     invertible, factorization-level identity/product wrappers proving multiplicativity of the
     stored norm units and square classes, noncanonical chosen Lipschitz norm-unit and
-    square-class wrappers, and the
+    square-class wrappers, global equality of the norm unit and square class across any two
+    Lipschitz vector factorizations of the same element, the resulting unconditional
+    Lipschitz-group spinor-norm square-class hom, and the
     corresponding noncanonical chosen-lift wrapper on the image of
-    `Spinor.lipschitzLinearRepresentation`, plus conditional factorization-independence,
-    Lipschitz-group hom, kernel-triviality, lift-independence, and descent-obligation
-    structures, implications, and direct image-level monoid-hom wrapper whose fields isolate
-    the missing hypotheses needed to turn that image-level square class into a monoid
+    `Spinor.lipschitzLinearRepresentation`, plus kernel-triviality, lift-independence, and
+    descent-obligation structures, implications, and direct image-level monoid-hom wrapper whose
+    fields isolate the remaining missing hypothesis needed to turn that image-level square class into a monoid
     homomorphism, together with pullback theorems showing that the image-level homs compose
     with `Spinor.lipschitzLinearRepresentation.rangeRestrict` to the corresponding
     Lipschitz-group homs and are uniquely determined by that pullback,
@@ -474,9 +475,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     broader orthogonal subgroups and global orthogonal-group spinor-norm formulations beyond the
     order-invariant, repeated-pair-stable, duplicated-product/subproduct-stable
     factorization-existence Clifford/Lipschitz vector-product norm substrate, its
-    factorization-level Lipschitz product wrappers, and its noncanonical Lipschitz linear-image
-    wrapper / conditional factorization-independence, Lipschitz-group hom,
-    kernel-triviality-to-lift-independence, descent-obligation APIs, and direct conditional
+    factorization-level Lipschitz product wrappers, proved global Lipschitz factorization
+    independence and Lipschitz-group hom, and its noncanonical Lipschitz linear-image
+    wrapper / remaining kernel-triviality-to-lift-independence, descent-obligation APIs, and direct conditional
     image-level hom wrapper, range-restriction pullback theorem, and pullback uniqueness
     theorem, including separated repeated subproducts after permutation into the repeated shape,
     are intentionally outside the submitted theorem surface
@@ -501,9 +502,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   onto determinant square-class quotient character / quotient isomorphism; the first-period
   Bott table is packaged through `RealClassification.periodEightTable`, and the Clifford norm
   package now reaches factorization-existence Lipschitz-group products, factorization-level
-  product square-class wrappers, and their noncanonical Lipschitz linear-image chosen-lift
-  wrappers / conditional factorization-independence, Lipschitz-group hom,
-  kernel-triviality-to-lift-independence, descent-obligation APIs, and direct conditional
+  product square-class wrappers, proved factorization independence and the global
+  Lipschitz-group hom, and their noncanonical Lipschitz linear-image chosen-lift
+  wrappers / remaining kernel-triviality-to-lift-independence, descent-obligation APIs, and direct conditional
   image-level hom wrapper with range-restriction pullback and uniqueness theorems when `2` is invertible, while recursive
   arbitrary-signature Bott-periodicity and full all-orthogonal-group image classifications /
   global orthogonal-group spinor-norm theory are framed as separate projects rather than

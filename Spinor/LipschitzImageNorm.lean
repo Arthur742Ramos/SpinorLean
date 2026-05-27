@@ -13,9 +13,10 @@ ambient Lipschitz linear representation. The definitions here are deliberately
 noncanonical: an image element is evaluated by choosing a Lipschitz lift and then
 using the chosen-factorization API from `Spinor.CliffordNorm`.
 
-No independence from either the chosen lift or the chosen vector factorization is
-asserted here. The point is to expose a precise theorem-facing API at the
-Lipschitz-image level without claiming a descended orthogonal-group spinor norm.
+Factorization independence is proved on the Lipschitz group; independence from the
+chosen lift remains the image-level descent issue. The point is to expose a precise
+theorem-facing API at the Lipschitz-image level without claiming a descended
+orthogonal-group spinor norm.
 
 ## Main declarations
 
@@ -26,12 +27,16 @@ Lipschitz-image level without claiming a descended orthogonal-group spinor norm.
 * `Spinor.LipschitzLinearImageSpinorNormLiftIndependent`
 * `Spinor.LipschitzLinearImageSpinorNormDescends`
 * `Spinor.LipschitzSpinorNormClassTrivialOnLinearKernel`
+* `Spinor.LipschitzSpinorNormClassHomTrivialOnLinearKernel`
 * `Spinor.lipschitzLinearImageSpinorNormLiftIndependent_of_factorizationIndependent_of_trivialOnLinearKernel`
+* `Spinor.lipschitzLinearImageSpinorNormLiftIndependent_of_hom_trivialOnLinearKernel`
 * `Spinor.lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent`
 * `Spinor.lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel`
+* `Spinor.lipschitzLinearImageSpinorNormDescends_of_hom_trivialOnLinearKernel`
 * `Spinor.lipschitzSpinorNormClassHomOfDescends`
 * `Spinor.lipschitzLinearImageSpinorNormClassHomOfDescends`
 * `Spinor.lipschitzLinearImageSpinorNormClassHomOfDescends_eq_of_comp_rangeRestrict`
+* `Spinor.lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel`
 * `Spinor.lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel`
 * `Spinor.lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel_eq_of_comp_rangeRestrict`
 -/
@@ -67,7 +72,7 @@ noncomputable def lipschitzLinearImageChosenNormUnit [Invertible (2 : R)]
 The square-class attached to the chosen Lipschitz lift of a linear-image element.
 
 This is not a descended orthogonal-group spinor norm: it depends on the chosen
-lift and on the chosen vector factorization of that lift.
+Lipschitz lift of the image element.
 -/
 noncomputable def lipschitzLinearImageChosenSpinorNormClass [Invertible (2 : R)]
     (Q : QuadraticForm R M) (g : lipschitzLinearImage Q) :
@@ -140,6 +145,19 @@ structure LipschitzSpinorNormClassTrivialOnLinearKernel [Invertible (2 : R)]
     lipschitzSpinorNormClassHomOfFactorizationIndependent Q hfac x = 1
 
 /--
+The remaining kernel-triviality obligation after the Lipschitz-group spinor-norm hom has been
+constructed globally.
+
+This is the condition needed to descend the unconditional Lipschitz-group hom through
+`lipschitzLinearRepresentation`.
+-/
+structure LipschitzSpinorNormClassHomTrivialOnLinearKernel [Invertible (2 : R)]
+    (Q : QuadraticForm R M) : Prop where
+  eq_one_of_linearRepresentation_eq_one : ∀ x : lipschitzGroup Q,
+    lipschitzLinearRepresentation (Q := Q) x = 1 →
+    lipschitzSpinorNormClassHom Q x = 1
+
+/--
 Under lift independence, the chosen image-level square class agrees with any Lipschitz lift of
 the same image element.
 -/
@@ -163,6 +181,26 @@ theorem lipschitzLinearImageSpinorNormLiftIndependent_of_factorizationIndependen
     LipschitzLinearImageSpinorNormLiftIndependent Q where
   eq_of_linearRepresentation_eq x y hx := by
     let φ := lipschitzSpinorNormClassHomOfFactorizationIndependent Q hfac
+    change φ x = φ y
+    apply mul_inv_eq_one.mp
+    have hlin : lipschitzLinearRepresentation (Q := Q) (x * y⁻¹) = 1 := by
+      rw [(lipschitzLinearRepresentation (Q := Q)).map_mul,
+        (lipschitzLinearRepresentation (Q := Q)).map_inv, hx]
+      exact mul_inv_cancel _
+    have hφ : φ (x * y⁻¹) = 1 :=
+      hker.eq_one_of_linearRepresentation_eq_one (x * y⁻¹) hlin
+    simpa [φ, map_mul, map_inv] using hφ
+
+/--
+Kernel-triviality of the global Lipschitz-group hom implies lift independence on the image of
+`lipschitzLinearRepresentation`.
+-/
+theorem lipschitzLinearImageSpinorNormLiftIndependent_of_hom_trivialOnLinearKernel
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hker : LipschitzSpinorNormClassHomTrivialOnLinearKernel Q) :
+    LipschitzLinearImageSpinorNormLiftIndependent Q where
+  eq_of_linearRepresentation_eq x y hx := by
+    let φ := lipschitzSpinorNormClassHom Q
     change φ x = φ y
     apply mul_inv_eq_one.mp
     have hlin : lipschitzLinearRepresentation (Q := Q) (x * y⁻¹) = 1 := by
@@ -198,6 +236,18 @@ theorem lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_tr
   lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent Q hfac
     (lipschitzLinearImageSpinorNormLiftIndependent_of_factorizationIndependent_of_trivialOnLinearKernel
       Q hfac hker)
+
+/--
+Kernel-triviality of the global Lipschitz-group hom gives the chosen-level descent obligations
+for the Lipschitz linear image.
+-/
+theorem lipschitzLinearImageSpinorNormDescends_of_hom_trivialOnLinearKernel
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hker : LipschitzSpinorNormClassHomTrivialOnLinearKernel Q) :
+    LipschitzLinearImageSpinorNormDescends Q :=
+  lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent Q
+    (lipschitzSpinorNormClassFactorizationIndependent Q)
+    (lipschitzLinearImageSpinorNormLiftIndependent_of_hom_trivialOnLinearKernel Q hker)
 
 /--
 Under the explicit descent obligations, the chosen image-level square class agrees with any
@@ -287,7 +337,7 @@ theorem lipschitzLinearImageSpinorNormClassHomOfDescends_rangeRestrict
     (h : LipschitzLinearImageSpinorNormDescends Q) (x : lipschitzGroup Q) :
     lipschitzLinearImageSpinorNormClassHomOfDescends Q h
         ((lipschitzLinearRepresentation (Q := Q)).rangeRestrict x) =
-      chosenLipschitzSpinorNormClass Q x := by
+        chosenLipschitzSpinorNormClass Q x := by
   exact lipschitzLinearImageChosenSpinorNormClass_eq_chosenLipschitzSpinorNormClass_of_descends
     Q h ((lipschitzLinearRepresentation (Q := Q)).rangeRestrict x) x
     (by simp)
@@ -328,6 +378,76 @@ theorem lipschitzLinearImageSpinorNormClassHomOfDescends_eq_of_comp_rangeRestric
         lipschitzLinearImageSpinorNormClassHomOfDescends Q h
           ((lipschitzLinearRepresentation (Q := Q)).rangeRestrict x) := by
         exact (lipschitzLinearImageSpinorNormClassHomOfDescends_rangeRestrict Q h x).symm
+
+/--
+Kernel-triviality of the global Lipschitz-group hom directly gives the image-level
+spinor-norm square-class monoid hom.
+-/
+noncomputable def lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hker : LipschitzSpinorNormClassHomTrivialOnLinearKernel Q) :
+    lipschitzLinearImage Q →*
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2) :=
+  lipschitzLinearImageSpinorNormClassHomOfDescends Q
+    (lipschitzLinearImageSpinorNormDescends_of_hom_trivialOnLinearKernel Q hker)
+
+@[simp]
+theorem lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel_apply
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hker : LipschitzSpinorNormClassHomTrivialOnLinearKernel Q)
+    (g : lipschitzLinearImage Q) :
+    lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel Q hker g =
+      lipschitzLinearImageChosenSpinorNormClass Q g := rfl
+
+@[simp]
+theorem lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel_rangeRestrict
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hker : LipschitzSpinorNormClassHomTrivialOnLinearKernel Q)
+    (x : lipschitzGroup Q) :
+    lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel Q hker
+        ((lipschitzLinearRepresentation (Q := Q)).rangeRestrict x) =
+      chosenLipschitzSpinorNormClass Q x := by
+  exact lipschitzLinearImageSpinorNormClassHomOfDescends_rangeRestrict Q
+    (lipschitzLinearImageSpinorNormDescends_of_hom_trivialOnLinearKernel Q hker) x
+
+/--
+The image-level hom obtained from kernel-triviality of the global Lipschitz-group hom pulls
+back to the global Lipschitz-group hom.
+-/
+theorem lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel_comp_rangeRestrict
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hker : LipschitzSpinorNormClassHomTrivialOnLinearKernel Q) :
+    (lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel Q hker).comp
+        (lipschitzLinearRepresentation (Q := Q)).rangeRestrict =
+      lipschitzSpinorNormClassHom Q := by
+  ext x
+  exact lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel_rangeRestrict
+    Q hker x
+
+/--
+The image-level hom obtained from kernel-triviality of the global Lipschitz-group hom is the
+unique image-level hom whose pullback is the global Lipschitz-group hom.
+-/
+theorem lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel_eq_of_comp_rangeRestrict
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hker : LipschitzSpinorNormClassHomTrivialOnLinearKernel Q)
+    (ψ : lipschitzLinearImage Q →*
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2))
+    (hψ : ψ.comp (lipschitzLinearRepresentation (Q := Q)).rangeRestrict =
+      lipschitzSpinorNormClassHom Q) :
+    ψ = lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel Q hker := by
+  ext g
+  rcases (lipschitzLinearRepresentation (Q := Q)).rangeRestrict_surjective g with ⟨x, rfl⟩
+  have hpoint := congrArg (fun φ => φ x) hψ
+  calc
+    ψ ((lipschitzLinearRepresentation (Q := Q)).rangeRestrict x) =
+        chosenLipschitzSpinorNormClass Q x := by
+        simpa [MonoidHom.comp_apply] using hpoint
+    _ =
+        lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel Q hker
+          ((lipschitzLinearRepresentation (Q := Q)).rangeRestrict x) := by
+        exact (lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel_rangeRestrict
+          Q hker x).symm
 
 /--
 Factorization independence plus kernel-triviality directly give the image-level

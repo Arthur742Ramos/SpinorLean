@@ -271,22 +271,25 @@ Implemented so far:
   factorization-level identity and product wrappers prove that concatenated factorizations
   multiply both norm units and square classes; the noncanonical
   `chosenLipschitzNormUnit` and `chosenLipschitzSpinorNormClass` expose the resulting chosen
-  Lipschitz square-class API without asserting decomposition independence, while
-  `LipschitzSpinorNormClassFactorizationIndependent` isolates the factorization-independence
-  hypothesis under which the chosen value becomes trivial at `1`, multiplicative, and a full
-  Lipschitz-group monoid hom via `lipschitzSpinorNormClassHomOfFactorizationIndependent`.
+  Lipschitz square-class API; `lipschitzVectorFactorization_normUnit_eq_of_factorizations`
+  and `lipschitzVectorFactorization_spinorNormClass_eq_of_factorizations` prove that any two
+  invertible-vector factorizations of the same Lipschitz element give the same norm unit and
+  square class, yielding the global `lipschitzSpinorNormClassFactorizationIndependent`
+  theorem and the unconditional Lipschitz-group monoid hom `lipschitzSpinorNormClassHom`.
   `LipschitzImageNorm` exposes the corresponding noncanonical chosen-lift API on the image of
   `lipschitzLinearRepresentation`, separates the lift-independence and kernel-triviality
-  obligations, proves that kernel-triviality of the factorization-independent hom implies lift
-  independence, and packages
+  obligations, proves that kernel-triviality of the global Lipschitz-group hom implies lift
+  independence and image-level descent, and packages
   `LipschitzLinearImageSpinorNormDescends` as the conditional obligations that would turn the
   chosen image-level square class into a monoid homomorphism; the direct hom
+  `lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel`
+  packages the image-level monoid hom under that remaining kernel-triviality condition, while
   `lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel`
-  packages the resulting image-level monoid hom, while
+  records the compatibility wrapper with the older two-hypothesis API, and
   `lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel`
   records the underlying descent package; the pullback theorems
   `lipschitzLinearImageSpinorNormClassHomOfDescends_comp_rangeRestrict` and
-  `lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel_comp_rangeRestrict`
+  `lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel_comp_rangeRestrict`
   prove that the image-level homs compose with `lipschitzLinearRepresentation.rangeRestrict`
   to the corresponding Lipschitz-group homs, and the corresponding
   `_eq_of_comp_rangeRestrict` theorems prove uniqueness from that pullback. The scalar, unit, and
@@ -301,8 +304,8 @@ Implemented so far:
   `cliffordInvertibleVectorProductSpinorNormClass_append_append_self_append`, and
   `cliffordInvertibleVectorProductSpinorNormClass_append_append_middle_self_append`, with
   `eq_of_perm` wrappers for lists that first permute into the repeated-pair or repeated-subproduct
-  form; this is a Lipschitz-group factorization-existence substrate, not an independence theorem
-  for arbitrary orthogonal decompositions
+  form; this is a Lipschitz-group factorization-existence and factorization-independence
+  substrate, not a descended global orthogonal-group spinor norm
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
   subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
   a nonsquare unit gives a formal non-surjectivity theorem; over algebraically closed fields,
@@ -391,8 +394,8 @@ Explicit scope boundaries for this algebraic submission package:
   repeated-pair square-class cancellation, and duplicated-product/subproduct square-class
   triviality, including separated repeated subproducts after permutation into the repeated shape
 - a full global orthogonal-group spinor-norm theory beyond the factorization-existence
-  Clifford/Lipschitz norm package, its factorization-level Lipschitz product wrappers,
-  noncanonical Lipschitz linear-image wrapper and conditional factorization-independence,
+  Clifford/Lipschitz norm package, its proved Lipschitz factorization-independence theorem and
+  global Lipschitz-group hom, noncanonical Lipschitz linear-image wrapper, remaining
   kernel-triviality, lift-independence, and descent-obligation APIs and implications, and
   finite-basis split-Levi square-class APIs
 

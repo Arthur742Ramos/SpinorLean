@@ -105,17 +105,19 @@ Mathlib \code{lipschitzGroup} element has an invertible-vector product
 representative. The noncanonical \code{chosenLipschitzSpinorNormClass} exposes
 the resulting square-class value while keeping it attached to a chosen
 factorization; factorization-level identity and product wrappers prove
-multiplicativity for the stored norm units and square classes. The declaration
-\code{lipschitzLinearImageChosenSpinorNormClass} carries the same chosen-lift
-interface to the image of the Lipschitz linear representation, and
-\code{LipschitzSpinorNormClassFactorizationIndependent} and
-\code{LipschitzSpinorNormClassTrivialOnLinearKernel} isolate the factorization-
-independence and kernel-triviality obligations. The former gives the
-corresponding conditional Lipschitz-group hom; together they imply lift
-independence, the image-level descent package, and the resulting conditional
-image-level monoid hom, whose range-restriction pullback is proved to be the
-corresponding Lipschitz-group hom and whose uniqueness is characterized by
-that pullback;
+multiplicativity for the stored norm units and square classes, while
+\code{lipschitzVectorFactorization_normUnit_eq_of_factorizations} and
+\code{lipschitzVectorFactorization_spinorNormClass_eq_of_factorizations}
+prove that the norm unit and square class are independent of the chosen
+invertible-vector factorization. Thus
+\code{lipschitzSpinorNormClassHom} is a global Lipschitz-group monoid hom. The
+declaration \code{lipschitzLinearImageChosenSpinorNormClass} carries the same
+chosen-lift interface to the image of the Lipschitz linear representation, and
+\code{LipschitzSpinorNormClassHomTrivialOnLinearKernel} isolates the remaining
+kernel-triviality obligation. That condition implies lift independence, the
+image-level descent package, and the resulting conditional image-level monoid
+hom, whose range-restriction pullback is proved to be the global
+Lipschitz-group hom and whose uniqueness is characterized by that pullback;
 we prove invariance of these product-level square classes under
 reordering and reversal of the chosen vector list, cancellation of
 repeated invertible-vector pairs, and triviality of duplicated products,
@@ -229,9 +231,10 @@ with its invertible-vector square-class package, factorization-existence
 Lipschitz-group wrapper when \(2\) is invertible, a noncanonical chosen
 Lipschitz square-class wrapper for the selected factorization, factorization-level
 identity/product wrappers proving multiplication of stored norm units and square
-classes, a noncanonical chosen-lift wrapper on the Lipschitz linear image,
-explicit conditional factorization-independence, Lipschitz-group hom,
-kernel-triviality-to-lift-independence, and descent-obligation APIs for a
+classes, proved independence from the selected Lipschitz vector factorization,
+the global Lipschitz-group hom, a noncanonical chosen-lift wrapper on the
+Lipschitz linear image, remaining kernel-triviality-to-lift-independence, and
+descent-obligation APIs for a
 conditional image-level monoid hom with its range-restriction pullback theorem,
 pullback uniqueness theorem, product-order
 invariance, repeated-pair square-class cancellation, and
@@ -244,8 +247,8 @@ $\Cl(8,0)$, and their even companions. A recursive arbitrary-signature
 Bott-periodicity theorem beyond that packaged table, full
 all-orthogonal-group image classification and global orthogonal-group
 spinor-norm theory beyond this factorization-existence Clifford/Lipschitz
-substrate, its conditional Lipschitz-group hom/kernel-triviality descent
-wrappers, and its noncanonical Lipschitz linear-image wrapper with the
+substrate, its global Lipschitz-group hom and remaining kernel-triviality
+descent wrappers, and its noncanonical Lipschitz linear-image wrapper with the
 range-restriction pullback and uniqueness theorems, and
 scheme-theoretic spin-cover statements are explicit scope
 boundaries, not assumptions behind the results claimed below.
@@ -357,7 +360,7 @@ Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
 \Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
 Build command & \code{lake build} \\
 Lean files under \code{Spinor/} & $28$ \\
-Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $24{,}633$ \\
+Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $24{,}826$ \\
 \code{sorry} occurrences under \code{Spinor/} & $0$
 \end{tabularx}
 \end{center}
@@ -459,18 +462,17 @@ prove the expected product formulas for norm units and square classes. The compa
 chooses a Lipschitz lift of an element in the image of
 \code{lipschitzLinearRepresentation} and exposes the same noncanonical norm
 unit and square class at that image level. It also defines
-\code{LipschitzSpinorNormClassFactorizationIndependent} and
-\code{LipschitzSpinorNormClassTrivialOnLinearKernel}; factorization
-independence gives the conditional Lipschitz-group hom, and kernel-triviality of
-that hom implies lift independence and then the image-level descent package.
+\code{LipschitzSpinorNormClassFactorizationIndependent}, proves it globally,
+and exposes the resulting \code{lipschitzSpinorNormClassHom}. The remaining
+\code{LipschitzSpinorNormClassHomTrivialOnLinearKernel} condition implies lift
+independence and then the image-level descent package.
 The module packages that composition as the direct conditional image-level
 monoid hom recorded in the theorem index and proves that composing this
 image-level hom with \code{lipschitzLinearRepresentation.rangeRestrict} gives
-the corresponding Lipschitz-group hom; the same range-restriction pullback
+the global Lipschitz-group hom; the same range-restriction pullback
 characterizes the image-level hom uniquely.
-Decomposition-independence across different
-Cartan--Dieudonne factorizations, kernel-triviality for the induced hom, and the
-resulting orthogonal-group spinor norm remain later work.
+Kernel-triviality for the induced hom and the resulting orthogonal-group spinor
+norm remain later work.
 
 \paragraph{Downstream reuse already present in the repository.}
 The interface is already reused beyond the core covering-map story in the
@@ -1578,8 +1580,8 @@ associated noncanonical chosen square class has order invariance, repeated-pair
 cancellation, duplicated-product/subproduct triviality, and factorization-level
 product formulas for concatenated Lipschitz factorizations, including separated
 repeated subproducts after permutation into the repeated shape; the companion
-noncanonical chosen-lift wrapper and conditional factorization-independence,
-Lipschitz-group hom, kernel-triviality-to-lift-independence, and
+factorization-independence theorem, global Lipschitz-group hom, noncanonical
+chosen-lift wrapper, remaining kernel-triviality-to-lift-independence, and
 descent-obligation APIs, including the direct conditional image-level hom and
 its range-restriction pullback and uniqueness theorems,
 expose this data on the Lipschitz linear image, but no global orthogonal-group
@@ -1595,9 +1597,9 @@ artifact boundary is consequently sharp: broader orthogonal subgroups, full
 global orthogonal-group spinor-norm formulations beyond the factorization-existence
 Clifford/Lipschitz norm and its order-invariant, repeated-pair-stable,
 duplicated-product/subproduct-stable square-class product, factorization-level
-Lipschitz product wrappers, and noncanonical Lipschitz linear-image wrapper /
-conditional factorization-independence, Lipschitz-group hom,
-kernel-triviality-to-lift-independence, descent-obligation APIs, and direct
+Lipschitz product wrappers, proved Lipschitz factorization-independence theorem
+and global Lipschitz-group hom, and noncanonical Lipschitz linear-image wrapper /
+remaining kernel-triviality-to-lift-independence, descent-obligation APIs, and direct
 conditional image-level hom with its range-restriction pullback and uniqueness theorems,
 including separated repeated subproducts after permutation into the repeated shape, recursive
 arbitrary-signature Bott-periodic classification beyond the packaged

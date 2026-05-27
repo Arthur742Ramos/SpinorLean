@@ -4,13 +4,12 @@
   This module gives the global Clifford-algebra calculation behind the
   reflection-product form of the spinor norm. It also packages those products as
   elements of Mathlib's `lipschitzGroup` and proves factorization existence for
-  every Lipschitz element when `2` is invertible. The square-class bridge is
-  still attached to a chosen factorization: it does not assert independence of a
-  Cartan-Dieudonne decomposition or descent to a full orthogonal-group spinor-norm
-  homomorphism.
+  every Lipschitz element when `2` is invertible. The scalar Clifford norm formula
+  then proves independence of the chosen Lipschitz vector factorization. This does
+  not assert descent to a full orthogonal-group spinor-norm homomorphism.
 -/
 
-import Spinor.Mathlib
+import Spinor.OrthogonalAction
 import Mathlib.Algebra.BigOperators.Group.List.Lemmas
 import Mathlib.GroupTheory.QuotientGroup.Basic
 
@@ -22,7 +21,8 @@ For a list of vectors, the Clifford conjugation norm of the product of their
 of invertible vectors, this scalar is also packaged as a unit and as its
 square-class quotient, and as a Lipschitz-group element from a chosen vector
 product. When `2` is invertible, every Mathlib `lipschitzGroup` element has such
-a vector-product representative. These declarations provide a global
+a vector-product representative, and the resulting square class is independent of
+that representative. These declarations provide a global
 Clifford/Lipschitz substrate for later spinor-norm developments without claiming
 an orthogonal-group spinor-norm API.
 
@@ -43,6 +43,10 @@ an orthogonal-group spinor-norm API.
 * `Spinor.lipschitzVectorFactorization`
 * `Spinor.chosenLipschitzSpinorNormClass`
 * `Spinor.LipschitzSpinorNormClassFactorizationIndependent`
+* `Spinor.lipschitzVectorFactorization_normUnit_eq_of_factorizations`
+* `Spinor.lipschitzVectorFactorization_spinorNormClass_eq_of_factorizations`
+* `Spinor.lipschitzSpinorNormClassFactorizationIndependent`
+* `Spinor.lipschitzSpinorNormClassHom`
 * `Spinor.lipschitzSpinorNormClassHomOfFactorizationIndependent`
 * `Spinor.exists_lipschitzVectorFactorization_mul_chosenSpinorNormClass_eq`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons`
@@ -526,8 +530,9 @@ theorem cliffordInvertibleVectorProductSpinorNormClass_sq_eq_one
 /--
 A Lipschitz element together with a chosen decomposition as a product of invertible vectors.
 
-This is the group-level replacement for bare vector lists. It intentionally stores the
-factorization data; no independence theorem for two different decompositions is claimed here.
+This is the group-level replacement for bare vector lists. It stores the factorization data;
+later the norm formula proves the norm unit and square class are independent of which
+factorization is chosen for a fixed Lipschitz-group element.
 -/
 structure LipschitzVectorFactorization (Q : QuadraticForm R M) (x : lipschitzGroup Q) where
   factors : List (InvertibleQuadraticVector Q)
@@ -640,8 +645,9 @@ theorem exists_lipschitzVectorFactorization_mul_spinorNormClass_eq
 The Clifford norm unit attached to the repository's noncomputable chosen Lipschitz
 vector factorization.
 
-This is intentionally a chosen-factorization API; no independence from the chosen
-factorization is asserted.
+This is intentionally a chosen-factorization API. The theorem
+`lipschitzVectorFactorization_normUnit_eq_of_factorizations` below proves that different
+choices nevertheless give the same norm unit.
 -/
 noncomputable def chosenLipschitzNormUnit [Invertible (2 : R)]
     (Q : QuadraticForm R M) (x : lipschitzGroup Q) : Rˣ :=
@@ -652,7 +658,9 @@ The square-class attached to the repository's noncomputable chosen Lipschitz vec
 factorization.
 
 This is not a descended orthogonal-group spinor norm: it records the square-class of the
-particular vector product selected by `lipschitzVectorFactorization`.
+particular vector product selected by `lipschitzVectorFactorization`. The theorem
+`lipschitzVectorFactorization_spinorNormClass_eq_of_factorizations` below proves that this
+choice is independent on the Lipschitz group.
 -/
 noncomputable def chosenLipschitzSpinorNormClass [Invertible (2 : R)]
     (Q : QuadraticForm R M) (x : lipschitzGroup Q) :
@@ -664,14 +672,55 @@ The factorization-independence theorem needed to turn the noncomputable chosen
 Lipschitz square-class value into a genuine monoid-level spinor norm on the
 Lipschitz group.
 
-This structure does not prove factorization independence. It records the exact
-Cartan--Dieudonne-style obligation: any two Lipschitz vector factorizations of
-the same Lipschitz-group element have the same square class.
+This structure records the exact Cartan--Dieudonne-style obligation: any two Lipschitz vector
+factorizations of the same Lipschitz-group element have the same square class. The theorem
+`lipschitzSpinorNormClassFactorizationIndependent` below discharges this obligation globally.
 -/
 structure LipschitzSpinorNormClassFactorizationIndependent [Invertible (2 : R)]
     (Q : QuadraticForm R M) : Prop where
   eq_of_factorizations : ∀ {x : lipschitzGroup Q}
     (F G : LipschitzVectorFactorization Q x), F.spinorNormClass = G.spinorNormClass
+
+/--
+Two Lipschitz vector factorizations of the same Lipschitz-group element have the same
+Clifford norm unit.
+
+The proof compares the two scalar Clifford norm formulas for the common underlying
+Lipschitz element and uses injectivity of the scalar embedding into the Clifford algebra.
+-/
+theorem lipschitzVectorFactorization_normUnit_eq_of_factorizations
+    [Invertible (2 : R)] (Q : QuadraticForm R M) {x : lipschitzGroup Q}
+    (F G : LipschitzVectorFactorization Q x) :
+    F.normUnit = G.normUnit := by
+  apply Units.ext
+  apply cliffordAlgebraMap_injective (Q := Q)
+  rw [← F.star_mul_self_eq_algebraMap_normUnit, ← G.star_mul_self_eq_algebraMap_normUnit]
+
+/--
+Two Lipschitz vector factorizations of the same Lipschitz-group element have the same
+spinor-norm square class.
+-/
+theorem lipschitzVectorFactorization_spinorNormClass_eq_of_factorizations
+    [Invertible (2 : R)] (Q : QuadraticForm R M) {x : lipschitzGroup Q}
+    (F G : LipschitzVectorFactorization Q x) :
+    F.spinorNormClass = G.spinorNormClass := by
+  change ((F.normUnit : Rˣ) :
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2)) =
+    ((G.normUnit : Rˣ) :
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2))
+  rw [lipschitzVectorFactorization_normUnit_eq_of_factorizations Q F G]
+
+/--
+Global factorization independence for the Lipschitz square-class spinor norm.
+
+This discharges the formerly separate factorization-independence obligation: the square
+class is determined by the Lipschitz-group element, not by the chosen invertible-vector
+factorization.
+-/
+theorem lipschitzSpinorNormClassFactorizationIndependent
+    [Invertible (2 : R)] (Q : QuadraticForm R M) :
+    LipschitzSpinorNormClassFactorizationIndependent Q where
+  eq_of_factorizations := lipschitzVectorFactorization_spinorNormClass_eq_of_factorizations Q
 
 /-- Under factorization independence, the chosen Lipschitz square class is trivial at `1`. -/
 theorem chosenLipschitzSpinorNormClass_one_of_factorizationIndependent
@@ -723,6 +772,22 @@ theorem lipschitzSpinorNormClassHomOfFactorizationIndependent_apply
     (h : LipschitzSpinorNormClassFactorizationIndependent Q) (x : lipschitzGroup Q) :
     lipschitzSpinorNormClassHomOfFactorizationIndependent Q h x =
       chosenLipschitzSpinorNormClass Q x := rfl
+
+/--
+The global Lipschitz-group spinor-norm square-class homomorphism obtained from the
+factorization-independence theorem.
+-/
+noncomputable def lipschitzSpinorNormClassHom [Invertible (2 : R)]
+    (Q : QuadraticForm R M) :
+    lipschitzGroup Q →*
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2) :=
+  lipschitzSpinorNormClassHomOfFactorizationIndependent Q
+    (lipschitzSpinorNormClassFactorizationIndependent Q)
+
+@[simp]
+theorem lipschitzSpinorNormClassHom_apply [Invertible (2 : R)]
+    (Q : QuadraticForm R M) (x : lipschitzGroup Q) :
+    lipschitzSpinorNormClassHom Q x = chosenLipschitzSpinorNormClass Q x := rfl
 
 /-- For any two Lipschitz elements, the chosen square classes can be realized by a
 factorization of their product whose square class is the product of the chosen values. This
