@@ -228,6 +228,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   (`Cl⁺(0,8) ≃ Mat₈(ℝ) × Mat₈(ℝ)`), and
   `Spinor.RealClassification.cl_0_8_equivMatrix16`
   (`Cl(0,8) ≃ Mat₁₆(ℝ)`)
+  plus the positive even rows `Spinor.RealClassification.cl_7_0_even_equivMatrix8`
+  (`Cl⁺(7,0) ≃ Mat₈(ℝ)`) and
+  `Spinor.RealClassification.cl_8_0_even_equivMatrix8Prod`
+  (`Cl⁺(8,0) ≃ Mat₈(ℝ) × Mat₈(ℝ)`)
   are now packaged as first-class algebra isomorphisms in the `Spinor.RealClassification`
   namespace, along with the explicit split entries `cl_1_1_equivMatrix2`,
   `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
@@ -279,7 +283,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Cl(5,0) ≃ Mat₂(ℍ) × Mat₂(ℍ)`, `Cl⁺(0,6) ≃ Mat₄(ℂ)`,
     `Cl(0,6) ≃ Mat₈(ℝ)`, `Cl⁺(6,0) ≃ Mat₄(ℂ)`, `Cl(6,0) ≃ Mat₄(ℍ)`,
     `Cl⁺(0,7) ≃ Mat₈(ℝ)`, `Cl(0,7) ≃ Mat₈(ℝ) × Mat₈(ℝ)`,
-    `Cl⁺(0,8) ≃ Mat₈(ℝ) × Mat₈(ℝ)`, `Cl(0,8) ≃ Mat₁₆(ℝ)`, and split-real
+    `Cl⁺(0,8) ≃ Mat₈(ℝ) × Mat₈(ℝ)`, `Cl(0,8) ≃ Mat₁₆(ℝ)`,
+    `Cl⁺(7,0) ≃ Mat₈(ℝ)`, `Cl⁺(8,0) ≃ Mat₈(ℝ) × Mat₈(ℝ)`, and split-real
     `Cl(1,1)`, `Cl⁺(1,1)`, `Cl(2,2)`, `Cl⁺(2,2)`; the first group-level compact identification
     layer now packages `Spin(2) ≃ U(1)`, `Spin(3) ≃ SU(2)`, and
     `Spin(4) ≃ SU(2) × SU(2)`, leaving the higher low-dimensional
@@ -467,7 +472,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 - submission-ready paper package now lives at `paper/` (`main.tex`, `refs.bib`, `README.md`) with
   venue-neutral prose tied to the exact finite-basis split-Levi theorem package and its
   onto determinant square-class quotient character / quotient isomorphism; broad Bott-periodicity
-  beyond the packaged low-dimensional rows and full all-orthogonal-group image classifications
+  beyond the packaged low-dimensional rows and positive even companions and full
+  all-orthogonal-group image classifications
   are framed as separate projects rather than dependencies of the claimed results
 - [x] Introduction: why spinors matter, why formalization is novel
 - [x] Related work: lean-ga, Mathlib Clifford, what's missing

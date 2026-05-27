@@ -36,6 +36,7 @@ SpinorLean/
 │   ├── Cl60QuaternionMatrix.lean -- Explicit Cl(0,6), Cl(6,0), and sixth-row even Bott entries
 │   ├── Cl07RealMatrixProd.lean -- Explicit Cl(0,7) and seventh-row even Bott entries
 │   ├── Cl08RealMatrix.lean -- Explicit Cl(0,8) and eighth-row even Bott entries
+│   ├── Cl78PositiveEven.lean -- Positive Cl⁺(7,0) and Cl⁺(8,0) even Bott entries
 │   ├── TheoremIndex.lean -- Machine-checked paper theorem surface
 │   └── OddClassification.lean -- Classification pieces over the odd split form
 ├── paper/                  -- Submission-ready paper sources (main.tex, refs.bib, README.md)
@@ -207,6 +208,7 @@ Implemented so far:
   `Cl⁺(6,0) ≃ Mat₄(ℂ)`, `Cl(6,0) ≃ Mat₄(ℍ)`,
   `Cl⁺(0,7) ≃ Mat₈(ℝ)`, `Cl(0,7) ≃ Mat₈(ℝ) × Mat₈(ℝ)`,
   `Cl⁺(0,8) ≃ Mat₈(ℝ) × Mat₈(ℝ)`, `Cl(0,8) ≃ Mat₁₆(ℝ)`,
+  `Cl⁺(7,0) ≃ Mat₈(ℝ)`, `Cl⁺(8,0) ≃ Mat₈(ℝ) × Mat₈(ℝ)`,
   `Cl(1,1) ≃ Mat₂(ℝ)`,
   `Cl⁺(1,1) ≃ ℝ × ℝ`, `Cl(2,2) ≃ Mat₄(ℝ)`, and
   `Cl⁺(2,2) ≃ Mat₂(ℝ) × Mat₂(ℝ)`
@@ -300,7 +302,10 @@ Implemented so far:
   `cl_0_7_even_equivMatrix8 : Cl⁺(0,7) ≃ₐ[ℝ] Mat₈(ℝ)`,
   `cl_0_7_equivMatrix8Prod : Cl(0,7) ≃ₐ[ℝ] Mat₈(ℝ) × Mat₈(ℝ)`,
   `cl_0_8_even_equivMatrix8Prod : Cl⁺(0,8) ≃ₐ[ℝ] Mat₈(ℝ) × Mat₈(ℝ)`,
-  and `cl_0_8_equivMatrix16 : Cl(0,8) ≃ₐ[ℝ] Mat₁₆(ℝ)`,
+  `cl_0_8_equivMatrix16 : Cl(0,8) ≃ₐ[ℝ] Mat₁₆(ℝ)`,
+  `cl_7_0_even_equivMatrix8 : Cl⁺(7,0) ≃ₐ[ℝ] Mat₈(ℝ)`,
+  and `cl_8_0_even_equivMatrix8Prod :
+  Cl⁺(8,0) ≃ₐ[ℝ] Mat₈(ℝ) × Mat₈(ℝ)`,
   plus the split entries
   `cl_1_1_equivMatrix2`, `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
   `cl_2_2_even_equivProdMatrix2`, extending the packaged low-signature portion of
@@ -324,7 +329,7 @@ Explicit scope boundaries for this algebraic submission package:
   through `Cl(0,3)`, `Cl(0,4)`, `Cl(0,5)`, `Cl(0,6)`, `Cl(0,7)`, `Cl(0,8)`,
   `Cl(3,0)`,
   `Cl(4,0)`, `Cl(5,0)`, and `Cl(6,0)`, selected even positive/negative companions
-  through `Cl⁺(0,8)` and `Cl⁺(6,0)`, and the explicit `Cl(2,2)` / `Cl⁺(2,2)`
+  through `Cl⁺(0,8)` and `Cl⁺(8,0)`, and the explicit `Cl(2,2)` / `Cl⁺(2,2)`
   split entries
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
   non-factorization, projective descent, exact split-line iff criterion, exact finite-basis
