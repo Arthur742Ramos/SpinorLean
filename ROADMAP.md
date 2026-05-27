@@ -405,11 +405,13 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.linearEquivDetSquareClassHom_surjective`,
     `Spinor.dualProdLeviDetSquareClassHom_surjective`, and
     `Spinor.dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap` record the corresponding
-    quotient and subgroup-kernel statements; `Spinor.dualProdLeviSpinImageSubgroup`,
-    `Spinor.dualProdLeviSpinImageSubgroup_normal`, and
+    quotient and subgroup-kernel statements; `Spinor.linearEquivSpinImageSubgroup`,
+    `Spinor.linearEquivDetSquareClassHom_ker_eq_spin_image_subgroup`,
+    `Spinor.linearEquivSpinImageQuotientEquivSquareClass`,
+    `Spinor.dualProdLeviSpinImageSubgroup`, `Spinor.dualProdLeviSpinImageSubgroup_normal`, and
     `Spinor.dualProdLeviSpinImageQuotientEquivSquareClass` now package the first-isomorphism
-    theorem form, identifying the split Levi quotient by that spin-image subgroup with the
-    square-class quotient
+    theorem form in both linear coordinates and the canonical split Levi, identifying the quotient
+    by the corresponding spin-image subgroup with the square-class quotient
   - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
   - done on the ambient API by

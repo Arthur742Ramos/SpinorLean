@@ -116,6 +116,11 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.linearEquivDetSquareClassHom_eq_one_iff_exists_det_eq_sq
 #check Spinor.linearEquivDetSquareClassHom_eq_one_iff_mem_spin_range
 #check Spinor.linearEquivDetSquareClassHom_surjective
+#check Spinor.linearEquivSpinImageSubgroup
+#check Spinor.linearEquivDetSquareClassHom_ker_eq_spin_image_subgroup
+#check Spinor.linearEquivSpinImageSubgroup_normal
+#check Spinor.linearEquivSpinImageQuotientEquivSquareClass
+#check Spinor.linearEquivSpinImageQuotientEquivSquareClass_mk
 #check Spinor.dualProdLeviDetSquareClassHom
 #check Spinor.dualProdLeviDetSquareClassHom_apply_equiv_eq_one_iff_mem_spin_range
 #check Spinor.dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap

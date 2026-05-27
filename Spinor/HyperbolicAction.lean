@@ -1376,6 +1376,77 @@ theorem linearEquivDetSquareClassHom_surjective
       Kˣ ⧸ MonoidHom.range (powMonoidHom (α := Kˣ) 2))) = u
   rw [basisScalingLinearEquiv_det_update]
 
+/-- The finite-basis split-Levi spin image, pulled back to linear coordinates through the
+canonical Levi embedding `GL(W) → SO(W* × W)`. The basis data records the finite-basis theorem
+used below to identify this subgroup with the kernel of the determinant square-class character. -/
+noncomputable def linearEquivSpinImageSubgroup
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (_b : Module.Basis ι K W) (_i : ι) :
+    Subgroup (W ≃ₗ[K] W) :=
+  Subgroup.comap (dualProdSpecialOrthogonalOfLinearEquivHom (K := K) (W := W))
+    (MonoidHom.range
+      (spinSpecialOrthogonalRepresentationFiniteDimensional
+        (Q := QuadraticForm.dualProd K W)))
+
+/-- On linear coordinates, the determinant square-class kernel is exactly the pulled-back
+split-Levi spin image. -/
+theorem linearEquivDetSquareClassHom_ker_eq_spin_image_subgroup
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    MonoidHom.ker (linearEquivDetSquareClassHom (K := K) (W := W)) =
+      linearEquivSpinImageSubgroup (K := K) (V := V) b i := by
+  rw [linearEquivSpinImageSubgroup]
+  ext g
+  change
+    linearEquivDetSquareClassHom (K := K) g = 1 ↔
+      dualProdSpecialOrthogonalOfLinearEquiv (K := K) g ∈
+        MonoidHom.range
+          (spinSpecialOrthogonalRepresentationFiniteDimensional
+            (Q := QuadraticForm.dualProd K W))
+  exact linearEquivDetSquareClassHom_eq_one_iff_mem_spin_range (K := K) (V := V) b i g
+
+instance linearEquivSpinImageSubgroup_normal
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    (linearEquivSpinImageSubgroup (K := K) (V := V) b i).Normal := by
+  rw [← linearEquivDetSquareClassHom_ker_eq_spin_image_subgroup (K := K) (V := V) b i]
+  infer_instance
+
+/-- First-isomorphism-theorem form of the finite-basis linear-coordinate square-class quotient:
+`GL(W)` modulo the pulled-back split-Levi spin image is the determinant square-class quotient. -/
+noncomputable def linearEquivSpinImageQuotientEquivSquareClass
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    ((W ≃ₗ[K] W) ⧸ linearEquivSpinImageSubgroup (K := K) (V := V) b i) ≃*
+      Kˣ ⧸ MonoidHom.range (powMonoidHom (α := Kˣ) 2) :=
+  (QuotientGroup.quotientMulEquivOfEq
+      (M := linearEquivSpinImageSubgroup (K := K) (V := V) b i)
+      (N := MonoidHom.ker (linearEquivDetSquareClassHom (K := K) (W := W)))
+      (linearEquivDetSquareClassHom_ker_eq_spin_image_subgroup
+        (K := K) (V := V) b i).symm).trans
+    (QuotientGroup.quotientKerEquivOfSurjective
+      (linearEquivDetSquareClassHom (K := K) (W := W))
+      (linearEquivDetSquareClassHom_surjective (K := K) (b := b) i))
+
+@[simp]
+theorem linearEquivSpinImageQuotientEquivSquareClass_mk
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) (g : W ≃ₗ[K] W) :
+    linearEquivSpinImageQuotientEquivSquareClass (K := K) (V := V) b i
+        (QuotientGroup.mk g) =
+      linearEquivDetSquareClassHom (K := K) g := by
+  dsimp [linearEquivSpinImageQuotientEquivSquareClass]
+  change
+    QuotientGroup.kerLift (linearEquivDetSquareClassHom (K := K) (W := W))
+        (QuotientGroup.mk g) =
+      linearEquivDetSquareClassHom (K := K) (W := W) g
+  rw [QuotientGroup.kerLift_mk]
+
 omit [FiniteDimensional K V] [Invertible (2 : K)] in
 /-- The determinant square-class character on the canonical split Levi subgroup. -/
 noncomputable def dualProdLeviDetSquareClassHom
