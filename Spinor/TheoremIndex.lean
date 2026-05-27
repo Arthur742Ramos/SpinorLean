@@ -121,6 +121,12 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.linearEquivSpinImageSubgroup_normal
 #check Spinor.linearEquivSpinImageQuotientEquivSquareClass
 #check Spinor.linearEquivSpinImageQuotientEquivSquareClass_mk
+#check Spinor.linearEquivSplitLeviSpinorNormHom
+#check Spinor.linearEquivSplitLeviSpinorNormHom_apply
+#check Spinor.linearEquivSplitLeviSpinorNormHom_surjective
+#check Spinor.linearEquivSplitLeviSpinorNormHom_ker_eq_spin_image_subgroup
+#check Spinor.linearEquivSplitLeviSpinorNormQuotientEquivSquareClass
+#check Spinor.linearEquivSplitLeviSpinorNormQuotientEquivSquareClass_mk
 #check Spinor.dualProdLeviDetSquareClassHom
 #check Spinor.dualProdLeviDetSquareClassHom_apply_equiv_eq_one_iff_mem_spin_range
 #check Spinor.dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap
@@ -129,6 +135,12 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.dualProdLeviSpinImageSubgroup_normal
 #check Spinor.dualProdLeviSpinImageQuotientEquivSquareClass
 #check Spinor.dualProdLeviSpinImageQuotientEquivSquareClass_mk
+#check Spinor.dualProdLeviSpinorNormHom
+#check Spinor.dualProdLeviSpinorNormHom_apply_equiv
+#check Spinor.dualProdLeviSpinorNormHom_surjective
+#check Spinor.dualProdLeviSpinorNormHom_ker_eq_spin_image_comap
+#check Spinor.dualProdLeviSpinorNormQuotientEquivSquareClass
+#check Spinor.dualProdLeviSpinorNormQuotientEquivSquareClass_mk
 #check Spinor.dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_square_surjective
 #check Spinor.dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_isAlgClosed
 #check Spinor.dualProdSpecialOrthogonalOf_basisTransvectionLinearEquiv_mem_spin_range_of_two_lt_card

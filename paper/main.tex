@@ -94,7 +94,9 @@ $K^\times$. Equivalently, the formalized square-class character
 $g\mapsto[\det(g)]\in K^\times/(K^\times)^2$ is onto, has kernel exactly the
 pulled-back spin image in linear coordinates and, after transport, exactly the spin image on the
 canonical split Levi subgroup. The corresponding quotients by these spin-image subgroups are
-isomorphic to \(K^\times/(K^\times)^2\). The proof combines an orthogonal factorization into transported
+isomorphic to \(K^\times/(K^\times)^2\). These same finite-basis split-Levi
+characters are also exposed under local spinor-norm-facing names, without
+asserting a global orthogonal-group spinor-norm API. The proof combines an orthogonal factorization into transported
 transvections plus one chosen-line square scaling, explicit even unitary
 Clifford lifts acting by scalar-normalized exterior maps, and a top-degree
 pairing normalization that proves the determinant-square necessity direction.
@@ -104,8 +106,8 @@ explicit chosen-model Levi-lift, and finite-basis split-Levi image corollaries
 become unconditional there.
 The artifact comprises
 $23$ Lean source files totaling
-$20{,}479$ physical lines across the repository, of which $21$ files and
-$20{,}437$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$20{,}621$ physical lines across the repository, of which $21$ files and
+$20{,}579$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
@@ -190,14 +192,15 @@ membership is equivalent to the determinant being a square, and the
 corresponding determinant square-class quotient homomorphism is onto and has the spin image
 as its kernel, formalized as surjectivity plus subgroup equalities in linear coordinates and
 after transport to the canonical Levi subgroup, then packaged as quotient isomorphisms by the
-first isomorphism theorem. The square-surjective corollary
+first isomorphism theorem; the same local split-Levi characters and quotient
+maps are exposed under spinor-norm-facing wrapper names. The square-surjective corollary
 removes that side condition for all Levi elements.
 The same artifact also proves the chosen-model spinor interface, the split-rank
 kernel/projective-descent package, explicit transvection and chosen-line
 square-scaling lifts, the Levi-projective exterior-action bridge, and the exact
 split-line image criterion. Full Bott-period-$8$ real classification beyond
 the packaged low-signature entries, full all-orthogonal-group image
-classification and spinor-norm formulation, and scheme-theoretic spin-cover
+classification and global spinor-norm theory, and scheme-theoretic spin-cover
 statements are explicit scope boundaries, not assumptions behind the results
 claimed below.
 
@@ -254,7 +257,8 @@ exterior action; the finite-basis square-determinant factorization and its
 explicit even unitary chosen-model lift; the determinant-square necessity
 theorem, resulting exact finite-basis Levi image criterion, and determinant
 square-class quotient character with its surjectivity, kernel theorem, and quotient-isomorphism
-form; the
+form, together with local split-Levi spinor-norm-facing wrappers for the same
+character; the
 square-surjective all-Levi corollary; and the exact split-line image theorem.
 The point is not abstract generation by itself,
 but a concrete chosen-model realization of a root subgroup, its square torus,
@@ -275,7 +279,8 @@ alongside them:
 \item the finite-basis square-determinant Levi factorization, explicit
   chosen-model lift, determinant-square necessity theorem, and exact spin-image
   iff of Theorem~\ref{thm:square-det-levi}, including the onto determinant
-  square-class quotient character, its quotient-isomorphism form, and its square-surjective all-Levi
+  square-class quotient character, its local split-Levi spinor-norm-facing
+  wrapper form, its quotient-isomorphism form, and its square-surjective all-Levi
   Clifford-unit and spin-image corollaries;
 \item the explicit hyperbolic transvection Clifford unit
   $x_{\delta,w}=1+\iota(\delta,0)\iota(0,w)$ from
@@ -306,7 +311,7 @@ Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
 \Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
 Build command & \code{lake build} \\
 Lean files under \code{Spinor/} & $21$ \\
-Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $20{,}437$ \\
+Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $20{,}579$ \\
 \code{sorry} occurrences under \code{Spinor/} & $0$
 \end{tabularx}
 \end{center}
@@ -1360,6 +1365,8 @@ basis line by any unit has that unit as its determinant and hence realizes the
 chosen square class. The formal quotient equivalence is then the standard
 first-isomorphism-theorem map for this surjective character, in both linear coordinates and on
 the transported split Levi, after replacing the relevant kernel by the proved spin-image subgroup.
+The exported spinor-norm-facing declarations are local aliases for this
+finite-basis split-Levi character and its quotient equivalence.
 \end{proof}
 
 \paragraph{A concrete rank-$2$ shear.}
@@ -1447,7 +1454,9 @@ $\det(g)=u^2$. The top exterior pairing and spin star-normalization prove the
 converse determinant-square obstruction, so finite-basis split-Levi spin-image
 membership is exactly the square-determinant condition, and the induced
 split-Levi square-class character is onto with that spin image as kernel; equivalently, the
-split-Levi quotient by the spin image is the square-class group. Over fields with
+split-Levi quotient by the spin image is the square-class group. The same proved
+character is now exported under local split-Levi spinor-norm-facing names, but
+no global orthogonal-group spinor-norm theory is claimed. Over fields with
 square-surjective unit group, every finite-basis Levi element lies in that spin
 image; the new algebraically closed wrappers expose both the explicit lift and
 the image theorem in this common case without an extra square-surjectivity
@@ -1455,7 +1464,7 @@ argument. Read that way, our contribution is less about rederiving
 $\bigwedge W$ and more about identifying how much of the split Levi picture is
 already visible inside explicit Clifford formulas over a general field. The
 artifact boundary is consequently sharp: broader orthogonal subgroups, full
-spinor-norm formulations, Bott-periodic classification, and scheme-theoretic
+global spinor-norm formulations, Bott-periodic classification, and scheme-theoretic
 spin-cover developments are not used by the stated results and are kept outside
 this algebraic submission package.
 
