@@ -411,7 +411,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.dualProdLeviSpinImageSubgroup`, `Spinor.dualProdLeviSpinImageSubgroup_normal`, and
     `Spinor.dualProdLeviSpinImageQuotientEquivSquareClass` now package the first-isomorphism
     theorem form in both linear coordinates and the canonical split Levi, identifying the quotient
-    by the corresponding spin-image subgroup with the square-class quotient
+    by the corresponding spin-image subgroup with the square-class quotient; the wrapper names
+    `Spinor.linearEquivSplitLeviSpinorNormHom` and `Spinor.dualProdLeviSpinorNormHom` expose this
+    proved finite-basis split-Levi character as the local spinor-norm-facing formulation, while
+    still leaving a full orthogonal-group spinor-norm API outside the submission surface
   - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
   - done on the ambient API by
@@ -419,8 +422,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     split/hyperbolic chosen-model theorem `splitSpinorCoveringKernel_eq_one_or_neg_one`
   - image-classification statements claimed by this artifact are exact on the split line and
     finite-basis split Levi subgroup, including the onto determinant square-class quotient
-    character and quotient isomorphism;
-    broader orthogonal subgroups and full spinor-norm formulations are intentionally outside the
+    character, quotient isomorphism, and local split-Levi spinor-norm-facing wrappers;
+    broader orthogonal subgroups and global spinor-norm formulations are intentionally outside the
     submitted theorem surface
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package

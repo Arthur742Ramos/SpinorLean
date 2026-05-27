@@ -51,10 +51,12 @@ Levi-projective action, square-determinant Levi lifts, the determinant-square
 necessity theorem, the exact finite-basis split-Levi spin-image iff criterion,
 the onto determinant square-class characters with their kernel theorems in
 linear coordinates and on the canonical split Levi, the resulting quotient
-isomorphisms modulo the corresponding spin-image subgroups to the square-class group,
+isomorphisms modulo the corresponding spin-image subgroups to the square-class
+group, local split-Levi spinor-norm-facing wrappers for these same characters,
 and the exact split-line image / double-cover criterion. The full Bott-period-8
-table and a full all-orthogonal-group image classification are separate
-projects, not dependencies in the claimed theorem package.
+table, a full all-orthogonal-group image classification, and a global
+orthogonal-group spinor-norm API are separate projects, not dependencies in the
+claimed theorem package.
 
 ## Final preflight
 

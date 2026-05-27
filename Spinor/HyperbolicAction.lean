@@ -1448,6 +1448,67 @@ theorem linearEquivSpinImageQuotientEquivSquareClass_mk
   rw [QuotientGroup.kerLift_mk]
 
 omit [FiniteDimensional K V] [Invertible (2 : K)] in
+/-- Split-Levi spinor-norm-facing name for the determinant square-class character on linear
+coordinates. This is deliberately only the finite-basis split-Levi character proved in this file,
+not a full spinor-norm API for arbitrary orthogonal groups. -/
+noncomputable def linearEquivSplitLeviSpinorNormHom
+    {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W] :
+    (W ≃ₗ[K] W) →* Kˣ ⧸ MonoidHom.range (powMonoidHom (α := Kˣ) 2) :=
+  linearEquivDetSquareClassHom (K := K) (W := W)
+
+omit [FiniteDimensional K V] [Invertible (2 : K)] in
+@[simp]
+theorem linearEquivSplitLeviSpinorNormHom_apply
+    {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
+    (g : W ≃ₗ[K] W) :
+    linearEquivSplitLeviSpinorNormHom (K := K) g =
+      (LinearEquiv.det g :
+        Kˣ ⧸ MonoidHom.range (powMonoidHom (α := Kˣ) 2)) := rfl
+
+omit [FiniteDimensional K V] [Invertible (2 : K)] in
+/-- The split-Levi spinor-norm-facing character on linear coordinates is onto square classes. -/
+theorem linearEquivSplitLeviSpinorNormHom_surjective
+    {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    Function.Surjective (linearEquivSplitLeviSpinorNormHom (K := K) (W := W)) := by
+  simpa [linearEquivSplitLeviSpinorNormHom] using
+    linearEquivDetSquareClassHom_surjective (K := K) b i
+
+/-- The split-Levi spinor-norm-facing kernel in linear coordinates is exactly the pulled-back
+spin image. -/
+theorem linearEquivSplitLeviSpinorNormHom_ker_eq_spin_image_subgroup
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    MonoidHom.ker (linearEquivSplitLeviSpinorNormHom (K := K) (W := W)) =
+      linearEquivSpinImageSubgroup (K := K) (V := V) b i := by
+  simpa [linearEquivSplitLeviSpinorNormHom] using
+    linearEquivDetSquareClassHom_ker_eq_spin_image_subgroup (K := K) (V := V) b i
+
+/-- First-isomorphism-theorem form of the split-Levi spinor-norm-facing character in linear
+coordinates. -/
+noncomputable def linearEquivSplitLeviSpinorNormQuotientEquivSquareClass
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    ((W ≃ₗ[K] W) ⧸ linearEquivSpinImageSubgroup (K := K) (V := V) b i) ≃*
+      Kˣ ⧸ MonoidHom.range (powMonoidHom (α := Kˣ) 2) :=
+  linearEquivSpinImageQuotientEquivSquareClass (K := K) (V := V) b i
+
+@[simp]
+theorem linearEquivSplitLeviSpinorNormQuotientEquivSquareClass_mk
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) (g : W ≃ₗ[K] W) :
+    linearEquivSplitLeviSpinorNormQuotientEquivSquareClass (K := K) (V := V) b i
+        (QuotientGroup.mk g) =
+      linearEquivSplitLeviSpinorNormHom (K := K) g := by
+  simpa [linearEquivSplitLeviSpinorNormQuotientEquivSquareClass,
+    linearEquivSplitLeviSpinorNormHom] using
+      linearEquivSpinImageQuotientEquivSquareClass_mk (K := K) (V := V) b i g
+
+omit [FiniteDimensional K V] [Invertible (2 : K)] in
 /-- The determinant square-class character on the canonical split Levi subgroup. -/
 noncomputable def dualProdLeviDetSquareClassHom
     {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W] :
@@ -1584,6 +1645,75 @@ theorem dualProdLeviSpinImageQuotientEquivSquareClass_mk
         (QuotientGroup.mk x) =
       dualProdLeviDetSquareClassHom (K := K) (W := W) x
   rw [QuotientGroup.kerLift_mk]
+
+omit [FiniteDimensional K V] [Invertible (2 : K)] in
+/-- Split-Levi spinor-norm-facing name for the determinant square-class character on the
+canonical split Levi subgroup. This is only the finite-basis split-Levi character, not a full
+spinor-norm API for arbitrary orthogonal groups. -/
+noncomputable def dualProdLeviSpinorNormHom
+    {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W] :
+    dualProdLeviSubgroup (K := K) (W := W) →*
+      Kˣ ⧸ MonoidHom.range (powMonoidHom (α := Kˣ) 2) :=
+  dualProdLeviDetSquareClassHom (K := K) (W := W)
+
+omit [FiniteDimensional K V] [Invertible (2 : K)] in
+@[simp]
+theorem dualProdLeviSpinorNormHom_apply_equiv
+    {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
+    (g : W ≃ₗ[K] W) :
+    dualProdLeviSpinorNormHom (K := K)
+        (dualProdLeviSubgroupEquivLinearEquiv (K := K) (W := W) g) =
+      linearEquivSplitLeviSpinorNormHom (K := K) g := by
+  simpa [dualProdLeviSpinorNormHom, linearEquivSplitLeviSpinorNormHom] using
+    dualProdLeviDetSquareClassHom_apply_equiv (K := K) (W := W) g
+
+omit [FiniteDimensional K V] [Invertible (2 : K)] in
+/-- The split-Levi spinor-norm-facing character on the canonical split Levi is onto square
+classes. -/
+theorem dualProdLeviSpinorNormHom_surjective
+    {W : Type*} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    Function.Surjective (dualProdLeviSpinorNormHom (K := K) (W := W)) := by
+  simpa [dualProdLeviSpinorNormHom] using
+    dualProdLeviDetSquareClassHom_surjective (K := K) b i
+
+/-- The split-Levi spinor-norm-facing kernel on the canonical split Levi is exactly the spin
+image pulled back to that Levi subgroup. -/
+theorem dualProdLeviSpinorNormHom_ker_eq_spin_image_comap
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    MonoidHom.ker (dualProdLeviSpinorNormHom (K := K) (W := W)) =
+      Subgroup.comap (dualProdLeviSubgroup (K := K) (W := W)).subtype
+        (MonoidHom.range
+          (spinSpecialOrthogonalRepresentationFiniteDimensional
+            (Q := QuadraticForm.dualProd K W))) := by
+  simpa [dualProdLeviSpinorNormHom] using
+    dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap (K := K) (V := V) b i
+
+/-- First-isomorphism-theorem form of the split-Levi spinor-norm-facing character on the
+canonical split Levi subgroup. -/
+noncomputable def dualProdLeviSpinorNormQuotientEquivSquareClass
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    (dualProdLeviSubgroup (K := K) (W := W) ⧸
+        dualProdLeviSpinImageSubgroup (K := K) (V := V) b i) ≃*
+      Kˣ ⧸ MonoidHom.range (powMonoidHom (α := Kˣ) 2) :=
+  dualProdLeviSpinImageQuotientEquivSquareClass (K := K) (V := V) b i
+
+@[simp]
+theorem dualProdLeviSpinorNormQuotientEquivSquareClass_mk
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι)
+    (x : dualProdLeviSubgroup (K := K) (W := W)) :
+    dualProdLeviSpinorNormQuotientEquivSquareClass (K := K) (V := V) b i
+        (QuotientGroup.mk x) =
+      dualProdLeviSpinorNormHom (K := K) (W := W) x := by
+  simpa [dualProdLeviSpinorNormQuotientEquivSquareClass, dualProdLeviSpinorNormHom] using
+    dualProdLeviSpinImageQuotientEquivSquareClass_mk (K := K) (V := V) b i x
 
 omit [FiniteDimensional K V] in
 /-- The explicit hyperbolic transvection Clifford unit acts exactly as the corresponding linear
