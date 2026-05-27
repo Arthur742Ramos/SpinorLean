@@ -278,8 +278,8 @@ determinant-parity bridge, an even-kernel scalarity bridge, a
 determinant-obstructed scalar-kernel and descent theorem, a scalar-kernel bridge
 from concrete scalarity to kernel-triviality, the formal \(\Cl(1,0)\) odd-kernel
 obstruction to unconditional scalar kernels for the current untwisted action,
-any replacement odd-kernel/lift-independence mechanism outside that
-determinant-obstructed case, and
+the equivalence between lift independence / image-level descent and
+kernel-triviality of the global Lipschitz-group hom, and
 descent-obligation APIs for conditional image-level monoid homs with their
 range-restriction pullback theorem, pullback uniqueness theorem, product-order
 invariance, repeated-pair square-class cancellation, and
@@ -301,8 +301,8 @@ substrate, its global Lipschitz-group hom, linear-kernel centrality and
 parity / even-kernel scalarity bridges, determinant-obstructed scalar-kernel and
 descent theorem, scalar-kernel bridge, the formal \(\Cl(1,0)\) odd-kernel
 obstruction to unconditional scalar kernels and unconditional kernel-trivial
-descent for the current untwisted action, and any replacement odd-kernel descent
-wrappers outside that determinant-obstructed case, and its
+descent for the current untwisted action, the equivalence between lift independence /
+image-level descent and kernel-triviality of the global Lipschitz-group hom, and its
 noncanonical Lipschitz linear-image wrapper with the
 range-restriction pullback and uniqueness theorems, and
 scheme-theoretic spin-cover statements are explicit scope
@@ -524,7 +524,12 @@ unit and square class at that image level. It also defines
 \code{LipschitzSpinorNormClassFactorizationIndependent}, proves it globally,
 and exposes the resulting \code{lipschitzSpinorNormClassHom}. The remaining
 \code{LipschitzSpinorNormClassHomTrivialOnLinearKernel} condition implies lift
-independence and then the image-level descent package.
+independence and then the image-level descent package; conversely,
+\code{lipschitzLinearImageSpinorNormLiftIndependent_iff_hom_trivialOnLinearKernel}
+and
+\code{lipschitzLinearImageSpinorNormDescends_iff_hom_trivialOnLinearKernel}
+identify lift independence and the explicit descent obligations exactly with
+kernel-triviality of the global Lipschitz-group square-class hom.
 \code{OrthogonalAction.lean} also proves that an element in the linear kernel
 has trivial Clifford conjugation via
 \code{lipschitzConjAlgEquiv_eq_refl_of_lipschitzLinearRepresentation_eq_one}
@@ -1690,9 +1695,8 @@ chosen-lift wrapper, linear-kernel centrality / parity / even-kernel scalarity
 bridge, determinant-obstructed scalar-kernel and descent theorem, scalar-kernel
 bridge, the formal \(\Cl(1,0)\) odd-kernel obstruction to unconditional scalar
 kernels and unconditional kernel-trivial descent for the current untwisted
-action, any replacement
-odd-kernel/kernel-triviality-to-lift-independence mechanism outside that
-determinant-obstructed case, and
+action, the equivalence between lift independence / image-level descent and
+kernel-triviality of the global Lipschitz-group hom, and
 descent-obligation APIs, including the direct conditional image-level homs and
 its range-restriction pullback and uniqueness theorems,
 expose this data on the Lipschitz linear image, but no global orthogonal-group
@@ -1715,9 +1719,8 @@ and global Lipschitz-group hom, and noncanonical Lipschitz linear-image wrapper 
 linear-kernel centrality / parity / even-kernel scalarity bridge,
 determinant-obstructed scalar-kernel and descent theorem, scalar-kernel bridge,
 the formal \(\Cl(1,0)\) odd-kernel obstruction to unconditional scalar kernels
-and unconditional kernel-trivial descent for the current untwisted action, any replacement
-odd-kernel/kernel-triviality-to-lift-independence mechanism outside that
-determinant-obstructed case,
+and unconditional kernel-trivial descent for the current untwisted action, the equivalence between
+lift independence / image-level descent and kernel-triviality of the global Lipschitz-group hom,
 descent-obligation APIs, and direct
 conditional image-level homs with their range-restriction pullback and uniqueness theorems,
 including separated repeated subproducts after permutation into the repeated shape, the remaining

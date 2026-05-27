@@ -296,7 +296,12 @@ Implemented so far:
   `LipschitzImageNorm` exposes the corresponding noncanonical chosen-lift API on the image of
   `lipschitzLinearRepresentation`, separates the lift-independence and kernel-triviality
   obligations, proves that kernel-triviality of the global Lipschitz-group hom implies lift
-  independence and image-level descent, adds the concrete scalar-kernel bridge
+  independence and image-level descent, and now proves the converse implications and iff
+  wrappers
+  `lipschitzLinearImageSpinorNormLiftIndependent_iff_hom_trivialOnLinearKernel`,
+  `lipschitzLinearImageSpinorNormDescends_iff_hom_trivialOnLinearKernel`, and
+  `lipschitzLinearImageSpinorNormDescends_iff_liftIndependent`. It also adds the concrete
+  scalar-kernel bridge
   `LipschitzLinearKernelScalarUnits` together with
   `lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_linearKernelScalarUnits` and
   `lipschitzLinearImageSpinorNormClassHomOfLinearKernelScalarUnits`, and packages
@@ -453,7 +458,8 @@ Explicit scope boundaries for this algebraic submission package:
   centrality / parity / even-kernel scalarity bridge, determinant-obstructed scalar-kernel
   and descent theorem, scalar-kernel bridge, the formal `Cl(1,0)` odd-kernel obstruction to
   unconditional scalar kernels and unconditional kernel-trivial descent for the current
-  untwisted action, any replacement odd-kernel/lift-independence mechanism, and
-  descent-obligation APIs and implications, and finite-basis split-Levi square-class APIs
+  untwisted action, the equivalence between lift-independence / descent obligations and
+  kernel-triviality of the global Lipschitz-group hom, and finite-basis split-Levi square-class
+  APIs
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

@@ -485,7 +485,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.not_lipschitzLinearKernelScalarUnits_realCl10` together with
     `Spinor.not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10` jointly rule out the
     unconditional scalar-kernel and kernel-triviality descent APIs. The development also retains the
-    lift-independence and descent-obligation structures, implications,
+    lift-independence and descent-obligation structures, proves their iff wrappers with
+    kernel-triviality of the global Lipschitz-group hom, and includes the
     scalar-kernel bridge
     `Spinor.LipschitzLinearKernelScalarUnits`, and direct image-level monoid-hom wrappers whose
     fields isolate the remaining missing scalarity/kernel-triviality hypothesis needed to turn
@@ -515,9 +516,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     wrapper, linear-kernel centrality / parity / even-kernel scalarity bridge,
     determinant-obstructed scalar-kernel and descent theorem, scalar-kernel bridge,
     the formal `Cl(1,0)` odd-kernel obstruction to unconditional scalarity and
-    unconditional kernel-trivial descent for the current untwisted action, any replacement
-    odd-kernel/kernel-triviality-to-lift-independence mechanism outside that
-    determinant-obstructed case,
+    unconditional kernel-trivial descent for the current untwisted action, the equivalence between
+    lift independence / image-level descent and kernel-triviality of the global Lipschitz-group hom,
     descent-obligation APIs, and direct conditional image-level hom wrappers,
     range-restriction pullback theorem, and pullback uniqueness
     theorem, including separated repeated subproducts after permutation into the repeated shape,
@@ -548,9 +548,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   wrappers, linear-kernel centrality / parity / even-kernel scalarity bridge,
   determinant-obstructed scalar-kernel and descent theorem, scalar-kernel bridge,
   the formal `Cl(1,0)` odd-kernel obstruction to unconditional scalarity and
-  unconditional kernel-trivial descent for the current untwisted action, any replacement
-  odd-kernel/kernel-triviality-to-lift-independence mechanism outside that
-  determinant-obstructed case,
+  unconditional kernel-trivial descent for the current untwisted action, the equivalence between
+  lift independence / image-level descent and kernel-triviality of the global Lipschitz-group hom,
   descent-obligation APIs, and direct conditional image-level hom wrappers with
   range-restriction pullback and uniqueness theorems when `2` is invertible, while the remaining
   arbitrary-signature matrix-target Bott-periodicity and full all-orthogonal-group image classifications beyond
