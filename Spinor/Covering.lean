@@ -1,6 +1,7 @@
 import Spinor.ProdNeg
 import Spinor.OddClassification
 import Spinor.CliffordNorm
+import Spinor.LipschitzImageNorm
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.LinearAlgebra.CliffordAlgebra.Prod
 
@@ -14,7 +15,9 @@ import Mathlib.LinearAlgebra.CliffordAlgebra.Prod
   where the chosen-model Clifford action is an endomorphism algebra. The same
   scalar-center theorem is reused for even elements in the kernel of the
   Lipschitz linear representation, giving a scalar-unit bridge and spinor-norm
-  triviality theorem for even Lipschitz kernel elements. The file also
+  triviality theorem for even Lipschitz kernel elements. Combined with the graded
+  determinant-parity theorem from `OrthogonalAction`, this gives scalar-kernel
+  and image-descent packages whenever the odd determinant branch is not `1`. The file also
   lifts the resulting kernel statement from the ambient isometry map to the
   `SO(V,Q)`-valued factor, packages the conditional covering-map statement under
   the pair-generator closure hypothesis, and records the exact split-line
@@ -179,6 +182,60 @@ theorem lipschitzSpinorNormClassHom_eq_one_of_linearRepresentation_eq_one_of_mem
       (Q := Q) hQ x hx heven with
     ⟨u, hu⟩
   exact lipschitzSpinorNormClassHom_eq_one_of_coe_eq_algebraMap_unit Q x u hu
+
+/-- If the determinant of the odd Lipschitz branch is not `1`, every Lipschitz linear-kernel
+element is a scalar unit in finite-dimensional nondegenerate rank. -/
+theorem exists_unit_scalar_of_lipschitzLinearRepresentation_eq_one_of_det_ne
+    [FiniteDimensional K V] (hQ : Q.Nondegenerate)
+    (hdet : (-1 : Kˣ) ^ (Module.finrank K V - 1) ≠ 1)
+    (x : lipschitzGroup Q)
+    (hx : lipschitzLinearRepresentation (Q := Q) x = 1) :
+    ∃ u : Kˣ,
+      (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
+        algebraMap K (CliffordAlgebra Q) (u : K) :=
+  exists_unit_scalar_of_lipschitzLinearRepresentation_eq_one_of_mem_even
+    (Q := Q) hQ x hx
+    (lipschitzLinearRepresentation_mem_even_of_eq_one_of_det_ne (Q := Q) x hx hdet)
+
+/-- Under the determinant obstruction to odd kernel elements, the global Lipschitz spinor norm
+is trivial on the linear kernel. -/
+theorem lipschitzSpinorNormClassHom_eq_one_of_linearRepresentation_eq_one_of_det_ne
+    [FiniteDimensional K V] (hQ : Q.Nondegenerate)
+    (hdet : (-1 : Kˣ) ^ (Module.finrank K V - 1) ≠ 1)
+    (x : lipschitzGroup Q)
+    (hx : lipschitzLinearRepresentation (Q := Q) x = 1) :
+    lipschitzSpinorNormClassHom Q x = 1 := by
+  rcases exists_unit_scalar_of_lipschitzLinearRepresentation_eq_one_of_det_ne
+      (Q := Q) hQ hdet x hx with
+    ⟨u, hu⟩
+  exact lipschitzSpinorNormClassHom_eq_one_of_coe_eq_algebraMap_unit Q x u hu
+
+/-- Determinant-obstructed Lipschitz linear kernels satisfy the scalar-kernel API. -/
+theorem lipschitzLinearKernelScalarUnits_of_det_ne
+    [FiniteDimensional K V] (hQ : Q.Nondegenerate)
+    (hdet : (-1 : Kˣ) ^ (Module.finrank K V - 1) ≠ 1) :
+    LipschitzLinearKernelScalarUnits Q where
+  exists_unit_scalar_of_linearRepresentation_eq_one x hx :=
+    exists_unit_scalar_of_lipschitzLinearRepresentation_eq_one_of_det_ne
+      (Q := Q) hQ hdet x hx
+
+/-- Determinant-obstructed Lipschitz linear kernels give global kernel-triviality of the
+Lipschitz-group spinor-norm hom. -/
+theorem lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_det_ne
+    [FiniteDimensional K V] (hQ : Q.Nondegenerate)
+    (hdet : (-1 : Kˣ) ^ (Module.finrank K V - 1) ≠ 1) :
+    LipschitzSpinorNormClassHomTrivialOnLinearKernel Q :=
+  lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_linearKernelScalarUnits Q
+    (lipschitzLinearKernelScalarUnits_of_det_ne (Q := Q) hQ hdet)
+
+/-- Under the determinant obstruction to odd kernel elements, the Lipschitz spinor norm descends
+to the Lipschitz linear image. -/
+theorem lipschitzLinearImageSpinorNormDescends_of_det_ne
+    [FiniteDimensional K V] (hQ : Q.Nondegenerate)
+    (hdet : (-1 : Kˣ) ^ (Module.finrank K V - 1) ≠ 1) :
+    LipschitzLinearImageSpinorNormDescends Q :=
+  lipschitzLinearImageSpinorNormDescends_of_hom_trivialOnLinearKernel Q
+    (lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_det_ne (Q := Q) hQ hdet)
 
 /-- In finite-dimensional nondegenerate rank, the ambient spin-to-isometry kernel is exactly the
 scalar elements `±1`. -/

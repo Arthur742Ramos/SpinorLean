@@ -290,11 +290,17 @@ Implemented so far:
   `OrthogonalAction` now proves
   `lipschitzConjAlgEquiv_eq_refl_of_lipschitzLinearRepresentation_eq_one` and
   `commute_of_lipschitzLinearRepresentation_eq_one`, a linear-kernel centrality bridge toward
-  that scalar-kernel theorem.
+  that scalar-kernel theorem, and
+  `lipschitzLinearRepresentation_gradedDetParity`, which separates Lipschitz lifts into an
+  even determinant-`1` branch and an odd determinant-`(-1)^(dim - 1)` branch.
   `Covering` combines that centrality bridge with the finite-dimensional scalar-center theorem
   to prove `exists_unit_scalar_of_lipschitzLinearRepresentation_eq_one_of_mem_even` and
   `lipschitzSpinorNormClassHom_eq_one_of_linearRepresentation_eq_one_of_mem_even`, discharging
-  even Lipschitz linear-kernel elements while leaving the odd-kernel scalarity issue separate.
+  even Lipschitz linear-kernel elements. It also proves
+  `exists_unit_scalar_of_lipschitzLinearRepresentation_eq_one_of_det_ne`,
+  `lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_det_ne`, and
+  `lipschitzLinearImageSpinorNormDescends_of_det_ne`, discharging the full scalar-kernel /
+  descent obligation whenever the odd determinant branch is not `1`.
   `lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel`
   records the compatibility wrapper with the older two-hypothesis API, and
   `lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel`
@@ -408,8 +414,10 @@ Explicit scope boundaries for this algebraic submission package:
 - a full global orthogonal-group spinor-norm theory beyond the factorization-existence
   Clifford/Lipschitz norm package, its proved Lipschitz factorization-independence theorem and
   global Lipschitz-group hom, noncanonical Lipschitz linear-image wrapper, linear-kernel
-  centrality / even-kernel scalarity bridge, scalar-kernel bridge, remaining odd-kernel
-  scalarity and kernel-triviality, lift-independence, and descent-obligation APIs and implications, and
+  centrality / parity / even-kernel scalarity bridge, determinant-obstructed scalar-kernel
+  and descent theorem, scalar-kernel bridge, remaining odd-kernel scalarity and
+  kernel-triviality outside the determinant-obstructed case, lift-independence, and
+  descent-obligation APIs and implications, and
   finite-basis split-Levi square-class APIs
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

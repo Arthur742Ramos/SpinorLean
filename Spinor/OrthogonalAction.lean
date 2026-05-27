@@ -44,6 +44,10 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
 * `Spinor.lipschitzConjAlgEquiv_eq_refl_of_lipschitzLinearRepresentation_eq_one` and
   `Spinor.commute_of_lipschitzLinearRepresentation_eq_one` — Lipschitz linear-kernel elements
   act trivially by Clifford conjugation and commute with every Clifford element.
+* `Spinor.lipschitzLinearRepresentation_gradedDetParity` and
+  `Spinor.lipschitzLinearRepresentation_mem_even_of_eq_one_of_det_ne` — Lipschitz elements have
+  even/odd Clifford parity compatible with the determinant of the ambient action, excluding odd
+  linear-kernel lifts when the odd determinant branch is not `1`.
 * `Spinor.pinVectorAction`, `Spinor.pinLinearEquiv`,
   `Spinor.pinLinearRepresentation : pinGroup Q →* (M ≃ₗ[R] M)` — the ambient vector action of
   the pin group by conjugation on `CliffordAlgebra.ι Q`.
@@ -1572,6 +1576,174 @@ theorem lipschitzLinearRepresentation_detParity (x : lipschitzGroup Q) :
     (fun g h hg hh hg' hh' => by
       simpa [p] using lipschitzLinearRepresentationDetParity_mul (Q := Q) hg' hh')
     hx
+
+/-- Graded determinant-parity form of `lipschitzLinearRepresentation_detParity`.
+
+The Clifford value of a Lipschitz element is either even, with determinant `1`, or odd, with
+determinant the value of an invertible vector generator. -/
+def lipschitzLinearRepresentationGradedDetParity (x : lipschitzGroup Q) : Prop :=
+  ((((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) ∈
+      CliffordAlgebra.even Q ∧
+    LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) x) = 1) ∨
+  ((((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) ∈
+      CliffordAlgebra.evenOdd Q 1 ∧
+    LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) x) =
+      (-1 : Kˣ) ^ (Module.finrank K V - 1))
+
+omit [FiniteDimensional K V] in
+theorem lipschitzLinearRepresentationGradedDetParity_mul {x y : lipschitzGroup Q}
+    (hx : lipschitzLinearRepresentationGradedDetParity (Q := Q) x)
+    (hy : lipschitzLinearRepresentationGradedDetParity (Q := Q) y) :
+    lipschitzLinearRepresentationGradedDetParity (Q := Q) (x * y) := by
+  have hdetMul :
+      LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) (x * y)) =
+        LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) x) *
+          LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) y) := by
+    rw [(lipschitzLinearRepresentation (Q := Q)).map_mul]
+    exact map_mul (LinearEquiv.det : (V ≃ₗ[K] V) →* Kˣ)
+      (lipschitzLinearRepresentation (Q := Q) x) (lipschitzLinearRepresentation (Q := Q) y)
+  rcases hx with hx | hx <;> rcases hy with hy | hy
+  · left
+    constructor
+    · change
+        lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y ∈ CliffordAlgebra.even Q
+      exact (CliffordAlgebra.even Q).mul_mem hx.1 hy.1
+    · rw [hdetMul, hx.2, hy.2]
+      simp
+  · right
+    constructor
+    · change
+        lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y ∈ CliffordAlgebra.evenOdd Q 1
+      have hx0 : lipschitzVal (Q := Q) x ∈ CliffordAlgebra.evenOdd Q 0 := by
+        simpa [CliffordAlgebra.even] using hx.1
+      simpa using SetLike.mul_mem_graded hx0 hy.1
+    · rw [hdetMul, hx.2, hy.2]
+      simp
+  · right
+    constructor
+    · change
+        lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y ∈ CliffordAlgebra.evenOdd Q 1
+      have hy0 : lipschitzVal (Q := Q) y ∈ CliffordAlgebra.evenOdd Q 0 := by
+        simpa [CliffordAlgebra.even] using hy.1
+      simpa [add_comm] using SetLike.mul_mem_graded hx.1 hy0
+    · rw [hdetMul, hx.2, hy.2]
+      simp
+  · left
+    constructor
+    · change
+        lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y ∈ CliffordAlgebra.even Q
+      have hxy : lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y ∈
+          CliffordAlgebra.evenOdd Q ((1 : ZMod 2) + 1) :=
+        SetLike.mul_mem_graded hx.1 hy.1
+      simpa [CliffordAlgebra.even] using hxy
+    · rw [hdetMul, hx.2, hy.2]
+      let n : ℕ := Module.finrank K V - 1
+      have hsq : ((-1 : Kˣ) ^ n) * ((-1 : Kˣ) ^ n) = 1 := by
+        apply Units.ext
+        change (((-1 : K) ^ n) * ((-1 : K) ^ n)) = 1
+        rw [← pow_add, ← two_mul n, pow_mul]
+        simp
+      have hd : (((-1 : Kˣ) ^ n)⁻¹) = (-1 : Kˣ) ^ n :=
+        inv_eq_of_mul_eq_one_left hsq
+      calc
+        (-1 : Kˣ) ^ n * (-1 : Kˣ) ^ n = ((-1 : Kˣ) ^ n)⁻¹ * ((-1 : Kˣ) ^ n) := by rw [hd]
+        _ = 1 := by simp
+
+/-- Every Lipschitz element has homogeneous Clifford parity compatible with the determinant of
+its ambient linear action. -/
+theorem lipschitzLinearRepresentation_gradedDetParity (x : lipschitzGroup Q) :
+    lipschitzLinearRepresentationGradedDetParity (Q := Q) x := by
+  let s : Set (CliffordAlgebra Q)ˣ := ((↑) ⁻¹' Set.range (CliffordAlgebra.ι Q))
+  let p : (g : (CliffordAlgebra Q)ˣ) → g ∈ Subgroup.closure s → Prop :=
+    fun g hg =>
+      lipschitzLinearRepresentationGradedDetParity (Q := Q)
+        ⟨g, by simpa [lipschitzGroup, s] using hg⟩
+  have hx : ((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) ∈ Subgroup.closure s := by
+    have hx0 := x.property
+    simp [lipschitzGroup, s] at hx0 ⊢
+  exact Subgroup.closure_induction'' (s := s) (p := p)
+    (fun g hg => by
+      obtain ⟨a, ha⟩ := hg
+      letI := g.invertible
+      letI : Invertible (CliffordAlgebra.ι Q a) := by rwa [ha]
+      letI : Invertible (Q a) := CliffordAlgebra.invertibleOfInvertibleι (Q := Q) a
+      have hg' : g = cliffordIotaUnit (Q := Q) a := by
+        apply Units.ext
+        simpa [cliffordIotaUnit] using ha.symm
+      right
+      constructor
+      · change (g : CliffordAlgebra Q) ∈ CliffordAlgebra.evenOdd Q 1
+        rw [← ha]
+        exact CliffordAlgebra.ι_mem_evenOdd_one (Q := Q) a
+      · simpa [p, hg'] using lipschitzLinearRepresentation_det_cliffordIota (Q := Q) a)
+    (fun g hg => by
+      obtain ⟨a, ha⟩ := hg
+      letI := g.invertible
+      letI : Invertible (CliffordAlgebra.ι Q a) := by rwa [ha]
+      letI : Invertible (Q a) := CliffordAlgebra.invertibleOfInvertibleι (Q := Q) a
+      have hg' : g = cliffordIotaUnit (Q := Q) a := by
+        apply Units.ext
+        simpa [cliffordIotaUnit] using ha.symm
+      right
+      constructor
+      · change (↑g⁻¹ : CliffordAlgebra Q) ∈ CliffordAlgebra.evenOdd Q 1
+        rw [hg']
+        change
+          lipschitzVal (Q := Q) ((cliffordIotaLipschitz (Q := Q) a)⁻¹) ∈
+            CliffordAlgebra.evenOdd Q 1
+        rw [coe_cliffordIotaLipschitz_inv (Q := Q) a]
+        exact Submodule.smul_mem _ _ (CliffordAlgebra.ι_mem_evenOdd_one (Q := Q) a)
+      · have hdetInv :
+            LinearEquiv.det
+                (lipschitzLinearRepresentation (Q := Q)
+                  ((cliffordIotaLipschitz (Q := Q) a)⁻¹)) =
+              (LinearEquiv.det
+                (lipschitzLinearRepresentation (Q := Q)
+                  (cliffordIotaLipschitz (Q := Q) a)))⁻¹ := by
+          rw [(lipschitzLinearRepresentation (Q := Q)).map_inv]
+          exact map_inv (LinearEquiv.det : (V ≃ₗ[K] V) →* Kˣ)
+            (lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a))
+        have hdet :
+            LinearEquiv.det
+                (lipschitzLinearRepresentation (Q := Q)
+                  ((cliffordIotaLipschitz (Q := Q) a)⁻¹)) =
+              (-1 : Kˣ) ^ (Module.finrank K V - 1) := by
+          rw [hdetInv, lipschitzLinearRepresentation_det_cliffordIota (Q := Q) a]
+          let n : ℕ := Module.finrank K V - 1
+          have hsq : ((-1 : Kˣ) ^ n) * ((-1 : Kˣ) ^ n) = 1 := by
+            apply Units.ext
+            change (((-1 : K) ^ n) * ((-1 : K) ^ n)) = 1
+            rw [← pow_add, ← two_mul n, pow_mul]
+            simp
+          exact inv_eq_of_mul_eq_one_left hsq
+        simpa [p, hg'] using hdet)
+    (by
+      left
+      constructor
+      · change (1 : CliffordAlgebra Q) ∈ CliffordAlgebra.even Q
+        exact (CliffordAlgebra.even Q).one_mem
+      · change LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) (1 : lipschitzGroup Q)) = 1
+        rw [(lipschitzLinearRepresentation (Q := Q)).map_one]
+        simp)
+    (fun g h hg hh hg' hh' => by
+      simpa [p] using lipschitzLinearRepresentationGradedDetParity_mul (Q := Q) hg' hh')
+    hx
+
+/-- A Lipschitz linear-kernel element is even whenever the odd determinant branch is excluded. -/
+theorem lipschitzLinearRepresentation_mem_even_of_eq_one_of_det_ne
+    (x : lipschitzGroup Q) (hx : lipschitzLinearRepresentation (Q := Q) x = 1)
+    (hdet : (-1 : Kˣ) ^ (Module.finrank K V - 1) ≠ 1) :
+    (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) ∈
+      CliffordAlgebra.even Q := by
+  rcases lipschitzLinearRepresentation_gradedDetParity (Q := Q) x with h | h
+  · exact h.1
+  · have hxdet :
+        LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) x) = 1 := by
+      rw [hx]
+      simp
+    have hodd : (-1 : Kˣ) ^ (Module.finrank K V - 1) = 1 := by
+      rw [← h.2, hxdet]
+    exact False.elim (hdet hodd)
 
 /-- The ambient spin representation always has determinant `1`. -/
 theorem spinLinearRepresentation_det_eq_one (x : spinGroup Q) :
