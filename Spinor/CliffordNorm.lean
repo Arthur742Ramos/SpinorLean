@@ -8,6 +8,7 @@
 -/
 
 import Spinor.Mathlib
+import Mathlib.Algebra.BigOperators.Group.List.Lemmas
 import Mathlib.GroupTheory.QuotientGroup.Basic
 
 /-!
@@ -27,6 +28,7 @@ orthogonal-group spinor-norm API.
 * `Spinor.star_cliffordVectorProduct_mul_cliffordVectorProduct`
 * `Spinor.cliffordInvertibleVectorProductNormUnit`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass`
+* `Spinor.cliffordInvertibleVectorProductSpinorNormClass_perm`
 -/
 
 namespace Spinor
@@ -74,6 +76,17 @@ theorem cliffordVectorProductNormScalar_append (Q : QuadraticForm R M) (l₁ l�
     cliffordVectorProductNormScalar Q (l₁ ++ l₂) =
       cliffordVectorProductNormScalar Q l₁ * cliffordVectorProductNormScalar Q l₂ := by
   simp [cliffordVectorProductNormScalar, List.map_append]
+
+theorem cliffordVectorProductNormScalar_perm (Q : QuadraticForm R M)
+    {l₁ l₂ : List M} (h : l₁.Perm l₂) :
+    cliffordVectorProductNormScalar Q l₁ = cliffordVectorProductNormScalar Q l₂ := by
+  simpa [cliffordVectorProductNormScalar] using
+    (h.map fun m => -Q m).prod_eq
+
+@[simp]
+theorem cliffordVectorProductNormScalar_reverse (Q : QuadraticForm R M) (l : List M) :
+    cliffordVectorProductNormScalar Q l.reverse = cliffordVectorProductNormScalar Q l :=
+  cliffordVectorProductNormScalar_perm Q l.reverse_perm
 
 /-- The Clifford conjugation norm of a product of vector generators is the scalar product of the
 signed quadratic values. -/
@@ -154,6 +167,20 @@ theorem cliffordInvertibleVectorProductNormUnit_append (Q : QuadraticForm R M)
         cliffordInvertibleVectorProductNormUnit Q l₂ := by
   simp [cliffordInvertibleVectorProductNormUnit, List.map_append]
 
+theorem cliffordInvertibleVectorProductNormUnit_perm (Q : QuadraticForm R M)
+    {l₁ l₂ : List (InvertibleQuadraticVector Q)} (h : l₁.Perm l₂) :
+    cliffordInvertibleVectorProductNormUnit Q l₁ =
+      cliffordInvertibleVectorProductNormUnit Q l₂ := by
+  simpa [cliffordInvertibleVectorProductNormUnit] using
+    (h.map (cliffordInvertibleVectorNormUnit Q)).prod_eq
+
+@[simp]
+theorem cliffordInvertibleVectorProductNormUnit_reverse (Q : QuadraticForm R M)
+    (l : List (InvertibleQuadraticVector Q)) :
+    cliffordInvertibleVectorProductNormUnit Q l.reverse =
+      cliffordInvertibleVectorProductNormUnit Q l :=
+  cliffordInvertibleVectorProductNormUnit_perm Q l.reverse_perm
+
 @[simp]
 theorem coe_cliffordInvertibleVectorProductNormUnit (Q : QuadraticForm R M)
     (l : List (InvertibleQuadraticVector Q)) :
@@ -218,5 +245,19 @@ theorem cliffordInvertibleVectorProductSpinorNormClass_append (Q : QuadraticForm
       cliffordInvertibleVectorProductSpinorNormClass Q l₁ *
         cliffordInvertibleVectorProductSpinorNormClass Q l₂ := by
   simp [cliffordInvertibleVectorProductSpinorNormClass]
+
+theorem cliffordInvertibleVectorProductSpinorNormClass_perm (Q : QuadraticForm R M)
+    {l₁ l₂ : List (InvertibleQuadraticVector Q)} (h : l₁.Perm l₂) :
+    cliffordInvertibleVectorProductSpinorNormClass Q l₁ =
+      cliffordInvertibleVectorProductSpinorNormClass Q l₂ := by
+  simp [cliffordInvertibleVectorProductSpinorNormClass,
+    cliffordInvertibleVectorProductNormUnit_perm Q h]
+
+@[simp]
+theorem cliffordInvertibleVectorProductSpinorNormClass_reverse (Q : QuadraticForm R M)
+    (l : List (InvertibleQuadraticVector Q)) :
+    cliffordInvertibleVectorProductSpinorNormClass Q l.reverse =
+      cliffordInvertibleVectorProductSpinorNormClass Q l :=
+  cliffordInvertibleVectorProductSpinorNormClass_perm Q l.reverse_perm
 
 end Spinor
