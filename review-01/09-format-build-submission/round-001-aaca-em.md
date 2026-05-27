@@ -5,10 +5,18 @@
 - Did the bots find blockers? yes. The current `paper/` source is not ready for AACA/EM resubmission without source-package and venue-format fixes.
 - Reviewed manuscript target: `paper/main.tex` and `paper/refs.bib` at commit `3013eb1f9dcfb2be61e4d1e2d4238813ed18dacd`.
 - Not reviewed as manuscript: `built_editorial_manager_pdf.pdf`; it is historical bad-formatting evidence only.
+- Scientific-reviewer basis: the actual sibling CLI run in `review-01/scientific-reviewer-review/` returned `NOT_READY`.
 
 ## Scope
 
 This report reviews AACA / Editorial Manager formatting, source-package, and rendered-output readiness for the current repository paper source. It does not review Lean artifacts, Lean proof status, or mathematical correctness.
+
+The sibling `scientific-reviewer review manuscript` command was run on
+`paper/main.tex` with `review-01/00-global/aaca-venue-profile.yaml`. It produced
+1,562 units and 27,393 missing required checks, including missing
+`aaca_birkjour_editorial_manager_audit` evidence. The CLI output is therefore
+the fail-closed review baseline; the findings below are the first human-readable
+AACA/EM triage extracted from that baseline and the current source.
 
 ## Findings
 
@@ -16,6 +24,7 @@ This report reviews AACA / Editorial Manager formatting, source-package, and ren
 
 Evidence:
 
+- Scientific-reviewer returned `NOT_READY` and blocked on no declared current final upload-format artifact.
 - `paper/` contains only `README.md`, `main.tex`, and `refs.bib`.
 - AACA requires all relevant editable source files at every submission/revision; incomplete editable source files can prevent review.
 - Current source uses `\bibliography{refs}` at `paper/main.tex:1538`, but no generated `.bbl`, `.bst`, AACA `.cls`, or AACA style/template files are present in `paper/`.

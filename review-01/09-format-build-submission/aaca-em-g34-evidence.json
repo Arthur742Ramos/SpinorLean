@@ -14,8 +14,26 @@
     "lean_executed": false,
     "latex_executed": false,
     "local_latex_compile_deferred": true,
+    "scientific_reviewer_cli_executed": true,
     "push_performed": false,
     "main_branch_used": false
+  },
+  "scientific_reviewer_run": {
+    "command": "../scientific-reviewer/.venv/bin/scientific-reviewer review manuscript paper/main.tex --venue review-01/00-global/aaca-venue-profile.yaml --out review-01/scientific-reviewer-review --json",
+    "stdout_json": "review-01/00-global/scientific-reviewer-run.json",
+    "out_dir": "review-01/scientific-reviewer-review",
+    "verdict": "NOT_READY",
+    "manuscript_hash": "841290faec0ad626baaa5bad72a5f8d701ef9bd411c9970080c5320e88661e3e",
+    "matrix_hash": "5f1c0e41556b4032c8149704c5db135a4fc66e7987c5cfb912e3d0bc6568f52c",
+    "total_units": 1562,
+    "total_required_checks": 27393,
+    "completed_required_checks": 0,
+    "missing_required_checks": 27393,
+    "primary_blockers": [
+      "Final submission artifact is not declared in venue profile `submission_artifacts.final_submission_artifact` or `submission_artifacts.accepted_format_derivative`.",
+      "Final submission artifact report has no resolved artifact path.",
+      "All required checks, including aaca_birkjour_editorial_manager_audit, are missing structured evidence."
+    ]
   },
   "policy_evidence": {
     "venue": "Advances in Applied Clifford Algebras",
