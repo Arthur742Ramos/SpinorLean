@@ -47,6 +47,14 @@ with 1,573 units and 27,706 missing required checks. This remains expected
 under the no-build constraint because no current upload-format final artifact,
 platform-built PDF, EM build log, or structured check-results ledger exists.
 
+After the user clarified that only Lean builds were forbidden, a scratch LaTeX
+build was run outside the repository. The clean PDF and logs were copied into
+`review-01/`, the venue profile was updated to declare the PDF as the final
+artifact, and scientific-reviewer was rerun with evidence-backed check results
+for the formatting/AACA package lane. That final evidence-backed run completed
+2,181 required checks and left 25,063 checks missing. The final artifact has no
+scientific-reviewer artifact blockers.
+
 ## Evidence inventory
 
 | Artifact | Role | SHA-256 |

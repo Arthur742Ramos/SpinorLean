@@ -1,0 +1,82 @@
+{
+  "aaca_source_level": {
+    "abstract_words": 177,
+    "bibliographystyle": "spmpsci",
+    "declarations_present": [
+      "Funding",
+      "Competing interests",
+      "Data availability",
+      "Code availability",
+      "Author contributions"
+    ],
+    "documentclass": "\\\\documentclass{birkjour}",
+    "doi_url_fields_added": true,
+    "support_files": [
+      "birkjour.cls",
+      "spmpsci.bst",
+      "cite.sty",
+      "THIRD_PARTY_NOTICES.md"
+    ]
+  },
+  "check_id": "aaca_birkjour_editorial_manager_audit",
+  "final_artifact": {
+    "blocking_reasons": [],
+    "declared_path": "../final-artifacts/spinorlean-aaca.pdf",
+    "inspected_format": "pdf-text",
+    "resolved_path": "/home/david/repos/SpinorLean/review-01/final-artifacts/spinorlean-aaca.pdf",
+    "sha256": "934d82f6708edc16e9a73d78e2384b2fe7d0ddf1abb427d26061eb5676deaa13",
+    "size_bytes": 563721,
+    "suffix": ".pdf",
+    "warning_reasons": []
+  },
+  "final_log_sha256": "0bbc4fe470485a70b11e7c70fd4cdcfa405049e155a3a5d46a9ca90a4130133e",
+  "final_pdf_sha256": "934d82f6708edc16e9a73d78e2384b2fe7d0ddf1abb427d26061eb5676deaa13",
+  "final_pdf_text_sha256": "0c3b93c3465568274b831d8b681777d6658ad1e322046a5a444f559c0f7c75bf",
+  "latex_build": {
+    "final_log_box_warning_scan": 0,
+    "final_log_unresolved_reference_scan": 0,
+    "final_pdf_marker_scan": {
+      "bracket_question": 0,
+      "double_question": 0
+    },
+    "lake_executed": false,
+    "lean_executed": false,
+    "local_latex_compile_executed": true,
+    "scratch_directory": "/tmp/spinorlean-aaca-latex-build",
+    "toolchain": "pdfTeX 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian); latexmk 4.83; BibTeX 0.99d"
+  },
+  "manuscript_hash": "edcf027a9d7a0429acd04367136f4cb473dccddfaed65e6e41c744e2b1a0bef0",
+  "refs_sha256": "5eebfbeb6415e739364dd3f601cac5e3f72543d9976e74b6d3ace89f021c31fe",
+  "source_sha256": "3466cdb4709dc89509049a253ce0d7e08559f4e88d3a391726691ba99eec81fc",
+  "unit_count": 24,
+  "unit_ids": [
+    "document/bcfbe55ab2bad54346fa",
+    "citation-reference/5be516feac97ee465cd5",
+    "citation-reference/1277d4e7ab53478f29d5",
+    "citation-reference/57f783b196249a1e2fef",
+    "citation-reference/9f71f2903fccaf7bc9d7",
+    "citation-reference/40a3fbab72cc90f098cc",
+    "citation-reference/7a11b3888960b05a8799",
+    "citation-reference/e8a8e953cc38ca8d59dc",
+    "citation-reference/6fb9502dd1b3c203f921",
+    "citation-reference/b1ebb649bdc9655d873b",
+    "citation-reference/4001df3ea8b376b74ec4",
+    "citation-reference/80beb4c3dcaea02f2094",
+    "citation-reference/e846c4f10f9b86ee832f",
+    "citation-reference/55d8024e3961c871bd0f",
+    "citation-reference/205a42fd092d9fd2ee3b",
+    "citation-reference/04d5d37499079cde5fad",
+    "citation-reference/ef8a4cd8ba3485b0ed06",
+    "citation-reference/7c0f94036c1fb8d4ca0c",
+    "citation-reference/c877ce208af7ed51a794",
+    "citation-reference/7bfcb912539f76a6ccc8",
+    "venue-compliance-requirement/2dd6d6d8a32e6c2e24cb",
+    "venue-compliance-requirement/aa9efd4dbf98b78dd18b",
+    "venue-compliance-requirement/c461ecd1b8b66c6a0b88",
+    "venue-compliance-requirement/47f9171f826d9e54c4d7"
+  ],
+  "unverified": [
+    "Lean build/proof status by user constraint",
+    "current EM platform compiler/version until actual EM upload/log"
+  ]
+}

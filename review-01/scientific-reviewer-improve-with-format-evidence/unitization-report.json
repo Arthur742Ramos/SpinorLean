@@ -1,0 +1,16 @@
+{
+  "manuscript_hash": "edcf027a9d7a0429acd04367136f4cb473dccddfaed65e6e41c744e2b1a0bef0",
+  "matrix_hash": "5f1c0e41556b4032c8149704c5db135a4fc66e7987c5cfb912e3d0bc6568f52c",
+  "unit_counts": {
+    "citation/reference": 19,
+    "claim": 379,
+    "document": 1,
+    "formula/equation": 587,
+    "paragraph": 141,
+    "section": 33,
+    "sentence": 379,
+    "venue/compliance requirement": 4
+  },
+  "units_path": "units.json",
+  "workflow": "improve"
+}
