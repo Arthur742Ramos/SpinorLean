@@ -1,0 +1,31 @@
+venue:
+  name: Advances in Applied Clifford Algebras
+  publisher: Springer
+  guidelines_url: https://link.springer.com/journal/6/submission-guidelines
+  submission_platform: Editorial Manager / Springer Nature submission route
+  decision_surface: current paper source resubmission readiness
+policy:
+  accepted_initial_file_formats:
+    - LaTeX
+    - PDF
+    - .docx
+  latex_profile:
+    final_version_requires_latex_or_ams_latex: true
+    class_file: birkjour.cls
+    first_line: "\\documentclass{birkjour}"
+    do_not_modify_class_file: true
+  abstract_words:
+    min: 150
+    max: 250
+  keywords:
+    min: 4
+    max: 6
+  requires_msc_codes: true
+  citation_style: numbered square-bracket citations
+  requires_statements_and_declarations: true
+  requires_data_availability_statement_for_original_research: true
+submission_artifacts:
+  final_submission_artifact: ../final-artifacts/spinorlean-aaca.pdf
+notes:
+  - The current upload-format artifact is generated from paper/main.tex in a scratch LaTeX build directory.
+  - The historical Editorial Manager PDF is not the reviewed manuscript target.
