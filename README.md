@@ -165,8 +165,9 @@ Implemented so far:
   representations are now proved not to factor through the ambient isometry representation, while
   their induced projective actions are packaged as image-subgroup actions on submodules
 - the split-line spin image is now identified exactly with the square-scaling subgroup in
-  `Spinor.OddClassification`, giving a theorem-level field-sensitive replacement for an
-  unrestricted double-cover slogan
+  `Spinor.OddClassification`, both inside `SO(1,1)` and after inclusion into the full
+  isometry target, giving a theorem-level field-sensitive replacement for an unrestricted
+  double-cover slogan
 - a chiral decomposition `S = S⁺ ⊕ S⁻` transported from Clifford parity, with `spinGroup`
   preserving both summands and restricting to actions on each summand
 - on the zero-form chosen model `⋀W`, an identification of the abstract chiral pieces with the
@@ -348,6 +349,7 @@ Implemented so far:
   form; this is a Lipschitz-group factorization-existence and factorization-independence
   substrate, not a descended global orthogonal-group spinor norm
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
+  subgroup inside `SO(1,1)`, its full isometry-target image is exactly the subtype image of that
   subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
   a nonsquare unit gives a formal non-surjectivity theorem; over algebraically closed fields,
   `units_square_surjective_of_isAlgClosed` specializes this to full split-line double-cover and
@@ -430,8 +432,9 @@ Explicit scope boundaries for this algebraic submission package:
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
   exact full-isometry image reduction to the special-orthogonal spin map, determinant obstruction
   to ambient full-orthogonal surjectivity and its norm-`-1` pin-generator corollary,
-  non-factorization, projective descent, exact split-line iff criterion, exact
-  finite-basis split-Levi spin-image iff theorem, and onto split-Levi determinant square-class
+  non-factorization, projective descent, exact split-line iff criterion, exact full-target
+  split-line square-scaling image theorem, exact finite-basis split-Levi spin-image iff theorem,
+  and onto split-Levi determinant square-class
   quotient character / quotient isomorphism with its split-Levi spinor-norm-facing wrappers and the
   global Clifford/Lipschitz vector-product norm formula with product-order invariance,
   repeated-pair square-class cancellation, and duplicated-product/subproduct square-class
