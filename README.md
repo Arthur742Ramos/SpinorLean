@@ -308,7 +308,7 @@ Implemented so far:
   `LipschitzLinearImageSpinorNormDescends` as the conditional obligations that would turn the
   chosen image-level square class into a monoid homomorphism; the direct hom
   `lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel`
-  packages the image-level monoid hom under that remaining kernel-triviality condition.
+  packages the image-level monoid hom under the explicit kernel-triviality condition.
   `OrthogonalAction` now proves
   `lipschitzConjAlgEquiv_eq_refl_of_lipschitzLinearRepresentation_eq_one` and
   `commute_of_lipschitzLinearRepresentation_eq_one`, a linear-kernel centrality bridge toward
@@ -331,7 +331,12 @@ Implemented so far:
   `not_lipschitzLinearKernelScalarUnits_realCl10` plus
   `not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10` rule out both the
   unconditional scalar-kernel API and the unconditional kernel-triviality descent API for the
-  current untwisted action.
+  current untwisted action; the same witness now rules out the image-level lift-independence
+  package, the explicit image-level descent package, and any image-level square-class hom whose
+  pullback along `lipschitzLinearRepresentation.rangeRestrict` is the global Lipschitz-group
+  hom, via `not_lipschitzLinearImageSpinorNormLiftIndependent_realCl10`,
+  `not_lipschitzLinearImageSpinorNormDescends_realCl10`, and
+  `not_exists_lipschitzLinearImageSpinorNormClassHom_comp_rangeRestrict_realCl10`.
   `lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel`
   records the compatibility wrapper with the older two-hypothesis API, and
   `lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel`
@@ -460,7 +465,8 @@ Explicit scope boundaries for this algebraic submission package:
   global Lipschitz-group hom, noncanonical Lipschitz linear-image wrapper, linear-kernel
   centrality / parity / even-kernel scalarity bridge, determinant-obstructed scalar-kernel
   and descent theorem, scalar-kernel bridge, the formal `Cl(1,0)` odd-kernel obstruction to
-  unconditional scalar kernels and unconditional kernel-trivial descent for the current
+  unconditional scalar kernels, unconditional kernel-trivial descent, image-level
+  lift-independence, image-level descent, and a pullback-compatible image hom for the current
   untwisted action, the equivalence between lift-independence / descent obligations and
   kernel-triviality of the global Lipschitz-group hom, and finite-basis split-Levi square-class
   APIs

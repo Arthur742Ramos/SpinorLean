@@ -153,8 +153,8 @@ structure LipschitzSpinorNormClassTrivialOnLinearKernel [Invertible (2 : R)]
     lipschitzSpinorNormClassHomOfFactorizationIndependent Q hfac x = 1
 
 /--
-The remaining kernel-triviality obligation after the Lipschitz-group spinor-norm hom has been
-constructed globally.
+The kernel-triviality obligation after the Lipschitz-group spinor-norm hom has been constructed
+globally.
 
 This is the condition needed to descend the unconditional Lipschitz-group hom through
 `lipschitzLinearRepresentation`.

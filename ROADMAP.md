@@ -519,7 +519,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     wrapper, linear-kernel centrality / parity / even-kernel scalarity bridge,
     determinant-obstructed scalar-kernel and descent theorem, scalar-kernel bridge,
     the formal `Cl(1,0)` odd-kernel obstruction to unconditional scalarity and
-    unconditional kernel-trivial descent for the current untwisted action, the equivalence between
+    unconditional kernel-trivial descent, image-level lift independence, image-level descent, and
+    pullback-compatible image homs for the current untwisted action, the equivalence between
     lift independence / image-level descent and kernel-triviality of the global Lipschitz-group hom,
     descent-obligation APIs, and direct conditional image-level hom wrappers,
     range-restriction pullback theorem, and pullback uniqueness
@@ -551,7 +552,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   wrappers, linear-kernel centrality / parity / even-kernel scalarity bridge,
   determinant-obstructed scalar-kernel and descent theorem, scalar-kernel bridge,
   the formal `Cl(1,0)` odd-kernel obstruction to unconditional scalarity and
-  unconditional kernel-trivial descent for the current untwisted action, the equivalence between
+  unconditional kernel-trivial descent, image-level lift independence, image-level descent, and
+  pullback-compatible image homs for the current untwisted action, the equivalence between
   lift independence / image-level descent and kernel-triviality of the global Lipschitz-group hom,
   descent-obligation APIs, and direct conditional image-level hom wrappers with
   range-restriction pullback and uniqueness theorems when `2` is invertible, while the remaining

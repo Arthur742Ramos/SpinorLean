@@ -8,7 +8,8 @@ import Spinor.RealClassification
   current untwisted Clifford-conjugation action. In the one-dimensional positive real form,
   the single vector generator is an odd Lipschitz element in the linear kernel, but it is not
   a scalar Clifford unit. Its Lipschitz spinor-norm square class is also the nontrivial
-  class of `-1`, so the unconditional kernel-triviality descent API is false for this action.
+  class of `-1`, so the unconditional kernel-triviality descent API, the image-level descent
+  API, and any pullback-compatible image-level square-class hom are false for this action.
 -/
 
 namespace Spinor
@@ -180,6 +181,44 @@ theorem not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10 [Invertibl
   exact realCl10OddKernelLipschitz_spinorNormClassHom_ne_one
     (hker.eq_one_of_linearRepresentation_eq_one realCl10OddKernelLipschitz
       realCl10OddKernelLipschitz_linearRepresentation_eq_one)
+
+/-- Therefore the chosen Lipschitz square class is not lift-independent on the linear image,
+already over `Cl(1,0)`. -/
+theorem not_lipschitzLinearImageSpinorNormLiftIndependent_realCl10 [Invertible (2 : ℝ)] :
+    ¬ LipschitzLinearImageSpinorNormLiftIndependent Q10 := by
+  intro hlift
+  exact not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10
+    ((lipschitzLinearImageSpinorNormLiftIndependent_iff_hom_trivialOnLinearKernel Q10).mp
+      hlift)
+
+/-- Therefore the explicit image-level descent package is false for the current untwisted
+Lipschitz spinor norm, already over `Cl(1,0)`. -/
+theorem not_lipschitzLinearImageSpinorNormDescends_realCl10 [Invertible (2 : ℝ)] :
+    ¬ LipschitzLinearImageSpinorNormDescends Q10 := by
+  intro hdesc
+  exact not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10
+    ((lipschitzLinearImageSpinorNormDescends_iff_hom_trivialOnLinearKernel Q10).mp hdesc)
+
+/-- There is no image-level square-class hom whose pullback along
+`lipschitzLinearRepresentation.rangeRestrict` is the global Lipschitz-group spinor-norm hom,
+already over `Cl(1,0)`. -/
+theorem not_exists_lipschitzLinearImageSpinorNormClassHom_comp_rangeRestrict_realCl10
+    [Invertible (2 : ℝ)] :
+    ¬ ∃ ψ : lipschitzLinearImage Q10 →*
+        ℝˣ ⧸ MonoidHom.range (powMonoidHom (α := ℝˣ) 2),
+      ψ.comp (lipschitzLinearRepresentation (Q := Q10)).rangeRestrict =
+        lipschitzSpinorNormClassHom Q10 := by
+  rintro ⟨ψ, hψ⟩
+  have hrange :
+      (lipschitzLinearRepresentation (Q := Q10)).rangeRestrict
+          realCl10OddKernelLipschitz = 1 := by
+    apply Subtype.ext
+    exact realCl10OddKernelLipschitz_linearRepresentation_eq_one
+  have hpoint := congrArg (fun φ => φ realCl10OddKernelLipschitz) hψ
+  have hnorm :
+      lipschitzSpinorNormClassHom Q10 realCl10OddKernelLipschitz = 1 := by
+    simpa [MonoidHom.comp_apply, hrange] using hpoint.symm
+  exact realCl10OddKernelLipschitz_spinorNormClassHom_ne_one hnorm
 
 end
 

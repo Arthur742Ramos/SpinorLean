@@ -85,6 +85,9 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.realCl10OddKernelLipschitz_spinorNormClassHom_ne_one
 #check Spinor.not_lipschitzLinearKernelScalarUnits_realCl10
 #check Spinor.not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10
+#check Spinor.not_lipschitzLinearImageSpinorNormLiftIndependent_realCl10
+#check Spinor.not_lipschitzLinearImageSpinorNormDescends_realCl10
+#check Spinor.not_exists_lipschitzLinearImageSpinorNormClassHom_comp_rangeRestrict_realCl10
 
 #check Spinor.HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_pos_finrank
 #check Spinor.splitSpinRepresentation_not_factor_through_isometry

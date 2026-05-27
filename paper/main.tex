@@ -555,17 +555,21 @@ monoid hom recorded in the theorem index and proves that composing this
 image-level hom with \code{lipschitzLinearRepresentation.rangeRestrict} gives
 the global Lipschitz-group hom; the same range-restriction pullback
 characterizes the image-level hom uniquely.
-The remaining kernel-triviality gap is the odd branch in cases where its
-determinant is \(1\). The new \code{OddKernelObstruction.lean} module shows
-that this is an actual obstruction for the current untwisted action, not merely
-a missing proof: already in \(\Cl(1,0)\), the odd vector generator lies in the
-Lipschitz linear kernel, is not a scalar Clifford unit, and has
-\code{lipschitzSpinorNormClassHom} value equal to the nontrivial square class of
-\(-1\). Consequently \code{not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10}
-formally rules out unconditional descent of this untwisted Lipschitz spinor norm
-through the linear image. A full orthogonal-group spinor norm therefore requires
-a different action, an additional quotient/normalization, or extra hypotheses,
-and remains later work.
+The odd branch in cases where its determinant is \(1\) is formally obstructed
+for the current untwisted action. The new \code{OddKernelObstruction.lean}
+module shows that this is not merely a missing proof: already in \(\Cl(1,0)\),
+the odd vector generator lies in the Lipschitz linear kernel, is not a scalar
+Clifford unit, and has \code{lipschitzSpinorNormClassHom} value equal to the
+nontrivial square class of \(-1\). Consequently
+\code{not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10},
+\code{not_lipschitzLinearImageSpinorNormLiftIndependent_realCl10},
+\code{not_lipschitzLinearImageSpinorNormDescends_realCl10}, and
+\code{not_exists_lipschitzLinearImageSpinorNormClassHom_comp_rangeRestrict_realCl10}
+formally rule out unconditional kernel-triviality, chosen-lift independence,
+image-level descent, and any image-level square-class hom whose pullback is the
+global Lipschitz-group hom. A full orthogonal-group spinor norm therefore
+requires a different action, an additional quotient/normalization, or extra
+hypotheses, and remains later work.
 
 \paragraph{Downstream reuse already present in the repository.}
 The interface is already reused beyond the core covering-map story in the
@@ -1701,9 +1705,10 @@ factorization-independence theorem, global Lipschitz-group hom, noncanonical
 chosen-lift wrapper, linear-kernel centrality / parity / even-kernel scalarity
 bridge, determinant-obstructed scalar-kernel and descent theorem, scalar-kernel
 bridge, the formal \(\Cl(1,0)\) odd-kernel obstruction to unconditional scalar
-kernels and unconditional kernel-trivial descent for the current untwisted
-action, the equivalence between lift independence / image-level descent and
-kernel-triviality of the global Lipschitz-group hom, and
+kernels, unconditional kernel-trivial descent, image-level lift independence,
+image-level descent, and a pullback-compatible image hom for the current
+untwisted action, the equivalence between lift independence / image-level
+descent and kernel-triviality of the global Lipschitz-group hom, and
 descent-obligation APIs, including the direct conditional image-level homs and
 its range-restriction pullback and uniqueness theorems,
 expose this data on the Lipschitz linear image, but no global orthogonal-group
@@ -1726,8 +1731,10 @@ and global Lipschitz-group hom, and noncanonical Lipschitz linear-image wrapper 
 linear-kernel centrality / parity / even-kernel scalarity bridge,
 determinant-obstructed scalar-kernel and descent theorem, scalar-kernel bridge,
 the formal \(\Cl(1,0)\) odd-kernel obstruction to unconditional scalar kernels
-and unconditional kernel-trivial descent for the current untwisted action, the equivalence between
-lift independence / image-level descent and kernel-triviality of the global Lipschitz-group hom,
+and unconditional kernel-trivial descent, image-level lift independence,
+image-level descent, and a pullback-compatible image hom for the current
+untwisted action, the equivalence between lift independence / image-level
+descent and kernel-triviality of the global Lipschitz-group hom,
 descent-obligation APIs, and direct
 conditional image-level homs with their range-restriction pullback and uniqueness theorems,
 including separated repeated subproducts after permutation into the repeated shape, the remaining
