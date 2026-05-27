@@ -55,8 +55,9 @@ isomorphisms modulo the corresponding spin-image subgroups to the square-class
 group, local split-Levi spinor-norm-facing wrappers for these same characters,
 and the exact split-line image / double-cover criterion. The full Bott-period-8
 table beyond the packaged low-signature entries, now including the explicit
-`Cl(0,5) ≃ Mat₄(ℂ)` row, a full all-orthogonal-group image classification, and
-a global orthogonal-group spinor-norm API are separate projects, not dependencies
+`Cl(0,5) ≃ Mat₄(ℂ)`, `Cl⁺(0,6) ≃ Mat₄(ℂ)`, `Cl⁺(6,0) ≃ Mat₄(ℂ)`, and
+`Cl(6,0) ≃ Mat₄(ℍ)` rows, a full all-orthogonal-group image classification,
+and a global orthogonal-group spinor-norm API are separate projects, not dependencies
 in the claimed theorem package.
 
 ## Final preflight

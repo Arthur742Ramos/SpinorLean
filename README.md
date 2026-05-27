@@ -33,6 +33,7 @@ SpinorLean/
 │   ├── ComplexClassification.lean -- Periodicity: complex even/odd matrix models
 │   ├── RealClassification.lean -- Periodicity: split `(n,n)` real matrix models + low-signature entries
 │   ├── LowDimensional.lean -- Explicit low-dim Clifford models + Spin(2), Spin(3) group IDs
+│   ├── Cl60QuaternionMatrix.lean -- Explicit Cl(6,0) and sixth-row even Bott entries
 │   ├── TheoremIndex.lean -- Machine-checked paper theorem surface
 │   └── OddClassification.lean -- Classification pieces over the odd split form
 ├── paper/                  -- Submission-ready paper sources (main.tex, refs.bib, README.md)
@@ -200,6 +201,7 @@ Implemented so far:
   `Cl⁺(4,0) ≃ ℍ × ℍ`, `Cl⁺(0,5) ≃ Mat₂(ℍ)`, `Cl(0,5) ≃ Mat₄(ℂ)`,
   `Cl⁺(5,0) ≃ Mat₂(ℍ)`,
   `Cl(5,0) ≃ Mat₂(ℍ) × Mat₂(ℍ)`,
+  `Cl⁺(0,6) ≃ Mat₄(ℂ)`, `Cl⁺(6,0) ≃ Mat₄(ℂ)`, `Cl(6,0) ≃ Mat₄(ℍ)`,
   `Cl(1,1) ≃ Mat₂(ℝ)`,
   `Cl⁺(1,1) ≃ ℝ × ℝ`, `Cl(2,2) ≃ Mat₄(ℝ)`, and
   `Cl⁺(2,2) ≃ Mat₂(ℝ) × Mat₂(ℝ)`
@@ -285,7 +287,10 @@ Implemented so far:
   `cl_4_0_equivQuaternionMatrix2 : Cl(4,0) ≃ₐ[ℝ] Mat₂(ℍ)`,
   `cl_4_0_even_equivQuaternionProd : Cl⁺(4,0) ≃ₐ[ℝ] ℍ × ℍ`,
   `cl_5_0_even_equivQuaternionMatrix2 : Cl⁺(5,0) ≃ₐ[ℝ] Mat₂(ℍ)`,
-  and `cl_5_0_equivQuaternionMatrix2Prod : Cl(5,0) ≃ₐ[ℝ] Mat₂(ℍ) × Mat₂(ℍ)`,
+  `cl_5_0_equivQuaternionMatrix2Prod : Cl(5,0) ≃ₐ[ℝ] Mat₂(ℍ) × Mat₂(ℍ)`,
+  `cl_0_6_even_equivComplexMatrix4 : Cl⁺(0,6) ≃ₐ[ℝ] Mat₄(ℂ)`,
+  `cl_6_0_even_equivComplexMatrix4 : Cl⁺(6,0) ≃ₐ[ℝ] Mat₄(ℂ)`,
+  and `cl_6_0_equivQuaternionMatrix4 : Cl(6,0) ≃ₐ[ℝ] Mat₄(ℍ)`,
   plus the split entries
   `cl_1_1_equivMatrix2`, `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
   `cl_2_2_even_equivProdMatrix2`, extending the packaged low-signature portion of
@@ -306,9 +311,9 @@ Implemented so far:
 Explicit scope boundaries for this algebraic submission package:
 
 - the full Bott period-8 table beyond the split foundation and packaged low-signature entries
-  through `Cl(0,3)`, `Cl(0,4)`, `Cl(0,5)`, `Cl(3,0)`, `Cl(4,0)`, and `Cl(5,0)`,
-  selected even positive/negative companions through `Cl⁺(0,5)` and `Cl⁺(5,0)`, and the explicit
-  `Cl(2,2)` / `Cl⁺(2,2)` split entries
+  through `Cl(0,3)`, `Cl(0,4)`, `Cl(0,5)`, `Cl(3,0)`, `Cl(4,0)`, `Cl(5,0)`,
+  and `Cl(6,0)`, selected even positive/negative companions through `Cl⁺(0,6)` and
+  `Cl⁺(6,0)`, and the explicit `Cl(2,2)` / `Cl⁺(2,2)` split entries
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
   non-factorization, projective descent, exact split-line iff criterion, exact finite-basis
   split-Levi spin-image iff theorem, and onto split-Levi determinant square-class quotient
