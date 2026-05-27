@@ -31,6 +31,7 @@ orthogonal-group spinor-norm API.
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_perm`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self`
+* `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_append_self_append`
 -/
 
 namespace Spinor
@@ -321,5 +322,30 @@ theorem cliffordInvertibleVectorProductSpinorNormClass_append_self
   rw [cliffordInvertibleVectorProductSpinorNormClass_append]
   simpa [pow_two] using
     cliffordInvertibleVectorProductSpinorNormClass_sq_eq_one Q l
+
+@[simp]
+theorem cliffordInvertibleVectorProductSpinorNormClass_append_append_self_append
+    (Q : QuadraticForm R M) (l₁ l l₂ : List (InvertibleQuadraticVector Q)) :
+    cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l ++ l ++ l₂) =
+      cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l₂) := by
+  calc
+    cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l ++ l ++ l₂) =
+        cliffordInvertibleVectorProductSpinorNormClass Q l₁ *
+          (cliffordInvertibleVectorProductSpinorNormClass Q l *
+            cliffordInvertibleVectorProductSpinorNormClass Q l) *
+          cliffordInvertibleVectorProductSpinorNormClass Q l₂ := by
+          simp [cliffordInvertibleVectorProductSpinorNormClass_append, mul_assoc]
+    _ = cliffordInvertibleVectorProductSpinorNormClass Q l₁ *
+          cliffordInvertibleVectorProductSpinorNormClass Q l₂ := by
+          rw [show cliffordInvertibleVectorProductSpinorNormClass Q l *
+              cliffordInvertibleVectorProductSpinorNormClass Q l = 1 by
+            simpa [pow_two] using
+              cliffordInvertibleVectorProductSpinorNormClass_sq_eq_one Q l]
+          rw [mul_assoc]
+          exact congrArg
+            (fun x => cliffordInvertibleVectorProductSpinorNormClass Q l₁ * x)
+            (one_mul (cliffordInvertibleVectorProductSpinorNormClass Q l₂))
+    _ = cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l₂) := by
+          rw [cliffordInvertibleVectorProductSpinorNormClass_append]
 
 end Spinor
