@@ -65,7 +65,9 @@ conditional factorization-independence obligation, the induced Lipschitz-group h
 hypothesis, and the kernel-triviality condition whose combination implies lift independence
 and then the image-level descent obligations needed to turn the image-level square class into
 a monoid homomorphism; the direct conditional image-level hom wrapper packages that final
-composition without proving those obligations globally. The theorem-facing
+composition without proving those obligations globally, and its range-restriction pullback
+theorem proves that this image-level hom composes back to the factorization-independent
+Lipschitz-group hom. The theorem-facing
 real-classification surface now also includes
 `RealClassification.PeriodEightTable` and `RealClassification.periodEightTable`,
 which collect the split families and first-period definite rows, including the explicit
@@ -80,7 +82,8 @@ and a global orthogonal-group spinor-norm API beyond this factorization-existenc
 Clifford/Lipschitz substrate, factorization-level Lipschitz product wrappers, and noncanonical
 Lipschitz linear-image wrapper / conditional factorization-independence, Lipschitz-group hom,
 kernel-triviality-to-lift-independence, descent-obligation APIs, and direct conditional
-image-level hom wrapper are separate projects, not dependencies in the claimed theorem package.
+image-level hom wrapper with its range-restriction pullback theorem are separate projects,
+not dependencies in the claimed theorem package.
 The current artifact now names the factorization-independence and kernel-triviality obligations,
 but it does not prove them globally.
 

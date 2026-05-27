@@ -284,7 +284,11 @@ Implemented so far:
   `lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel`
   packages the resulting image-level monoid hom, while
   `lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel`
-  records the underlying descent package. The scalar, unit, and
+  records the underlying descent package; the pullback theorems
+  `lipschitzLinearImageSpinorNormClassHomOfDescends_comp_rangeRestrict` and
+  `lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel_comp_rangeRestrict`
+  prove that the image-level homs compose with `lipschitzLinearRepresentation.rangeRestrict`
+  to the corresponding Lipschitz-group homs. The scalar, unit, and
   square-class products
   are invariant under list permutation and reversal via
   `cliffordVectorProductNormScalar_perm`,
