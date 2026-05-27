@@ -32,6 +32,7 @@ orthogonal-group spinor-norm API.
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_append_self_append`
+* `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_append_middle_self_append`
 -/
 
 namespace Spinor
@@ -347,5 +348,26 @@ theorem cliffordInvertibleVectorProductSpinorNormClass_append_append_self_append
             (one_mul (cliffordInvertibleVectorProductSpinorNormClass Q l₂))
     _ = cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l₂) := by
           rw [cliffordInvertibleVectorProductSpinorNormClass_append]
+
+@[simp]
+theorem cliffordInvertibleVectorProductSpinorNormClass_append_append_middle_self_append
+    (Q : QuadraticForm R M)
+    (l₁ l l₂ l₃ : List (InvertibleQuadraticVector Q)) :
+    cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l ++ l₂ ++ l ++ l₃) =
+      cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l₂ ++ l₃) := by
+  have hperm :
+      (l₁ ++ l ++ l₂ ++ l ++ l₃).Perm (l₁ ++ l ++ l ++ l₂ ++ l₃) := by
+    simpa [List.append_assoc] using
+      List.Perm.append_left (l₁ ++ l)
+        (List.Perm.append_right l₃
+          (List.perm_append_comm (l₁ := l₂) (l₂ := l)))
+  calc
+    cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l ++ l₂ ++ l ++ l₃) =
+        cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l ++ l ++ l₂ ++ l₃) := by
+          exact cliffordInvertibleVectorProductSpinorNormClass_perm Q hperm
+    _ = cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l₂ ++ l₃) := by
+          simpa [List.append_assoc] using
+            cliffordInvertibleVectorProductSpinorNormClass_append_append_self_append
+              Q l₁ l (l₂ ++ l₃)
 
 end Spinor
