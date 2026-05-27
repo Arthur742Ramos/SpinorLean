@@ -385,7 +385,9 @@ Implemented so far:
 - `Spinor.RealClassification` now also records the canonical low-signature entries
   `cl_n_n_equivMatrix`, `cl_n_n_even_equivProdMatrix`, and
   `cl_succ_n_n_equivProdMatrix` for the split `Cl(n,n)`, even split `Cl⁺(n,n)`,
-  and grouped odd split `Cl(n+1,n)` rows,
+  and grouped odd split `Cl(n+1,n)` rows, with
+  `cl_succ_n_n_standard_equivProdMatrix` transporting the odd split row to standard
+  signature coordinates `Cl(n+1,n)`,
   `cl_0_0_equivReal : Cl(0,0) ≃ₐ[ℝ] ℝ`,
   `cl_1_0_equivRealProd : Cl(1,0) ≃ₐ[ℝ] ℝ × ℝ`,
   `cl_1_0_even_equivReal : Cl⁺(1,0) ≃ₐ[ℝ] ℝ`,
@@ -426,6 +428,8 @@ Implemented so far:
   and even sign-reversal Clifford recurrences, together with the standard-coordinate
   recurrences `cl_p_q_equiv_even_succ_neg : Cl(p,q) ≃ₐ[ℝ] Cl⁺(p,q+1)` and
   `cl_p_q_even_equiv_even_swap : Cl⁺(p,q) ≃ₐ[ℝ] Cl⁺(q,p)`,
+  `Q_succ_n_n_standardIsometry`, and the standard-coordinate odd split matrix family
+  `cl_succ_n_n_standard_equivProdMatrix`,
   plus the split entries
   `cl_1_1_equivMatrix2`, `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
   `cl_2_2_even_equivProdMatrix2`, extending the packaged low-signature portion of
@@ -446,9 +450,10 @@ Implemented so far:
 Explicit scope boundaries for this algebraic submission package:
 
 - a full arbitrary-signature matrix-target Bott-periodicity theorem beyond the packaged split
-  families, first-period table collected in `RealClassification.periodEightTable`, and the
-  arbitrary-signature recursive one-negative-square / even sign-reversal / standard-coordinate
-  successor-negative and even signature-swap steps packaged by
+  families, the standard-coordinate positive odd split family, first-period table collected in
+  `RealClassification.periodEightTable`, and the arbitrary-signature recursive
+  one-negative-square / even sign-reversal / standard-coordinate successor-negative and even
+  signature-swap steps packaged by
   `RealClassification.recursiveSignatureBottStep`
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
   exact full-isometry image reduction to the special-orthogonal spin map, determinant obstruction

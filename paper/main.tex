@@ -287,7 +287,8 @@ duplicated-product square-class triviality for products, contiguous subproducts,
 and separated repeated subproducts after permutation into the repeated shape.
 The real-classification surface also includes the theorem-facing
 \code{PeriodEightTable} and \code{periodEightTable} declarations, collecting
-the split families and first-period definite Bott rows through $\Cl(0,8)$,
+the split families, the standard-coordinate positive odd split family
+\(\Cl(n+1,n)\), and first-period definite Bott rows through $\Cl(0,8)$,
 $\Cl(8,0)$, and their even companions, together with
 \code{recursiveSignatureBottStep}, which packages the arbitrary-signature
 one-negative-square Clifford recurrence and the even-Clifford sign-reversal
@@ -296,8 +297,8 @@ recurrence, including the standard-coordinate consequences
 \code{cl\_p\_q\_even\_equiv\_even\_swap}, i.e.
 \(\Cl(p,q)\simeq\Cl^+(p,q+1)\) and
 \(\Cl^+(p,q)\simeq\Cl^+(q,p)\). A full arbitrary-signature
-matrix-target Bott-periodicity theorem beyond those recursive steps and the
-packaged table, full
+matrix-target Bott-periodicity theorem beyond those recursive steps, the
+standard-coordinate positive odd split family, and the packaged table, full
 all-orthogonal-group image classification beyond the exact full-target image
 reduction, determinant obstruction and its norm-\(-1\) pin-generator corollary,
 and global orthogonal-group
@@ -632,6 +633,11 @@ $\Cl^+(8,0) \simeq \Mat_8(\mathbb{R}) \times \Mat_8(\mathbb{R})$. The module
 \code{BottTable.lean} collects the split families and definite first-period
 rows into the theorem-facing \code{PeriodEightTable} structure and
 \code{periodEightTable} declaration. It also exposes
+\code{Q\_succ\_n\_n\_standardIsometry} and
+\code{cl\_succ\_n\_n\_standard\_equivProdMatrix}, transporting the grouped
+odd split row to the standard signature coordinates
+\(\Cl(n+1,n)\simeq \Mat_{2^n}(\mathbb{R})\times\Mat_{2^n}(\mathbb{R})\).
+The same module also exposes
 \code{recursiveSignatureBottStep}, an arbitrary-signature package of the
 one-negative-square Clifford recurrence and even-Clifford sign-reversal
 recurrence, together with the standard-coordinate recurrences
@@ -1740,8 +1746,9 @@ conditional image-level homs with their range-restriction pullback and uniquenes
 including separated repeated subproducts after permutation into the repeated shape, the remaining
 arbitrary-signature matrix-target Bott-periodic classification beyond
 \code{recursiveSignatureBottStep} with its standard-coordinate successor-negative and
-even signature-swap recurrences, and the packaged \code{periodEightTable}
-first-period rows, and scheme-theoretic spin-cover
+even signature-swap recurrences, the standard-coordinate positive odd split
+matrix family, and the packaged \code{periodEightTable} first-period rows, and
+scheme-theoretic spin-cover
 developments are not used by the stated results and are kept outside this
 algebraic submission package.
 

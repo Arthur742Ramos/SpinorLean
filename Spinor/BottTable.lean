@@ -4,8 +4,8 @@ import Spinor.Cl78PositiveEven
   The theorem-facing real Bott table package.
 
   The concrete low-dimensional files prove each row separately. This module collects the
-  already-proved split families and the first-period definite rows into one declaration whose
-  type records the formalized table entries.
+  already-proved split families, the standard-coordinate positive odd split family, and the
+  first-period definite rows into one declaration whose type records the formalized table entries.
 -/
 
 namespace Spinor
@@ -35,8 +35,9 @@ abbrev MatH (n : ℕ) : Type :=
 The declarations in this section are not a replacement for the first-period matrix table below.
 They package the general recursive Clifford-algebra steps that are available for every real
 signature: adjoining one negative square identifies a Clifford algebra with an even Clifford
-algebra, even Clifford algebras are invariant under sign reversal, and the auxiliary forms
-are transported back to the standard signature coordinates.
+algebra, even Clifford algebras are invariant under sign reversal, the auxiliary forms are
+transported back to the standard signature coordinates, and the grouped positive odd split row
+is transported to standard `(n+1,n)` coordinates.
 -/
 
 /-- Canonical arbitrary real signature form for the recursive Bott-step interface. -/
@@ -107,6 +108,62 @@ noncomputable def Q_p_q_oneNegIsometry (p q : ℕ) :
     simp [Q_p_q_oneNeg, Q_p_q, Q_p_q_oneNegLinearEquiv, standardSignatureForm,
       QuadraticMap.weightedSumSquares_apply, finSnocReal, hsnoc, add_comm, add_left_comm]
 
+/-- Coordinate equivalence identifying the grouped odd split form with the standard
+signature form `(n+1,n)`. -/
+noncomputable def Q_succ_n_n_standardLinearEquiv (n : ℕ) :
+    (((Fin n ⊕ Fin n) → ℝ) × ℝ) ≃ₗ[ℝ] ((Fin (n + 1) ⊕ Fin n) → ℝ) where
+  toFun x := fun
+    | Sum.inl i => finSnocReal (fun k : Fin n => x.1 (Sum.inl k)) x.2 i
+    | Sum.inr j => x.1 (Sum.inr j)
+  invFun y :=
+    (fun
+      | Sum.inl i => y (Sum.inl (Fin.castSucc i))
+      | Sum.inr j => y (Sum.inr j),
+      y (Sum.inl (Fin.last n)))
+  left_inv x := by
+    rcases x with ⟨f, r⟩
+    apply Prod.ext
+    · funext i
+      cases i with
+      | inl i => simp [finSnocReal]
+      | inr j => rfl
+    · simp [finSnocReal]
+  right_inv y := by
+    funext i
+    cases i with
+    | inl i =>
+        cases i using Fin.lastCases <;> simp [finSnocReal]
+    | inr j => rfl
+  map_add' x y := by
+    funext i
+    cases i with
+    | inl i =>
+        cases i using Fin.lastCases <;> simp [finSnocReal]
+    | inr j => rfl
+  map_smul' c x := by
+    funext i
+    cases i with
+    | inl i =>
+        cases i using Fin.lastCases <;> simp [finSnocReal]
+    | inr j => rfl
+
+/-- The grouped odd split form is the standard `(n+1,n)` signature form. -/
+noncomputable def Q_succ_n_n_standardIsometry (n : ℕ) :
+    (Q_succ_n_n n).IsometryEquiv (Q_p_q (n + 1) n) where
+  toLinearEquiv := Q_succ_n_n_standardLinearEquiv n
+  map_app' x := by
+    rcases x with ⟨f, r⟩
+    have hsnoc :
+        (∑ x : Fin (n + 1),
+            Fin.snoc (fun k : Fin n => f (Sum.inl k)) r x *
+              Fin.snoc (fun k : Fin n => f (Sum.inl k)) r x) =
+          (∑ x : Fin n, f (Sum.inl x) * f (Sum.inl x)) + r * r := by
+      rw [Fin.sum_univ_castSucc]
+      simp
+    simp [Q_succ_n_n, realOddSplitPositiveForm, Q_p_q, Q_succ_n_n_standardLinearEquiv,
+      standardSignatureForm, QuadraticMap.weightedSumSquares_apply, finSnocReal, hsnoc,
+      add_assoc, add_comm]
+
 /-- Coordinate swap identifying the negative of the standard `(p,q)` form with `(q,p)`. -/
 noncomputable def Q_p_q_negLinearEquiv (p q : ℕ) :
     ((Fin p ⊕ Fin q) → ℝ) ≃ₗ[ℝ] ((Fin q ⊕ Fin p) → ℝ) where
@@ -168,6 +225,13 @@ noncomputable def cl_p_q_even_equiv_even_swap (p q : ℕ) :
   (cl_p_q_even_equiv_even_neg p q).trans
     (evenCliffordEquivOfIsometry (Q_p_q_negIsometry p q))
 
+/-- Standard-coordinate positive odd split row:
+`Cl(n+1,n) ≃ Mat_(2^n)(ℝ) × Mat_(2^n)(ℝ)`. -/
+noncomputable def cl_succ_n_n_standard_equivProdMatrix (n : ℕ) :
+    CliffordAlgebra (Q_p_q (n + 1) n) ≃ₐ[ℝ] MatR (2 ^ n) × MatR (2 ^ n) :=
+  (CliffordAlgebra.equivOfIsometry (Q_succ_n_n_standardIsometry n)).symm.trans
+    (by simpa [Q_succ_n_n, MatR] using cl_succ_n_n_equivProdMatrix n)
+
 /-- A theorem-facing package for the arbitrary-signature recursive Clifford steps. -/
 structure RecursiveSignatureBottStep where
   cl_p_q_oneNeg :
@@ -193,10 +257,10 @@ noncomputable def recursiveSignatureBottStep : RecursiveSignatureBottStep where
 /--
 The formal first-period real Bott table already proved in the component files.
 
-The first three fields record the uniform split rows. The remaining fields record the
-canonical definite rows through eight generators, together with their even Clifford
-companions. This is intentionally a package of proved algebra equivalences, not a recursive
-periodicity theorem for arbitrary signatures.
+The first fields record the uniform split rows and the standard-coordinate positive odd split
+row. The remaining fields record the canonical definite rows through eight generators, together
+with their even Clifford companions. This is intentionally a package of proved algebra
+equivalences, not a recursive periodicity theorem for arbitrary signatures.
 -/
 structure PeriodEightTable where
   cl_n_n :
@@ -206,6 +270,9 @@ structure PeriodEightTable where
       CliffordAlgebra.even (Q_n_n n) ≃ₐ[ℝ] MatR (2 ^ (n - 1)) × MatR (2 ^ (n - 1))
   cl_succ_n_n :
     (n : ℕ) → CliffordAlgebra (Q_succ_n_n n) ≃ₐ[ℝ] MatR (2 ^ n) × MatR (2 ^ n)
+  cl_succ_n_n_standard :
+    (n : ℕ) → CliffordAlgebra (Q_p_q (n + 1) n) ≃ₐ[ℝ]
+      MatR (2 ^ n) × MatR (2 ^ n)
   cl_0_0 :
     CliffordAlgebra Q_0_0 ≃ₐ[ℝ] ℝ
   cl_1_0 :
@@ -281,6 +348,7 @@ noncomputable def periodEightTable : PeriodEightTable where
   cl_n_n := cl_n_n_equivMatrix
   cl_n_n_even := cl_n_n_even_equivProdMatrix
   cl_succ_n_n := cl_succ_n_n_equivProdMatrix
+  cl_succ_n_n_standard := cl_succ_n_n_standard_equivProdMatrix
   cl_0_0 := cl_0_0_equivReal
   cl_1_0 := cl_1_0_equivRealProd
   cl_1_0_even := cl_1_0_even_equivReal

@@ -186,7 +186,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   `Spinor.RealClassification.cl_n_n_even_equivProdMatrix`;
   the grouped odd split-signature row `Cl(n+1,n)` is now also packaged as
   `Spinor.RealClassification.cl_succ_n_n_equivProdMatrix`, i.e.
-  `Mat_(2^n)(ℝ) × Mat_(2^n)(ℝ)`;
+  `Mat_(2^n)(ℝ) × Mat_(2^n)(ℝ)`, and
+  `Spinor.RealClassification.cl_succ_n_n_standard_equivProdMatrix` transports this row to
+  the standard signature coordinates `Cl(n+1,n)`;
   canonical low-signature entries `Spinor.RealClassification.cl_0_0_equivReal`
   (`Cl(0,0) ≃ ℝ`), `Spinor.RealClassification.cl_1_0_equivRealProd`
   (`Cl(1,0) ≃ ℝ × ℝ`), `Spinor.RealClassification.cl_1_0_even_equivReal`
@@ -238,8 +240,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   `cl_2_2_even_equivProdMatrix2`, extending the negative-definite row, selected
   positive entries, and positive/negative/split even companions
   - `Spinor.RealClassification.PeriodEightTable` and
-    `Spinor.RealClassification.periodEightTable` now collect the split families and definite
-    first-period rows into one theorem-facing Bott-table package, while
+    `Spinor.RealClassification.periodEightTable` now collect the split families, the
+    standard-coordinate positive odd split family, and definite first-period rows into one
+    theorem-facing Bott-table package, while
     `Spinor.RealClassification.recursiveSignatureBottStep` packages the arbitrary-signature
     one-negative-square and even sign-reversal Clifford recurrences, now including the
     standard-coordinate steps
@@ -558,7 +561,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   descent-obligation APIs, and direct conditional image-level hom wrappers with
   range-restriction pullback and uniqueness theorems when `2` is invertible, while the remaining
   arbitrary-signature matrix-target Bott-periodicity and full all-orthogonal-group image classifications beyond
-  the standard-coordinate recursive Bott steps / exact full-isometry image reduction / determinant obstruction / global orthogonal-group
+  the standard-coordinate recursive Bott steps and positive odd split matrix family / exact full-isometry image reduction / determinant obstruction / global orthogonal-group
   spinor-norm theory are framed as separate projects rather than dependencies of the claimed
   results
 - [x] Introduction: why spinors matter, why formalization is novel
