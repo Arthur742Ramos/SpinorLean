@@ -9,7 +9,8 @@ import Spinor.RealClassification
   the single vector generator is an odd Lipschitz element in the linear kernel, but it is not
   a scalar Clifford unit. Its Lipschitz spinor-norm square class is also the nontrivial
   class of `-1`, so the unconditional kernel-triviality descent API, the image-level descent
-  API, and any pullback-compatible image-level square-class hom are false for this action.
+  API, any pullback-compatible image-level square-class hom, and any pullback-compatible
+  full-linear-target square-class hom are false for this action.
 -/
 
 namespace Spinor
@@ -218,6 +219,26 @@ theorem not_exists_lipschitzLinearImageSpinorNormClassHom_comp_rangeRestrict_rea
   have hnorm :
       lipschitzSpinorNormClassHom Q10 realCl10OddKernelLipschitz = 1 := by
     simpa [MonoidHom.comp_apply, hrange] using hpoint.symm
+  exact realCl10OddKernelLipschitz_spinorNormClassHom_ne_one hnorm
+
+/-- There is no square-class hom on the full linear representation target whose pullback along
+`lipschitzLinearRepresentation` is the global Lipschitz-group spinor-norm hom, already over
+`Cl(1,0)`. -/
+theorem not_exists_lipschitzLinearTargetSpinorNormClassHom_comp_lipschitzLinearRepresentation_realCl10
+    [Invertible (2 : ℝ)] :
+    ¬ ∃ ψ : (ℝ ≃ₗ[ℝ] ℝ) →*
+        ℝˣ ⧸ MonoidHom.range (powMonoidHom (α := ℝˣ) 2),
+      ψ.comp (lipschitzLinearRepresentation (Q := Q10)) =
+        lipschitzSpinorNormClassHom Q10 := by
+  rintro ⟨ψ, hψ⟩
+  have hlin :
+      lipschitzLinearEquiv (Q := Q10) realCl10OddKernelLipschitz = 1 := by
+    simpa [lipschitzLinearRepresentation_apply] using
+      realCl10OddKernelLipschitz_linearRepresentation_eq_one
+  have hpoint := congrArg (fun φ => φ realCl10OddKernelLipschitz) hψ
+  have hnorm :
+      lipschitzSpinorNormClassHom Q10 realCl10OddKernelLipschitz = 1 := by
+    simpa [MonoidHom.comp_apply, lipschitzLinearRepresentation_apply, hlin] using hpoint.symm
   exact realCl10OddKernelLipschitz_spinorNormClassHom_ne_one hnorm
 
 end

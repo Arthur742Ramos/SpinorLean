@@ -490,7 +490,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     Lipschitz spinor-norm square class as the nontrivial class of `-1`, and
     `Spinor.not_lipschitzLinearKernelScalarUnits_realCl10` together with
     `Spinor.not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10` jointly rule out the
-    unconditional scalar-kernel and kernel-triviality descent APIs. The development also retains the
+    unconditional scalar-kernel and kernel-triviality descent APIs, while
+    `Spinor.not_exists_lipschitzLinearTargetSpinorNormClassHom_comp_lipschitzLinearRepresentation_realCl10`
+    rules out recovering the global Lipschitz spinor-norm hom by pullback from any
+    square-class hom on the full linear target. The development also retains the
     lift-independence and descent-obligation structures, proves their iff wrappers with
     kernel-triviality of the global Lipschitz-group hom, and includes the
     scalar-kernel bridge

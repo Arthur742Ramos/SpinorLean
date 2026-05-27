@@ -341,11 +341,14 @@ Implemented so far:
   `not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10` rule out both the
   unconditional scalar-kernel API and the unconditional kernel-triviality descent API for the
   current untwisted action; the same witness now rules out the image-level lift-independence
-  package, the explicit image-level descent package, and any image-level square-class hom whose
+  package, the explicit image-level descent package, any image-level square-class hom whose
   pullback along `lipschitzLinearRepresentation.rangeRestrict` is the global Lipschitz-group
-  hom, via `not_lipschitzLinearImageSpinorNormLiftIndependent_realCl10`,
-  `not_lipschitzLinearImageSpinorNormDescends_realCl10`, and
-  `not_exists_lipschitzLinearImageSpinorNormClassHom_comp_rangeRestrict_realCl10`.
+  hom, and any full linear-target square-class hom whose pullback along
+  `lipschitzLinearRepresentation` is that global hom, via
+  `not_lipschitzLinearImageSpinorNormLiftIndependent_realCl10`,
+  `not_lipschitzLinearImageSpinorNormDescends_realCl10`,
+  `not_exists_lipschitzLinearImageSpinorNormClassHom_comp_rangeRestrict_realCl10`, and
+  `not_exists_lipschitzLinearTargetSpinorNormClassHom_comp_lipschitzLinearRepresentation_realCl10`.
   `lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel`
   records the compatibility wrapper with the older two-hypothesis API, and
   `lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel`
