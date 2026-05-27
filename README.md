@@ -241,7 +241,10 @@ Implemented so far:
   copy `ι(Q)(M)`, proves this action preserves `Q` via `spinVector_preserves_quadratic`, and
   packages each spin element as an ambient isometry `spinIsometryEquiv : Q.IsometryEquiv Q`
   together with the full homomorphism
-  `spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q`
+  `spinIsometryRepresentation : spinGroup Q →* Q.IsometryEquiv Q`; in finite-dimensional field
+  rank, `spinIsometryRepresentation_range_eq_map_specialOrthogonalRepresentationFiniteDimensional`
+  packages the exact reduction of the full-isometry image to the subtype image of the
+  special-orthogonal spin map
 - `Spinor.HyperbolicAction` now proves the Levi-projective exterior-action theorem with a unit
   scalar, via
   `splitCliffordAction_eq_units_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq`, and
@@ -425,8 +428,9 @@ Explicit scope boundaries for this algebraic submission package:
 - a recursive arbitrary-signature Bott-periodicity theorem beyond the packaged split families
   and first-period table collected in `RealClassification.periodEightTable`
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
-  determinant obstruction to ambient full-orthogonal surjectivity and its norm-`-1` pin-generator
-  corollary, non-factorization, projective descent, exact split-line iff criterion, exact
+  exact full-isometry image reduction to the special-orthogonal spin map, determinant obstruction
+  to ambient full-orthogonal surjectivity and its norm-`-1` pin-generator corollary,
+  non-factorization, projective descent, exact split-line iff criterion, exact
   finite-basis split-Levi spin-image iff theorem, and onto split-Levi determinant square-class
   quotient character / quotient isomorphism with its split-Levi spinor-norm-facing wrappers and the
   global Clifford/Lipschitz vector-product norm formula with product-order invariance,

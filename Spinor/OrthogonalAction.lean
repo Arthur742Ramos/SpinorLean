@@ -72,6 +72,8 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
   `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional` — the ambient isometry
   representation factors through `QuadraticForm.specialOrthogonalGroup Q`, either from an external
   determinant hypothesis or canonically in the finite-dimensional field setting.
+* `Spinor.spinIsometryRepresentation_range_eq_map_specialOrthogonalRepresentationFiniteDimensional`
+  — the full-isometry image is exactly the subtype image of the special-orthogonal spin map.
 * `Spinor.pinIotaOfQuadraticEqNegOne`, `Spinor.spinIotaPairOfQuadraticEqNegOne`,
   `Spinor.spinSpecialOrthogonalPairGenerator` — canonical pin/spin lifts of norm-`-1` vector
   reflections and their paired special-orthogonal images.
@@ -1797,6 +1799,35 @@ theorem spinSpecialOrthogonalRepresentationFiniteDimensional_comp_subtype :
       spinIsometryRepresentation (Q := Q) := by
   ext x
   rfl
+
+/-- Every ambient spin-isometry value lies in the determinant-one subgroup. -/
+theorem spinIsometryRepresentation_mem_specialOrthogonalGroup (x : spinGroup Q) :
+    spinIsometryRepresentation (Q := Q) x ∈ Q.specialOrthogonalGroup := by
+  change LinearEquiv.det
+    (((spinIsometryRepresentation (Q := Q) x : Q.IsometryEquiv Q) : V ≃ₗ[K] V)) = 1
+  simpa [spinIsometryRepresentation_toLinearEquiv] using
+    spinLinearRepresentation_det_eq_one (Q := Q) x
+
+/-- The full-orthogonal target image is contained in the determinant-one subgroup. -/
+theorem spinIsometryRepresentation_range_le_specialOrthogonalGroup :
+    MonoidHom.range (spinIsometryRepresentation (Q := Q)) ≤ Q.specialOrthogonalGroup := by
+  rintro _ ⟨x, rfl⟩
+  exact spinIsometryRepresentation_mem_specialOrthogonalGroup (Q := Q) x
+
+/-- The ambient full-orthogonal image is exactly the image of the special-orthogonal spin map
+after applying the subgroup inclusion. -/
+theorem spinIsometryRepresentation_range_eq_map_specialOrthogonalRepresentationFiniteDimensional :
+    MonoidHom.range (spinIsometryRepresentation (Q := Q)) =
+      Subgroup.map (Q.specialOrthogonalGroup.subtype)
+        (MonoidHom.range (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q))) := by
+  ext g
+  constructor
+  · rintro ⟨x, rfl⟩
+    exact ⟨spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q) x, ⟨x, rfl⟩, rfl⟩
+  · rintro ⟨gso, ⟨x, hx⟩, hg⟩
+    refine ⟨x, ?_⟩
+    rw [← hg, ← hx]
+    rfl
 
 /-- The ambient spin map cannot be surjective onto the full orthogonal group once the
 orthogonal group contains an isometry of determinant different from `1`. Thus the special

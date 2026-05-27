@@ -304,6 +304,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `QuadraticForm.specialOrthogonalGroup`
   - [x] prove the determinant-one statement
     `Spinor.spinLinearRepresentation_det_eq_one`
+  - [x] package the exact reduction from the full isometry image to the subtype image of the
+    special-orthogonal spin map as
+    `Spinor.spinIsometryRepresentation_range_eq_map_specialOrthogonalRepresentationFiniteDimensional`
   - [x] record the resulting obstruction to full orthogonal-group surjectivity as
     `Spinor.spinIsometryRepresentation_not_surjective_of_exists_det_ne_one`
   - [x] make that obstruction concrete for norm-`-1` pin generators via
@@ -543,8 +546,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   descent-obligation APIs, and direct conditional image-level hom wrappers with
   range-restriction pullback and uniqueness theorems when `2` is invertible, while recursive
   arbitrary-signature Bott-periodicity and full all-orthogonal-group image classifications beyond
-  the determinant obstruction / global orthogonal-group spinor-norm theory are framed as separate
-  projects rather than dependencies of the claimed results
+  the exact full-isometry image reduction / determinant obstruction / global orthogonal-group
+  spinor-norm theory are framed as separate projects rather than dependencies of the claimed
+  results
 - [x] Introduction: why spinors matter, why formalization is novel
 - [x] Related work: lean-ga, Mathlib Clifford, what's missing
 - [x] Formalization architecture
