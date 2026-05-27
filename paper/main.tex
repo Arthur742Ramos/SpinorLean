@@ -96,7 +96,10 @@ pulled-back spin image in linear coordinates and, after transport, exactly the s
 canonical split Levi subgroup. The corresponding quotients by these spin-image subgroups are
 isomorphic to \(K^\times/(K^\times)^2\). These same finite-basis split-Levi
 characters are also exposed under local spinor-norm-facing names, without
-asserting a global orthogonal-group spinor-norm API. The proof combines an orthogonal factorization into transported
+asserting a global orthogonal-group spinor-norm API. We also package the
+Clifford-level vector-product norm formula
+\(\widetilde{x}x=\prod_i(-Q(v_i))\) for \(x=\prod_i\iota(v_i)\), together with
+its invertible-vector unit and square-class form. The proof combines an orthogonal factorization into transported
 transvections plus one chosen-line square scaling, explicit even unitary
 Clifford lifts acting by scalar-normalized exterior maps, and a top-degree
 pairing normalization that proves the determinant-square necessity direction.
@@ -198,10 +201,12 @@ removes that side condition for all Levi elements.
 The same artifact also proves the chosen-model spinor interface, the split-rank
 kernel/projective-descent package, explicit transvection and chosen-line
 square-scaling lifts, the Levi-projective exterior-action bridge, and the exact
-split-line image criterion. Full Bott-period-$8$ real classification beyond
+split-line image criterion, plus a Clifford-level vector-product norm formula
+with its invertible-vector square-class package. Full Bott-period-$8$ real classification beyond
 the packaged low-signature entries through $\Cl(0,8)$ and positive even companions
 through $\Cl^+(8,0)$, full all-orthogonal-group image
-classification and global spinor-norm theory, and scheme-theoretic spin-cover
+classification and global orthogonal-group spinor-norm theory beyond this
+product-level substrate, and scheme-theoretic spin-cover
 statements are explicit scope boundaries, not assumptions behind the results
 claimed below.
 
@@ -311,8 +316,8 @@ Repository & \url{https://github.com/Arthur742Ramos/SpinorLean} \\
 Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
 \Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
 Build command & \code{lake build} \\
-Lean files under \code{Spinor/} & $21$ \\
-Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $20{,}777$ \\
+Lean files under \code{Spinor/} & $26$ \\
+Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $20{,}732$ \\
 \code{sorry} occurrences under \code{Spinor/} & $0$
 \end{tabularx}
 \end{center}
@@ -332,13 +337,15 @@ and run the proof-hole audit in \code{scripts/verify.sh} or
 
 The files most directly supporting the present paper are
 \code{Presentation.lean}, \code{ExteriorModel.lean}, \code{HyperbolicAction.lean},
-\code{OrthogonalAction.lean}, and \code{OddClassification.lean}; together
+\code{OrthogonalAction.lean}, \code{OddClassification.lean}, and
+\code{CliffordNorm.lean}; together
 they package the chosen-model vacuum-line lemmas, the structural Levi-action
 theorem, the explicit transvection Clifford units and square-scaling lifts with
 their conjugation laws, the finite-basis square-determinant Levi factorization,
 explicit chosen-model lift, spin-image sufficiency and necessity with its
 square-surjective corollary, the top-degree pairing normalization underlying the
-necessity proof, and the exact split-line image theorem.
+necessity proof, the exact split-line image theorem, and the Clifford
+vector-product norm formula underlying reflection-product spinor norms.
 
 The reusable interface is organized around the chosen-model transport story.
 \texttt{Presentation.lean} packages explicit hyperbolic presentations as
@@ -361,7 +368,7 @@ For auditability, the repository also contains
 the Lean declarations that implement or support them.
 
 \paragraph{What the formalization contributes.}
-The reusable payoff is organized in three layers, each exposed as a small
+The reusable payoff is organized in four layers, each exposed as a small
 Lean interface.
 
 \paragraph{Chosen-model transport.}
@@ -385,6 +392,14 @@ the determinant-square necessity theorem in \code{HyperbolicAction.lean}. This
 exposes theorem-level covering/image results and explicit root/torus generators
 that subsequent developments can reuse when extending the Levi criterion beyond the
 chosen-model finite-basis setting.
+
+\paragraph{Clifford product norm substrate.}
+Lean interface: \code{CliffordNorm.lean}, with exact declaration names indexed
+in \code{THEOREM_INDEX.md}. This records the global Clifford calculation for
+products of vector generators and packages the corresponding square-class
+invariant for products of invertible vectors, while leaving
+decomposition-independence and the resulting orthogonal-group spinor norm as
+later work.
 
 \paragraph{Downstream reuse already present in the repository.}
 The interface is already reused beyond the core covering-map story in the
@@ -1480,8 +1495,9 @@ converse determinant-square obstruction, so finite-basis split-Levi spin-image
 membership is exactly the square-determinant condition, and the induced
 split-Levi square-class character is onto with that spin image as kernel; equivalently, the
 split-Levi quotient by the spin image is the square-class group. The same proved
-character is now exported under local split-Levi spinor-norm-facing names, but
-no global orthogonal-group spinor-norm theory is claimed. Over fields with
+character is now exported under local split-Levi spinor-norm-facing names, and
+the product-level Clifford norm formula is available globally, but no global
+orthogonal-group spinor-norm theory is claimed. Over fields with
 square-surjective unit group, every finite-basis Levi element lies in that spin
 image; the new algebraically closed wrappers expose both the explicit lift and
 the image theorem in this common case without an extra square-surjectivity
@@ -1489,7 +1505,8 @@ argument. Read that way, our contribution is less about rederiving
 $\bigwedge W$ and more about identifying how much of the split Levi picture is
 already visible inside explicit Clifford formulas over a general field. The
 artifact boundary is consequently sharp: broader orthogonal subgroups, full
-global spinor-norm formulations, Bott-periodic classification beyond the
+global orthogonal-group spinor-norm formulations beyond the product-level
+Clifford norm, Bott-periodic classification beyond the
 packaged low-dimensional rows through $\Cl(0,8)$ and positive even companions
 through $\Cl^+(8,0)$, and scheme-theoretic
 spin-cover developments are not used by the stated results and are kept outside

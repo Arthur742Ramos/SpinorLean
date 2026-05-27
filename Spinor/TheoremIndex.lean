@@ -10,6 +10,7 @@ import Spinor.Cl60QuaternionMatrix
 import Spinor.Cl07RealMatrixProd
 import Spinor.Cl08RealMatrix
 import Spinor.Cl78PositiveEven
+import Spinor.CliffordNorm
 
 /-!
 # Machine-checked theorem index
@@ -151,6 +152,21 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_det_eq_one_of_two_lt_card
 #check Spinor.dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_det_eq_sq_of_two_lt_card
 #check Spinor.dualProdSpecialOrthogonalOfLinearEquiv_mem_spin_range_of_square_surjective_of_two_lt_card
+
+#check Spinor.cliffordVectorProduct
+#check Spinor.cliffordVectorProduct_append
+#check Spinor.cliffordVectorProductNormScalar
+#check Spinor.cliffordVectorProductNormScalar_append
+#check Spinor.star_cliffordVectorProduct_mul_cliffordVectorProduct
+#check Spinor.InvertibleQuadraticVector
+#check Spinor.cliffordInvertibleVectorNormUnit
+#check Spinor.cliffordInvertibleVectorProductNormUnit
+#check Spinor.cliffordInvertibleVectorProductNormUnit_append
+#check Spinor.coe_cliffordInvertibleVectorProductNormUnit
+#check Spinor.star_cliffordInvertibleVectorProduct_mul_cliffordInvertibleVectorProduct
+#check Spinor.cliffordInvertibleVectorProductSpinorNormClass
+#check Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons
+#check Spinor.cliffordInvertibleVectorProductSpinorNormClass_append
 
 #check Spinor.complexEvenCliffordEquivMatrix
 #check Spinor.complexOddCliffordEquivProdMatrix
