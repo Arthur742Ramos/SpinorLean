@@ -228,12 +228,14 @@ Implemented so far:
   finite-basis split-Levi spin-image iff API used by the paper; the same theorem surface now
   exposes the determinant square-class homomorphisms
   `linearEquivDetSquareClassHom` and `dualProdLeviDetSquareClassHom`; both are surjective onto
-  the square-class quotient once a basis line is chosen, and the latter has kernel exactly the
-  packaged split-Levi spin image by
+  the square-class quotient once a basis line is chosen, and their kernels are exactly the
+  pulled-back and canonical packaged split-Levi spin images by
   `linearEquivDetSquareClassHom_surjective`,
+  `linearEquivDetSquareClassHom_ker_eq_spin_image_subgroup`,
   `dualProdLeviDetSquareClassHom_surjective` and
   `dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap`; the first-isomorphism-theorem wrapper
-  `dualProdLeviSpinImageQuotientEquivSquareClass` identifies the split Levi subgroup modulo that
+  `linearEquivSpinImageQuotientEquivSquareClass` gives the linear-coordinate quotient, while
+  `dualProdLeviSpinImageQuotientEquivSquareClass` identifies the split Levi subgroup modulo its
   spin-image subgroup with the square-class quotient
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
   subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and

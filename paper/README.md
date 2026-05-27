@@ -49,9 +49,9 @@ The formal result boundary is explicit: the submitted theorem package covers the
 chosen-model spinor construction, split-rank kernel/non-descent,
 Levi-projective action, square-determinant Levi lifts, the determinant-square
 necessity theorem, the exact finite-basis split-Levi spin-image iff criterion,
-the onto split-Levi determinant square-class character with its kernel theorem,
-the resulting quotient isomorphism from the split Levi modulo its spin-image
-subgroup to the square-class group,
+the onto determinant square-class characters with their kernel theorems in
+linear coordinates and on the canonical split Levi, the resulting quotient
+isomorphisms modulo the corresponding spin-image subgroups to the square-class group,
 and the exact split-line image / double-cover criterion. The full Bott-period-8
 table and a full all-orthogonal-group image classification are separate
 projects, not dependencies in the claimed theorem package.
