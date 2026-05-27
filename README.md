@@ -154,6 +154,10 @@ Implemented so far:
   hyperbolic/split setting the chosen-model equivalence `Cl(Q) ≃ End(⋀W)` now forces every kernel
   element to be scalar; hence on the canonical split-rank chosen-model API the ambient
   spin-to-isometry kernel is proved to be exactly `{1, -1}`
+- the determinant-one theorem for spin actions is also recorded as a formal obstruction to the full
+  orthogonal target: if `Q.IsometryEquiv Q` contains an isometry with determinant different from
+  `1`, then `spinIsometryRepresentation` is not surjective onto that full target, so the special
+  orthogonal target is forced before any finer image-classification question
 - in positive split rank, the full chosen-model spin representation and the nonzero half-spin
   representations are now proved not to factor through the ambient isometry representation, while
   their induced projective actions are packaged as image-subgroup actions on submodules
@@ -412,9 +416,10 @@ Explicit scope boundaries for this algebraic submission package:
 - a recursive arbitrary-signature Bott-periodicity theorem beyond the packaged split families
   and first-period table collected in `RealClassification.periodEightTable`
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
-  non-factorization, projective descent, exact split-line iff criterion, exact finite-basis
-  split-Levi spin-image iff theorem, and onto split-Levi determinant square-class quotient
-  character / quotient isomorphism with its split-Levi spinor-norm-facing wrappers and the
+  determinant obstruction to ambient full-orthogonal surjectivity, non-factorization, projective
+  descent, exact split-line iff criterion, exact finite-basis split-Levi spin-image iff theorem,
+  and onto split-Levi determinant square-class quotient character / quotient isomorphism with its
+  split-Levi spinor-norm-facing wrappers and the
   global Clifford/Lipschitz vector-product norm formula with product-order invariance,
   repeated-pair square-class cancellation, and duplicated-product/subproduct square-class
   triviality, including separated repeated subproducts after permutation into the repeated shape

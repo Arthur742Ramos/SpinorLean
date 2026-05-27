@@ -61,6 +61,9 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
   element acts as an isometry of `Q`, assembled into a homomorphism.
 * `Spinor.spinLinearRepresentation_det_eq_one` — over finite-dimensional fields, the ambient spin
   representation has determinant `1`.
+* `Spinor.spinIsometryRepresentation_not_surjective_of_exists_det_ne_one` — if the full
+  orthogonal group contains an isometry with determinant different from `1`, then the ambient spin
+  map is not surjective onto that full target.
 * `Spinor.spinSpecialOrthogonalRepresentation`,
   `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional` — the ambient isometry
   representation factors through `QuadraticForm.specialOrthogonalGroup Q`, either from an external
@@ -1790,6 +1793,23 @@ theorem spinSpecialOrthogonalRepresentationFiniteDimensional_comp_subtype :
       spinIsometryRepresentation (Q := Q) := by
   ext x
   rfl
+
+/-- The ambient spin map cannot be surjective onto the full orthogonal group once the
+orthogonal group contains an isometry of determinant different from `1`. Thus the special
+orthogonal target is not just a convenience: it is forced by the determinant-one theorem for
+spin actions. -/
+theorem spinIsometryRepresentation_not_surjective_of_exists_det_ne_one
+    (h : ∃ g : Q.IsometryEquiv Q, LinearEquiv.det (g : V ≃ₗ[K] V) ≠ 1) :
+    ¬ Function.Surjective (spinIsometryRepresentation (Q := Q)) := by
+  intro hsurj
+  rcases h with ⟨g, hg⟩
+  rcases hsurj g with ⟨x, hx⟩
+  have hdetImage :
+      LinearEquiv.det
+          ((spinIsometryRepresentation (Q := Q) x : Q.IsometryEquiv Q) : V ≃ₗ[K] V) = 1 := by
+    simpa [spinIsometryRepresentation_toLinearEquiv] using
+      spinLinearRepresentation_det_eq_one (Q := Q) x
+  exact hg (by simpa [hx] using hdetImage)
 
 omit [Invertible (2 : K)] [FiniteDimensional K V] in
 @[simp]

@@ -304,6 +304,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `QuadraticForm.specialOrthogonalGroup`
   - [x] prove the determinant-one statement
     `Spinor.spinLinearRepresentation_det_eq_one`
+  - [x] record the resulting obstruction to full orthogonal-group surjectivity as
+    `Spinor.spinIsometryRepresentation_not_surjective_of_exists_det_ne_one`
   - [x] factor the ambient action through that target as
     `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional`
   - [x] identify the finite-dimensional nondegenerate kernel as `{1, -1}` via
@@ -530,9 +532,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   mechanism outside that determinant-obstructed case,
   descent-obligation APIs, and direct conditional image-level hom wrappers with
   range-restriction pullback and uniqueness theorems when `2` is invertible, while recursive
-  arbitrary-signature Bott-periodicity and full all-orthogonal-group image classifications /
-  global orthogonal-group spinor-norm theory are framed as separate projects rather than
-  dependencies of the claimed results
+  arbitrary-signature Bott-periodicity and full all-orthogonal-group image classifications beyond
+  the determinant obstruction / global orthogonal-group spinor-norm theory are framed as separate
+  projects rather than dependencies of the claimed results
 - [x] Introduction: why spinors matter, why formalization is novel
 - [x] Related work: lean-ga, Mathlib Clifford, what's missing
 - [x] Formalization architecture
