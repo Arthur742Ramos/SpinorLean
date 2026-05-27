@@ -55,7 +55,7 @@ isomorphisms modulo the corresponding spin-image subgroups to the square-class
 group, local split-Levi spinor-norm-facing wrappers for these same characters,
 the exact split-line image / double-cover criterion, and the Clifford-level
 vector-product norm formula with its invertible-vector square-class package and product-order
-invariance. The full Bott-period-8
+invariance, plus repeated-pair square-class cancellation. The full Bott-period-8
 table beyond the packaged low-signature entries, now including the explicit
 `Cl(0,5) ≃ Mat₄(ℂ)`, `Cl⁺(0,6) ≃ Mat₄(ℂ)`, `Cl(0,6) ≃ Mat₈(ℝ)`,
 `Cl⁺(6,0) ≃ Mat₄(ℂ)`, `Cl(6,0) ≃ Mat₄(ℍ)`,

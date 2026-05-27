@@ -29,6 +29,7 @@ orthogonal-group spinor-norm API.
 * `Spinor.cliffordInvertibleVectorProductNormUnit`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_perm`
+* `Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons`
 -/
 
 namespace Spinor
@@ -259,5 +260,40 @@ theorem cliffordInvertibleVectorProductSpinorNormClass_reverse (Q : QuadraticFor
     cliffordInvertibleVectorProductSpinorNormClass Q l.reverse =
       cliffordInvertibleVectorProductSpinorNormClass Q l :=
   cliffordInvertibleVectorProductSpinorNormClass_perm Q l.reverse_perm
+
+theorem cliffordInvertibleVectorNormUnit_sq_spinorNormClass_eq_one
+    (Q : QuadraticForm R M) (m : InvertibleQuadraticVector Q) :
+    ((cliffordInvertibleVectorNormUnit Q m ^ 2 : Rˣ) :
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2)) = 1 := by
+  rw [QuotientGroup.eq_one_iff]
+  exact ⟨cliffordInvertibleVectorNormUnit Q m, rfl⟩
+
+@[simp]
+theorem cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons
+    (Q : QuadraticForm R M) (m : InvertibleQuadraticVector Q)
+    (l : List (InvertibleQuadraticVector Q)) :
+    cliffordInvertibleVectorProductSpinorNormClass Q (m :: m :: l) =
+      cliffordInvertibleVectorProductSpinorNormClass Q l := by
+  rw [cliffordInvertibleVectorProductSpinorNormClass_cons,
+    cliffordInvertibleVectorProductSpinorNormClass_cons]
+  let u := cliffordInvertibleVectorNormUnit Q m
+  rw [← mul_assoc]
+  change ((u * u : Rˣ) :
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2)) *
+        cliffordInvertibleVectorProductSpinorNormClass Q l =
+      cliffordInvertibleVectorProductSpinorNormClass Q l
+  rw [show u * u = u ^ 2 by rw [pow_two],
+    cliffordInvertibleVectorNormUnit_sq_spinorNormClass_eq_one]
+  exact one_mul (cliffordInvertibleVectorProductSpinorNormClass Q l)
+
+@[simp]
+theorem cliffordInvertibleVectorProductSpinorNormClass_append_cons_self_cons
+    (Q : QuadraticForm R M) (l₁ l₂ : List (InvertibleQuadraticVector Q))
+    (m : InvertibleQuadraticVector Q) :
+    cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ m :: m :: l₂) =
+      cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l₂) := by
+  rw [cliffordInvertibleVectorProductSpinorNormClass_append,
+    cliffordInvertibleVectorProductSpinorNormClass_append,
+    cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons]
 
 end Spinor
