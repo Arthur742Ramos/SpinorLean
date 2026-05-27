@@ -1,0 +1,89 @@
+{
+  "schema": "scientific-reviewer.aaca_em_g34_evidence_after_fixes.v1",
+  "review_target": {
+    "repo": "Arthur742Ramos/SpinorLean",
+    "branch": "review/aaca-editorial-manager-paper",
+    "manuscript_source": "paper/main.tex",
+    "bibliography_source": "paper/refs.bib",
+    "manuscript_sha256": "46520afd34ca24bbf013f77386b55f8592cc898bb2ed43e222b0b644be8bebe6",
+    "bibliography_sha256": "5eebfbeb6415e739364dd3f601cac5e3f72543d9976e74b6d3ace89f021c31fe"
+  },
+  "constraints": {
+    "lean_executed": false,
+    "latex_executed": false,
+    "scientific_reviewer_review_executed": true,
+    "scientific_reviewer_improve_executed": true,
+    "push_performed": false,
+    "main_branch_used": false
+  },
+  "current_source_audit": {
+    "paper_files": [
+      "README.md",
+      "birkjour.cls",
+      "THIRD_PARTY_NOTICES.md",
+      "cite.sty",
+      "main.tex",
+      "refs.bib",
+      "spmpsci.bst"
+    ],
+    "documentclass": "\\documentclass{birkjour}",
+    "documentclass_line": "paper/main.tex:1",
+    "bibliographystyle": "\\bibliographystyle{spmpsci}",
+    "bibliographystyle_line": "paper/main.tex:1529",
+    "bibliography": "\\bibliography{refs}",
+    "bibliography_line": "paper/main.tex:1530",
+    "abstract_word_count": 177,
+    "abstract_required_range": [
+      150,
+      250
+    ],
+    "declarations_present": [
+      "Statements and Declarations",
+      "Funding",
+      "Competing interests",
+      "Data availability",
+      "Code availability",
+      "Author contributions"
+    ],
+    "aaca_support_file_hashes": {
+      "paper/birkjour.cls": "e257a57fe0b91434c54fe99304ef8c7fa8abef30b36c08f98d5df74a649b9e46",
+      "paper/spmpsci.bst": "ad80c3ef28c671efbab5a3c624fe77414733898cff590b1f61ac177ce3334950",
+      "paper/cite.sty": "f9a1cc22184089f3c5938095955cb8acbfde954ba4f84a7b62d768e67225e341"
+    },
+    "doi_url_fields_added": true
+  },
+  "scientific_reviewer_after_fixes": {
+    "review_json": "review-01/00-global/scientific-reviewer-run-after-fixes.json",
+    "review_out_dir": "review-01/scientific-reviewer-review-after-fixes",
+    "improve_json": "review-01/00-global/scientific-reviewer-improve-after-fixes.json",
+    "improve_out_dir": "review-01/scientific-reviewer-improve-after-fixes",
+    "verdict": "NOT_READY",
+    "manuscript_hash": "9bc7413d26549e60ebd05b12336a42c139e45781daabfb4652256b3723415eb8",
+    "total_units": 1573,
+    "total_required_checks": 27706,
+    "completed_required_checks": 0,
+    "missing_required_checks": 27706,
+    "primary_remaining_blockers": [
+      "No current upload-format final submission artifact is declared.",
+      "No structured check-results ledger has been supplied.",
+      "No current platform-built PDF or build log exists under the no-build constraint."
+    ]
+  },
+  "fixed_findings": [
+    "AACA-EM-001 visible package support files addressed at source level; build unverified",
+    "AACA-EM-002 abstract length addressed by documented 177-word count",
+    "AACA-EM-003 declarations/data availability headings addressed at source level",
+    "AACA-EM-004 birkjour documentclass addressed at source level; build unverified",
+    "AACA-EM-005 spmpsci bibliography style addressed at source level; build unverified"
+  ],
+  "remaining_unverified": [
+    "current_source_compiles_locally",
+    "current_source_platform_pdf_clean",
+    "current_em_compiler_version",
+    "current_platform_built_pdf_absence_of_unresolved_markers",
+    "lean_build_status",
+    "proof_hole_status",
+    "theorem_declaration_integrity",
+    "mathematical_correctness"
+  ]
+}

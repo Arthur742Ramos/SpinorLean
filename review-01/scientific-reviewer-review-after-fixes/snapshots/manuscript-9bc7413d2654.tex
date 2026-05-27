@@ -1527,6 +1527,140 @@ manuscript.
 
 % --- Bibliography --------------------------------------------------------
 \bibliographystyle{spmpsci}
-\bibliography{refs}
+% Original bibliography command: \bibliography{refs}
+% BEGIN expanded bibliography: paper/refs.bib
+@book{LawsonMichelsohn1989,
+  author    = {Lawson, Jr., H. Blaine and Michelsohn, Marie-Louise},
+  title     = {Spin Geometry},
+  publisher = {Princeton University Press},
+  series    = {Princeton Mathematical Series},
+  volume    = {38},
+  year      = {1989},
+  address   = {Princeton, NJ},
+  isbn      = {978-0-691-08542-5}
+}
+
+@book{Chevalley1996,
+  author    = {Chevalley, Claude},
+  title     = {The Algebraic Theory of Spinors and Clifford Algebras},
+  publisher = {Springer},
+  series    = {Collected Works},
+  volume    = {2},
+  year      = {1996},
+  note      = {Reprint of the 1954 original with a postface by J.-P. Bourguignon}
+}
+
+@article{AtiyahBottShapiro1964,
+  author  = {Atiyah, Michael F. and Bott, Raoul and Shapiro, Arnold},
+  title   = {Clifford Modules},
+  journal = {Topology},
+  volume  = {3},
+  number  = {Suppl. 1},
+  pages   = {3--38},
+  year    = {1964},
+  doi     = {10.1016/0040-9383(64)90003-5},
+  url     = {https://doi.org/10.1016/0040-9383(64)90003-5}
+}
+
+@book{Lounesto2001,
+  author    = {Lounesto, Pertti},
+  title     = {Clifford Algebras and Spinors},
+  edition   = {2nd},
+  publisher = {Cambridge University Press},
+  series    = {London Mathematical Society Lecture Note Series},
+  volume    = {286},
+  year      = {2001},
+  address   = {Cambridge},
+  isbn      = {978-0-521-80579-5}
+}
+
+@book{HoffmanKunze1971,
+  author    = {Hoffman, Kenneth and Kunze, Ray},
+  title     = {Linear Algebra},
+  edition   = {2nd},
+  publisher = {Prentice-Hall},
+  address   = {Englewood Cliffs, NJ},
+  year      = {1971}
+}
+
+@book{Artin1957GeometricAlgebra,
+  author    = {Artin, Emil},
+  title     = {Geometric Algebra},
+  publisher = {Interscience Publishers},
+  address   = {New York},
+  year      = {1957},
+  note      = {Reprinted by Wiley Classics Library, 1988}
+}
+
+@article{Baez2002,
+  author  = {Baez, John C.},
+  title   = {The Octonions},
+  journal = {Bulletin of the American Mathematical Society},
+  volume  = {39},
+  number  = {2},
+  pages   = {145--205},
+  year    = {2002},
+  doi     = {10.1090/S0273-0979-01-00934-X},
+  url     = {https://doi.org/10.1090/S0273-0979-01-00934-X}
+}
+
+@misc{LeanGA,
+  author       = {Wieser, Eric and Song, Utensil},
+  title        = {{lean-ga}: Geometric Algebra in {Lean}},
+  howpublished = {\url{https://github.com/pygae/lean-ga}},
+  year         = {2020},
+  note         = {Lean library formalizing geometric algebra; Lean~3 era}
+}
+
+@misc{Mathlib,
+  author       = {{The Mathlib Community}},
+  title        = {{mathlib4}: The math library of {Lean} 4},
+  howpublished = {\url{https://github.com/leanprover-community/mathlib4}},
+  year         = {2024},
+  note         = {Includes {\tt LinearAlgebra.CliffordAlgebra},
+                  {\tt LinearAlgebra.ExteriorAlgebra},
+                  {\tt spinGroup}, and {\tt pinGroup}}
+}
+
+@article{Wieser2022Clifford,
+  author  = {Wieser, Eric and Song, Utensil},
+  title   = {Formalizing Geometric Algebra in {Lean}},
+  journal = {Advances in Applied Clifford Algebras},
+  volume  = {32},
+  number  = {3},
+  pages   = {Article 28},
+  year    = {2022},
+  doi     = {10.1007/s00006-021-01164-1},
+  url     = {https://doi.org/10.1007/s00006-021-01164-1}
+}
+
+@inproceedings{deMouraUllrich2021,
+  author    = {de Moura, Leonardo and Ullrich, Sebastian},
+  title     = {The {Lean} 4 Theorem Prover and Programming Language},
+  booktitle = {Automated Deduction -- {CADE} 28},
+  editor    = {Platzer, Andr{\'e} and Sutcliffe, Geoff},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {12699},
+  pages     = {625--635},
+  publisher = {Springer},
+  address   = {Cham},
+  year      = {2021},
+  doi       = {10.1007/978-3-030-79876-5_37},
+  url       = {https://doi.org/10.1007/978-3-030-79876-5_37}
+}
+
+@inproceedings{MathlibCommunity2020,
+  author    = {{The Mathlib Community}},
+  title     = {The {Lean} Mathematical Library},
+  booktitle = {Proceedings of the 9th {ACM} {SIGPLAN} International Conference
+               on Certified Programs and Proofs},
+  pages     = {367--381},
+  publisher = {ACM},
+  year      = {2020},
+  doi       = {10.1145/3372885.3373824},
+  url       = {https://doi.org/10.1145/3372885.3373824},
+  note      = {Common scholarly reference for the mathlib ecosystem}
+}
+% END expanded bibliography: paper/refs.bib
 
 \end{document}
