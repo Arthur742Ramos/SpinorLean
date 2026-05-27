@@ -283,7 +283,9 @@ Implemented so far:
   and `lipschitzVectorFactorization_spinorNormClass_eq_of_factorizations` prove that any two
   invertible-vector factorizations of the same Lipschitz element give the same norm unit and
   square class, yielding the global `lipschitzSpinorNormClassFactorizationIndependent`
-  theorem and the unconditional Lipschitz-group monoid hom `lipschitzSpinorNormClassHom`.
+  theorem and the unconditional Lipschitz-group monoid hom `lipschitzSpinorNormClassHom`;
+  `lipschitzSpinorNormClassHom_cliffordInvertibleVectorLipschitz` computes this hom on a
+  single invertible vector generator as the square class of its signed quadratic norm.
   `LipschitzImageNorm` exposes the corresponding noncanonical chosen-lift API on the image of
   `lipschitzLinearRepresentation`, separates the lift-independence and kernel-triviality
   obligations, proves that kernel-triviality of the global Lipschitz-group hom implies lift
@@ -312,8 +314,12 @@ Implemented so far:
   `OddKernelObstruction` proves this determinant qualification is not cosmetic:
   in `Cl(1,0)`, `realCl10OddKernelLipschitz_linearRepresentation_eq_one` is an odd
   Lipschitz linear-kernel element, `realCl10OddKernelLipschitz_not_scalar` proves it is not
-  a scalar Clifford unit, and `not_lipschitzLinearKernelScalarUnits_realCl10` rules out the
-  unconditional scalar-kernel API for the current untwisted action.
+  a scalar Clifford unit, `realCl10OddKernelLipschitz_spinorNormClassHom_eq_neg_one` computes
+  its Lipschitz spinor-norm square class as the nontrivial class of `-1`, and
+  `not_lipschitzLinearKernelScalarUnits_realCl10` plus
+  `not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10` rule out both the
+  unconditional scalar-kernel API and the unconditional kernel-triviality descent API for the
+  current untwisted action.
   `lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel`
   records the compatibility wrapper with the older two-hypothesis API, and
   `lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel`
@@ -431,8 +437,8 @@ Explicit scope boundaries for this algebraic submission package:
   global Lipschitz-group hom, noncanonical Lipschitz linear-image wrapper, linear-kernel
   centrality / parity / even-kernel scalarity bridge, determinant-obstructed scalar-kernel
   and descent theorem, scalar-kernel bridge, the formal `Cl(1,0)` odd-kernel obstruction to
-  unconditional scalar kernels for the current untwisted action, any replacement
-  odd-kernel/lift-independence mechanism, and descent-obligation APIs and implications, and
-  finite-basis split-Levi square-class APIs
+  unconditional scalar kernels and unconditional kernel-trivial descent for the current
+  untwisted action, any replacement odd-kernel/lift-independence mechanism, and
+  descent-obligation APIs and implications, and finite-basis split-Levi square-class APIs
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

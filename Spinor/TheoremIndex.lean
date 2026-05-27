@@ -76,7 +76,11 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.realCl10OddKernelLipschitz
 #check Spinor.realCl10OddKernelLipschitz_linearRepresentation_eq_one
 #check Spinor.realCl10OddKernelLipschitz_not_scalar
+#check Spinor.real_units_neg_one_squareClass_ne_one
+#check Spinor.realCl10OddKernelLipschitz_spinorNormClassHom_eq_neg_one
+#check Spinor.realCl10OddKernelLipschitz_spinorNormClassHom_ne_one
 #check Spinor.not_lipschitzLinearKernelScalarUnits_realCl10
+#check Spinor.not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10
 
 #check Spinor.HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_pos_finrank
 #check Spinor.splitSpinRepresentation_not_factor_through_isometry
@@ -234,6 +238,7 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.lipschitzSpinorNormClassHomOfFactorizationIndependent_apply
 #check Spinor.lipschitzSpinorNormClassHom
 #check Spinor.lipschitzSpinorNormClassHom_apply
+#check Spinor.lipschitzSpinorNormClassHom_cliffordInvertibleVectorLipschitz
 #check Spinor.exists_lipschitzVectorFactorization_mul_chosenSpinorNormClass_eq
 #check Spinor.chosenLipschitzSpinorNormClass_sq_eq_one
 #check Spinor.star_mul_self_eq_algebraMap_chosenLipschitzNormUnit

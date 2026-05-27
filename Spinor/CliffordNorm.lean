@@ -875,6 +875,28 @@ theorem lipschitzSpinorNormClassHom_eq_one_of_coe_eq_algebraMap_unit
   rw [lipschitzSpinorNormClassHom_apply]
   exact chosenLipschitzSpinorNormClass_eq_one_of_coe_eq_algebraMap_unit Q x u hx
 
+/-- The global Lipschitz spinor-norm hom sends a single invertible vector generator to the
+square class of its signed quadratic norm. -/
+theorem lipschitzSpinorNormClassHom_cliffordInvertibleVectorLipschitz
+    [Invertible (2 : R)] (Q : QuadraticForm R M) (m : InvertibleQuadraticVector Q) :
+    lipschitzSpinorNormClassHom Q (cliffordInvertibleVectorLipschitz Q m) =
+      (cliffordInvertibleVectorNormUnit Q m :
+        Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2)) := by
+  rw [lipschitzSpinorNormClassHom_apply]
+  let F : LipschitzVectorFactorization Q (cliffordInvertibleVectorLipschitz Q m) :=
+    { factors := [m]
+      product_eq := by
+        simp [cliffordInvertibleVectorProductLipschitz] }
+  calc
+    chosenLipschitzSpinorNormClass Q (cliffordInvertibleVectorLipschitz Q m) =
+        F.spinorNormClass := by
+          exact (lipschitzSpinorNormClassFactorizationIndependent Q).eq_of_factorizations
+            (lipschitzVectorFactorization Q (cliffordInvertibleVectorLipschitz Q m)) F
+    _ = (cliffordInvertibleVectorNormUnit Q m :
+        Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2)) := by
+          simp [F, LipschitzVectorFactorization.spinorNormClass,
+            cliffordInvertibleVectorProductSpinorNormClass]
+
 @[simp]
 theorem cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons
     (Q : QuadraticForm R M) (m : InvertibleQuadraticVector Q)

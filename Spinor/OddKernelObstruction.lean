@@ -7,7 +7,8 @@ import Spinor.RealClassification
   The determinant-obstructed scalar-kernel theorem in `Spinor.Covering` is sharp for the
   current untwisted Clifford-conjugation action. In the one-dimensional positive real form,
   the single vector generator is an odd Lipschitz element in the linear kernel, but it is not
-  a scalar Clifford unit. Hence the unconditional scalar-kernel API is false for this action.
+  a scalar Clifford unit. Its Lipschitz spinor-norm square class is also the nontrivial
+  class of `-1`, so the unconditional kernel-triviality descent API is false for this action.
 -/
 
 namespace Spinor
@@ -117,6 +118,49 @@ theorem realCl10OddKernelLipschitz_not_scalar [Invertible (2 : ℝ)] :
   exact realCl10_iota_one_ne_algebraMap (u : ℝ)
     (realCl10OddKernelLipschitz_coe.symm.trans hu)
 
+/-- The square class of `-1` in `ℝˣ / (ℝˣ)^2` is nontrivial. -/
+theorem real_units_neg_one_squareClass_ne_one :
+    ((-1 : ℝˣ) : ℝˣ ⧸ MonoidHom.range (powMonoidHom (α := ℝˣ) 2)) ≠ 1 := by
+  intro h
+  rw [QuotientGroup.eq_one_iff] at h
+  rcases h with ⟨u, hu⟩
+  have huval : ((u ^ 2 : ℝˣ) : ℝ) = (-1 : ℝ) := by
+    simpa using congrArg (fun v : ℝˣ => (v : ℝ)) hu
+  have hnonneg : 0 ≤ ((u : ℝ) ^ 2) := sq_nonneg (u : ℝ)
+  have hneg : ¬ 0 ≤ ((u : ℝ) ^ 2) := by
+    rw [show ((u : ℝ) ^ 2) = (-1 : ℝ) by simpa [pow_two] using huval]
+    norm_num
+  exact hneg hnonneg
+
+private noncomputable def realCl10OneInvertibleQuadraticVector :
+    InvertibleQuadraticVector Q10 :=
+  ⟨1, by
+    change IsUnit ((1 : ℝ) * 1)
+    simp⟩
+
+/-- The `Cl(1,0)` odd kernel witness has spinor-norm square class `[-1]`. -/
+theorem realCl10OddKernelLipschitz_spinorNormClassHom_eq_neg_one [Invertible (2 : ℝ)] :
+    lipschitzSpinorNormClassHom Q10 realCl10OddKernelLipschitz =
+      ((-1 : ℝˣ) : ℝˣ ⧸ MonoidHom.range (powMonoidHom (α := ℝˣ) 2)) := by
+  have hgen :
+      realCl10OddKernelLipschitz =
+        cliffordInvertibleVectorLipschitz Q10 realCl10OneInvertibleQuadraticVector := by
+    apply Subtype.ext
+    apply Units.ext
+    change CliffordAlgebra.ι Q10 (1 : ℝ) = CliffordAlgebra.ι Q10 (1 : ℝ)
+    rfl
+  rw [hgen, lipschitzSpinorNormClassHom_cliffordInvertibleVectorLipschitz]
+  congr 1
+  apply Units.ext
+  change (-(realCl10OneInvertibleQuadraticVector.2.unit : ℝˣ) : ℝ) = (-1 : ℝ)
+  simp [realCl10OneInvertibleQuadraticVector]
+
+/-- The `Cl(1,0)` odd kernel witness has nontrivial Lipschitz spinor norm. -/
+theorem realCl10OddKernelLipschitz_spinorNormClassHom_ne_one [Invertible (2 : ℝ)] :
+    lipschitzSpinorNormClassHom Q10 realCl10OddKernelLipschitz ≠ 1 := by
+  rw [realCl10OddKernelLipschitz_spinorNormClassHom_eq_neg_one]
+  exact real_units_neg_one_squareClass_ne_one
+
 /-- Therefore the unconditional scalar-kernel API is false for the current untwisted
 Lipschitz action, already over `Cl(1,0)`. -/
 theorem not_lipschitzLinearKernelScalarUnits_realCl10 [Invertible (2 : ℝ)] :
@@ -127,6 +171,15 @@ theorem not_lipschitzLinearKernelScalarUnits_realCl10 [Invertible (2 : ℝ)] :
       realCl10OddKernelLipschitz_linearRepresentation_eq_one with
     ⟨u, hu⟩
   exact realCl10OddKernelLipschitz_not_scalar ⟨u, hu⟩
+
+/-- Therefore the unconditional kernel-triviality descent API is false for the current
+untwisted Lipschitz spinor norm, already over `Cl(1,0)`. -/
+theorem not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10 [Invertible (2 : ℝ)] :
+    ¬ LipschitzSpinorNormClassHomTrivialOnLinearKernel Q10 := by
+  intro hker
+  exact realCl10OddKernelLipschitz_spinorNormClassHom_ne_one
+    (hker.eq_one_of_linearRepresentation_eq_one realCl10OddKernelLipschitz
+      realCl10OddKernelLipschitz_linearRepresentation_eq_one)
 
 end
 

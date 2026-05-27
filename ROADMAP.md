@@ -455,7 +455,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     stored norm units and square classes, noncanonical chosen Lipschitz norm-unit and
     square-class wrappers, global equality of the norm unit and square class across any two
     Lipschitz vector factorizations of the same element, the resulting unconditional
-    Lipschitz-group spinor-norm square-class hom, and the
+    Lipschitz-group spinor-norm square-class hom, its single-vector generator computation
+    `Spinor.lipschitzSpinorNormClassHom_cliffordInvertibleVectorLipschitz`, and the
     corresponding noncanonical chosen-lift wrapper on the image of
     `Spinor.lipschitzLinearRepresentation`, plus the
     `Spinor.commute_of_lipschitzLinearRepresentation_eq_one` linear-kernel centrality bridge
@@ -467,8 +468,12 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     determinant qualification is sharp for the current untwisted action:
     `Spinor.realCl10OddKernelLipschitz_linearRepresentation_eq_one` gives an odd
     `Cl(1,0)` linear-kernel element, `Spinor.realCl10OddKernelLipschitz_not_scalar`
-    proves it is not scalar, and `Spinor.not_lipschitzLinearKernelScalarUnits_realCl10`
-    rules out the unconditional scalar-kernel API. The development also retains the
+    proves it is not scalar,
+    `Spinor.realCl10OddKernelLipschitz_spinorNormClassHom_eq_neg_one` computes its
+    Lipschitz spinor-norm square class as the nontrivial class of `-1`, and
+    `Spinor.not_lipschitzLinearKernelScalarUnits_realCl10` together with
+    `Spinor.not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10` jointly rule out the
+    unconditional scalar-kernel and kernel-triviality descent APIs. The development also retains the
     lift-independence and descent-obligation structures, implications,
     scalar-kernel bridge
     `Spinor.LipschitzLinearKernelScalarUnits`, and direct image-level monoid-hom wrappers whose
@@ -498,9 +503,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     independence and Lipschitz-group hom, and its noncanonical Lipschitz linear-image
     wrapper, linear-kernel centrality / parity / even-kernel scalarity bridge,
     determinant-obstructed scalar-kernel and descent theorem, scalar-kernel bridge,
-    the formal `Cl(1,0)` odd-kernel obstruction to unconditional scalarity for the current
-    untwisted action, any replacement odd-kernel/kernel-triviality-to-lift-independence
-    mechanism outside that determinant-obstructed case,
+    the formal `Cl(1,0)` odd-kernel obstruction to unconditional scalarity and
+    unconditional kernel-trivial descent for the current untwisted action, any replacement
+    odd-kernel/kernel-triviality-to-lift-independence mechanism outside that
+    determinant-obstructed case,
     descent-obligation APIs, and direct conditional image-level hom wrappers,
     range-restriction pullback theorem, and pullback uniqueness
     theorem, including separated repeated subproducts after permutation into the repeated shape,
@@ -530,9 +536,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   Lipschitz-group hom, and their noncanonical Lipschitz linear-image chosen-lift
   wrappers, linear-kernel centrality / parity / even-kernel scalarity bridge,
   determinant-obstructed scalar-kernel and descent theorem, scalar-kernel bridge,
-  the formal `Cl(1,0)` odd-kernel obstruction to unconditional scalarity for the current
-  untwisted action, any replacement odd-kernel/kernel-triviality-to-lift-independence
-  mechanism outside that determinant-obstructed case,
+  the formal `Cl(1,0)` odd-kernel obstruction to unconditional scalarity and
+  unconditional kernel-trivial descent for the current untwisted action, any replacement
+  odd-kernel/kernel-triviality-to-lift-independence mechanism outside that
+  determinant-obstructed case,
   descent-obligation APIs, and direct conditional image-level hom wrappers with
   range-restriction pullback and uniqueness theorems when `2` is invertible, while recursive
   arbitrary-signature Bott-periodicity and full all-orthogonal-group image classifications beyond
