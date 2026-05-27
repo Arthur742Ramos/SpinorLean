@@ -41,6 +41,9 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
 * `Spinor.lipschitzVectorAction`, `Spinor.lipschitzLinearEquiv`,
   `Spinor.lipschitzLinearRepresentation : lipschitzGroup Q →* (M ≃ₗ[R] M)` — the ambient
   vector action of the Lipschitz group by conjugation on `CliffordAlgebra.ι Q`.
+* `Spinor.lipschitzConjAlgEquiv_eq_refl_of_lipschitzLinearRepresentation_eq_one` and
+  `Spinor.commute_of_lipschitzLinearRepresentation_eq_one` — Lipschitz linear-kernel elements
+  act trivially by Clifford conjugation and commute with every Clifford element.
 * `Spinor.pinVectorAction`, `Spinor.pinLinearEquiv`,
   `Spinor.pinLinearRepresentation : pinGroup Q →* (M ≃ₗ[R] M)` — the ambient vector action of
   the pin group by conjugation on `CliffordAlgebra.ι Q`.
@@ -318,6 +321,39 @@ noncomputable def lipschitzLinearRepresentation : lipschitzGroup Q →* (M ≃�
 @[simp]
 theorem lipschitzLinearRepresentation_apply (x : lipschitzGroup Q) :
     lipschitzLinearRepresentation (Q := Q) x = lipschitzLinearEquiv (Q := Q) x := rfl
+
+/-- A Lipschitz linear-kernel element acts trivially on the full Clifford algebra by conjugation. -/
+theorem lipschitzConjAlgEquiv_eq_refl_of_lipschitzLinearRepresentation_eq_one
+    (x : lipschitzGroup Q) (hx : lipschitzLinearRepresentation (Q := Q) x = 1) :
+    lipschitzConjAlgEquiv (Q := Q) x = AlgEquiv.refl := by
+  ext a
+  have hhom :
+      (lipschitzConjAlgEquiv (Q := Q) x).toAlgHom =
+        (AlgEquiv.refl : CliffordAlgebra Q ≃ₐ[R] CliffordAlgebra Q).toAlgHom := by
+    refine CliffordAlgebra.hom_ext ?_
+    ext m
+    have hm : lipschitzLinearEquiv (Q := Q) x m = m := by
+      simpa [lipschitzLinearRepresentation_apply] using
+        congrArg (fun e : M ≃ₗ[R] M => e m) hx
+    simpa [lipschitzConjAlgEquiv_apply, hm] using
+      (lipschitzLinearEquiv_ι (Q := Q) x m).symm
+  exact congrArg (fun f : CliffordAlgebra Q →ₐ[R] CliffordAlgebra Q => f a) hhom
+
+/-- A Lipschitz linear-kernel element commutes with every Clifford element. -/
+theorem commute_of_lipschitzLinearRepresentation_eq_one
+    (x : lipschitzGroup Q) (hx : lipschitzLinearRepresentation (Q := Q) x = 1)
+    (a : CliffordAlgebra Q) :
+    Commute (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) a := by
+  let u : (CliffordAlgebra Q)ˣ := x
+  have hconj : lipschitzConjAlgEquiv (Q := Q) x a = a := by
+    simp [lipschitzConjAlgEquiv_eq_refl_of_lipschitzLinearRepresentation_eq_one (Q := Q) x hx]
+  have hcomm :
+      (u : CliffordAlgebra Q) * a = a * (u : CliffordAlgebra Q) := by
+    have hconj' : (u : CliffordAlgebra Q) * a * ↑u⁻¹ = a := by
+      simpa [u, lipschitzConjAlgEquiv_apply, ConjAct.toConjAct_smul] using hconj
+    rw [Units.mul_inv_eq_iff_eq_mul] at hconj'
+    exact hconj'
+  simpa [u, Commute] using hcomm
 
 /-- Conjugation by a pin element as an algebra automorphism of the Clifford algebra. -/
 noncomputable def pinConjAlgEquiv (x : pinGroup Q) : CliffordAlgebra Q ≃ₐ[R] CliffordAlgebra Q :=

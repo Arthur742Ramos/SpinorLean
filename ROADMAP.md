@@ -452,8 +452,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     Lipschitz vector factorizations of the same element, the resulting unconditional
     Lipschitz-group spinor-norm square-class hom, and the
     corresponding noncanonical chosen-lift wrapper on the image of
-    `Spinor.lipschitzLinearRepresentation`, plus kernel-triviality, lift-independence, and
-    descent-obligation structures, implications, scalar-kernel bridge
+    `Spinor.lipschitzLinearRepresentation`, plus the
+    `Spinor.commute_of_lipschitzLinearRepresentation_eq_one` linear-kernel centrality bridge,
+    kernel-triviality, lift-independence, and descent-obligation structures, implications,
+    scalar-kernel bridge
     `Spinor.LipschitzLinearKernelScalarUnits`, and direct image-level monoid-hom wrappers whose
     fields isolate the remaining missing scalarity/kernel-triviality hypothesis needed to turn
     that image-level square class into a monoid
@@ -479,7 +481,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     factorization-existence Clifford/Lipschitz vector-product norm substrate, its
     factorization-level Lipschitz product wrappers, proved global Lipschitz factorization
     independence and Lipschitz-group hom, and its noncanonical Lipschitz linear-image
-    wrapper / scalar-kernel bridge, remaining kernel-triviality-to-lift-independence,
+    wrapper, linear-kernel centrality bridge, scalar-kernel bridge,
+    remaining kernel-triviality-to-lift-independence,
     descent-obligation APIs, and direct conditional image-level hom wrappers,
     range-restriction pullback theorem, and pullback uniqueness
     theorem, including separated repeated subproducts after permutation into the repeated shape,
@@ -507,7 +510,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   package now reaches factorization-existence Lipschitz-group products, factorization-level
   product square-class wrappers, proved factorization independence and the global
   Lipschitz-group hom, and their noncanonical Lipschitz linear-image chosen-lift
-  wrappers / scalar-kernel bridge, remaining kernel-triviality-to-lift-independence,
+  wrappers, linear-kernel centrality bridge, scalar-kernel bridge,
+  remaining kernel-triviality-to-lift-independence,
   descent-obligation APIs, and direct conditional image-level hom wrappers with
   range-restriction pullback and uniqueness theorems when `2` is invertible, while recursive
   arbitrary-signature Bott-periodicity and full all-orthogonal-group image classifications /

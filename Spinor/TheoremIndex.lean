@@ -56,6 +56,9 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.spinIsometryRepresentation
 #check Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional
 #check Spinor.spinLinearRepresentation_det_eq_one
+#check Spinor.lipschitzLinearRepresentation
+#check Spinor.lipschitzConjAlgEquiv_eq_refl_of_lipschitzLinearRepresentation_eq_one
+#check Spinor.commute_of_lipschitzLinearRepresentation_eq_one
 
 #check Spinor.HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_pos_finrank
 #check Spinor.splitSpinRepresentation_not_factor_through_isometry
