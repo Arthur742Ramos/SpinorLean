@@ -60,7 +60,9 @@ square-class triviality, Lipschitz factorization-existence wrapper when `2` is i
 factorization-level identity/product wrappers proving multiplication of the stored norm units
 and square classes, noncanonical chosen Lipschitz square-class wrapper, and noncanonical
 chosen-lift wrapper on the Lipschitz linear image, including separated repeated subproducts
-after permutation into the repeated shape. The theorem-facing
+after permutation into the repeated shape. The Lipschitz image module also isolates the
+conditional descent obligations needed to turn the image-level square class into a monoid
+homomorphism, without proving those obligations globally. The theorem-facing
 real-classification surface now also includes
 `RealClassification.PeriodEightTable` and `RealClassification.periodEightTable`,
 which collect the split families and first-period definite rows, including the explicit
@@ -73,8 +75,8 @@ which collect the split families and first-period definite rows, including the e
 A recursive arbitrary-signature Bott-periodicity theorem, a full all-orthogonal-group image classification,
 and a global orthogonal-group spinor-norm API beyond this factorization-existence
 Clifford/Lipschitz substrate, factorization-level Lipschitz product wrappers, and noncanonical
-Lipschitz linear-image wrapper are separate projects, not dependencies in the claimed theorem
-package.
+Lipschitz linear-image wrapper / conditional descent-obligation API are separate projects, not
+dependencies in the claimed theorem package.
 
 ## Final preflight
 

@@ -23,6 +23,8 @@ Lipschitz-image level without claiming a descended orthogonal-group spinor norm.
 * `Spinor.lipschitzLinearImageChosenLift`
 * `Spinor.lipschitzLinearImageChosenNormUnit`
 * `Spinor.lipschitzLinearImageChosenSpinorNormClass`
+* `Spinor.LipschitzLinearImageSpinorNormDescends`
+* `Spinor.lipschitzLinearImageSpinorNormClassHomOfDescends`
 -/
 
 namespace Spinor
@@ -79,5 +81,86 @@ theorem star_mul_self_eq_algebraMap_lipschitzLinearImageChosenNormUnit
       algebraMap R (CliffordAlgebra Q) (lipschitzLinearImageChosenNormUnit Q g : R) :=
   star_mul_self_eq_algebraMap_chosenLipschitzNormUnit Q
     (lipschitzLinearImageChosenLift Q g)
+
+/--
+The exact extra obligations needed for the chosen Lipschitz square-class API to descend to a
+monoid homomorphism on the image of `lipschitzLinearRepresentation`.
+
+This structure does not assert those obligations globally. It isolates them as theorem-facing
+targets: triviality at `1`, multiplicativity on chosen Lipschitz lifts, and independence across
+equal linear representations.
+-/
+structure LipschitzLinearImageSpinorNormDescends [Invertible (2 : R)]
+    (Q : QuadraticForm R M) : Prop where
+  map_one : chosenLipschitzSpinorNormClass Q (1 : lipschitzGroup Q) = 1
+  map_mul : ∀ x y : lipschitzGroup Q,
+    chosenLipschitzSpinorNormClass Q (x * y) =
+      chosenLipschitzSpinorNormClass Q x * chosenLipschitzSpinorNormClass Q y
+  eq_of_linearRepresentation_eq : ∀ x y : lipschitzGroup Q,
+    lipschitzLinearRepresentation (Q := Q) x =
+      lipschitzLinearRepresentation (Q := Q) y →
+    chosenLipschitzSpinorNormClass Q x = chosenLipschitzSpinorNormClass Q y
+
+/--
+Under the explicit descent obligations, the chosen image-level square class agrees with any
+Lipschitz lift of the same image element.
+-/
+theorem lipschitzLinearImageChosenSpinorNormClass_eq_chosenLipschitzSpinorNormClass_of_descends
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (h : LipschitzLinearImageSpinorNormDescends Q) (g : lipschitzLinearImage Q)
+    (x : lipschitzGroup Q) (hx : lipschitzLinearRepresentation (Q := Q) x = g) :
+    lipschitzLinearImageChosenSpinorNormClass Q g =
+      chosenLipschitzSpinorNormClass Q x :=
+  h.eq_of_linearRepresentation_eq (lipschitzLinearImageChosenLift Q g) x
+    ((lipschitzLinearImageChosenLift_spec Q g).trans hx.symm)
+
+/--
+If the chosen Lipschitz square-class API satisfies the explicit descent obligations, it becomes
+a monoid homomorphism on the Lipschitz linear image.
+-/
+noncomputable def lipschitzLinearImageSpinorNormClassHomOfDescends
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (h : LipschitzLinearImageSpinorNormDescends Q) :
+    lipschitzLinearImage Q →*
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2) where
+  toFun := lipschitzLinearImageChosenSpinorNormClass Q
+  map_one' := by
+    dsimp [lipschitzLinearImageChosenSpinorNormClass]
+    have hrep :
+        lipschitzLinearRepresentation (Q := Q) (lipschitzLinearImageChosenLift Q 1) =
+          lipschitzLinearRepresentation (Q := Q) (1 : lipschitzGroup Q) := by
+      rw [lipschitzLinearImageChosenLift_spec]
+      exact ((lipschitzLinearRepresentation (Q := Q)).map_one).symm
+    exact (h.eq_of_linearRepresentation_eq (lipschitzLinearImageChosenLift Q 1)
+      (1 : lipschitzGroup Q) hrep).trans h.map_one
+  map_mul' g k := by
+    dsimp [lipschitzLinearImageChosenSpinorNormClass]
+    have hrep :
+        lipschitzLinearRepresentation (Q := Q) (lipschitzLinearImageChosenLift Q (g * k)) =
+          lipschitzLinearRepresentation (Q := Q)
+            (lipschitzLinearImageChosenLift Q g * lipschitzLinearImageChosenLift Q k) := by
+      rw [lipschitzLinearImageChosenLift_spec]
+      rw [(lipschitzLinearRepresentation (Q := Q)).map_mul]
+      rw [lipschitzLinearImageChosenLift_spec, lipschitzLinearImageChosenLift_spec]
+      rfl
+    calc
+      chosenLipschitzSpinorNormClass Q (lipschitzLinearImageChosenLift Q (g * k)) =
+          chosenLipschitzSpinorNormClass Q
+            (lipschitzLinearImageChosenLift Q g * lipschitzLinearImageChosenLift Q k) := by
+            exact h.eq_of_linearRepresentation_eq
+              (lipschitzLinearImageChosenLift Q (g * k))
+              (lipschitzLinearImageChosenLift Q g * lipschitzLinearImageChosenLift Q k) hrep
+      _ =
+          chosenLipschitzSpinorNormClass Q (lipschitzLinearImageChosenLift Q g) *
+            chosenLipschitzSpinorNormClass Q (lipschitzLinearImageChosenLift Q k) := by
+            exact h.map_mul (lipschitzLinearImageChosenLift Q g)
+              (lipschitzLinearImageChosenLift Q k)
+
+@[simp]
+theorem lipschitzLinearImageSpinorNormClassHomOfDescends_apply
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (h : LipschitzLinearImageSpinorNormDescends Q) (g : lipschitzLinearImage Q) :
+    lipschitzLinearImageSpinorNormClassHomOfDescends Q h g =
+      lipschitzLinearImageChosenSpinorNormClass Q g := rfl
 
 end Spinor

@@ -450,7 +450,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     stored norm units and square classes, noncanonical chosen Lipschitz norm-unit and
     square-class wrappers, and the
     corresponding noncanonical chosen-lift wrapper on the image of
-    `Spinor.lipschitzLinearRepresentation`,
+    `Spinor.lipschitzLinearRepresentation`, plus a conditional descent-obligation structure
+    whose fields are exactly the missing hypotheses needed to turn that image-level square class
+    into a monoid homomorphism,
     product-order invariance for the scalar, unit, and square-class products, repeated-pair
     square-class cancellation, and duplicated-product/subproduct square-class triviality,
     including separated repeated subproducts after permutation into the repeated shape;
@@ -469,8 +471,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     order-invariant, repeated-pair-stable, duplicated-product/subproduct-stable
     factorization-existence Clifford/Lipschitz vector-product norm substrate, its
     factorization-level Lipschitz product wrappers, and its noncanonical Lipschitz linear-image
-    wrapper, including separated repeated subproducts after permutation into the repeated shape,
-    are intentionally outside the submitted theorem surface
+    wrapper / conditional descent-obligation API, including separated repeated subproducts after
+    permutation into the repeated shape, are intentionally outside the submitted theorem surface
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
     `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`
@@ -493,7 +495,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   Bott table is packaged through `RealClassification.periodEightTable`, and the Clifford norm
   package now reaches factorization-existence Lipschitz-group products, factorization-level
   product square-class wrappers, and their noncanonical Lipschitz linear-image chosen-lift
-  wrappers when `2` is invertible, while recursive
+  wrappers / conditional descent-obligation API when `2` is invertible, while recursive
   arbitrary-signature Bott-periodicity and full all-orthogonal-group image classifications /
   global orthogonal-group spinor-norm theory are framed as separate projects rather than
   dependencies of the claimed results
