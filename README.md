@@ -281,7 +281,9 @@ Implemented so far:
   `cl_0_5_even_equivQuaternionMatrix2 : Cl⁺(0,5) ≃ₐ[ℝ] Mat₂(ℍ)`,
   `cl_4_0_equivQuaternionMatrix2 : Cl(4,0) ≃ₐ[ℝ] Mat₂(ℍ)`,
   `cl_4_0_even_equivQuaternionProd : Cl⁺(4,0) ≃ₐ[ℝ] ℍ × ℍ`,
-  and `cl_5_0_even_equivQuaternionMatrix2 : Cl⁺(5,0) ≃ₐ[ℝ] Mat₂(ℍ)`, plus the split entries
+  `cl_5_0_even_equivQuaternionMatrix2 : Cl⁺(5,0) ≃ₐ[ℝ] Mat₂(ℍ)`,
+  and `cl_5_0_equivQuaternionMatrix2Prod : Cl(5,0) ≃ₐ[ℝ] Mat₂(ℍ) × Mat₂(ℍ)`,
+  plus the split entries
   `cl_1_1_equivMatrix2`, `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
   `cl_2_2_even_equivProdMatrix2`, extending the packaged low-signature portion of
   the Bott periodicity table (Phase 4.1)
@@ -300,11 +302,10 @@ Implemented so far:
 
 Explicit scope boundaries for this algebraic submission package:
 
-- real classification beyond the split foundation and packaged low-signature entries through
-  `Cl(0,3)`, `Cl(0,4)`, `Cl(3,0)`, and `Cl(4,0)`, selected even positive/negative
-  companions through `Cl⁺(0,5)` and `Cl⁺(5,0)`, and the explicit `Cl(2,2)` / `Cl⁺(2,2)`
-  split entries, i.e. the
-  full Bott period-8 table
+- the full Bott period-8 table beyond the split foundation and packaged low-signature entries
+  through `Cl(0,3)`, `Cl(0,4)`, `Cl(3,0)`, `Cl(4,0)`, and `Cl(5,0)`, selected even
+  positive/negative companions through `Cl⁺(0,5)` and `Cl⁺(5,0)`, and the explicit
+  `Cl(2,2)` / `Cl⁺(2,2)` split entries
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
   non-factorization, projective descent, exact split-line iff criterion, exact finite-basis
   split-Levi spin-image iff theorem, and onto split-Levi determinant square-class quotient

@@ -106,8 +106,8 @@ explicit chosen-model Levi-lift, and finite-basis split-Levi image corollaries
 become unconditional there.
 The artifact comprises
 $23$ Lean source files totaling
-$20{,}621$ physical lines across the repository, of which $21$ files and
-$20{,}579$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$20{,}819$ physical lines across the repository, of which $21$ files and
+$20{,}777$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
@@ -311,7 +311,7 @@ Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
 \Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
 Build command & \code{lake build} \\
 Lean files under \code{Spinor/} & $21$ \\
-Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $20{,}579$ \\
+Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $20{,}777$ \\
 \code{sorry} occurrences under \code{Spinor/} & $0$
 \end{tabularx}
 \end{center}
@@ -416,7 +416,9 @@ $\Cl^+(4,0) \simeq \mathbb{H} \times \mathbb{H}$ rows. The same
 \code{cl_0_5_even_equivQuaternionMatrix2} and
 \code{cl_5_0_even_equivQuaternionMatrix2}, i.e.
 $\Cl^+(0,5) \simeq \Mat_2(\mathbb{H})$ and
-$\Cl^+(5,0) \simeq \Mat_2(\mathbb{H})$. These
+$\Cl^+(5,0) \simeq \Mat_2(\mathbb{H})$. The explicit
+\code{cl_5_0_equivQuaternionMatrix2Prod} row further gives
+$\Cl(5,0) \simeq \Mat_2(\mathbb{H}) \times \Mat_2(\mathbb{H})$. These
 results are not analyzed in
 the present paper, but they show that the chosen-model and orthogonal-action
 APIs are already sufficient for later formal developments connecting the
