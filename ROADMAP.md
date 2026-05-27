@@ -443,8 +443,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.linearEquivSplitLeviSpinorNormHom` and `Spinor.dualProdLeviSpinorNormHom` expose this
     proved finite-basis split-Levi character as the local spinor-norm-facing formulation, while
     `Spinor.CliffordNorm` packages the global Clifford-level vector-product norm formula, its
-    invertible-vector square-class form, and product-order invariance for the scalar, unit, and
-    square-class products; a full orthogonal-group spinor-norm API remains outside
+    invertible-vector square-class form, product-order invariance for the scalar, unit, and
+    square-class products, and repeated-pair square-class cancellation; a full orthogonal-group
+    spinor-norm API remains outside
     the submission surface
   - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
@@ -455,8 +456,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     finite-basis split Levi subgroup, including the onto determinant square-class quotient
     character, quotient isomorphism, and local split-Levi spinor-norm-facing wrappers;
     broader orthogonal subgroups and global orthogonal-group spinor-norm formulations beyond the
-    order-invariant Clifford vector-product norm substrate are intentionally outside the submitted
-    theorem surface
+    order-invariant, repeated-pair-stable Clifford vector-product norm substrate are intentionally
+    outside the submitted theorem surface
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
     `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`
