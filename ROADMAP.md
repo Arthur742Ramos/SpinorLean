@@ -209,7 +209,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   (`Cl⁺(0,5) ≃ Mat₂(ℍ)`), `Spinor.RealClassification.cl_0_5_equivComplexMatrix4`
   (`Cl(0,5) ≃ Mat₄(ℂ)`),
   `Spinor.RealClassification.cl_5_0_even_equivQuaternionMatrix2`
-  (`Cl⁺(5,0) ≃ Mat₂(ℍ)`), and
+  (`Cl⁺(5,0) ≃ Mat₂(ℍ)`),
   `Spinor.RealClassification.cl_5_0_equivQuaternionMatrix2Prod`
   (`Cl(5,0) ≃ Mat₂(ℍ) × Mat₂(ℍ)`),
   `Spinor.RealClassification.cl_0_6_even_equivComplexMatrix4`
@@ -217,14 +217,18 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   `Spinor.RealClassification.cl_0_6_equivMatrix8`
   (`Cl(0,6) ≃ Mat₈(ℝ)`),
   `Spinor.RealClassification.cl_6_0_even_equivComplexMatrix4`
-  (`Cl⁺(6,0) ≃ Mat₄(ℂ)`), and
+  (`Cl⁺(6,0) ≃ Mat₄(ℂ)`),
   `Spinor.RealClassification.cl_6_0_equivQuaternionMatrix4`
-  (`Cl(6,0) ≃ Mat₄(ℍ)`)
+  (`Cl(6,0) ≃ Mat₄(ℍ)`),
+  `Spinor.RealClassification.cl_0_7_even_equivMatrix8`
+  (`Cl⁺(0,7) ≃ Mat₈(ℝ)`), and
+  `Spinor.RealClassification.cl_0_7_equivMatrix8Prod`
+  (`Cl(0,7) ≃ Mat₈(ℝ) × Mat₈(ℝ)`)
   are now packaged as first-class algebra isomorphisms in the `Spinor.RealClassification`
   namespace, along with the explicit split entries `cl_1_1_equivMatrix2`,
   `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
   `cl_2_2_even_equivProdMatrix2`, extending the negative-definite row, selected
-  positive entries, and positive/split even companions
+  positive entries, and positive/negative/split even companions
   - the full period-8 Bott periodicity theorem beyond these packaged low-signature entries is
     treated as a separate classification program, not as an unchecked dependency of the submitted
     theorem package
@@ -269,7 +273,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Cl(0,4) ≃ Mat₂(ℍ)`, `Cl(4,0) ≃ Mat₂(ℍ)`, `Cl⁺(4,0) ≃ ℍ × ℍ`,
     `Cl⁺(0,5) ≃ Mat₂(ℍ)`, `Cl(0,5) ≃ Mat₄(ℂ)`, `Cl⁺(5,0) ≃ Mat₂(ℍ)`,
     `Cl(5,0) ≃ Mat₂(ℍ) × Mat₂(ℍ)`, `Cl⁺(0,6) ≃ Mat₄(ℂ)`,
-    `Cl⁺(6,0) ≃ Mat₄(ℂ)`, `Cl(6,0) ≃ Mat₄(ℍ)`, and split-real
+    `Cl(0,6) ≃ Mat₈(ℝ)`, `Cl⁺(6,0) ≃ Mat₄(ℂ)`, `Cl(6,0) ≃ Mat₄(ℍ)`,
+    `Cl⁺(0,7) ≃ Mat₈(ℝ)`, `Cl(0,7) ≃ Mat₈(ℝ) × Mat₈(ℝ)`, and split-real
     `Cl(1,1)`, `Cl⁺(1,1)`, `Cl(2,2)`, `Cl⁺(2,2)`; the first group-level compact identification
     layer now packages `Spin(2) ≃ U(1)`, `Spin(3) ≃ SU(2)`, and
     `Spin(4) ≃ SU(2) × SU(2)`, leaving the higher low-dimensional

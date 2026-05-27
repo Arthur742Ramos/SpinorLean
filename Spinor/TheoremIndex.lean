@@ -7,6 +7,7 @@ import Spinor.ComplexClassification
 import Spinor.RealClassification
 import Spinor.Cl03QuaternionProd
 import Spinor.Cl60QuaternionMatrix
+import Spinor.Cl07RealMatrixProd
 
 /-!
 # Machine-checked theorem index
@@ -196,6 +197,11 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.realCl60EquivQuaternionMatrix4Block
 #check Spinor.realCl60EquivQuaternionMatrix4
 #check Spinor.RealClassification.cl_6_0_equivQuaternionMatrix4
+#check Spinor.realEvenCl07EquivRealMatrix8
+#check Spinor.RealClassification.cl_0_7_even_equivMatrix8
+#check Spinor.realCl07EquivRealMatrix8BlockProd
+#check Spinor.realCl07EquivRealMatrix8Prod
+#check Spinor.RealClassification.cl_0_7_equivMatrix8Prod
 #check Spinor.RealClassification.cl_1_1_equivMatrix2
 #check Spinor.RealClassification.cl_1_1_even_equivRealProd
 #check Spinor.RealClassification.cl_2_2_equivMatrix4
