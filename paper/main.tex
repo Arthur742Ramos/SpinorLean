@@ -99,9 +99,12 @@ characters are also exposed under local spinor-norm-facing names, without
 asserting a global orthogonal-group spinor-norm API. We also package the
 Clifford-level vector-product norm formula
 \(\widetilde{x}x=\prod_i(-Q(v_i))\) for \(x=\prod_i\iota(v_i)\), together with
-its invertible-vector unit, square-class form, and chosen-factorization
-Lipschitz-group wrapper, including invariance of these product-level square
-classes under reordering and reversal of the chosen vector list, cancellation of
+its invertible-vector unit and square-class form. The Lipschitz-group wrapper
+also proves, under the standard hypothesis that \(2\) is invertible, that every
+Mathlib \code{lipschitzGroup} element has an invertible-vector product
+representative. The resulting square-class value is still attached to a chosen
+factorization; we prove invariance of these product-level square classes under
+reordering and reversal of the chosen vector list, cancellation of
 repeated invertible-vector pairs, and triviality of duplicated products,
 contiguous subproducts, and separated repeated subproducts in the square-class
 quotient, with wrappers for lists that first permute into
@@ -209,9 +212,9 @@ The same artifact also proves the chosen-model spinor interface, the split-rank
 kernel/projective-descent package, explicit transvection and chosen-line
 square-scaling lifts, the Levi-projective exterior-action bridge, and the exact
 split-line image criterion, plus a Clifford-level vector-product norm formula
-with its invertible-vector square-class package, chosen-factorization
-Lipschitz-group wrapper, product-order invariance, repeated-pair square-class
-cancellation, and duplicated-product square-class triviality for products,
+with its invertible-vector square-class package, factorization-existence
+Lipschitz-group wrapper when \(2\) is invertible, product-order invariance,
+repeated-pair square-class cancellation, and duplicated-product square-class triviality for products,
 contiguous subproducts, and separated repeated subproducts after permutation into
 the repeated shape.
 The real-classification surface also includes the theorem-facing
@@ -220,7 +223,7 @@ the split families and first-period definite Bott rows through $\Cl(0,8)$,
 $\Cl(8,0)$, and their even companions. A recursive arbitrary-signature
 Bott-periodicity theorem beyond that packaged table, full
 all-orthogonal-group image classification and global orthogonal-group
-spinor-norm theory beyond this chosen-factorization Clifford/Lipschitz
+spinor-norm theory beyond this factorization-existence Clifford/Lipschitz
 substrate, and scheme-theoretic spin-cover statements are explicit scope
 boundaries, not assumptions behind the results claimed below.
 
@@ -416,7 +419,11 @@ products are proved invariant under permutations and reversal of the chosen
 vector list; inserting a repeated invertible vector pair, duplicating a whole
 invertible-vector product or contiguous subproduct, and repeating a subproduct
 with intervening factors are also proved square-class-trivial, including after
-first permuting a list into the repeated form.
+first permuting a list into the repeated form. At the group level, the
+Mathlib definition of \code{lipschitzGroup} as the subgroup closure of
+invertible vector generators is packaged as a factorization-existence theorem:
+when \(2\) is invertible, every Lipschitz-group element has some finite
+invertible-vector product representative.
 Decomposition-independence across different
 Cartan--Dieudonne factorizations and the resulting orthogonal-group spinor norm
 remain later work.
@@ -1520,10 +1527,12 @@ membership is exactly the square-determinant condition, and the induced
 split-Levi square-class character is onto with that spin image as kernel; equivalently, the
 split-Levi quotient by the spin image is the square-class group. The same proved
 character is now exported under local split-Levi spinor-norm-facing names, and
-the Clifford/Lipschitz norm formula is available globally for a chosen vector
-factorization, with order invariance, repeated-pair cancellation, and
-duplicated-product/subproduct triviality, including separated repeated
-subproducts after permutation into the repeated shape, but no global
+the Clifford/Lipschitz norm formula is available globally for Lipschitz
+vector-product factorizations; when \(2\) is invertible, every Mathlib
+\code{lipschitzGroup} element admits at least one such factorization. The
+associated chosen-factorization square class has order invariance, repeated-pair
+cancellation, and duplicated-product/subproduct triviality, including separated
+repeated subproducts after permutation into the repeated shape, but no global
 orthogonal-group spinor-norm theory is claimed. Over fields with
 square-surjective unit group, every finite-basis Levi element lies in that spin
 image; the new algebraically closed wrappers expose both the explicit lift and
@@ -1532,7 +1541,7 @@ argument. Read that way, our contribution is less about rederiving
 $\bigwedge W$ and more about identifying how much of the split Levi picture is
 already visible inside explicit Clifford formulas over a general field. The
 artifact boundary is consequently sharp: broader orthogonal subgroups, full
-global orthogonal-group spinor-norm formulations beyond the chosen-factorization
+global orthogonal-group spinor-norm formulations beyond the factorization-existence
 Clifford/Lipschitz norm and its order-invariant, repeated-pair-stable,
 duplicated-product/subproduct-stable square-class product, including separated
 repeated subproducts after permutation into the repeated shape, recursive

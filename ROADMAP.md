@@ -445,10 +445,11 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.linearEquivSplitLeviSpinorNormHom` and `Spinor.dualProdLeviSpinorNormHom` expose this
     proved finite-basis split-Levi character as the local spinor-norm-facing formulation, while
     `Spinor.CliffordNorm` packages the global Clifford/Lipschitz vector-product norm formula, its
-    invertible-vector square-class form, chosen-factorization Lipschitz wrapper, product-order
-    invariance for the scalar, unit, and square-class products, repeated-pair square-class
-    cancellation, and duplicated-product/subproduct square-class triviality, including separated
-    repeated subproducts after permutation into the repeated shape; a full orthogonal-group
+    invertible-vector square-class form, factorization-existence Lipschitz wrapper when `2` is
+    invertible, product-order invariance for the scalar, unit, and square-class products,
+    repeated-pair square-class cancellation, and duplicated-product/subproduct square-class
+    triviality, including separated repeated subproducts after permutation into the repeated shape;
+    a full orthogonal-group
     spinor-norm API remains outside
     the submission surface
   - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
@@ -461,7 +462,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     character, quotient isomorphism, and local split-Levi spinor-norm-facing wrappers;
     broader orthogonal subgroups and global orthogonal-group spinor-norm formulations beyond the
     order-invariant, repeated-pair-stable, duplicated-product/subproduct-stable
-    chosen-factorization Clifford/Lipschitz vector-product norm substrate, including separated
+    factorization-existence Clifford/Lipschitz vector-product norm substrate, including separated
     repeated subproducts after permutation into the repeated shape, are intentionally outside the
     submitted theorem surface
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
@@ -484,7 +485,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   venue-neutral prose tied to the exact finite-basis split-Levi theorem package and its
   onto determinant square-class quotient character / quotient isomorphism; the first-period
   Bott table is packaged through `RealClassification.periodEightTable`, and the Clifford norm
-  package now reaches chosen-factorization Lipschitz-group products, while recursive
+  package now reaches factorization-existence Lipschitz-group products when `2` is invertible,
+  while recursive
   arbitrary-signature Bott-periodicity and full all-orthogonal-group image classifications /
   global orthogonal-group spinor-norm theory are framed as separate projects rather than
   dependencies of the claimed results

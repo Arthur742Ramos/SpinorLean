@@ -3,10 +3,11 @@
 
   This module gives the global Clifford-algebra calculation behind the
   reflection-product form of the spinor norm. It also packages those products as
-  elements of Mathlib's `lipschitzGroup`. The group-level bridge is still a
-  chosen-factorization API: it does not assert independence of a
-  Cartan-Dieudonne decomposition or descent to a full orthogonal-group
-  spinor-norm homomorphism.
+  elements of Mathlib's `lipschitzGroup` and proves factorization existence for
+  every Lipschitz element when `2` is invertible. The square-class bridge is
+  still attached to a chosen factorization: it does not assert independence of a
+  Cartan-Dieudonne decomposition or descent to a full orthogonal-group spinor-norm
+  homomorphism.
 -/
 
 import Spinor.Mathlib
@@ -19,10 +20,11 @@ import Mathlib.GroupTheory.QuotientGroup.Basic
 For a list of vectors, the Clifford conjugation norm of the product of their
 `ι`-images is the scalar product of the signed quadratic values. For a product
 of invertible vectors, this scalar is also packaged as a unit and as its
-square-class quotient, and as a chosen-factorization element of the Lipschitz
-group. These declarations provide a global Clifford/Lipschitz substrate for
-later spinor-norm developments without claiming an orthogonal-group spinor-norm
-API.
+square-class quotient, and as a Lipschitz-group element from a chosen vector
+product. When `2` is invertible, every Mathlib `lipschitzGroup` element has such
+a vector-product representative. These declarations provide a global
+Clifford/Lipschitz substrate for later spinor-norm developments without claiming
+an orthogonal-group spinor-norm API.
 
 ## Main declarations
 
@@ -32,8 +34,10 @@ API.
 * `Spinor.cliffordInvertibleVectorProductNormUnit`
 * `Spinor.cliffordInvertibleVectorLipschitz`
 * `Spinor.cliffordInvertibleVectorProductLipschitz`
+* `Spinor.exists_cliffordInvertibleVectorProductLipschitz_eq`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_perm`
+* `Spinor.lipschitzVectorFactorization`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_append_self_append`
@@ -321,8 +325,129 @@ theorem star_cliffordInvertibleVectorLipschitz_mul_self
         (((cliffordInvertibleVectorLipschitz Q m : lipschitzGroup Q) :
           (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
       algebraMap R (CliffordAlgebra Q) (cliffordInvertibleVectorNormUnit Q m : R) := by
-  have h := star_cliffordInvertibleVectorProductLipschitz_mul_self (Q := Q) [m]
-  simpa using h
+  convert star_cliffordInvertibleVectorProductLipschitz_mul_self (Q := Q) [m] using 1 <;>
+    simp [cliffordInvertibleVectorProductLipschitz, cliffordInvertibleVectorProductNormUnit]
+
+/-- The vector factor representing the inverse of an invertible vector generator. -/
+noncomputable def invertibleQuadraticVectorInvFactor (Q : QuadraticForm R M)
+    (m : InvertibleQuadraticVector Q) : InvertibleQuadraticVector Q :=
+  ⟨((m.2.unit⁻¹ : Rˣ) : R) • m.1, by
+    rw [QuadraticMap.map_smul]
+    change IsUnit
+      ((((m.2.unit⁻¹ : Rˣ) : R) * ((m.2.unit⁻¹ : Rˣ) : R)) * Q m.1)
+    exact ((m.2.unit⁻¹).isUnit.mul (m.2.unit⁻¹).isUnit).mul m.2⟩
+
+@[simp]
+theorem invertibleQuadraticVectorInvFactor_val (Q : QuadraticForm R M)
+    (m : InvertibleQuadraticVector Q) :
+    (invertibleQuadraticVectorInvFactor Q m).1 =
+      ((m.2.unit⁻¹ : Rˣ) : R) • m.1 := rfl
+
+/-- A vector inverse in the Lipschitz group is again represented by a vector. -/
+theorem cliffordInvertibleVectorLipschitz_invFactor_eq_inv
+    (Q : QuadraticForm R M) (m : InvertibleQuadraticVector Q) :
+    cliffordInvertibleVectorLipschitz Q (invertibleQuadraticVectorInvFactor Q m) =
+      (cliffordInvertibleVectorLipschitz Q m)⁻¹ := by
+  apply Subtype.ext
+  apply Units.ext
+  change CliffordAlgebra.ι Q (((m.2.unit⁻¹ : Rˣ) : R) • m.1) =
+    (((cliffordInvertibleVectorUnit Q m)⁻¹ : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q)
+  have hsQ : ((m.2.unit⁻¹ : Rˣ) : R) * Q m.1 = 1 := by
+    simp
+  have hmul :
+      CliffordAlgebra.ι Q (((m.2.unit⁻¹ : Rˣ) : R) • m.1) *
+          CliffordAlgebra.ι Q m.1 = 1 := by
+    rw [map_smul, smul_mul_assoc, CliffordAlgebra.ι_sq_scalar, Algebra.smul_def,
+      ← map_mul, hsQ, map_one]
+  let u := cliffordInvertibleVectorUnit Q m
+  have huval : ((u : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
+      CliffordAlgebra.ι Q m.1 := by
+    exact coe_cliffordInvertibleVectorUnit Q m
+  have hu_val_inv : ((u : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) *
+      (((u)⁻¹ : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) = 1 := by
+    simp [u]
+  calc
+    CliffordAlgebra.ι Q (((m.2.unit⁻¹ : Rˣ) : R) • m.1) =
+        CliffordAlgebra.ι Q (((m.2.unit⁻¹ : Rˣ) : R) • m.1) * 1 := by
+          rw [mul_one]
+    _ = CliffordAlgebra.ι Q (((m.2.unit⁻¹ : Rˣ) : R) • m.1) *
+          (((u : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) *
+            (((u)⁻¹ : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q)) := by
+          rw [hu_val_inv]
+    _ = (CliffordAlgebra.ι Q (((m.2.unit⁻¹ : Rˣ) : R) • m.1) *
+          ((u : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q)) *
+            (((u)⁻¹ : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) := by
+          rw [mul_assoc]
+    _ = (CliffordAlgebra.ι Q (((m.2.unit⁻¹ : Rˣ) : R) • m.1) *
+          CliffordAlgebra.ι Q m.1) *
+            (((u)⁻¹ : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) := by
+          rw [huval]
+    _ = 1 * (((u)⁻¹ : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) := by
+          rw [hmul]
+    _ = (((u)⁻¹ : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) := by
+          rw [one_mul]
+
+/--
+Every Mathlib Lipschitz-group element is represented by a finite product of invertible
+quadratic vectors, provided `2` is invertible in the coefficient ring.
+
+This follows from Mathlib's definition of `lipschitzGroup` as a subgroup closure of the
+invertible vector generators. It is still a factorization statement, not an independence or
+descent theorem for an orthogonal-group spinor norm.
+-/
+theorem exists_cliffordInvertibleVectorProductLipschitz_eq
+    [Invertible (2 : R)] (Q : QuadraticForm R M) (x : lipschitzGroup Q) :
+    ∃ l : List (InvertibleQuadraticVector Q),
+      cliffordInvertibleVectorProductLipschitz Q l = x := by
+  let s : Set (CliffordAlgebra Q)ˣ := ((↑) ⁻¹' Set.range (CliffordAlgebra.ι Q))
+  have hx : (x : (CliffordAlgebra Q)ˣ) ∈ Subgroup.closure s := by
+    simp [s, lipschitzGroup]
+  have hfac : ∃ l : List (InvertibleQuadraticVector Q),
+      ((cliffordInvertibleVectorProductLipschitz Q l : lipschitzGroup Q) :
+        (CliffordAlgebra Q)ˣ) = (x : (CliffordAlgebra Q)ˣ) := by
+    refine Subgroup.closure_induction'' (s := s)
+      (p := fun u _ => ∃ l : List (InvertibleQuadraticVector Q),
+        ((cliffordInvertibleVectorProductLipschitz Q l : lipschitzGroup Q) :
+          (CliffordAlgebra Q)ˣ) = u) ?mem ?inv_mem ?one ?mul hx
+    · intro u hu
+      obtain ⟨m, hm⟩ := hu
+      have hunit_iota : IsUnit (CliffordAlgebra.ι Q m) := by
+        rw [hm]
+        exact u.isUnit
+      have hQ : IsUnit (Q m) := CliffordAlgebra.isUnit_of_isUnit_ι (Q := Q) hunit_iota
+      let v : InvertibleQuadraticVector Q := ⟨m, hQ⟩
+      refine ⟨[v], ?_⟩
+      apply Units.ext
+      simpa [cliffordInvertibleVectorProductLipschitz, v] using hm
+    · intro u hu
+      obtain ⟨m, hm⟩ := hu
+      have hunit_iota : IsUnit (CliffordAlgebra.ι Q m) := by
+        rw [hm]
+        exact u.isUnit
+      have hQ : IsUnit (Q m) := CliffordAlgebra.isUnit_of_isUnit_ι (Q := Q) hunit_iota
+      let v : InvertibleQuadraticVector Q := ⟨m, hQ⟩
+      have hvu : ((cliffordInvertibleVectorLipschitz Q v : lipschitzGroup Q) :
+          (CliffordAlgebra Q)ˣ) = u := by
+        apply Units.ext
+        simpa [v] using hm
+      refine ⟨[invertibleQuadraticVectorInvFactor Q v], ?_⟩
+      have hInv := cliffordInvertibleVectorLipschitz_invFactor_eq_inv (Q := Q) v
+      have hInvUnits := congrArg
+        (fun y : lipschitzGroup Q => ((y : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ)) hInv
+      simpa [cliffordInvertibleVectorProductLipschitz, hvu] using hInvUnits
+    · exact ⟨[], rfl⟩
+    · intro u v hu hv ihu ihv
+      obtain ⟨lu, hlu⟩ := ihu
+      obtain ⟨lv, hlv⟩ := ihv
+      refine ⟨lu ++ lv, ?_⟩
+      rw [cliffordInvertibleVectorProductLipschitz_append]
+      change ((cliffordInvertibleVectorProductLipschitz Q lu : lipschitzGroup Q) :
+          (CliffordAlgebra Q)ˣ) *
+        ((cliffordInvertibleVectorProductLipschitz Q lv : lipschitzGroup Q) :
+          (CliffordAlgebra Q)ˣ) = u * v
+      rw [hlu, hlv]
+  obtain ⟨l, hl⟩ := hfac
+  exact ⟨l, Subtype.ext hl⟩
 
 /-- The square-class of the signed quadratic unit attached to a product of invertible vectors.
 This is the product-level spinor-norm invariant; no independence from a chosen vector
@@ -435,6 +560,19 @@ theorem star_mul_self_eq_algebraMap_normUnit {x : lipschitzGroup Q}
   exact star_cliffordInvertibleVectorProductLipschitz_mul_self (Q := Q) F.factors
 
 end LipschitzVectorFactorization
+
+/-- A noncomputable chosen vector factorization of a Lipschitz-group element. -/
+noncomputable def lipschitzVectorFactorization [Invertible (2 : R)]
+    (Q : QuadraticForm R M) (x : lipschitzGroup Q) :
+    LipschitzVectorFactorization Q x :=
+  let h := exists_cliffordInvertibleVectorProductLipschitz_eq (Q := Q) x
+  ⟨Classical.choose h, Classical.choose_spec h⟩
+
+/-- Every Lipschitz-group element has a vector factorization when `2` is invertible. -/
+theorem exists_lipschitzVectorFactorization [Invertible (2 : R)]
+    (Q : QuadraticForm R M) (x : lipschitzGroup Q) :
+    Nonempty (LipschitzVectorFactorization Q x) :=
+  ⟨lipschitzVectorFactorization Q x⟩
 
 @[simp]
 theorem cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons

@@ -175,6 +175,10 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.coe_cliffordInvertibleVectorProductLipschitz
 #check Spinor.star_cliffordInvertibleVectorProductLipschitz_mul_self
 #check Spinor.star_cliffordInvertibleVectorLipschitz_mul_self
+#check Spinor.invertibleQuadraticVectorInvFactor
+#check Spinor.invertibleQuadraticVectorInvFactor_val
+#check Spinor.cliffordInvertibleVectorLipschitz_invFactor_eq_inv
+#check Spinor.exists_cliffordInvertibleVectorProductLipschitz_eq
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_append
@@ -187,6 +191,8 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.LipschitzVectorFactorization.spinorNormClass
 #check Spinor.LipschitzVectorFactorization.spinorNormClass_sq_eq_one
 #check Spinor.LipschitzVectorFactorization.star_mul_self_eq_algebraMap_normUnit
+#check Spinor.lipschitzVectorFactorization
+#check Spinor.exists_lipschitzVectorFactorization
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_cons_self_cons
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self
