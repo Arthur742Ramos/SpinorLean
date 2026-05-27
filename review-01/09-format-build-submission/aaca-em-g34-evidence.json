@@ -1,0 +1,167 @@
+{
+  "schema": "scientific-reviewer.aaca_em_g34_evidence.v1",
+  "review_target": {
+    "repo": "Arthur742Ramos/SpinorLean",
+    "branch": "review/aaca-editorial-manager-paper",
+    "commit": "3013eb1f9dcfb2be61e4d1e2d4238813ed18dacd",
+    "manuscript_source": "paper/main.tex",
+    "bibliography_source": "paper/refs.bib",
+    "manuscript_sha256": "78fbd7ffbcb845c84308cdc6d43265e66d1558d2b38a06cd365932512c6db62f",
+    "bibliography_sha256": "38793e50c80462d290a0797217d24636b576a0f75f3daed1d9e4d2e52935e751",
+    "git_status_before_artifacts": "clean"
+  },
+  "constraints": {
+    "lean_executed": false,
+    "latex_executed": false,
+    "local_latex_compile_deferred": true,
+    "push_performed": false,
+    "main_branch_used": false
+  },
+  "policy_evidence": {
+    "venue": "Advances in Applied Clifford Algebras",
+    "submission_guidelines_url": "https://link.springer.com/journal/6/submission-guidelines",
+    "policy_fetch_performed_this_round": false,
+    "policy_extract_path": "/root/.copilot/session-state/da00dae5-d2f3-45ca-bcfb-f40cb48dedcd/files/aaca-evidence/aaca-submission-guidelines.text",
+    "source_lines_used": {
+      "source_files": "79-80",
+      "abstract": "107-108",
+      "keywords": "112-113",
+      "statements_and_declarations": "114-118",
+      "latex_birkjour": "120-128",
+      "text_formatting": "136",
+      "msc": "148-151",
+      "references": "153-162",
+      "data_availability": "283-289",
+      "declarations_before_references": "483-486"
+    }
+  },
+  "current_source_audit": {
+    "paper_files": [
+      "README.md",
+      "main.tex",
+      "refs.bib"
+    ],
+    "documentclass": "\\documentclass[11pt,a4paper]{article}",
+    "documentclass_line": "paper/main.tex:1",
+    "bibliographystyle": "\\bibliographystyle{alpha}",
+    "bibliographystyle_line": "paper/main.tex:1537",
+    "bibliography": "\\bibliography{refs}",
+    "bibliography_line": "paper/main.tex:1538",
+    "abstract_word_count_method": "Extract text between \\begin{abstract} and \\end{abstract}; strip common TeX commands/braces/math markers; count alphanumeric tokens.",
+    "abstract_word_count": 460,
+    "abstract_required_range": [
+      150,
+      250
+    ],
+    "declaration_heading_search": {
+      "searched_terms": [
+        "Statements and Declarations",
+        "Declarations",
+        "Data Availability",
+        "Availability of data",
+        "Competing Interests",
+        "Conflict of Interest",
+        "Funding",
+        "Code availability",
+        "Materials availability",
+        "Author Contributions",
+        "Acknowledgments",
+        "Ethics",
+        "Consent"
+      ],
+      "submission_declaration_headings_found": false,
+      "notes": "Search hits for 'declarations' were unrelated Lean declaration prose, not submission declarations."
+    },
+    "citation_commands": {
+      "\\cite": 8,
+      "\\cite_with_optional_argument": 1
+    },
+    "bib_entry_types": {
+      "article": 3,
+      "book": 5,
+      "inproceedings": 2,
+      "misc": 2
+    }
+  },
+  "historical_em_pdf_reference_only": {
+    "path": "built_editorial_manager_pdf.pdf",
+    "ignored_by_git_info_exclude": true,
+    "sha256": "42010e8d18ba656a908d524acf6e6b69fc2eee742d931ee701a25f7a941333be",
+    "pdf_text_extract_path": "/root/.copilot/session-state/da00dae5-d2f3-45ca-bcfb-f40cb48dedcd/files/spinorlean-em-pdf.txt",
+    "pdf_extraction_tool": "pdftotext",
+    "review_target": false,
+    "historical_failure_modes": {
+      "duplicate_body_markers": [
+        "Manuscript",
+        "access/download;Manuscript;main.tex",
+        "Reference PDF"
+      ],
+      "unresolved_citation_marker_count": 9,
+      "unresolved_cross_reference_marker_count": 53,
+      "marker_context_classified": true,
+      "sample_unresolved_markers": [
+        "Lawson-Michelsohn [?]",
+        "Theorem ??"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "AACA-EM-001",
+      "severity": "BLOCKER",
+      "summary": "Current paper/ package is not a complete AACA/EM submission package.",
+      "conditional_on": "current paper/ intended for AACA resubmission"
+    },
+    {
+      "id": "AACA-EM-002",
+      "severity": "BLOCKER",
+      "summary": "Current abstract is 460 words, outside AACA's 150-250 range.",
+      "conditional_on": "current paper/main.tex intended for AACA resubmission"
+    },
+    {
+      "id": "AACA-EM-003",
+      "severity": "BLOCKER",
+      "summary": "Current source lacks submission declaration/data-availability section headings.",
+      "conditional_on": "current paper/main.tex intended for AACA resubmission"
+    },
+    {
+      "id": "AACA-EM-004",
+      "severity": "CONDITIONAL",
+      "summary": "Current source is article/alpha, not AACA birkjour final form.",
+      "conditional_on": "accepted/final AACA LaTeX version or journal requires birkjour earlier"
+    },
+    {
+      "id": "AACA-EM-005",
+      "severity": "CONDITIONAL",
+      "summary": "Current source uses alpha bibliography style instead of AACA numbered style.",
+      "conditional_on": "current source used directly for AACA resubmission"
+    },
+    {
+      "id": "AACA-EM-006",
+      "severity": "HISTORICAL_PITFALL",
+      "summary": "Prior EM-built PDF duplicated manuscript bodies.",
+      "conditional_on": "future platform upload includes both editable source and concatenated reference PDF"
+    },
+    {
+      "id": "AACA-EM-007",
+      "severity": "HISTORICAL_PITFALL",
+      "summary": "Prior EM-built PDF had unresolved [?] and ?? markers.",
+      "conditional_on": "future platform-built PDF contains unresolved markers"
+    },
+    {
+      "id": "AACA-EM-008",
+      "severity": "OPEN_QUESTION",
+      "summary": "Current platform build log and compiler version are unavailable.",
+      "conditional_on": "version-sensitive source package or final platform handoff"
+    }
+  ],
+  "unverified": [
+    "current_source_compiles_locally",
+    "current_source_platform_pdf_clean",
+    "current_em_compiler_version",
+    "lean_build_status",
+    "proof_hole_status",
+    "theorem_declaration_integrity",
+    "mathematical_correctness"
+  ]
+}
