@@ -193,6 +193,10 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.LipschitzVectorFactorization.star_mul_self_eq_algebraMap_normUnit
 #check Spinor.lipschitzVectorFactorization
 #check Spinor.exists_lipschitzVectorFactorization
+#check Spinor.chosenLipschitzNormUnit
+#check Spinor.chosenLipschitzSpinorNormClass
+#check Spinor.chosenLipschitzSpinorNormClass_sq_eq_one
+#check Spinor.star_mul_self_eq_algebraMap_chosenLipschitzNormUnit
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_cons_self_cons
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self

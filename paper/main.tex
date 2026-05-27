@@ -102,7 +102,8 @@ Clifford-level vector-product norm formula
 its invertible-vector unit and square-class form. The Lipschitz-group wrapper
 also proves, under the standard hypothesis that \(2\) is invertible, that every
 Mathlib \code{lipschitzGroup} element has an invertible-vector product
-representative. The resulting square-class value is still attached to a chosen
+representative. The noncanonical \code{chosenLipschitzSpinorNormClass} exposes
+the resulting square-class value while keeping it attached to a chosen
 factorization; we prove invariance of these product-level square classes under
 reordering and reversal of the chosen vector list, cancellation of
 repeated invertible-vector pairs, and triviality of duplicated products,
@@ -119,8 +120,8 @@ explicit chosen-model Levi-lift, and finite-basis split-Levi image corollaries
 become unconditional there.
 The artifact comprises
 $29$ Lean source files totaling
-$23{,}738$ physical lines across the repository, of which $27$ files and
-$23{,}690$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$24{,}080$ physical lines across the repository, of which $27$ files and
+$24{,}032$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
@@ -213,10 +214,11 @@ kernel/projective-descent package, explicit transvection and chosen-line
 square-scaling lifts, the Levi-projective exterior-action bridge, and the exact
 split-line image criterion, plus a Clifford-level vector-product norm formula
 with its invertible-vector square-class package, factorization-existence
-Lipschitz-group wrapper when \(2\) is invertible, product-order invariance,
-repeated-pair square-class cancellation, and duplicated-product square-class triviality for products,
-contiguous subproducts, and separated repeated subproducts after permutation into
-the repeated shape.
+Lipschitz-group wrapper when \(2\) is invertible, a noncanonical chosen
+Lipschitz square-class wrapper for the selected factorization, product-order
+invariance, repeated-pair square-class cancellation, and duplicated-product
+square-class triviality for products, contiguous subproducts, and separated
+repeated subproducts after permutation into the repeated shape.
 The real-classification surface also includes the theorem-facing
 \code{PeriodEightTable} and \code{periodEightTable} declarations, collecting
 the split families and first-period definite Bott rows through $\Cl(0,8)$,
@@ -334,7 +336,7 @@ Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
 \Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
 Build command & \code{lake build} \\
 Lean files under \code{Spinor/} & $27$ \\
-Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $23{,}690$ \\
+Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $24{,}032$ \\
 \code{sorry} occurrences under \code{Spinor/} & $0$
 \end{tabularx}
 \end{center}
@@ -423,7 +425,11 @@ first permuting a list into the repeated form. At the group level, the
 Mathlib definition of \code{lipschitzGroup} as the subgroup closure of
 invertible vector generators is packaged as a factorization-existence theorem:
 when \(2\) is invertible, every Lipschitz-group element has some finite
-invertible-vector product representative.
+invertible-vector product representative. The noncanonical declarations
+\code{chosenLipschitzNormUnit} and \code{chosenLipschitzSpinorNormClass}
+expose the norm unit and square class attached to the repository's selected
+factorization, together with the corresponding square-triviality and
+Clifford-norm formula.
 Decomposition-independence across different
 Cartan--Dieudonne factorizations and the resulting orthogonal-group spinor norm
 remain later work.
@@ -1530,7 +1536,7 @@ character is now exported under local split-Levi spinor-norm-facing names, and
 the Clifford/Lipschitz norm formula is available globally for Lipschitz
 vector-product factorizations; when \(2\) is invertible, every Mathlib
 \code{lipschitzGroup} element admits at least one such factorization. The
-associated chosen-factorization square class has order invariance, repeated-pair
+associated noncanonical chosen square class has order invariance, repeated-pair
 cancellation, and duplicated-product/subproduct triviality, including separated
 repeated subproducts after permutation into the repeated shape, but no global
 orthogonal-group spinor-norm theory is claimed. Over fields with

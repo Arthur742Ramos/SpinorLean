@@ -446,9 +446,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     proved finite-basis split-Levi character as the local spinor-norm-facing formulation, while
     `Spinor.CliffordNorm` packages the global Clifford/Lipschitz vector-product norm formula, its
     invertible-vector square-class form, factorization-existence Lipschitz wrapper when `2` is
-    invertible, product-order invariance for the scalar, unit, and square-class products,
-    repeated-pair square-class cancellation, and duplicated-product/subproduct square-class
-    triviality, including separated repeated subproducts after permutation into the repeated shape;
+    invertible, noncanonical chosen Lipschitz norm-unit and square-class wrappers,
+    product-order invariance for the scalar, unit, and square-class products, repeated-pair
+    square-class cancellation, and duplicated-product/subproduct square-class triviality,
+    including separated repeated subproducts after permutation into the repeated shape;
     a full orthogonal-group
     spinor-norm API remains outside
     the submission surface

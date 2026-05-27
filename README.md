@@ -266,7 +266,9 @@ Implemented so far:
   inversion; when `2` is invertible, `exists_cliffordInvertibleVectorProductLipschitz_eq`
   proves that every Mathlib `lipschitzGroup` element has some invertible-vector product
   representative, and `LipschitzVectorFactorization` / `lipschitzVectorFactorization` carry
-  such a chosen vector decomposition and its induced square-class value; the scalar, unit, and
+  such a chosen vector decomposition and its induced square-class value; the noncanonical
+  `chosenLipschitzNormUnit` and `chosenLipschitzSpinorNormClass` expose the resulting chosen
+  Lipschitz square-class API without asserting decomposition independence; the scalar, unit, and
   square-class products
   are invariant under list permutation and reversal via
   `cliffordVectorProductNormScalar_perm`,

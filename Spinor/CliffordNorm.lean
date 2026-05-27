@@ -38,6 +38,7 @@ an orthogonal-group spinor-norm API.
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_perm`
 * `Spinor.lipschitzVectorFactorization`
+* `Spinor.chosenLipschitzSpinorNormClass`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_append_self_append`
@@ -573,6 +574,43 @@ theorem exists_lipschitzVectorFactorization [Invertible (2 : R)]
     (Q : QuadraticForm R M) (x : lipschitzGroup Q) :
     Nonempty (LipschitzVectorFactorization Q x) :=
   ⟨lipschitzVectorFactorization Q x⟩
+
+/--
+The Clifford norm unit attached to the repository's noncomputable chosen Lipschitz
+vector factorization.
+
+This is intentionally a chosen-factorization API; no independence from the chosen
+factorization is asserted.
+-/
+noncomputable def chosenLipschitzNormUnit [Invertible (2 : R)]
+    (Q : QuadraticForm R M) (x : lipschitzGroup Q) : Rˣ :=
+  cliffordInvertibleVectorProductNormUnit Q (lipschitzVectorFactorization Q x).factors
+
+/--
+The square-class attached to the repository's noncomputable chosen Lipschitz vector
+factorization.
+
+This is not a descended orthogonal-group spinor norm: it records the square-class of the
+particular vector product selected by `lipschitzVectorFactorization`.
+-/
+noncomputable def chosenLipschitzSpinorNormClass [Invertible (2 : R)]
+    (Q : QuadraticForm R M) (x : lipschitzGroup Q) :
+    Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2) :=
+  (lipschitzVectorFactorization Q x).spinorNormClass
+
+@[simp]
+theorem chosenLipschitzSpinorNormClass_sq_eq_one [Invertible (2 : R)]
+    (Q : QuadraticForm R M) (x : lipschitzGroup Q) :
+    chosenLipschitzSpinorNormClass Q x ^ 2 = 1 :=
+  (lipschitzVectorFactorization Q x).spinorNormClass_sq_eq_one
+
+/-- Norm formula for the repository's noncomputable chosen Lipschitz vector factorization. -/
+theorem star_mul_self_eq_algebraMap_chosenLipschitzNormUnit [Invertible (2 : R)]
+    (Q : QuadraticForm R M) (x : lipschitzGroup Q) :
+    star (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) *
+        (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
+      algebraMap R (CliffordAlgebra Q) (chosenLipschitzNormUnit Q x : R) :=
+  (lipschitzVectorFactorization Q x).star_mul_self_eq_algebraMap_normUnit
 
 @[simp]
 theorem cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons
