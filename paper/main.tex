@@ -99,7 +99,9 @@ characters are also exposed under local spinor-norm-facing names, without
 asserting a global orthogonal-group spinor-norm API. We also package the
 Clifford-level vector-product norm formula
 \(\widetilde{x}x=\prod_i(-Q(v_i))\) for \(x=\prod_i\iota(v_i)\), together with
-its invertible-vector unit and square-class form. The proof combines an orthogonal factorization into transported
+its invertible-vector unit and square-class form, including invariance of these
+product-level square classes under reordering and reversal of the chosen vector
+list. The proof combines an orthogonal factorization into transported
 transvections plus one chosen-line square scaling, explicit even unitary
 Clifford lifts acting by scalar-normalized exterior maps, and a top-degree
 pairing normalization that proves the determinant-square necessity direction.
@@ -202,7 +204,8 @@ The same artifact also proves the chosen-model spinor interface, the split-rank
 kernel/projective-descent package, explicit transvection and chosen-line
 square-scaling lifts, the Levi-projective exterior-action bridge, and the exact
 split-line image criterion, plus a Clifford-level vector-product norm formula
-with its invertible-vector square-class package. Full Bott-period-$8$ real classification beyond
+with its invertible-vector square-class package and product-order invariance.
+Full Bott-period-$8$ real classification beyond
 the packaged low-signature entries through $\Cl(0,8)$ and positive even companions
 through $\Cl^+(8,0)$, full all-orthogonal-group image
 classification and global orthogonal-group spinor-norm theory beyond this
@@ -397,9 +400,11 @@ chosen-model finite-basis setting.
 Lean interface: \code{CliffordNorm.lean}, with exact declaration names indexed
 in \code{THEOREM_INDEX.md}. This records the global Clifford calculation for
 products of vector generators and packages the corresponding square-class
-invariant for products of invertible vectors, while leaving
-decomposition-independence and the resulting orthogonal-group spinor norm as
-later work.
+invariant for products of invertible vectors. The scalar, unit, and square-class
+products are proved invariant under permutations and reversal of the chosen
+vector list, while decomposition-independence across different
+Cartan--Dieudonne factorizations and the resulting orthogonal-group spinor norm
+remain later work.
 
 \paragraph{Downstream reuse already present in the repository.}
 The interface is already reused beyond the core covering-map story in the
@@ -1496,8 +1501,9 @@ membership is exactly the square-determinant condition, and the induced
 split-Levi square-class character is onto with that spin image as kernel; equivalently, the
 split-Levi quotient by the spin image is the square-class group. The same proved
 character is now exported under local split-Levi spinor-norm-facing names, and
-the product-level Clifford norm formula is available globally, but no global
-orthogonal-group spinor-norm theory is claimed. Over fields with
+the product-level Clifford norm formula is available globally with order
+invariance for the selected vector list, but no global orthogonal-group
+spinor-norm theory is claimed. Over fields with
 square-surjective unit group, every finite-basis Levi element lies in that spin
 image; the new algebraically closed wrappers expose both the explicit lift and
 the image theorem in this common case without an extra square-surjectivity
@@ -1506,7 +1512,7 @@ $\bigwedge W$ and more about identifying how much of the split Levi picture is
 already visible inside explicit Clifford formulas over a general field. The
 artifact boundary is consequently sharp: broader orthogonal subgroups, full
 global orthogonal-group spinor-norm formulations beyond the product-level
-Clifford norm, Bott-periodic classification beyond the
+Clifford norm and its order-invariant square-class product, Bott-periodic classification beyond the
 packaged low-dimensional rows through $\Cl(0,8)$ and positive even companions
 through $\Cl^+(8,0)$, and scheme-theoretic
 spin-cover developments are not used by the stated results and are kept outside
