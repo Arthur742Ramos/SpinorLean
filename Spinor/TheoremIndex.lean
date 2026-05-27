@@ -12,6 +12,7 @@ import Spinor.Cl08RealMatrix
 import Spinor.Cl78PositiveEven
 import Spinor.BottTable
 import Spinor.CliffordNorm
+import Spinor.LipschitzImageNorm
 
 /-!
 # Machine-checked theorem index
@@ -197,6 +198,13 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.chosenLipschitzSpinorNormClass
 #check Spinor.chosenLipschitzSpinorNormClass_sq_eq_one
 #check Spinor.star_mul_self_eq_algebraMap_chosenLipschitzNormUnit
+#check Spinor.lipschitzLinearImage
+#check Spinor.lipschitzLinearImageChosenLift
+#check Spinor.lipschitzLinearImageChosenLift_spec
+#check Spinor.lipschitzLinearImageChosenNormUnit
+#check Spinor.lipschitzLinearImageChosenSpinorNormClass
+#check Spinor.lipschitzLinearImageChosenSpinorNormClass_sq_eq_one
+#check Spinor.star_mul_self_eq_algebraMap_lipschitzLinearImageChosenNormUnit
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_cons_self_cons
 #check Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self

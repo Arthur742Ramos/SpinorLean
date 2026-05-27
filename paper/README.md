@@ -56,9 +56,10 @@ group, local split-Levi spinor-norm-facing wrappers for these same characters,
 the exact split-line image / double-cover criterion, and the Clifford/Lipschitz
 vector-product norm formula with its invertible-vector square-class package, product-order
 invariance, repeated-pair square-class cancellation, duplicated-product/subproduct
-square-class triviality, Lipschitz factorization-existence wrapper when `2` is invertible, and
-noncanonical chosen Lipschitz square-class wrapper, including separated repeated subproducts
-after permutation into the repeated shape. The theorem-facing
+square-class triviality, Lipschitz factorization-existence wrapper when `2` is invertible,
+noncanonical chosen Lipschitz square-class wrapper, and noncanonical chosen-lift wrapper on the
+Lipschitz linear image, including separated repeated subproducts after permutation into the
+repeated shape. The theorem-facing
 real-classification surface now also includes
 `RealClassification.PeriodEightTable` and `RealClassification.periodEightTable`,
 which collect the split families and first-period definite rows, including the explicit
@@ -70,7 +71,8 @@ which collect the split families and first-period definite rows, including the e
 `Cl⁺(8,0) ≃ Mat₈(ℝ) × Mat₈(ℝ)`, and `Cl(8,0) ≃ Mat₁₆(ℝ)` rows.
 A recursive arbitrary-signature Bott-periodicity theorem, a full all-orthogonal-group image classification,
 and a global orthogonal-group spinor-norm API beyond this factorization-existence
-Clifford/Lipschitz substrate are separate projects, not dependencies in the claimed theorem package.
+Clifford/Lipschitz substrate and its noncanonical Lipschitz linear-image wrapper are separate
+projects, not dependencies in the claimed theorem package.
 
 ## Final preflight
 

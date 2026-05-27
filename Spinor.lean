@@ -29,6 +29,7 @@ import Spinor.ProdNeg
 import Spinor.CliffordAction
 import Spinor.SpinRep
 import Spinor.OrthogonalAction
+import Spinor.LipschitzImageNorm
 import Spinor.Chiral
 import Spinor.Covering
 import Spinor.TheoremIndex

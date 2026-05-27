@@ -31,6 +31,7 @@ SpinorLean/
 │   ├── Chiral.lean         -- Transported chiral decomposition and spin invariance
 │   ├── OrthogonalAction.lean -- Ambient spin-vector action and isometry homomorphism
 │   ├── CliffordNorm.lean -- Clifford star-norm formulas for vector products
+│   ├── LipschitzImageNorm.lean -- Noncanonical Lipschitz-image norm wrappers
 │   ├── ComplexClassification.lean -- Periodicity: complex even/odd matrix models
 │   ├── RealClassification.lean -- Periodicity: split `(n,n)` real matrix models + low-signature entries
 │   ├── LowDimensional.lean -- Explicit low-dim Clifford models + Spin(2), Spin(3) group IDs
@@ -268,7 +269,9 @@ Implemented so far:
   representative, and `LipschitzVectorFactorization` / `lipschitzVectorFactorization` carry
   such a chosen vector decomposition and its induced square-class value; the noncanonical
   `chosenLipschitzNormUnit` and `chosenLipschitzSpinorNormClass` expose the resulting chosen
-  Lipschitz square-class API without asserting decomposition independence; the scalar, unit, and
+  Lipschitz square-class API without asserting decomposition independence, while
+  `LipschitzImageNorm` exposes the corresponding noncanonical chosen-lift API on the image of
+  `lipschitzLinearRepresentation`; the scalar, unit, and
   square-class products
   are invariant under list permutation and reversal via
   `cliffordVectorProductNormScalar_perm`,
@@ -370,6 +373,7 @@ Explicit scope boundaries for this algebraic submission package:
   repeated-pair square-class cancellation, and duplicated-product/subproduct square-class
   triviality, including separated repeated subproducts after permutation into the repeated shape
 - a full global orthogonal-group spinor-norm theory beyond the factorization-existence
-  Clifford/Lipschitz norm package and finite-basis split-Levi square-class APIs
+  Clifford/Lipschitz norm package, its noncanonical Lipschitz linear-image wrapper, and
+  finite-basis split-Levi square-class APIs
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.
