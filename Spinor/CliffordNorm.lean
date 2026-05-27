@@ -33,6 +33,8 @@ orthogonal-group spinor-norm API.
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_append_self_append`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_append_middle_self_append`
+* `Spinor.cliffordInvertibleVectorProductSpinorNormClass_eq_of_perm_append_cons_self_cons`
+* `Spinor.cliffordInvertibleVectorProductSpinorNormClass_eq_of_perm_append_append_middle_self_append`
 -/
 
 namespace Spinor
@@ -369,5 +371,33 @@ theorem cliffordInvertibleVectorProductSpinorNormClass_append_append_middle_self
           simpa [List.append_assoc] using
             cliffordInvertibleVectorProductSpinorNormClass_append_append_self_append
               Q l₁ l (l₂ ++ l₃)
+
+theorem cliffordInvertibleVectorProductSpinorNormClass_eq_of_perm_append_cons_self_cons
+    (Q : QuadraticForm R M) {l' : List (InvertibleQuadraticVector Q)}
+    (l₁ l₂ : List (InvertibleQuadraticVector Q)) (m : InvertibleQuadraticVector Q)
+    (h : l'.Perm (l₁ ++ m :: m :: l₂)) :
+    cliffordInvertibleVectorProductSpinorNormClass Q l' =
+      cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l₂) := by
+  calc
+    cliffordInvertibleVectorProductSpinorNormClass Q l' =
+        cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ m :: m :: l₂) := by
+          exact cliffordInvertibleVectorProductSpinorNormClass_perm Q h
+    _ = cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l₂) := by
+          exact cliffordInvertibleVectorProductSpinorNormClass_append_cons_self_cons Q l₁ l₂ m
+
+theorem cliffordInvertibleVectorProductSpinorNormClass_eq_of_perm_append_append_middle_self_append
+    (Q : QuadraticForm R M) {l' : List (InvertibleQuadraticVector Q)}
+    (l₁ l l₂ l₃ : List (InvertibleQuadraticVector Q))
+    (h : l'.Perm (l₁ ++ l ++ l₂ ++ l ++ l₃)) :
+    cliffordInvertibleVectorProductSpinorNormClass Q l' =
+      cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l₂ ++ l₃) := by
+  calc
+    cliffordInvertibleVectorProductSpinorNormClass Q l' =
+        cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l ++ l₂ ++ l ++ l₃) := by
+          exact cliffordInvertibleVectorProductSpinorNormClass_perm Q h
+    _ = cliffordInvertibleVectorProductSpinorNormClass Q (l₁ ++ l₂ ++ l₃) := by
+          exact
+            cliffordInvertibleVectorProductSpinorNormClass_append_append_middle_self_append
+              Q l₁ l l₂ l₃
 
 end Spinor

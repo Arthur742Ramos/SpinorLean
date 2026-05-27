@@ -266,8 +266,10 @@ Implemented so far:
   subproduct with intervening factors is square-class-trivial via
   `cliffordInvertibleVectorProductSpinorNormClass_append_cons_self_cons`,
   `cliffordInvertibleVectorProductSpinorNormClass_append_append_self_append`, and
-  `cliffordInvertibleVectorProductSpinorNormClass_append_append_middle_self_append`; this is a
-  reflection-product substrate, not an independence theorem for arbitrary orthogonal decompositions
+  `cliffordInvertibleVectorProductSpinorNormClass_append_append_middle_self_append`, with
+  `eq_of_perm` wrappers for lists that first permute into the repeated-pair or repeated-subproduct
+  form; this is a reflection-product substrate, not an independence theorem for arbitrary
+  orthogonal decompositions
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
   subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
   a nonsquare unit gives a formal non-surjectivity theorem; over algebraically closed fields,
@@ -354,7 +356,7 @@ Explicit scope boundaries for this algebraic submission package:
   character / quotient isomorphism with its split-Levi spinor-norm-facing wrappers and the
   global Clifford-level vector-product norm formula with product-order invariance, repeated-pair
   square-class cancellation, and duplicated-product/subproduct square-class triviality, including
-  separated repeated subproducts
+  separated repeated subproducts after permutation into the repeated shape
 - a full global orthogonal-group spinor-norm theory beyond the product-level Clifford norm and
   finite-basis split-Levi square-class APIs
 
