@@ -112,8 +112,8 @@ interface to the image of the Lipschitz linear representation, and
 \code{LipschitzSpinorNormClassTrivialOnLinearKernel} isolate the factorization-
 independence and kernel-triviality obligations. The former gives the
 corresponding conditional Lipschitz-group hom; together they imply lift
-independence and then the image-level descent package needed to turn this value
-into a monoid hom;
+independence, the image-level descent package, and the resulting conditional
+image-level monoid hom;
 we prove invariance of these product-level square classes under
 reordering and reversal of the chosen vector list, cancellation of
 repeated invertible-vector pairs, and triviality of duplicated products,
@@ -130,8 +130,8 @@ explicit chosen-model Levi-lift, and finite-basis split-Levi image corollaries
 become unconditional there.
 The artifact comprises
 $30$ Lean source files totaling
-$24{,}510$ physical lines across the repository, of which $28$ files and
-$24{,}461$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$24{,}540$ physical lines across the repository, of which $28$ files and
+$24{,}491$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
@@ -230,7 +230,7 @@ identity/product wrappers proving multiplication of stored norm units and square
 classes, a noncanonical chosen-lift wrapper on the Lipschitz linear image,
 explicit conditional factorization-independence, Lipschitz-group hom,
 kernel-triviality-to-lift-independence, and descent-obligation APIs for a
-future image-level monoid hom, product-order
+conditional image-level monoid hom, product-order
 invariance, repeated-pair square-class cancellation, and
 duplicated-product square-class triviality for products, contiguous subproducts,
 and separated repeated subproducts after permutation into the repeated shape.
@@ -459,8 +459,8 @@ unit and square class at that image level. It also defines
 \code{LipschitzSpinorNormClassTrivialOnLinearKernel}; factorization
 independence gives the conditional Lipschitz-group hom, and kernel-triviality of
 that hom implies lift independence and then the image-level descent package.
-Assuming those descent obligations gives the image-level monoid hom recorded in
-the theorem index.
+The module packages that composition as the direct conditional image-level
+monoid hom recorded in the theorem index.
 Decomposition-independence across different
 Cartan--Dieudonne factorizations, kernel-triviality for the induced hom, and the
 resulting orthogonal-group spinor norm remain later work.
@@ -1573,8 +1573,9 @@ product formulas for concatenated Lipschitz factorizations, including separated
 repeated subproducts after permutation into the repeated shape; the companion
 noncanonical chosen-lift wrapper and conditional factorization-independence,
 Lipschitz-group hom, kernel-triviality-to-lift-independence, and
-descent-obligation APIs expose this data on the Lipschitz linear image, but no
-global orthogonal-group spinor-norm theory is
+descent-obligation APIs, including the direct conditional image-level hom,
+expose this data on the Lipschitz linear image, but no global orthogonal-group
+spinor-norm theory is
 claimed. Over fields with
 square-surjective unit group, every finite-basis Levi element lies in that spin
 image; the new algebraically closed wrappers expose both the explicit lift and
@@ -1588,9 +1589,9 @@ Clifford/Lipschitz norm and its order-invariant, repeated-pair-stable,
 duplicated-product/subproduct-stable square-class product, factorization-level
 Lipschitz product wrappers, and noncanonical Lipschitz linear-image wrapper /
 conditional factorization-independence, Lipschitz-group hom,
-kernel-triviality-to-lift-independence, and descent-obligation APIs, including
-separated repeated subproducts after permutation into the repeated shape,
-recursive
+kernel-triviality-to-lift-independence, descent-obligation APIs, and direct
+conditional image-level hom, including separated repeated subproducts after
+permutation into the repeated shape, recursive
 arbitrary-signature Bott-periodic classification beyond the packaged
 \code{periodEightTable} first-period rows, and scheme-theoretic spin-cover
 developments are not used by the stated results and are kept outside this

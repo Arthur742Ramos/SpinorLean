@@ -30,6 +30,7 @@ Lipschitz-image level without claiming a descended orthogonal-group spinor norm.
 * `Spinor.lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent`
 * `Spinor.lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel`
 * `Spinor.lipschitzLinearImageSpinorNormClassHomOfDescends`
+* `Spinor.lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel`
 -/
 
 namespace Spinor
@@ -255,6 +256,33 @@ theorem lipschitzLinearImageSpinorNormClassHomOfDescends_apply
     [Invertible (2 : R)] (Q : QuadraticForm R M)
     (h : LipschitzLinearImageSpinorNormDescends Q) (g : lipschitzLinearImage Q) :
     lipschitzLinearImageSpinorNormClassHomOfDescends Q h g =
+      lipschitzLinearImageChosenSpinorNormClass Q g := rfl
+
+/--
+Factorization independence plus kernel-triviality directly give the image-level
+spinor-norm square-class monoid hom.
+
+This remains conditional on the two explicit global obligations; it is a convenience wrapper
+around the descent package and does not prove those obligations globally.
+-/
+noncomputable def lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hfac : LipschitzSpinorNormClassFactorizationIndependent Q)
+    (hker : LipschitzSpinorNormClassTrivialOnLinearKernel Q hfac) :
+    lipschitzLinearImage Q →*
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2) :=
+  lipschitzLinearImageSpinorNormClassHomOfDescends Q
+    (lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel
+      Q hfac hker)
+
+@[simp]
+theorem lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel_apply
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hfac : LipschitzSpinorNormClassFactorizationIndependent Q)
+    (hker : LipschitzSpinorNormClassTrivialOnLinearKernel Q hfac)
+    (g : lipschitzLinearImage Q) :
+    lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel
+        Q hfac hker g =
       lipschitzLinearImageChosenSpinorNormClass Q g := rfl
 
 end Spinor

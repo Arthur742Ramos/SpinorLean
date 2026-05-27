@@ -280,9 +280,11 @@ Implemented so far:
   obligations, proves that kernel-triviality of the factorization-independent hom implies lift
   independence, and packages
   `LipschitzLinearImageSpinorNormDescends` as the conditional obligations that would turn the
-  chosen image-level square class into a monoid homomorphism; the direct wrapper
+  chosen image-level square class into a monoid homomorphism; the direct hom
+  `lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel`
+  packages the resulting image-level monoid hom, while
   `lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel`
-  combines those hypotheses into the image descent package. The scalar, unit, and
+  records the underlying descent package. The scalar, unit, and
   square-class products
   are invariant under list permutation and reversal via
   `cliffordVectorProductNormScalar_perm`,
