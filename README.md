@@ -146,8 +146,17 @@ Implemented so far:
   representations and as the matching scalar endomorphisms on the ambient spinor module, yielding a
   reusable non-factorization criterion for the covering-map story whenever a nontrivial scalar spin
   element is available; in particular, if `Q` represents `-1` and `-1 ≠ 1`, the spin
-  representation provably cannot factor through the ambient isometry representation, and this is now
-  packaged on the canonical chosen-model API as a positive split-rank non-factorization theorem
+  representation provably cannot factor through the ambient isometry representation via
+  `spinRepresentation_not_factor_through_isometry_of_kernel_witness`,
+  `spinRepresentation_not_factor_through_isometry_of_coe_eq_algebraMap_of_ne_one`, and
+  `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`, with the
+  parallel presented-model witnesses
+  `HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_kernel_witness`,
+  `HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_coe_eq_algebraMap_of_ne_one`,
+  and
+  `HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`;
+  this is also packaged on the canonical chosen-model API as a positive split-rank
+  non-factorization theorem
 - any kernel element is now proved to act trivially on the whole Clifford algebra by conjugation,
   hence to commute with every Clifford element
 - over domains, the scalar part of the kernel is exactly `±1`, and in the finite-dimensional

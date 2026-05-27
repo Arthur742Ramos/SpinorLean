@@ -878,10 +878,21 @@ Section~\ref{sec:highlights} proves the kernel calculation
 (Proposition~\ref{prop:kernel-from-matrix}), non-factorization
 (Proposition~\ref{prop:nonfactorization}), projective descent
 (Proposition~\ref{prop:projective-descent}), and the exact split-line image
-statement (Proposition~\ref{prop:split-line-square}). The final split-line
-clause is exact because every element of $\SO(\dualProd_K K)$ is a reciprocal
-scaling and Proposition~\ref{prop:split-line-square} identifies precisely which
-such scalings lie in the spin image.
+statement (Proposition~\ref{prop:split-line-square}). The non-factorization
+surface includes the reusable witness declaration
+\code{HyperbolicPresentation.spinRepresentation\_not\_factor\_through\_isometry\_of\_kernel\_witness},
+the represented-\(-1\) presented-model declaration
+\code{HyperbolicPresentation.spinRepresentation\_not\_factor\_through\_isometry\_of\_exists\_quadratic\_eq\_neg\_one},
+the ambient regular-model witness declarations
+\code{spinRepresentation\_not\_factor\_through\_isometry\_of\_kernel\_witness}
+and
+\code{spinRepresentation\_not\_factor\_through\_isometry\_of\_coe\_eq\_algebraMap\_of\_ne\_one},
+and the ambient represented-\(-1\) declaration
+\code{spinRepresentation\_not\_factor\_through\_isometry\_of\_exists\_quadratic\_eq\_neg\_one}.
+The final split-line clause is exact because every element of
+$\SO(\dualProd_K K)$ is a reciprocal scaling and
+Proposition~\ref{prop:split-line-square} identifies precisely which such
+scalings lie in the spin image.
 \end{proof}
 
 The next two statements are the paper's further headline results. Their proofs
