@@ -258,7 +258,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ`, `Cl(2,0) ≃ Mat₂(ℝ)`,
     `Cl⁺(2,0) ≃ ℂ`, `Cl(3,0) ≃ Mat₂(ℂ)`, `Cl⁺(3,0) ≃ ℍ`,
     `Cl(0,4) ≃ Mat₂(ℍ)`, `Cl(4,0) ≃ Mat₂(ℍ)`, `Cl⁺(4,0) ≃ ℍ × ℍ`,
-    `Cl⁺(0,5) ≃ Mat₂(ℍ)`, `Cl⁺(5,0) ≃ Mat₂(ℍ)`, and split-real
+    `Cl⁺(0,5) ≃ Mat₂(ℍ)`, `Cl⁺(5,0) ≃ Mat₂(ℍ)`,
+    `Cl(5,0) ≃ Mat₂(ℍ) × Mat₂(ℍ)`, and split-real
     `Cl(1,1)`, `Cl⁺(1,1)`, `Cl(2,2)`, `Cl⁺(2,2)`; the first group-level compact identification
     layer now packages `Spin(2) ≃ U(1)`, `Spin(3) ≃ SU(2)`, and
     `Spin(4) ≃ SU(2) × SU(2)`, leaving the higher low-dimensional
