@@ -68,6 +68,9 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
   `Spinor.spinIsometryRepresentation_not_surjective_of_exists_quadratic_eq_neg_one_of_det_ne` —
   the corresponding concrete obstruction supplied by a norm-`-1` pin generator when its determinant
   branch is nontrivial.
+* `Spinor.spinIsometryRepresentation_not_surjective_dualProdLine_fullTarget` — the split-line
+  specialization showing that the ambient spin map is never surjective onto the full isometry
+  target, because the determinant-`-1` branch is outside the spin image.
 * `Spinor.spinSpecialOrthogonalRepresentation`,
   `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional` — the ambient isometry
   representation factors through `QuadraticForm.specialOrthogonalGroup Q`, either from an external
@@ -4599,6 +4602,37 @@ theorem spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_ne_top_of_exi
   exact (dualProdLineScalingHom_not_mem_squareScalingSubgroup (K := K) hu)
     ((spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_le_squareScalingSubgroup
       (K := K)) hmem)
+
+omit [Invertible (2 : K)] in
+/-- The split hyperbolic line represents `-1`. -/
+theorem dualProdLine_exists_quadratic_eq_neg_one :
+    ∃ v : Module.Dual K K × K, QuadraticForm.dualProd K K v = -1 := by
+  exact ⟨(-(((1 : K)⁻¹) • (LinearMap.id : Module.Dual K K)), (1 : K)),
+    by simp [QuadraticForm.dualProd]⟩
+
+/-- On the split hyperbolic line, the spin map is never surjective onto the full isometry target:
+the determinant-`-1` branch is outside the determinant-one spin image. -/
+theorem spinIsometryRepresentation_not_surjective_dualProdLine_fullTarget :
+    ¬ Function.Surjective (spinIsometryRepresentation (Q := QuadraticForm.dualProd K K)) := by
+  refine spinIsometryRepresentation_not_surjective_of_exists_quadratic_eq_neg_one_of_det_ne
+    (Q := QuadraticForm.dualProd K K) (dualProdLine_exists_quadratic_eq_neg_one (K := K)) ?_
+  have hfin : Module.finrank K (Module.Dual K K × K) = 2 := by
+    have hdual : Module.finrank K (Module.Dual K K) = 1 := by
+      simpa using LinearEquiv.finrank_eq (dualLineCoordEquiv (K := K))
+    rw [Module.finrank_prod, hdual]
+    simp
+  have hneg_ne_one : (-1 : Kˣ) ≠ 1 := by
+    intro h
+    have hval : ((-1 : Kˣ) : K) = (1 : K) := congrArg Units.val h
+    have hneg : (-1 : K) = 1 := by
+      simpa using hval
+    have htwo_zero : (2 : K) = 0 := by
+      calc
+        (2 : K) = 1 + 1 := by norm_num
+        _ = (-1 : K) + 1 := by rw [hneg]
+        _ = 0 := by simp
+    exact (isUnit_of_invertible (2 : K)).ne_zero htwo_zero
+  simpa [hfin] using hneg_ne_one
 
 end DualProdLine
 

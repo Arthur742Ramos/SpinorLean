@@ -405,6 +405,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - [x] package the same split-line image after inclusion into the full isometry target as
     `Spinor.spinIsometryRepresentation_range_dualProdLine_eq_map_squareScalingSubgroup`,
     showing that the full-target image is exactly the subtype image of the square-scaling subgroup
+  - [x] separately record that this full-target split-line image is not all of the ambient
+    isometry target via `Spinor.spinIsometryRepresentation_not_surjective_dualProdLine_fullTarget`,
+    because the determinant-`-1` branch remains outside the spin image
   - [x] also package the exact split-line salvage under the opposite hypothesis: if the square map on
     `Kˣ` is surjective, then
     `Spinor.spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_top_of_square_surjective`

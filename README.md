@@ -160,13 +160,16 @@ Implemented so far:
   orthogonal target is forced before any finer image-classification question; the same boundary is
   made concrete by `pinIsometryRepresentation_det_of_quadratic_eq_neg_one` and
   `spinIsometryRepresentation_not_surjective_of_exists_quadratic_eq_neg_one_of_det_ne` for a
-  norm-`-1` pin generator with nontrivial determinant branch
+  norm-`-1` pin generator with nontrivial determinant branch, and by
+  `spinIsometryRepresentation_not_surjective_dualProdLine_fullTarget` on the split hyperbolic line
 - in positive split rank, the full chosen-model spin representation and the nonzero half-spin
   representations are now proved not to factor through the ambient isometry representation, while
   their induced projective actions are packaged as image-subgroup actions on submodules
 - the split-line spin image is now identified exactly with the square-scaling subgroup in
   `Spinor.OddClassification`, both inside `SO(1,1)` and after inclusion into the full
-  isometry target, giving a theorem-level field-sensitive replacement for an unrestricted
+  isometry target, while `spinIsometryRepresentation_not_surjective_dualProdLine_fullTarget`
+  records that the full isometry target still has a determinant-`-1` branch outside the spin
+  image; together these give a theorem-level field-sensitive replacement for an unrestricted
   double-cover slogan
 - a chiral decomposition `S = S⁺ ⊕ S⁻` transported from Clifford parity, with `spinGroup`
   preserving both summands and restricting to actions on each summand
@@ -350,7 +353,8 @@ Implemented so far:
   substrate, not a descended global orthogonal-group spinor norm
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
   subgroup inside `SO(1,1)`, its full isometry-target image is exactly the subtype image of that
-  subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
+  subgroup and is therefore not the full isometry target itself, the spin map onto `SO(1,1)` is
+  surjective iff the square map on `Kˣ` is surjective, and
   a nonsquare unit gives a formal non-surjectivity theorem; over algebraically closed fields,
   `units_square_surjective_of_isAlgClosed` specializes this to full split-line double-cover and
   finite-basis split-Levi lift/image corollaries

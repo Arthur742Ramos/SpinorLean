@@ -90,7 +90,8 @@ not surjective onto that full target, so the special-orthogonal target is forced
 before any finer image-classification theorem. A range-equality theorem packages
 the exact full-target image as the subtype image of the special-orthogonal spin
 map; in the split-line case this full-target image is the subtype image of the
-square-scaling subgroup. The same obstruction is made
+square-scaling subgroup, and the determinant-\(-1\) branch is separately proved
+to stay outside the spin image. The same obstruction is made
 concrete for a norm-\(-1\) pin generator whenever its determinant branch is
 nontrivial. In the same chosen model, any
 split Levi lift acts projectively as the
@@ -484,7 +485,9 @@ Lean interface:
 \code{spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup}
 and its full-target companion
 \code{spinIsometryRepresentation_range_dualProdLine_eq_map_squareScalingSubgroup},
-together with the factorization theorems in \code{OrthogonalAction.lean} and
+together with the full-target obstruction
+\code{spinIsometryRepresentation_not_surjective_dualProdLine_fullTarget}, the
+factorization theorems in \code{OrthogonalAction.lean}, and
 the determinant-square necessity theorem in \code{HyperbolicAction.lean}. This
 exposes theorem-level covering/image results and explicit root/torus generators
 that subsequent developments can reuse when extending the Levi criterion beyond the
@@ -712,7 +715,9 @@ split-line image theorem appear in the development as:
 The companion theorem
 \code{spinIsometryRepresentation_range_dualProdLine_eq_map_squareScalingSubgroup}
 identifies the ambient isometry-target image with the subtype image of this
-same square-scaling subgroup.
+same square-scaling subgroup. The declaration
+\code{spinIsometryRepresentation_not_surjective_dualProdLine_fullTarget}
+records that this is still not the full isometry target.
 \end{quote}
 These declarations are representative of the design goal: theorem-level
 covering statements are exposed directly at the Lean interface, not only as
@@ -826,7 +831,7 @@ exactly the square-scaling subgroup, i.e.\ the subgroup of maps
   \qquad (a\in (K^\times)^2).
 \]
 The corresponding image in the full isometry target is exactly the subtype
-image of this square-scaling subgroup.
+image of this square-scaling subgroup, and not the whole full isometry target.
 Consequently, the expected double-cover statement on the split line is recovered
 if and only if the square map on $K^\times$ is surjective; if $K^\times$
 contains a nonsquare unit, the split-line spin map is formally proved not to be
@@ -1636,7 +1641,8 @@ reciprocal squares, so the image is contained in the square-scaling subgroup.
 Conversely, Proposition~\ref{prop:chosen-line-square} specializes to the split
 line and shows that every square-scaling occurs in the image. This is exactly
 the square-scaling subgroup; the formal companion theorem identifies the
-full-isometry-target image as the subtype image of the same subgroup.
+full-isometry-target image as the subtype image of the same subgroup and records
+that the determinant-\(-1\) branch remains outside that image.
 \end{proof}
 
 This shows that naive surjectivity is false over fields with nonsquare units,
