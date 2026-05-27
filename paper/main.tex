@@ -92,7 +92,8 @@ split Levi image admits an exact square-determinant criterion: a Levi element
 $\Lambda(g)$ lies in the spin image if and only if $\det(g)$ is a square in
 $K^\times$. Equivalently, the formalized square-class character
 $g\mapsto[\det(g)]\in K^\times/(K^\times)^2$ is onto and has kernel exactly the spin image
-on the canonical split Levi subgroup. The proof combines an orthogonal factorization into transported
+on the canonical split Levi subgroup, and the quotient of that split Levi subgroup by its
+spin-image subgroup is isomorphic to \(K^\times/(K^\times)^2\). The proof combines an orthogonal factorization into transported
 transvections plus one chosen-line square scaling, explicit even unitary
 Clifford lifts acting by scalar-normalized exterior maps, and a top-degree
 pairing normalization that proves the determinant-square necessity direction.
@@ -102,8 +103,8 @@ explicit chosen-model Levi-lift, and finite-basis split-Levi image corollaries
 become unconditional there.
 The artifact comprises
 $23$ Lean source files totaling
-$20{,}339$ physical lines across the repository, of which $21$ files and
-$20{,}297$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$20{,}403$ physical lines across the repository, of which $21$ files and
+$20{,}361$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
@@ -187,7 +188,8 @@ image theorem is exact on the finite-basis split Levi subgroup: spin-image
 membership is equivalent to the determinant being a square, and the
 corresponding determinant square-class quotient homomorphism is onto and has the spin image
 as its kernel, formalized as surjectivity plus an equality of subgroups after pulling the spin
-image back to the canonical Levi subgroup. The square-surjective corollary
+image back to the canonical Levi subgroup, then packaged as a quotient isomorphism by the
+first isomorphism theorem. The square-surjective corollary
 removes that side condition for all Levi elements.
 The same artifact also proves the chosen-model spinor interface, the split-rank
 kernel/projective-descent package, explicit transvection and chosen-line
@@ -250,7 +252,8 @@ torus lift; the theorem that split Levi lifts act projectively as the natural
 exterior action; the finite-basis square-determinant factorization and its
 explicit even unitary chosen-model lift; the determinant-square necessity
 theorem, resulting exact finite-basis Levi image criterion, and determinant
-square-class quotient character with its surjectivity and kernel theorem; the
+square-class quotient character with its surjectivity, kernel theorem, and quotient-isomorphism
+form; the
 square-surjective all-Levi corollary; and the exact split-line image theorem.
 The point is not abstract generation by itself,
 but a concrete chosen-model realization of a root subgroup, its square torus,
@@ -271,7 +274,7 @@ alongside them:
 \item the finite-basis square-determinant Levi factorization, explicit
   chosen-model lift, determinant-square necessity theorem, and exact spin-image
   iff of Theorem~\ref{thm:square-det-levi}, including the onto determinant
-  square-class quotient character, its kernel theorem, and its square-surjective all-Levi
+  square-class quotient character, its quotient-isomorphism form, and its square-surjective all-Levi
   Clifford-unit and spin-image corollaries;
 \item the explicit hyperbolic transvection Clifford unit
   $x_{\delta,w}=1+\iota(\delta,0)\iota(0,w)$ from
@@ -302,7 +305,7 @@ Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
 \Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
 Build command & \code{lake build} \\
 Lean files under \code{Spinor/} & $21$ \\
-Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $20{,}297$ \\
+Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $20{,}361$ \\
 \code{sorry} occurrences under \code{Spinor/} & $0$
 \end{tabularx}
 \end{center}
@@ -713,6 +716,8 @@ and for its transport to the canonical split Levi subgroup through
 \(\chi\) is exactly the split-Levi spin image, as a subgroup equality. Moreover
 \(\chi\) and its transported split-Levi character are surjective: every square
 class is represented by scaling the distinguished basis line.
+Therefore the first isomorphism theorem identifies the canonical split Levi
+subgroup modulo this spin-image subgroup with \(K^\times/(K^\times)^2\).
 In particular, square-surjectivity of
 $K^\times\xrightarrow{(-)^2}K^\times$ implies that every finite-basis Levi element
 $\Lambda(g)$ lies in the spin image.
@@ -1349,7 +1354,9 @@ removes the determinant-square hypothesis for all finite-basis Levi elements
 with a distinguished basis line. Surjectivity of the square-class character is
 proved by the complementary diagonal calculation: scaling the distinguished
 basis line by any unit has that unit as its determinant and hence realizes the
-chosen square class.
+chosen square class. The formal quotient equivalence is then the standard
+first-isomorphism-theorem map for this surjective character after replacing its
+kernel by the proved spin-image subgroup.
 \end{proof}
 
 \paragraph{A concrete rank-$2$ shear.}
@@ -1436,7 +1443,8 @@ Clifford unit whose chosen-model action is $-u^{-1}\bigwedge g$ whenever
 $\det(g)=u^2$. The top exterior pairing and spin star-normalization prove the
 converse determinant-square obstruction, so finite-basis split-Levi spin-image
 membership is exactly the square-determinant condition, and the induced
-split-Levi square-class character is onto with that spin image as kernel. Over fields with
+split-Levi square-class character is onto with that spin image as kernel; equivalently, the
+split-Levi quotient by the spin image is the square-class group. Over fields with
 square-surjective unit group, every finite-basis Levi element lies in that spin
 image; the new algebraically closed wrappers expose both the explicit lift and
 the image theorem in this common case without an extra square-surjectivity
