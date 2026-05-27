@@ -105,9 +105,9 @@ square over an algebraically closed field, the split-line double-cover,
 explicit chosen-model Levi-lift, and finite-basis split-Levi image corollaries
 become unconditional there.
 The artifact comprises
-$23$ Lean source files totaling
-$20{,}819$ physical lines across the repository, of which $21$ files and
-$20{,}777$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$24$ Lean source files totaling
+$21{,}468$ physical lines across the repository, of which $22$ files and
+$21{,}425$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
@@ -420,7 +420,13 @@ $\Cl^+(5,0) \simeq \Mat_2(\mathbb{H})$. The explicit
 \code{cl_0_5_equivComplexMatrix4} row gives
 $\Cl(0,5) \simeq \Mat_4(\mathbb{C})$, and the explicit
 \code{cl_5_0_equivQuaternionMatrix2Prod} row further gives
-$\Cl(5,0) \simeq \Mat_2(\mathbb{H}) \times \Mat_2(\mathbb{H})$. These
+$\Cl(5,0) \simeq \Mat_2(\mathbb{H}) \times \Mat_2(\mathbb{H})$.
+The module \code{Cl60QuaternionMatrix.lean} adds the sixth-row even complex
+matrix entries and the positive six-dimensional quaternionic matrix entry,
+giving
+$\Cl^+(0,6) \simeq \Mat_4(\mathbb{C})$,
+$\Cl^+(6,0) \simeq \Mat_4(\mathbb{C})$, and
+$\Cl(6,0) \simeq \Mat_4(\mathbb{H})$. These
 results are not analyzed in
 the present paper, but they show that the chosen-model and orthogonal-action
 APIs are already sufficient for later formal developments connecting the

@@ -211,7 +211,13 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   `Spinor.RealClassification.cl_5_0_even_equivQuaternionMatrix2`
   (`Cl⁺(5,0) ≃ Mat₂(ℍ)`), and
   `Spinor.RealClassification.cl_5_0_equivQuaternionMatrix2Prod`
-  (`Cl(5,0) ≃ Mat₂(ℍ) × Mat₂(ℍ)`)
+  (`Cl(5,0) ≃ Mat₂(ℍ) × Mat₂(ℍ)`),
+  `Spinor.RealClassification.cl_0_6_even_equivComplexMatrix4`
+  (`Cl⁺(0,6) ≃ Mat₄(ℂ)`),
+  `Spinor.RealClassification.cl_6_0_even_equivComplexMatrix4`
+  (`Cl⁺(6,0) ≃ Mat₄(ℂ)`), and
+  `Spinor.RealClassification.cl_6_0_equivQuaternionMatrix4`
+  (`Cl(6,0) ≃ Mat₄(ℍ)`)
   are now packaged as first-class algebra isomorphisms in the `Spinor.RealClassification`
   namespace, along with the explicit split entries `cl_1_1_equivMatrix2`,
   `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
@@ -260,7 +266,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Cl⁺(2,0) ≃ ℂ`, `Cl(3,0) ≃ Mat₂(ℂ)`, `Cl⁺(3,0) ≃ ℍ`,
     `Cl(0,4) ≃ Mat₂(ℍ)`, `Cl(4,0) ≃ Mat₂(ℍ)`, `Cl⁺(4,0) ≃ ℍ × ℍ`,
     `Cl⁺(0,5) ≃ Mat₂(ℍ)`, `Cl(0,5) ≃ Mat₄(ℂ)`, `Cl⁺(5,0) ≃ Mat₂(ℍ)`,
-    `Cl(5,0) ≃ Mat₂(ℍ) × Mat₂(ℍ)`, and split-real
+    `Cl(5,0) ≃ Mat₂(ℍ) × Mat₂(ℍ)`, `Cl⁺(0,6) ≃ Mat₄(ℂ)`,
+    `Cl⁺(6,0) ≃ Mat₄(ℂ)`, `Cl(6,0) ≃ Mat₄(ℍ)`, and split-real
     `Cl(1,1)`, `Cl⁺(1,1)`, `Cl(2,2)`, `Cl⁺(2,2)`; the first group-level compact identification
     layer now packages `Spin(2) ≃ U(1)`, `Spin(3) ≃ SU(2)`, and
     `Spin(4) ≃ SU(2) × SU(2)`, leaving the higher low-dimensional

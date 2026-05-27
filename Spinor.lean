@@ -16,6 +16,7 @@ import Spinor.HyperbolicAction
 import Spinor.ComplexClassification
 import Spinor.LowDimensional
 import Spinor.Cl03QuaternionProd
+import Spinor.Cl60QuaternionMatrix
 import Spinor.RealClassification
 import Spinor.Presentation
 import Spinor.OddClassification
