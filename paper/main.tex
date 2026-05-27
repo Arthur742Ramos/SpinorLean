@@ -114,7 +114,10 @@ invertible-vector factorization. Thus
 declaration \code{lipschitzLinearImageChosenSpinorNormClass} carries the same
 chosen-lift interface to the image of the Lipschitz linear representation, and
 \code{LipschitzSpinorNormClassHomTrivialOnLinearKernel} isolates the remaining
-kernel-triviality obligation. That condition implies lift independence, the
+kernel-triviality obligation. The scalar-unit calculation
+\code{chosenLipschitzNormUnit_eq_sq_of_coe_eq_algebraMap_unit} and the
+\code{LipschitzLinearKernelScalarUnits} bridge show that a concrete
+scalar-kernel theorem would imply that condition, lift independence, the
 image-level descent package, and the resulting conditional image-level monoid
 hom, whose range-restriction pullback is proved to be the global
 Lipschitz-group hom and whose uniqueness is characterized by that pullback;
@@ -134,8 +137,8 @@ explicit chosen-model Levi-lift, and finite-basis split-Levi image corollaries
 become unconditional there.
 The artifact comprises
 $30$ Lean source files totaling
-$24{,}540$ physical lines across the repository, of which $28$ files and
-$24{,}491$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$25{,}070$ physical lines across the repository, of which $28$ files and
+$25{,}021$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
@@ -233,10 +236,10 @@ Lipschitz square-class wrapper for the selected factorization, factorization-lev
 identity/product wrappers proving multiplication of stored norm units and square
 classes, proved independence from the selected Lipschitz vector factorization,
 the global Lipschitz-group hom, a noncanonical chosen-lift wrapper on the
-Lipschitz linear image, remaining kernel-triviality-to-lift-independence, and
-descent-obligation APIs for a
-conditional image-level monoid hom with its range-restriction pullback theorem,
-pullback uniqueness theorem, product-order
+Lipschitz linear image, a scalar-kernel bridge from concrete scalarity to
+kernel-triviality, remaining kernel-triviality-to-lift-independence, and
+descent-obligation APIs for conditional image-level monoid homs with their
+range-restriction pullback theorem, pullback uniqueness theorem, product-order
 invariance, repeated-pair square-class cancellation, and
 duplicated-product square-class triviality for products, contiguous subproducts,
 and separated repeated subproducts after permutation into the repeated shape.
@@ -247,8 +250,8 @@ $\Cl(8,0)$, and their even companions. A recursive arbitrary-signature
 Bott-periodicity theorem beyond that packaged table, full
 all-orthogonal-group image classification and global orthogonal-group
 spinor-norm theory beyond this factorization-existence Clifford/Lipschitz
-substrate, its global Lipschitz-group hom and remaining kernel-triviality
-descent wrappers, and its noncanonical Lipschitz linear-image wrapper with the
+substrate, its global Lipschitz-group hom, scalar-kernel bridge, and remaining
+kernel-triviality descent wrappers, and its noncanonical Lipschitz linear-image wrapper with the
 range-restriction pullback and uniqueness theorems, and
 scheme-theoretic spin-cover statements are explicit scope
 boundaries, not assumptions behind the results claimed below.
@@ -360,7 +363,7 @@ Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
 \Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
 Build command & \code{lake build} \\
 Lean files under \code{Spinor/} & $28$ \\
-Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $24{,}826$ \\
+Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $25{,}021$ \\
 \code{sorry} occurrences under \code{Spinor/} & $0$
 \end{tabularx}
 \end{center}
@@ -1581,8 +1584,9 @@ cancellation, duplicated-product/subproduct triviality, and factorization-level
 product formulas for concatenated Lipschitz factorizations, including separated
 repeated subproducts after permutation into the repeated shape; the companion
 factorization-independence theorem, global Lipschitz-group hom, noncanonical
-chosen-lift wrapper, remaining kernel-triviality-to-lift-independence, and
-descent-obligation APIs, including the direct conditional image-level hom and
+chosen-lift wrapper, scalar-kernel bridge, remaining
+kernel-triviality-to-lift-independence, and
+descent-obligation APIs, including the direct conditional image-level homs and
 its range-restriction pullback and uniqueness theorems,
 expose this data on the Lipschitz linear image, but no global orthogonal-group
 spinor-norm theory is
@@ -1599,8 +1603,9 @@ Clifford/Lipschitz norm and its order-invariant, repeated-pair-stable,
 duplicated-product/subproduct-stable square-class product, factorization-level
 Lipschitz product wrappers, proved Lipschitz factorization-independence theorem
 and global Lipschitz-group hom, and noncanonical Lipschitz linear-image wrapper /
-remaining kernel-triviality-to-lift-independence, descent-obligation APIs, and direct
-conditional image-level hom with its range-restriction pullback and uniqueness theorems,
+scalar-kernel bridge, remaining kernel-triviality-to-lift-independence,
+descent-obligation APIs, and direct
+conditional image-level homs with their range-restriction pullback and uniqueness theorems,
 including separated repeated subproducts after permutation into the repeated shape, recursive
 arbitrary-signature Bott-periodic classification beyond the packaged
 \code{periodEightTable} first-period rows, and scheme-theoretic spin-cover

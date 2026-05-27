@@ -48,6 +48,8 @@ an orthogonal-group spinor-norm API.
 * `Spinor.lipschitzSpinorNormClassFactorizationIndependent`
 * `Spinor.lipschitzSpinorNormClassHom`
 * `Spinor.lipschitzSpinorNormClassHomOfFactorizationIndependent`
+* `Spinor.chosenLipschitzNormUnit_eq_sq_of_coe_eq_algebraMap_unit`
+* `Spinor.lipschitzSpinorNormClassHom_eq_one_of_coe_eq_algebraMap_unit`
 * `Spinor.exists_lipschitzVectorFactorization_mul_chosenSpinorNormClass_eq`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self`
@@ -814,6 +816,64 @@ theorem star_mul_self_eq_algebraMap_chosenLipschitzNormUnit [Invertible (2 : R)]
         (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
       algebraMap R (CliffordAlgebra Q) (chosenLipschitzNormUnit Q x : R) :=
   (lipschitzVectorFactorization Q x).star_mul_self_eq_algebraMap_normUnit
+
+/--
+If a Lipschitz element is a scalar unit in the Clifford algebra, then its chosen Clifford
+norm unit is the square of that scalar unit.
+-/
+theorem chosenLipschitzNormUnit_eq_sq_of_coe_eq_algebraMap_unit [Invertible (2 : R)]
+    (Q : QuadraticForm R M) (x : lipschitzGroup Q) (u : Rˣ)
+    (hx : (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
+      algebraMap R (CliffordAlgebra Q) (u : R)) :
+    chosenLipschitzNormUnit Q x = u ^ 2 := by
+  apply Units.ext
+  apply cliffordAlgebraMap_injective (Q := Q)
+  calc
+    algebraMap R (CliffordAlgebra Q) ((chosenLipschitzNormUnit Q x : Rˣ) : R) =
+        star (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) *
+          (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) := by
+          rw [← star_mul_self_eq_algebraMap_chosenLipschitzNormUnit (Q := Q) x]
+    _ = star (algebraMap R (CliffordAlgebra Q) (u : R)) *
+        algebraMap R (CliffordAlgebra Q) (u : R) := by
+          rw [hx]
+    _ = algebraMap R (CliffordAlgebra Q) (((u ^ 2 : Rˣ) : R)) := by
+          simp [pow_two, CliffordAlgebra.star_algebraMap]
+
+/--
+Scalar-unit Lipschitz elements have trivial square-class spinor norm.
+
+This is the concrete scalar-kernel calculation used by the image-level descent API: once a
+kernel element is known to be scalar, its norm is a square.
+-/
+theorem chosenLipschitzSpinorNormClass_eq_one_of_coe_eq_algebraMap_unit
+    [Invertible (2 : R)] (Q : QuadraticForm R M) (x : lipschitzGroup Q) (u : Rˣ)
+    (hx : (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
+      algebraMap R (CliffordAlgebra Q) (u : R)) :
+    chosenLipschitzSpinorNormClass Q x = 1 := by
+  change ((chosenLipschitzNormUnit Q x : Rˣ) :
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2)) = 1
+  rw [chosenLipschitzNormUnit_eq_sq_of_coe_eq_algebraMap_unit Q x u hx]
+  rw [QuotientGroup.eq_one_iff]
+  exact ⟨u, rfl⟩
+
+/-- The factorization-independent Lipschitz-group spinor-norm hom is trivial on scalar units. -/
+theorem lipschitzSpinorNormClassHomOfFactorizationIndependent_eq_one_of_coe_eq_algebraMap_unit
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (h : LipschitzSpinorNormClassFactorizationIndependent Q) (x : lipschitzGroup Q) (u : Rˣ)
+    (hx : (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
+      algebraMap R (CliffordAlgebra Q) (u : R)) :
+    lipschitzSpinorNormClassHomOfFactorizationIndependent Q h x = 1 := by
+  rw [lipschitzSpinorNormClassHomOfFactorizationIndependent_apply]
+  exact chosenLipschitzSpinorNormClass_eq_one_of_coe_eq_algebraMap_unit Q x u hx
+
+/-- The global Lipschitz-group spinor-norm hom is trivial on scalar units. -/
+theorem lipschitzSpinorNormClassHom_eq_one_of_coe_eq_algebraMap_unit
+    [Invertible (2 : R)] (Q : QuadraticForm R M) (x : lipschitzGroup Q) (u : Rˣ)
+    (hx : (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
+      algebraMap R (CliffordAlgebra Q) (u : R)) :
+    lipschitzSpinorNormClassHom Q x = 1 := by
+  rw [lipschitzSpinorNormClassHom_apply]
+  exact chosenLipschitzSpinorNormClass_eq_one_of_coe_eq_algebraMap_unit Q x u hx
 
 @[simp]
 theorem cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons

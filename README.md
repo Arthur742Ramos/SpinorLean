@@ -279,7 +279,10 @@ Implemented so far:
   `LipschitzImageNorm` exposes the corresponding noncanonical chosen-lift API on the image of
   `lipschitzLinearRepresentation`, separates the lift-independence and kernel-triviality
   obligations, proves that kernel-triviality of the global Lipschitz-group hom implies lift
-  independence and image-level descent, and packages
+  independence and image-level descent, adds the concrete scalar-kernel bridge
+  `LipschitzLinearKernelScalarUnits` together with
+  `lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_linearKernelScalarUnits` and
+  `lipschitzLinearImageSpinorNormClassHomOfLinearKernelScalarUnits`, and packages
   `LipschitzLinearImageSpinorNormDescends` as the conditional obligations that would turn the
   chosen image-level square class into a monoid homomorphism; the direct hom
   `lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel`
@@ -292,7 +295,8 @@ Implemented so far:
   `lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel_comp_rangeRestrict`
   prove that the image-level homs compose with `lipschitzLinearRepresentation.rangeRestrict`
   to the corresponding Lipschitz-group homs, and the corresponding
-  `_eq_of_comp_rangeRestrict` theorems prove uniqueness from that pullback. The scalar, unit, and
+  `_eq_of_comp_rangeRestrict` theorems prove uniqueness from that pullback. Proving the
+  scalar-kernel hypothesis globally remains separate from this descent bridge. The scalar, unit, and
   square-class products
   are invariant under list permutation and reversal via
   `cliffordVectorProductNormScalar_perm`,
@@ -395,8 +399,8 @@ Explicit scope boundaries for this algebraic submission package:
   triviality, including separated repeated subproducts after permutation into the repeated shape
 - a full global orthogonal-group spinor-norm theory beyond the factorization-existence
   Clifford/Lipschitz norm package, its proved Lipschitz factorization-independence theorem and
-  global Lipschitz-group hom, noncanonical Lipschitz linear-image wrapper, remaining
-  kernel-triviality, lift-independence, and descent-obligation APIs and implications, and
+  global Lipschitz-group hom, noncanonical Lipschitz linear-image wrapper, scalar-kernel bridge,
+  remaining kernel-triviality, lift-independence, and descent-obligation APIs and implications, and
   finite-basis split-Levi square-class APIs
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

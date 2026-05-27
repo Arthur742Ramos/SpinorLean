@@ -65,10 +65,13 @@ Lipschitz linear image, including separated repeated subproducts after permutati
 repeated shape. The Lipschitz norm modules now isolate the remaining kernel-triviality
 condition whose combination with the global Lipschitz-group hom implies lift independence and
 then the image-level descent obligations needed to turn the image-level square class into a
-monoid homomorphism; the direct conditional image-level hom wrapper packages that final
-composition without proving kernel-triviality globally, and its range-restriction pullback
-theorem proves that this image-level hom composes back to the global Lipschitz-group hom; the
-companion uniqueness theorem says this pullback characterizes the image-level hom. The theorem-facing
+monoid homomorphism; they also prove the scalar-unit norm calculation and package the
+`LipschitzLinearKernelScalarUnits` bridge, which turns a concrete scalar-kernel theorem into
+kernel-triviality, descent, and an image-level hom. The direct conditional image-level hom
+wrappers package that final composition without proving scalarity/kernel-triviality globally,
+and their range-restriction pullback theorems prove that the image-level hom composes back to
+the global Lipschitz-group hom; the companion uniqueness theorems say this pullback
+characterizes the image-level hom. The theorem-facing
 real-classification surface now also includes
 `RealClassification.PeriodEightTable` and `RealClassification.periodEightTable`,
 which collect the split families and first-period definite rows, including the explicit
@@ -82,11 +85,12 @@ A recursive arbitrary-signature Bott-periodicity theorem, a full all-orthogonal-
 and a global orthogonal-group spinor-norm API beyond this factorization-existence
 Clifford/Lipschitz substrate, factorization-level Lipschitz product wrappers, and noncanonical
 Lipschitz linear-image wrapper / proved global Lipschitz-group hom, remaining
-kernel-triviality-to-lift-independence, descent-obligation APIs, and direct conditional
-image-level hom wrapper with its range-restriction pullback and uniqueness theorems are
+kernel-triviality-to-lift-independence, scalar-kernel bridge, descent-obligation APIs, and
+direct conditional image-level hom wrappers with their range-restriction pullback and
+uniqueness theorems are
 separate projects, not dependencies in the claimed theorem package.
 The current artifact proves factorization independence for Lipschitz vector factorizations;
-kernel-triviality and full orthogonal-group descent remain explicit conditions.
+global scalarity/kernel-triviality and full orthogonal-group descent remain explicit conditions.
 
 ## Final preflight
 

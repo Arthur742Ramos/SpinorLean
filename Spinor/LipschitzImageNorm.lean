@@ -28,6 +28,8 @@ orthogonal-group spinor norm.
 * `Spinor.LipschitzLinearImageSpinorNormDescends`
 * `Spinor.LipschitzSpinorNormClassTrivialOnLinearKernel`
 * `Spinor.LipschitzSpinorNormClassHomTrivialOnLinearKernel`
+* `Spinor.LipschitzLinearKernelScalarUnits`
+* `Spinor.lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_linearKernelScalarUnits`
 * `Spinor.lipschitzLinearImageSpinorNormLiftIndependent_of_factorizationIndependent_of_trivialOnLinearKernel`
 * `Spinor.lipschitzLinearImageSpinorNormLiftIndependent_of_hom_trivialOnLinearKernel`
 * `Spinor.lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent`
@@ -37,6 +39,7 @@ orthogonal-group spinor norm.
 * `Spinor.lipschitzLinearImageSpinorNormClassHomOfDescends`
 * `Spinor.lipschitzLinearImageSpinorNormClassHomOfDescends_eq_of_comp_rangeRestrict`
 * `Spinor.lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel`
+* `Spinor.lipschitzLinearImageSpinorNormClassHomOfLinearKernelScalarUnits`
 * `Spinor.lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel`
 * `Spinor.lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel_eq_of_comp_rangeRestrict`
 -/
@@ -158,6 +161,42 @@ structure LipschitzSpinorNormClassHomTrivialOnLinearKernel [Invertible (2 : R)]
     lipschitzSpinorNormClassHom Q x = 1
 
 /--
+Concrete scalar-kernel condition for the Lipschitz linear representation.
+
+It says that every element in the kernel of `lipschitzLinearRepresentation` is represented by
+a scalar unit inside the Clifford algebra. The Clifford norm calculation then proves
+kernel-triviality of the global square-class hom.
+-/
+structure LipschitzLinearKernelScalarUnits [Invertible (2 : R)]
+    (Q : QuadraticForm R M) : Prop where
+  exists_unit_scalar_of_linearRepresentation_eq_one : ∀ x : lipschitzGroup Q,
+    lipschitzLinearRepresentation (Q := Q) x = 1 →
+    ∃ u : Rˣ,
+      (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
+        algebraMap R (CliffordAlgebra Q) (u : R)
+
+/-- Scalarity of the Lipschitz linear kernel implies the conditional kernel-triviality API. -/
+theorem lipschitzSpinorNormClassTrivialOnLinearKernel_of_linearKernelScalarUnits
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hfac : LipschitzSpinorNormClassFactorizationIndependent Q)
+    (hscalar : LipschitzLinearKernelScalarUnits Q) :
+    LipschitzSpinorNormClassTrivialOnLinearKernel Q hfac where
+  eq_one_of_linearRepresentation_eq_one x hx := by
+    rcases hscalar.exists_unit_scalar_of_linearRepresentation_eq_one x hx with ⟨u, hu⟩
+    exact
+      lipschitzSpinorNormClassHomOfFactorizationIndependent_eq_one_of_coe_eq_algebraMap_unit
+        Q hfac x u hu
+
+/-- Scalarity of the Lipschitz linear kernel implies kernel-triviality of the global hom. -/
+theorem lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_linearKernelScalarUnits
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hscalar : LipschitzLinearKernelScalarUnits Q) :
+    LipschitzSpinorNormClassHomTrivialOnLinearKernel Q where
+  eq_one_of_linearRepresentation_eq_one x hx := by
+    rcases hscalar.exists_unit_scalar_of_linearRepresentation_eq_one x hx with ⟨u, hu⟩
+    exact lipschitzSpinorNormClassHom_eq_one_of_coe_eq_algebraMap_unit Q x u hu
+
+/--
 Under lift independence, the chosen image-level square class agrees with any Lipschitz lift of
 the same image element.
 -/
@@ -211,6 +250,14 @@ theorem lipschitzLinearImageSpinorNormLiftIndependent_of_hom_trivialOnLinearKern
       hker.eq_one_of_linearRepresentation_eq_one (x * y⁻¹) hlin
     simpa [φ, map_mul, map_inv] using hφ
 
+/-- Scalarity of the Lipschitz linear kernel implies lift independence on the image. -/
+theorem lipschitzLinearImageSpinorNormLiftIndependent_of_linearKernelScalarUnits
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hscalar : LipschitzLinearKernelScalarUnits Q) :
+    LipschitzLinearImageSpinorNormLiftIndependent Q :=
+  lipschitzLinearImageSpinorNormLiftIndependent_of_hom_trivialOnLinearKernel Q
+    (lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_linearKernelScalarUnits Q hscalar)
+
 /--
 Factorization independence plus lift independence imply the chosen-level descent obligations
 for the Lipschitz linear image.
@@ -248,6 +295,14 @@ theorem lipschitzLinearImageSpinorNormDescends_of_hom_trivialOnLinearKernel
   lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent Q
     (lipschitzSpinorNormClassFactorizationIndependent Q)
     (lipschitzLinearImageSpinorNormLiftIndependent_of_hom_trivialOnLinearKernel Q hker)
+
+/-- Scalarity of the Lipschitz linear kernel gives the chosen-level descent obligations. -/
+theorem lipschitzLinearImageSpinorNormDescends_of_linearKernelScalarUnits
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hscalar : LipschitzLinearKernelScalarUnits Q) :
+    LipschitzLinearImageSpinorNormDescends Q :=
+  lipschitzLinearImageSpinorNormDescends_of_hom_trivialOnLinearKernel Q
+    (lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_linearKernelScalarUnits Q hscalar)
 
 /--
 Under the explicit descent obligations, the chosen image-level square class agrees with any
@@ -448,6 +503,67 @@ theorem lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel_eq_of_c
           ((lipschitzLinearRepresentation (Q := Q)).rangeRestrict x) := by
         exact (lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel_rangeRestrict
           Q hker x).symm
+
+/--
+Scalarity of the Lipschitz linear kernel directly gives the image-level spinor-norm
+square-class monoid hom.
+-/
+noncomputable def lipschitzLinearImageSpinorNormClassHomOfLinearKernelScalarUnits
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hscalar : LipschitzLinearKernelScalarUnits Q) :
+    lipschitzLinearImage Q →*
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2) :=
+  lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel Q
+    (lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_linearKernelScalarUnits Q hscalar)
+
+@[simp]
+theorem lipschitzLinearImageSpinorNormClassHomOfLinearKernelScalarUnits_apply
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hscalar : LipschitzLinearKernelScalarUnits Q)
+    (g : lipschitzLinearImage Q) :
+    lipschitzLinearImageSpinorNormClassHomOfLinearKernelScalarUnits Q hscalar g =
+      lipschitzLinearImageChosenSpinorNormClass Q g := by
+  rfl
+
+@[simp]
+theorem lipschitzLinearImageSpinorNormClassHomOfLinearKernelScalarUnits_rangeRestrict
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hscalar : LipschitzLinearKernelScalarUnits Q)
+    (x : lipschitzGroup Q) :
+    lipschitzLinearImageSpinorNormClassHomOfLinearKernelScalarUnits Q hscalar
+        ((lipschitzLinearRepresentation (Q := Q)).rangeRestrict x) =
+      chosenLipschitzSpinorNormClass Q x := by
+  exact lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel_rangeRestrict Q
+    (lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_linearKernelScalarUnits Q hscalar) x
+
+/--
+The image-level hom obtained from scalarity of the Lipschitz linear kernel pulls back to the
+global Lipschitz-group hom.
+-/
+theorem lipschitzLinearImageSpinorNormClassHomOfLinearKernelScalarUnits_comp_rangeRestrict
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hscalar : LipschitzLinearKernelScalarUnits Q) :
+    (lipschitzLinearImageSpinorNormClassHomOfLinearKernelScalarUnits Q hscalar).comp
+        (lipschitzLinearRepresentation (Q := Q)).rangeRestrict =
+      lipschitzSpinorNormClassHom Q := by
+  exact lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel_comp_rangeRestrict Q
+    (lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_linearKernelScalarUnits Q hscalar)
+
+/--
+The image-level hom obtained from scalarity of the Lipschitz linear kernel is uniquely
+determined by pullback to the global Lipschitz-group hom.
+-/
+theorem lipschitzLinearImageSpinorNormClassHomOfLinearKernelScalarUnits_eq_of_comp_rangeRestrict
+    [Invertible (2 : R)] (Q : QuadraticForm R M)
+    (hscalar : LipschitzLinearKernelScalarUnits Q)
+    (ψ : lipschitzLinearImage Q →*
+      Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2))
+    (hψ : ψ.comp (lipschitzLinearRepresentation (Q := Q)).rangeRestrict =
+      lipschitzSpinorNormClassHom Q) :
+    ψ = lipschitzLinearImageSpinorNormClassHomOfLinearKernelScalarUnits Q hscalar :=
+  lipschitzLinearImageSpinorNormClassHomOfHomTrivialOnLinearKernel_eq_of_comp_rangeRestrict Q
+    (lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_linearKernelScalarUnits Q hscalar)
+    ψ hψ
 
 /--
 Factorization independence plus kernel-triviality directly give the image-level

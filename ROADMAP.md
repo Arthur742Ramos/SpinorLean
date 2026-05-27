@@ -453,8 +453,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     Lipschitz-group spinor-norm square-class hom, and the
     corresponding noncanonical chosen-lift wrapper on the image of
     `Spinor.lipschitzLinearRepresentation`, plus kernel-triviality, lift-independence, and
-    descent-obligation structures, implications, and direct image-level monoid-hom wrapper whose
-    fields isolate the remaining missing hypothesis needed to turn that image-level square class into a monoid
+    descent-obligation structures, implications, scalar-kernel bridge
+    `Spinor.LipschitzLinearKernelScalarUnits`, and direct image-level monoid-hom wrappers whose
+    fields isolate the remaining missing scalarity/kernel-triviality hypothesis needed to turn
+    that image-level square class into a monoid
     homomorphism, together with pullback theorems showing that the image-level homs compose
     with `Spinor.lipschitzLinearRepresentation.rangeRestrict` to the corresponding
     Lipschitz-group homs and are uniquely determined by that pullback,
@@ -477,8 +479,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     factorization-existence Clifford/Lipschitz vector-product norm substrate, its
     factorization-level Lipschitz product wrappers, proved global Lipschitz factorization
     independence and Lipschitz-group hom, and its noncanonical Lipschitz linear-image
-    wrapper / remaining kernel-triviality-to-lift-independence, descent-obligation APIs, and direct conditional
-    image-level hom wrapper, range-restriction pullback theorem, and pullback uniqueness
+    wrapper / scalar-kernel bridge, remaining kernel-triviality-to-lift-independence,
+    descent-obligation APIs, and direct conditional image-level hom wrappers,
+    range-restriction pullback theorem, and pullback uniqueness
     theorem, including separated repeated subproducts after permutation into the repeated shape,
     are intentionally outside the submitted theorem surface
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
@@ -504,8 +507,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   package now reaches factorization-existence Lipschitz-group products, factorization-level
   product square-class wrappers, proved factorization independence and the global
   Lipschitz-group hom, and their noncanonical Lipschitz linear-image chosen-lift
-  wrappers / remaining kernel-triviality-to-lift-independence, descent-obligation APIs, and direct conditional
-  image-level hom wrapper with range-restriction pullback and uniqueness theorems when `2` is invertible, while recursive
+  wrappers / scalar-kernel bridge, remaining kernel-triviality-to-lift-independence,
+  descent-obligation APIs, and direct conditional image-level hom wrappers with
+  range-restriction pullback and uniqueness theorems when `2` is invertible, while recursive
   arbitrary-signature Bott-periodicity and full all-orthogonal-group image classifications /
   global orthogonal-group spinor-norm theory are framed as separate projects rather than
   dependencies of the claimed results
