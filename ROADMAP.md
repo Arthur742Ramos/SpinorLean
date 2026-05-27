@@ -237,9 +237,11 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
   `cl_2_2_even_equivProdMatrix2`, extending the negative-definite row, selected
   positive entries, and positive/negative/split even companions
-  - the full period-8 Bott periodicity theorem beyond these packaged low-signature entries is
-    treated as a separate classification program, not as an unchecked dependency of the submitted
-    theorem package
+  - `Spinor.RealClassification.PeriodEightTable` and
+    `Spinor.RealClassification.periodEightTable` now collect the split families and definite
+    first-period rows into one theorem-facing Bott-table package; recursive arbitrary-signature
+    periodicity beyond this package remains a separate classification program, not an unchecked
+    dependency of the submitted theorem package
 
 ### 4.2 Low-Dimensional Examples
 - [x] Spin(2) ≃ U(1) (circle)
@@ -478,8 +480,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 ### 5.1 Paper Writing
 - submission-ready paper package now lives at `paper/` (`main.tex`, `refs.bib`, `README.md`) with
   venue-neutral prose tied to the exact finite-basis split-Levi theorem package and its
-  onto determinant square-class quotient character / quotient isomorphism; broad Bott-periodicity
-  beyond the packaged low-dimensional rows and positive even companions and full
+  onto determinant square-class quotient character / quotient isomorphism; the first-period
+  Bott table is packaged through `RealClassification.periodEightTable`, while recursive
+  arbitrary-signature Bott-periodicity and full
   all-orthogonal-group image classifications / global orthogonal-group spinor-norm theory
   are framed as separate projects rather than dependencies of the claimed results
 - [x] Introduction: why spinors matter, why formalization is novel

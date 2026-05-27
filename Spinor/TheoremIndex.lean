@@ -10,6 +10,7 @@ import Spinor.Cl60QuaternionMatrix
 import Spinor.Cl07RealMatrixProd
 import Spinor.Cl08RealMatrix
 import Spinor.Cl78PositiveEven
+import Spinor.BottTable
 import Spinor.CliffordNorm
 
 /-!
@@ -188,6 +189,12 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.complexOddCliffordEquivProdMatrix
 #check Spinor.realSplitCliffordEquivMatrix
 #check Spinor.realSplitEvenCliffordEquivProdMatrix
+#check Spinor.RealClassification.PeriodEightTable
+#check Spinor.RealClassification.periodEightTable
+#check Spinor.RealClassification.periodEightTable.cl_n_n
+#check Spinor.RealClassification.periodEightTable.cl_0_8
+#check Spinor.RealClassification.periodEightTable.cl_8_0
+#check Spinor.RealClassification.periodEightTable.cl_8_0_even
 #check Spinor.RealClassification.cl_n_n_equivMatrix
 #check Spinor.RealClassification.cl_n_n_even_equivProdMatrix
 #check Spinor.RealClassification.cl_succ_n_n_equivProdMatrix

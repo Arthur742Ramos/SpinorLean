@@ -38,6 +38,7 @@ SpinorLean/
 │   ├── Cl07RealMatrixProd.lean -- Explicit Cl(0,7) and seventh-row even Bott entries
 │   ├── Cl08RealMatrix.lean -- Explicit Cl(0,8) and eighth-row even Bott entries
 │   ├── Cl78PositiveEven.lean -- Positive Cl(7,0), Cl(8,0), and even Bott entries
+│   ├── BottTable.lean -- Theorem-facing first-period real Bott table package
 │   ├── TheoremIndex.lean -- Machine-checked paper theorem surface
 │   └── OddClassification.lean -- Classification pieces over the odd split form
 ├── paper/                  -- Submission-ready paper sources (main.tex, refs.bib, README.md)
@@ -327,6 +328,8 @@ Implemented so far:
   `cl_8_0_even_equivMatrix8Prod :
   Cl⁺(8,0) ≃ₐ[ℝ] Mat₈(ℝ) × Mat₈(ℝ)`,
   and `cl_8_0_equivMatrix16 : Cl(8,0) ≃ₐ[ℝ] Mat₁₆(ℝ)`,
+  with `PeriodEightTable` and `periodEightTable` collecting the split families
+  and definite first-period rows into one theorem-facing Bott-table package,
   plus the split entries
   `cl_1_1_equivMatrix2`, `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
   `cl_2_2_even_equivProdMatrix2`, extending the packaged low-signature portion of
@@ -346,12 +349,8 @@ Implemented so far:
 
 Explicit scope boundaries for this algebraic submission package:
 
-- the full Bott period-8 table beyond the split foundation and packaged low-signature entries
-  through `Cl(0,3)`, `Cl(0,4)`, `Cl(0,5)`, `Cl(0,6)`, `Cl(0,7)`, `Cl(0,8)`,
-  `Cl(3,0)`,
-  `Cl(4,0)`, `Cl(5,0)`, `Cl(6,0)`, `Cl(7,0)`, and `Cl(8,0)`, selected even positive/negative companions
-  through `Cl⁺(0,8)` and `Cl⁺(8,0)`, and the explicit `Cl(2,2)` / `Cl⁺(2,2)`
-  split entries
+- a recursive arbitrary-signature Bott-periodicity theorem beyond the packaged split families
+  and first-period table collected in `RealClassification.periodEightTable`
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
   non-factorization, projective descent, exact split-line iff criterion, exact finite-basis
   split-Levi spin-image iff theorem, and onto split-Levi determinant square-class quotient
