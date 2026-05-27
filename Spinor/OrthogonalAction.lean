@@ -41,6 +41,13 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
 * `Spinor.lipschitzVectorAction`, `Spinor.lipschitzLinearEquiv`,
   `Spinor.lipschitzLinearRepresentation : lipschitzGroup Q →* (M ≃ₗ[R] M)` — the ambient
   vector action of the Lipschitz group by conjugation on `CliffordAlgebra.ι Q`.
+* `Spinor.lipschitzConjAlgEquiv_eq_refl_of_lipschitzLinearRepresentation_eq_one` and
+  `Spinor.commute_of_lipschitzLinearRepresentation_eq_one` — Lipschitz linear-kernel elements
+  act trivially by Clifford conjugation and commute with every Clifford element.
+* `Spinor.lipschitzLinearRepresentation_gradedDetParity` and
+  `Spinor.lipschitzLinearRepresentation_mem_even_of_eq_one_of_det_ne` — Lipschitz elements have
+  even/odd Clifford parity compatible with the determinant of the ambient action, excluding odd
+  linear-kernel lifts when the odd determinant branch is not `1`.
 * `Spinor.pinVectorAction`, `Spinor.pinLinearEquiv`,
   `Spinor.pinLinearRepresentation : pinGroup Q →* (M ≃ₗ[R] M)` — the ambient vector action of
   the pin group by conjugation on `CliffordAlgebra.ι Q`.
@@ -54,10 +61,22 @@ together with unfolding lemmas for `one`, `mul`, and `inv`.
   element acts as an isometry of `Q`, assembled into a homomorphism.
 * `Spinor.spinLinearRepresentation_det_eq_one` — over finite-dimensional fields, the ambient spin
   representation has determinant `1`.
+* `Spinor.spinIsometryRepresentation_not_surjective_of_exists_det_ne_one` — if the full
+  orthogonal group contains an isometry with determinant different from `1`, then the ambient spin
+  map is not surjective onto that full target.
+* `Spinor.pinIsometryRepresentation_det_of_quadratic_eq_neg_one` and
+  `Spinor.spinIsometryRepresentation_not_surjective_of_exists_quadratic_eq_neg_one_of_det_ne` —
+  the corresponding concrete obstruction supplied by a norm-`-1` pin generator when its determinant
+  branch is nontrivial.
+* `Spinor.spinIsometryRepresentation_not_surjective_dualProdLine_fullTarget` — the split-line
+  specialization showing that the ambient spin map is never surjective onto the full isometry
+  target, because the determinant-`-1` branch is outside the spin image.
 * `Spinor.spinSpecialOrthogonalRepresentation`,
   `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional` — the ambient isometry
   representation factors through `QuadraticForm.specialOrthogonalGroup Q`, either from an external
   determinant hypothesis or canonically in the finite-dimensional field setting.
+* `Spinor.spinIsometryRepresentation_range_eq_map_specialOrthogonalRepresentationFiniteDimensional`
+  — the full-isometry image is exactly the subtype image of the special-orthogonal spin map.
 * `Spinor.pinIotaOfQuadraticEqNegOne`, `Spinor.spinIotaPairOfQuadraticEqNegOne`,
   `Spinor.spinSpecialOrthogonalPairGenerator` — canonical pin/spin lifts of norm-`-1` vector
   reflections and their paired special-orthogonal images.
@@ -318,6 +337,39 @@ noncomputable def lipschitzLinearRepresentation : lipschitzGroup Q →* (M ≃�
 @[simp]
 theorem lipschitzLinearRepresentation_apply (x : lipschitzGroup Q) :
     lipschitzLinearRepresentation (Q := Q) x = lipschitzLinearEquiv (Q := Q) x := rfl
+
+/-- A Lipschitz linear-kernel element acts trivially on the full Clifford algebra by conjugation. -/
+theorem lipschitzConjAlgEquiv_eq_refl_of_lipschitzLinearRepresentation_eq_one
+    (x : lipschitzGroup Q) (hx : lipschitzLinearRepresentation (Q := Q) x = 1) :
+    lipschitzConjAlgEquiv (Q := Q) x = AlgEquiv.refl := by
+  ext a
+  have hhom :
+      (lipschitzConjAlgEquiv (Q := Q) x).toAlgHom =
+        (AlgEquiv.refl : CliffordAlgebra Q ≃ₐ[R] CliffordAlgebra Q).toAlgHom := by
+    refine CliffordAlgebra.hom_ext ?_
+    ext m
+    have hm : lipschitzLinearEquiv (Q := Q) x m = m := by
+      simpa [lipschitzLinearRepresentation_apply] using
+        congrArg (fun e : M ≃ₗ[R] M => e m) hx
+    simpa [lipschitzConjAlgEquiv_apply, hm] using
+      (lipschitzLinearEquiv_ι (Q := Q) x m).symm
+  exact congrArg (fun f : CliffordAlgebra Q →ₐ[R] CliffordAlgebra Q => f a) hhom
+
+/-- A Lipschitz linear-kernel element commutes with every Clifford element. -/
+theorem commute_of_lipschitzLinearRepresentation_eq_one
+    (x : lipschitzGroup Q) (hx : lipschitzLinearRepresentation (Q := Q) x = 1)
+    (a : CliffordAlgebra Q) :
+    Commute (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) a := by
+  let u : (CliffordAlgebra Q)ˣ := x
+  have hconj : lipschitzConjAlgEquiv (Q := Q) x a = a := by
+    simp [lipschitzConjAlgEquiv_eq_refl_of_lipschitzLinearRepresentation_eq_one (Q := Q) x hx]
+  have hcomm :
+      (u : CliffordAlgebra Q) * a = a * (u : CliffordAlgebra Q) := by
+    have hconj' : (u : CliffordAlgebra Q) * a * ↑u⁻¹ = a := by
+      simpa [u, lipschitzConjAlgEquiv_apply, ConjAct.toConjAct_smul] using hconj
+    rw [Units.mul_inv_eq_iff_eq_mul] at hconj'
+    exact hconj'
+  simpa [u, Commute] using hcomm
 
 /-- Conjugation by a pin element as an algebra automorphism of the Clifford algebra. -/
 noncomputable def pinConjAlgEquiv (x : pinGroup Q) : CliffordAlgebra Q ≃ₐ[R] CliffordAlgebra Q :=
@@ -1537,6 +1589,174 @@ theorem lipschitzLinearRepresentation_detParity (x : lipschitzGroup Q) :
       simpa [p] using lipschitzLinearRepresentationDetParity_mul (Q := Q) hg' hh')
     hx
 
+/-- Graded determinant-parity form of `lipschitzLinearRepresentation_detParity`.
+
+The Clifford value of a Lipschitz element is either even, with determinant `1`, or odd, with
+determinant the value of an invertible vector generator. -/
+def lipschitzLinearRepresentationGradedDetParity (x : lipschitzGroup Q) : Prop :=
+  ((((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) ∈
+      CliffordAlgebra.even Q ∧
+    LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) x) = 1) ∨
+  ((((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) ∈
+      CliffordAlgebra.evenOdd Q 1 ∧
+    LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) x) =
+      (-1 : Kˣ) ^ (Module.finrank K V - 1))
+
+omit [FiniteDimensional K V] in
+theorem lipschitzLinearRepresentationGradedDetParity_mul {x y : lipschitzGroup Q}
+    (hx : lipschitzLinearRepresentationGradedDetParity (Q := Q) x)
+    (hy : lipschitzLinearRepresentationGradedDetParity (Q := Q) y) :
+    lipschitzLinearRepresentationGradedDetParity (Q := Q) (x * y) := by
+  have hdetMul :
+      LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) (x * y)) =
+        LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) x) *
+          LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) y) := by
+    rw [(lipschitzLinearRepresentation (Q := Q)).map_mul]
+    exact map_mul (LinearEquiv.det : (V ≃ₗ[K] V) →* Kˣ)
+      (lipschitzLinearRepresentation (Q := Q) x) (lipschitzLinearRepresentation (Q := Q) y)
+  rcases hx with hx | hx <;> rcases hy with hy | hy
+  · left
+    constructor
+    · change
+        lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y ∈ CliffordAlgebra.even Q
+      exact (CliffordAlgebra.even Q).mul_mem hx.1 hy.1
+    · rw [hdetMul, hx.2, hy.2]
+      simp
+  · right
+    constructor
+    · change
+        lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y ∈ CliffordAlgebra.evenOdd Q 1
+      have hx0 : lipschitzVal (Q := Q) x ∈ CliffordAlgebra.evenOdd Q 0 := by
+        simpa [CliffordAlgebra.even] using hx.1
+      simpa using SetLike.mul_mem_graded hx0 hy.1
+    · rw [hdetMul, hx.2, hy.2]
+      simp
+  · right
+    constructor
+    · change
+        lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y ∈ CliffordAlgebra.evenOdd Q 1
+      have hy0 : lipschitzVal (Q := Q) y ∈ CliffordAlgebra.evenOdd Q 0 := by
+        simpa [CliffordAlgebra.even] using hy.1
+      simpa [add_comm] using SetLike.mul_mem_graded hx.1 hy0
+    · rw [hdetMul, hx.2, hy.2]
+      simp
+  · left
+    constructor
+    · change
+        lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y ∈ CliffordAlgebra.even Q
+      have hxy : lipschitzVal (Q := Q) x * lipschitzVal (Q := Q) y ∈
+          CliffordAlgebra.evenOdd Q ((1 : ZMod 2) + 1) :=
+        SetLike.mul_mem_graded hx.1 hy.1
+      simpa [CliffordAlgebra.even] using hxy
+    · rw [hdetMul, hx.2, hy.2]
+      let n : ℕ := Module.finrank K V - 1
+      have hsq : ((-1 : Kˣ) ^ n) * ((-1 : Kˣ) ^ n) = 1 := by
+        apply Units.ext
+        change (((-1 : K) ^ n) * ((-1 : K) ^ n)) = 1
+        rw [← pow_add, ← two_mul n, pow_mul]
+        simp
+      have hd : (((-1 : Kˣ) ^ n)⁻¹) = (-1 : Kˣ) ^ n :=
+        inv_eq_of_mul_eq_one_left hsq
+      calc
+        (-1 : Kˣ) ^ n * (-1 : Kˣ) ^ n = ((-1 : Kˣ) ^ n)⁻¹ * ((-1 : Kˣ) ^ n) := by rw [hd]
+        _ = 1 := by simp
+
+/-- Every Lipschitz element has homogeneous Clifford parity compatible with the determinant of
+its ambient linear action. -/
+theorem lipschitzLinearRepresentation_gradedDetParity (x : lipschitzGroup Q) :
+    lipschitzLinearRepresentationGradedDetParity (Q := Q) x := by
+  let s : Set (CliffordAlgebra Q)ˣ := ((↑) ⁻¹' Set.range (CliffordAlgebra.ι Q))
+  let p : (g : (CliffordAlgebra Q)ˣ) → g ∈ Subgroup.closure s → Prop :=
+    fun g hg =>
+      lipschitzLinearRepresentationGradedDetParity (Q := Q)
+        ⟨g, by simpa [lipschitzGroup, s] using hg⟩
+  have hx : ((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) ∈ Subgroup.closure s := by
+    have hx0 := x.property
+    simp [lipschitzGroup, s] at hx0 ⊢
+  exact Subgroup.closure_induction'' (s := s) (p := p)
+    (fun g hg => by
+      obtain ⟨a, ha⟩ := hg
+      letI := g.invertible
+      letI : Invertible (CliffordAlgebra.ι Q a) := by rwa [ha]
+      letI : Invertible (Q a) := CliffordAlgebra.invertibleOfInvertibleι (Q := Q) a
+      have hg' : g = cliffordIotaUnit (Q := Q) a := by
+        apply Units.ext
+        simpa [cliffordIotaUnit] using ha.symm
+      right
+      constructor
+      · change (g : CliffordAlgebra Q) ∈ CliffordAlgebra.evenOdd Q 1
+        rw [← ha]
+        exact CliffordAlgebra.ι_mem_evenOdd_one (Q := Q) a
+      · simpa [p, hg'] using lipschitzLinearRepresentation_det_cliffordIota (Q := Q) a)
+    (fun g hg => by
+      obtain ⟨a, ha⟩ := hg
+      letI := g.invertible
+      letI : Invertible (CliffordAlgebra.ι Q a) := by rwa [ha]
+      letI : Invertible (Q a) := CliffordAlgebra.invertibleOfInvertibleι (Q := Q) a
+      have hg' : g = cliffordIotaUnit (Q := Q) a := by
+        apply Units.ext
+        simpa [cliffordIotaUnit] using ha.symm
+      right
+      constructor
+      · change (↑g⁻¹ : CliffordAlgebra Q) ∈ CliffordAlgebra.evenOdd Q 1
+        rw [hg']
+        change
+          lipschitzVal (Q := Q) ((cliffordIotaLipschitz (Q := Q) a)⁻¹) ∈
+            CliffordAlgebra.evenOdd Q 1
+        rw [coe_cliffordIotaLipschitz_inv (Q := Q) a]
+        exact Submodule.smul_mem _ _ (CliffordAlgebra.ι_mem_evenOdd_one (Q := Q) a)
+      · have hdetInv :
+            LinearEquiv.det
+                (lipschitzLinearRepresentation (Q := Q)
+                  ((cliffordIotaLipschitz (Q := Q) a)⁻¹)) =
+              (LinearEquiv.det
+                (lipschitzLinearRepresentation (Q := Q)
+                  (cliffordIotaLipschitz (Q := Q) a)))⁻¹ := by
+          rw [(lipschitzLinearRepresentation (Q := Q)).map_inv]
+          exact map_inv (LinearEquiv.det : (V ≃ₗ[K] V) →* Kˣ)
+            (lipschitzLinearRepresentation (Q := Q) (cliffordIotaLipschitz (Q := Q) a))
+        have hdet :
+            LinearEquiv.det
+                (lipschitzLinearRepresentation (Q := Q)
+                  ((cliffordIotaLipschitz (Q := Q) a)⁻¹)) =
+              (-1 : Kˣ) ^ (Module.finrank K V - 1) := by
+          rw [hdetInv, lipschitzLinearRepresentation_det_cliffordIota (Q := Q) a]
+          let n : ℕ := Module.finrank K V - 1
+          have hsq : ((-1 : Kˣ) ^ n) * ((-1 : Kˣ) ^ n) = 1 := by
+            apply Units.ext
+            change (((-1 : K) ^ n) * ((-1 : K) ^ n)) = 1
+            rw [← pow_add, ← two_mul n, pow_mul]
+            simp
+          exact inv_eq_of_mul_eq_one_left hsq
+        simpa [p, hg'] using hdet)
+    (by
+      left
+      constructor
+      · change (1 : CliffordAlgebra Q) ∈ CliffordAlgebra.even Q
+        exact (CliffordAlgebra.even Q).one_mem
+      · change LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) (1 : lipschitzGroup Q)) = 1
+        rw [(lipschitzLinearRepresentation (Q := Q)).map_one]
+        simp)
+    (fun g h hg hh hg' hh' => by
+      simpa [p] using lipschitzLinearRepresentationGradedDetParity_mul (Q := Q) hg' hh')
+    hx
+
+/-- A Lipschitz linear-kernel element is even whenever the odd determinant branch is excluded. -/
+theorem lipschitzLinearRepresentation_mem_even_of_eq_one_of_det_ne
+    (x : lipschitzGroup Q) (hx : lipschitzLinearRepresentation (Q := Q) x = 1)
+    (hdet : (-1 : Kˣ) ^ (Module.finrank K V - 1) ≠ 1) :
+    (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) ∈
+      CliffordAlgebra.even Q := by
+  rcases lipschitzLinearRepresentation_gradedDetParity (Q := Q) x with h | h
+  · exact h.1
+  · have hxdet :
+        LinearEquiv.det (lipschitzLinearRepresentation (Q := Q) x) = 1 := by
+      rw [hx]
+      simp
+    have hodd : (-1 : Kˣ) ^ (Module.finrank K V - 1) = 1 := by
+      rw [← h.2, hxdet]
+    exact False.elim (hdet hodd)
+
 /-- The ambient spin representation always has determinant `1`. -/
 theorem spinLinearRepresentation_det_eq_one (x : spinGroup Q) :
     LinearEquiv.det (spinLinearRepresentation (Q := Q) x) = 1 := by
@@ -1582,6 +1802,88 @@ theorem spinSpecialOrthogonalRepresentationFiniteDimensional_comp_subtype :
       spinIsometryRepresentation (Q := Q) := by
   ext x
   rfl
+
+/-- Every ambient spin-isometry value lies in the determinant-one subgroup. -/
+theorem spinIsometryRepresentation_mem_specialOrthogonalGroup (x : spinGroup Q) :
+    spinIsometryRepresentation (Q := Q) x ∈ Q.specialOrthogonalGroup := by
+  change LinearEquiv.det
+    (((spinIsometryRepresentation (Q := Q) x : Q.IsometryEquiv Q) : V ≃ₗ[K] V)) = 1
+  simpa [spinIsometryRepresentation_toLinearEquiv] using
+    spinLinearRepresentation_det_eq_one (Q := Q) x
+
+/-- The full-orthogonal target image is contained in the determinant-one subgroup. -/
+theorem spinIsometryRepresentation_range_le_specialOrthogonalGroup :
+    MonoidHom.range (spinIsometryRepresentation (Q := Q)) ≤ Q.specialOrthogonalGroup := by
+  rintro _ ⟨x, rfl⟩
+  exact spinIsometryRepresentation_mem_specialOrthogonalGroup (Q := Q) x
+
+/-- The ambient full-orthogonal image is exactly the image of the special-orthogonal spin map
+after applying the subgroup inclusion. -/
+theorem spinIsometryRepresentation_range_eq_map_specialOrthogonalRepresentationFiniteDimensional :
+    MonoidHom.range (spinIsometryRepresentation (Q := Q)) =
+      Subgroup.map (Q.specialOrthogonalGroup.subtype)
+        (MonoidHom.range (spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q))) := by
+  ext g
+  constructor
+  · rintro ⟨x, rfl⟩
+    exact ⟨spinSpecialOrthogonalRepresentationFiniteDimensional (Q := Q) x, ⟨x, rfl⟩, rfl⟩
+  · rintro ⟨gso, ⟨x, hx⟩, hg⟩
+    refine ⟨x, ?_⟩
+    rw [← hg, ← hx]
+    rfl
+
+/-- The ambient spin map cannot be surjective onto the full orthogonal group once the
+orthogonal group contains an isometry of determinant different from `1`. Thus the special
+orthogonal target is not just a convenience: it is forced by the determinant-one theorem for
+spin actions. -/
+theorem spinIsometryRepresentation_not_surjective_of_exists_det_ne_one
+    (h : ∃ g : Q.IsometryEquiv Q, LinearEquiv.det (g : V ≃ₗ[K] V) ≠ 1) :
+    ¬ Function.Surjective (spinIsometryRepresentation (Q := Q)) := by
+  intro hsurj
+  rcases h with ⟨g, hg⟩
+  rcases hsurj g with ⟨x, hx⟩
+  have hdetImage :
+      LinearEquiv.det
+          ((spinIsometryRepresentation (Q := Q) x : Q.IsometryEquiv Q) : V ≃ₗ[K] V) = 1 := by
+    simpa [spinIsometryRepresentation_toLinearEquiv] using
+      spinLinearRepresentation_det_eq_one (Q := Q) x
+  exact hg (by simpa [hx] using hdetImage)
+
+/-- Unit-valued determinant of the full isometry attached to a norm-`-1` pin generator. -/
+theorem pinIsometryRepresentation_det_of_quadratic_eq_neg_one
+    (a : V) (hq : Q a = -1) :
+    LinearEquiv.det
+        ((pinIsometryRepresentation (Q := Q)
+            (pinIotaOfQuadraticEqNegOne (Q := Q) a hq) : Q.IsometryEquiv Q) : V ≃ₗ[K] V) =
+      (-1 : Kˣ) ^ (Module.finrank K V - 1) := by
+  apply Units.ext
+  rw [LinearEquiv.coe_det, pinIsometryRepresentation_toLinearEquiv]
+  have ha : a ≠ 0 := by
+    intro hzeroVec
+    have hneg : (-1 : K) ≠ 0 := by simp
+    apply hneg
+    simpa [hzeroVec] using hq.symm
+  have hfin : Module.finrank K (V ⧸ (K ∙ a)) = Module.finrank K V - 1 := by
+    have hdim : Module.finrank K (V ⧸ (K ∙ a)) + 1 = Module.finrank K V := by
+      simpa [finrank_span_singleton ha] using
+        (K ∙ a : Submodule K V).finrank_quotient_add_finrank
+    exact Nat.eq_sub_of_add_eq hdim
+  simpa [pinIotaOfQuadraticEqNegOne, hfin] using
+    pinLinearRepresentation_det_of_quadratic_eq_neg_one (Q := Q) a hq
+
+/-- A norm-`-1` vector gives a concrete full-orthogonal obstruction to spin-map surjectivity
+whenever the corresponding pin-generator determinant branch is not `1`. -/
+theorem spinIsometryRepresentation_not_surjective_of_exists_quadratic_eq_neg_one_of_det_ne
+    (hQ : ∃ a : V, Q a = -1)
+    (hdet : (-1 : Kˣ) ^ (Module.finrank K V - 1) ≠ 1) :
+    ¬ Function.Surjective (spinIsometryRepresentation (Q := Q)) := by
+  rcases hQ with ⟨a, hqa⟩
+  refine spinIsometryRepresentation_not_surjective_of_exists_det_ne_one (Q := Q) ?_
+  refine ⟨pinIsometryRepresentation (Q := Q) (pinIotaOfQuadraticEqNegOne (Q := Q) a hqa), ?_⟩
+  intro hg
+  exact hdet
+    ((pinIsometryRepresentation_det_of_quadratic_eq_neg_one (Q := Q) a hqa).symm.trans
+      (by simpa [pinIsometryRepresentation_apply] using hg))
 
 omit [Invertible (2 : K)] [FiniteDimensional K V] in
 @[simp]
@@ -4300,6 +4602,37 @@ theorem spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_ne_top_of_exi
   exact (dualProdLineScalingHom_not_mem_squareScalingSubgroup (K := K) hu)
     ((spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_le_squareScalingSubgroup
       (K := K)) hmem)
+
+omit [Invertible (2 : K)] in
+/-- The split hyperbolic line represents `-1`. -/
+theorem dualProdLine_exists_quadratic_eq_neg_one :
+    ∃ v : Module.Dual K K × K, QuadraticForm.dualProd K K v = -1 := by
+  exact ⟨(-(((1 : K)⁻¹) • (LinearMap.id : Module.Dual K K)), (1 : K)),
+    by simp [QuadraticForm.dualProd]⟩
+
+/-- On the split hyperbolic line, the spin map is never surjective onto the full isometry target:
+the determinant-`-1` branch is outside the determinant-one spin image. -/
+theorem spinIsometryRepresentation_not_surjective_dualProdLine_fullTarget :
+    ¬ Function.Surjective (spinIsometryRepresentation (Q := QuadraticForm.dualProd K K)) := by
+  refine spinIsometryRepresentation_not_surjective_of_exists_quadratic_eq_neg_one_of_det_ne
+    (Q := QuadraticForm.dualProd K K) (dualProdLine_exists_quadratic_eq_neg_one (K := K)) ?_
+  have hfin : Module.finrank K (Module.Dual K K × K) = 2 := by
+    have hdual : Module.finrank K (Module.Dual K K) = 1 := by
+      simpa using LinearEquiv.finrank_eq (dualLineCoordEquiv (K := K))
+    rw [Module.finrank_prod, hdual]
+    simp
+  have hneg_ne_one : (-1 : Kˣ) ≠ 1 := by
+    intro h
+    have hval : ((-1 : Kˣ) : K) = (1 : K) := congrArg Units.val h
+    have hneg : (-1 : K) = 1 := by
+      simpa using hval
+    have htwo_zero : (2 : K) = 0 := by
+      calc
+        (2 : K) = 1 + 1 := by norm_num
+        _ = (-1 : K) + 1 := by rw [hneg]
+        _ = 0 := by simp
+    exact (isUnit_of_invertible (2 : K)).ne_zero htwo_zero
+  simpa [hfin] using hneg_ne_one
 
 end DualProdLine
 

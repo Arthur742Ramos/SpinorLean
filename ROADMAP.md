@@ -186,7 +186,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   `Spinor.RealClassification.cl_n_n_even_equivProdMatrix`;
   the grouped odd split-signature row `Cl(n+1,n)` is now also packaged as
   `Spinor.RealClassification.cl_succ_n_n_equivProdMatrix`, i.e.
-  `Mat_(2^n)(ℝ) × Mat_(2^n)(ℝ)`;
+  `Mat_(2^n)(ℝ) × Mat_(2^n)(ℝ)`, and
+  `Spinor.RealClassification.cl_succ_n_n_standard_equivProdMatrix` transports this row to
+  the standard signature coordinates `Cl(n+1,n)`;
   canonical low-signature entries `Spinor.RealClassification.cl_0_0_equivReal`
   (`Cl(0,0) ≃ ℝ`), `Spinor.RealClassification.cl_1_0_equivRealProd`
   (`Cl(1,0) ≃ ℝ × ℝ`), `Spinor.RealClassification.cl_1_0_even_equivReal`
@@ -237,9 +239,17 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
   `cl_2_2_even_equivProdMatrix2`, extending the negative-definite row, selected
   positive entries, and positive/negative/split even companions
-  - the full period-8 Bott periodicity theorem beyond these packaged low-signature entries is
-    treated as a separate classification program, not as an unchecked dependency of the submitted
-    theorem package
+  - `Spinor.RealClassification.PeriodEightTable` and
+    `Spinor.RealClassification.periodEightTable` now collect the split families, the
+    standard-coordinate positive odd split family, and definite first-period rows into one
+    theorem-facing Bott-table package, while
+    `Spinor.RealClassification.recursiveSignatureBottStep` packages the arbitrary-signature
+    one-negative-square and even sign-reversal Clifford recurrences, now including the
+    standard-coordinate steps
+    `cl_p_q_equiv_even_succ_neg : Cl(p,q) ≃ Cl⁺(p,q+1)` and
+    `cl_p_q_even_equiv_even_swap : Cl⁺(p,q) ≃ Cl⁺(q,p)`; the remaining
+    arbitrary-signature matrix-target period-eight classification remains a separate
+    classification program, not an unchecked dependency of the submitted theorem package
 
 ### 4.2 Low-Dimensional Examples
 - [x] Spin(2) ≃ U(1) (circle)
@@ -302,6 +312,14 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `QuadraticForm.specialOrthogonalGroup`
   - [x] prove the determinant-one statement
     `Spinor.spinLinearRepresentation_det_eq_one`
+  - [x] package the exact reduction from the full isometry image to the subtype image of the
+    special-orthogonal spin map as
+    `Spinor.spinIsometryRepresentation_range_eq_map_specialOrthogonalRepresentationFiniteDimensional`
+  - [x] record the resulting obstruction to full orthogonal-group surjectivity as
+    `Spinor.spinIsometryRepresentation_not_surjective_of_exists_det_ne_one`
+  - [x] make that obstruction concrete for norm-`-1` pin generators via
+    `Spinor.pinIsometryRepresentation_det_of_quadratic_eq_neg_one` and
+    `Spinor.spinIsometryRepresentation_not_surjective_of_exists_quadratic_eq_neg_one_of_det_ne`
   - [x] factor the ambient action through that target as
     `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional`
   - [x] identify the finite-dimensional nondegenerate kernel as `{1, -1}` via
@@ -392,6 +410,12 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   - [x] package the exact ambient split-line spin image as
     `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup`,
     showing the image inside `SO(1,1)` is precisely the square-scaling subgroup
+  - [x] package the same split-line image after inclusion into the full isometry target as
+    `Spinor.spinIsometryRepresentation_range_dualProdLine_eq_map_squareScalingSubgroup`,
+    showing that the full-target image is exactly the subtype image of the square-scaling subgroup
+  - [x] separately record that this full-target split-line image is not all of the ambient
+    isometry target via `Spinor.spinIsometryRepresentation_not_surjective_dualProdLine_fullTarget`,
+    because the determinant-`-1` branch remains outside the spin image
   - [x] also package the exact split-line salvage under the opposite hypothesis: if the square map on
     `Kˣ` is surjective, then
     `Spinor.spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_top_of_square_surjective`
@@ -442,11 +466,51 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     by the corresponding spin-image subgroup with the square-class quotient; the wrapper names
     `Spinor.linearEquivSplitLeviSpinorNormHom` and `Spinor.dualProdLeviSpinorNormHom` expose this
     proved finite-basis split-Levi character as the local spinor-norm-facing formulation, while
-    `Spinor.CliffordNorm` packages the global Clifford-level vector-product norm formula, its
-    invertible-vector square-class form, product-order invariance for the scalar, unit, and
-    square-class products, repeated-pair square-class cancellation, and duplicated-product/subproduct
-    square-class triviality, including separated repeated subproducts after permutation into the
-    repeated shape; a full orthogonal-group spinor-norm API remains outside
+    `Spinor.CliffordNorm` packages the global Clifford/Lipschitz vector-product norm formula, its
+    invertible-vector square-class form, factorization-existence Lipschitz wrapper when `2` is
+    invertible, factorization-level identity/product wrappers proving multiplicativity of the
+    stored norm units and square classes, noncanonical chosen Lipschitz norm-unit and
+    square-class wrappers, global equality of the norm unit and square class across any two
+    Lipschitz vector factorizations of the same element, the resulting unconditional
+    Lipschitz-group spinor-norm square-class hom, its single-vector generator computation
+    `Spinor.lipschitzSpinorNormClassHom_cliffordInvertibleVectorLipschitz`, and the
+    corresponding noncanonical chosen-lift wrapper on the image of
+    `Spinor.lipschitzLinearRepresentation`, plus the
+    `Spinor.commute_of_lipschitzLinearRepresentation_eq_one` linear-kernel centrality bridge
+    and `Spinor.exists_unit_scalar_of_lipschitzLinearRepresentation_eq_one_of_mem_even`
+    even-kernel scalar-unit bridge, the
+    `Spinor.lipschitzLinearRepresentation_gradedDetParity` parity bridge, and the
+    `Spinor.lipschitzLinearImageSpinorNormDescends_of_det_ne` determinant-obstructed
+    kernel-triviality / descent theorem. `Spinor.OddKernelObstruction` proves the
+    determinant qualification is sharp for the current untwisted action:
+    `Spinor.realCl10OddKernelLipschitz_linearRepresentation_eq_one` gives an odd
+    `Cl(1,0)` linear-kernel element, `Spinor.realCl10OddKernelLipschitz_not_scalar`
+    proves it is not scalar,
+    `Spinor.realCl10OddKernelLipschitz_spinorNormClassHom_eq_neg_one` computes its
+    Lipschitz spinor-norm square class as the nontrivial class of `-1`, and
+    `Spinor.not_lipschitzLinearKernelScalarUnits_realCl10` together with
+    `Spinor.not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10` jointly rule out the
+    unconditional scalar-kernel and kernel-triviality descent APIs, while
+    `Spinor.not_exists_lipschitzLinearTargetSpinorNormClassHom_comp_lipschitzLinearRepresentation_realCl10`
+    rules out recovering the global Lipschitz spinor-norm hom by pullback from any
+    square-class hom on the full linear target and
+    `Spinor.not_exists_lipschitzIsometryTargetSpinorNormClassHom_comp_realCl10` rules out the
+    analogous pullback from an isometry target with the same underlying linear action. The
+    development also retains the
+    lift-independence and descent-obligation structures, proves their iff wrappers with
+    kernel-triviality of the global Lipschitz-group hom, and includes the
+    scalar-kernel bridge
+    `Spinor.LipschitzLinearKernelScalarUnits`, and direct image-level monoid-hom wrappers whose
+    fields isolate the remaining missing scalarity/kernel-triviality hypothesis needed to turn
+    that image-level square class into a monoid
+    homomorphism, together with pullback theorems showing that the image-level homs compose
+    with `Spinor.lipschitzLinearRepresentation.rangeRestrict` to the corresponding
+    Lipschitz-group homs and are uniquely determined by that pullback,
+    product-order invariance for the scalar, unit, and square-class products, repeated-pair
+    square-class cancellation, and duplicated-product/subproduct square-class triviality,
+    including separated repeated subproducts after permutation into the repeated shape;
+    a full orthogonal-group
+    spinor-norm API remains outside
     the submission surface
   - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
@@ -457,9 +521,20 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     finite-basis split Levi subgroup, including the onto determinant square-class quotient
     character, quotient isomorphism, and local split-Levi spinor-norm-facing wrappers;
     broader orthogonal subgroups and global orthogonal-group spinor-norm formulations beyond the
-    order-invariant, repeated-pair-stable, duplicated-product/subproduct-stable Clifford
-    vector-product norm substrate, including separated repeated subproducts after permutation into
-    the repeated shape, are intentionally outside the submitted theorem surface
+    order-invariant, repeated-pair-stable, duplicated-product/subproduct-stable
+    factorization-existence Clifford/Lipschitz vector-product norm substrate, its
+    factorization-level Lipschitz product wrappers, proved global Lipschitz factorization
+    independence and Lipschitz-group hom, and its noncanonical Lipschitz linear-image
+    wrapper, linear-kernel centrality / parity / even-kernel scalarity bridge,
+    determinant-obstructed scalar-kernel and descent theorem, scalar-kernel bridge,
+    the formal `Cl(1,0)` odd-kernel obstruction to unconditional scalarity and
+    unconditional kernel-trivial descent, image-level lift independence, image-level descent, and
+    pullback-compatible image homs for the current untwisted action, the equivalence between
+    lift independence / image-level descent and kernel-triviality of the global Lipschitz-group hom,
+    descent-obligation APIs, and direct conditional image-level hom wrappers,
+    range-restriction pullback theorem, and pullback uniqueness
+    theorem, including separated repeated subproducts after permutation into the repeated shape,
+    are intentionally outside the submitted theorem surface
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
     `spinRepresentation_not_factor_through_isometry_of_exists_quadratic_eq_neg_one`
@@ -478,10 +553,23 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 ### 5.1 Paper Writing
 - submission-ready paper package now lives at `paper/` (`main.tex`, `refs.bib`, `README.md`) with
   venue-neutral prose tied to the exact finite-basis split-Levi theorem package and its
-  onto determinant square-class quotient character / quotient isomorphism; broad Bott-periodicity
-  beyond the packaged low-dimensional rows and positive even companions and full
-  all-orthogonal-group image classifications / global orthogonal-group spinor-norm theory
-  are framed as separate projects rather than dependencies of the claimed results
+  onto determinant square-class quotient character / quotient isomorphism; the first-period
+  Bott table is packaged through `RealClassification.periodEightTable`, and the Clifford norm
+  package now reaches factorization-existence Lipschitz-group products, factorization-level
+  product square-class wrappers, proved factorization independence and the global
+  Lipschitz-group hom, and their noncanonical Lipschitz linear-image chosen-lift
+  wrappers, linear-kernel centrality / parity / even-kernel scalarity bridge,
+  determinant-obstructed scalar-kernel and descent theorem, scalar-kernel bridge,
+  the formal `Cl(1,0)` odd-kernel obstruction to unconditional scalarity and
+  unconditional kernel-trivial descent, image-level lift independence, image-level descent, and
+  pullback-compatible image homs for the current untwisted action, the equivalence between
+  lift independence / image-level descent and kernel-triviality of the global Lipschitz-group hom,
+  descent-obligation APIs, and direct conditional image-level hom wrappers with
+  range-restriction pullback and uniqueness theorems when `2` is invertible, while the remaining
+  arbitrary-signature matrix-target Bott-periodicity and full all-orthogonal-group image classifications beyond
+  the standard-coordinate recursive Bott steps and positive odd split matrix family / exact full-isometry image reduction / determinant obstruction / global orthogonal-group
+  spinor-norm theory are framed as separate projects rather than dependencies of the claimed
+  results
 - [x] Introduction: why spinors matter, why formalization is novel
 - [x] Related work: lean-ga, Mathlib Clifford, what's missing
 - [x] Formalization architecture

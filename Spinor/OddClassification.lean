@@ -42,6 +42,8 @@ model.
   equivalences classifying `CliffordAlgebra (oddSplitForm M)`.
 * `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup`
   — exact split-line image theorem identifying the spin image with the square-scaling subgroup.
+* `Spinor.spinIsometryRepresentation_range_dualProdLine_eq_map_squareScalingSubgroup`
+  — the same split-line image theorem after inclusion into the full isometry target.
 * `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_surjective_dualProdLine_iff_square_surjective`
   and
   `Spinor.spinSpecialOrthogonalRepresentationFiniteDimensional_not_surjective_dualProdLine_of_exists_nonsquare_unit`
@@ -1007,6 +1009,15 @@ theorem spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_
   rw [← spinSpecialOrthogonalPairGeneratorSet_dualProdLine_closure_eq_squareScalingSubgroup (K := K)]
   rw [Subgroup.closure_le]
   exact spinSpecialOrthogonalPairGeneratorSet_subset_range (Q := QuadraticForm.dualProd K K)
+
+/-- In the full split-line isometry target, the ambient spin image is exactly the inclusion of
+the square-scaling subgroup of `SO(1,1)`. -/
+theorem spinIsometryRepresentation_range_dualProdLine_eq_map_squareScalingSubgroup :
+    MonoidHom.range (spinIsometryRepresentation (Q := QuadraticForm.dualProd K K)) =
+      Subgroup.map ((QuadraticForm.dualProd K K).specialOrthogonalGroup.subtype)
+        (dualProdLineSquareScalingSubgroup (K := K)) := by
+  rw [spinIsometryRepresentation_range_eq_map_specialOrthogonalRepresentationFiniteDimensional,
+    spinSpecialOrthogonalRepresentationFiniteDimensional_range_dualProdLine_eq_squareScalingSubgroup]
 
 /-- On the split hyperbolic line, the ambient spin map is surjective exactly over fields whose
 unit group is square-surjective. -/
