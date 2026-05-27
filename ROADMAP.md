@@ -214,6 +214,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   (`Cl(5,0) ≃ Mat₂(ℍ) × Mat₂(ℍ)`),
   `Spinor.RealClassification.cl_0_6_even_equivComplexMatrix4`
   (`Cl⁺(0,6) ≃ Mat₄(ℂ)`),
+  `Spinor.RealClassification.cl_0_6_equivMatrix8`
+  (`Cl(0,6) ≃ Mat₈(ℝ)`),
   `Spinor.RealClassification.cl_6_0_even_equivComplexMatrix4`
   (`Cl⁺(6,0) ≃ Mat₄(ℂ)`), and
   `Spinor.RealClassification.cl_6_0_equivQuaternionMatrix4`
@@ -454,9 +456,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 ### 5.1 Paper Writing
 - submission-ready paper package now lives at `paper/` (`main.tex`, `refs.bib`, `README.md`) with
   venue-neutral prose tied to the exact finite-basis split-Levi theorem package and its
-  onto determinant square-class quotient character / quotient isomorphism; broad Bott-periodicity and full
-  all-orthogonal-group image classifications are framed as separate projects rather than
-  dependencies of the claimed results
+  onto determinant square-class quotient character / quotient isomorphism; broad Bott-periodicity
+  beyond the packaged low-dimensional rows and full all-orthogonal-group image classifications
+  are framed as separate projects rather than dependencies of the claimed results
 - [x] Introduction: why spinors matter, why formalization is novel
 - [x] Related work: lean-ga, Mathlib Clifford, what's missing
 - [x] Formalization architecture

@@ -422,12 +422,14 @@ $\Cl(0,5) \simeq \Mat_4(\mathbb{C})$, and the explicit
 \code{cl_5_0_equivQuaternionMatrix2Prod} row further gives
 $\Cl(5,0) \simeq \Mat_2(\mathbb{H}) \times \Mat_2(\mathbb{H})$.
 The module \code{Cl60QuaternionMatrix.lean} adds the sixth-row even complex
-matrix entries and the positive six-dimensional quaternionic matrix entry,
+matrix entries, the negative six-dimensional real matrix entry, and the
+positive six-dimensional quaternionic matrix entry,
 giving
 $\Cl^+(0,6) \simeq \Mat_4(\mathbb{C})$,
+$\Cl(0,6) \simeq \Mat_8(\mathbb{R})$,
 $\Cl^+(6,0) \simeq \Mat_4(\mathbb{C})$, and
 $\Cl(6,0) \simeq \Mat_4(\mathbb{H})$. These
-results are not analyzed in
+supporting rows are not the main theorem of
 the present paper, but they show that the chosen-model and orthogonal-action
 APIs are already sufficient for later formal developments connecting the
 split-model infrastructure to classical compact spin identifications.
@@ -1474,7 +1476,8 @@ argument. Read that way, our contribution is less about rederiving
 $\bigwedge W$ and more about identifying how much of the split Levi picture is
 already visible inside explicit Clifford formulas over a general field. The
 artifact boundary is consequently sharp: broader orthogonal subgroups, full
-global spinor-norm formulations, Bott-periodic classification, and scheme-theoretic
+global spinor-norm formulations, Bott-periodic classification beyond the
+packaged low-dimensional rows, and scheme-theoretic
 spin-cover developments are not used by the stated results and are kept outside
 this algebraic submission package.
 
