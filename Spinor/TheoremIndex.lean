@@ -3,6 +3,7 @@
 -/
 
 import Spinor.Covering
+import Spinor.OddKernelObstruction
 import Spinor.ComplexClassification
 import Spinor.RealClassification
 import Spinor.Cl03QuaternionProd
@@ -68,6 +69,11 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.lipschitzLinearKernelScalarUnits_of_det_ne
 #check Spinor.lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_det_ne
 #check Spinor.lipschitzLinearImageSpinorNormDescends_of_det_ne
+#check Spinor.realCl10_iota_one_ne_algebraMap
+#check Spinor.realCl10OddKernelLipschitz
+#check Spinor.realCl10OddKernelLipschitz_linearRepresentation_eq_one
+#check Spinor.realCl10OddKernelLipschitz_not_scalar
+#check Spinor.not_lipschitzLinearKernelScalarUnits_realCl10
 
 #check Spinor.HyperbolicPresentation.spinRepresentation_not_factor_through_isometry_of_pos_finrank
 #check Spinor.splitSpinRepresentation_not_factor_through_isometry

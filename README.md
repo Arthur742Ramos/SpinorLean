@@ -40,6 +40,7 @@ SpinorLean/
 │   ├── Cl08RealMatrix.lean -- Explicit Cl(0,8) and eighth-row even Bott entries
 │   ├── Cl78PositiveEven.lean -- Positive Cl(7,0), Cl(8,0), and even Bott entries
 │   ├── BottTable.lean -- Theorem-facing first-period real Bott table package
+│   ├── OddKernelObstruction.lean -- Formal Cl(1,0) obstruction to unconditional Lipschitz scalar kernels
 │   ├── TheoremIndex.lean -- Machine-checked paper theorem surface
 │   └── OddClassification.lean -- Classification pieces over the odd split form
 ├── paper/                  -- Submission-ready paper sources (main.tex, refs.bib, README.md)
@@ -301,6 +302,11 @@ Implemented so far:
   `lipschitzSpinorNormClassHomTrivialOnLinearKernel_of_det_ne`, and
   `lipschitzLinearImageSpinorNormDescends_of_det_ne`, discharging the full scalar-kernel /
   descent obligation whenever the odd determinant branch is not `1`.
+  `OddKernelObstruction` proves this determinant qualification is not cosmetic:
+  in `Cl(1,0)`, `realCl10OddKernelLipschitz_linearRepresentation_eq_one` is an odd
+  Lipschitz linear-kernel element, `realCl10OddKernelLipschitz_not_scalar` proves it is not
+  a scalar Clifford unit, and `not_lipschitzLinearKernelScalarUnits_realCl10` rules out the
+  unconditional scalar-kernel API for the current untwisted action.
   `lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel`
   records the compatibility wrapper with the older two-hypothesis API, and
   `lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel`
@@ -310,7 +316,8 @@ Implemented so far:
   prove that the image-level homs compose with `lipschitzLinearRepresentation.rangeRestrict`
   to the corresponding Lipschitz-group homs, and the corresponding
   `_eq_of_comp_rangeRestrict` theorems prove uniqueness from that pullback. Proving the
-  scalar-kernel hypothesis globally remains separate from this descent bridge. The scalar, unit, and
+  scalar-kernel hypothesis globally is therefore false for this untwisted action without
+  changing the action, quotienting further, or adding hypotheses. The scalar, unit, and
   square-class products
   are invariant under list permutation and reversal via
   `cliffordVectorProductNormScalar_perm`,
@@ -415,9 +422,9 @@ Explicit scope boundaries for this algebraic submission package:
   Clifford/Lipschitz norm package, its proved Lipschitz factorization-independence theorem and
   global Lipschitz-group hom, noncanonical Lipschitz linear-image wrapper, linear-kernel
   centrality / parity / even-kernel scalarity bridge, determinant-obstructed scalar-kernel
-  and descent theorem, scalar-kernel bridge, remaining odd-kernel scalarity and
-  kernel-triviality outside the determinant-obstructed case, lift-independence, and
-  descent-obligation APIs and implications, and
+  and descent theorem, scalar-kernel bridge, the formal `Cl(1,0)` odd-kernel obstruction to
+  unconditional scalar kernels for the current untwisted action, any replacement
+  odd-kernel/lift-independence mechanism, and descent-obligation APIs and implications, and
   finite-basis split-Levi square-class APIs
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

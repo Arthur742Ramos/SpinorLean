@@ -32,4 +32,5 @@ import Spinor.OrthogonalAction
 import Spinor.LipschitzImageNorm
 import Spinor.Chiral
 import Spinor.Covering
+import Spinor.OddKernelObstruction
 import Spinor.TheoremIndex
