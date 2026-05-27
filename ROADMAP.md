@@ -405,7 +405,11 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.linearEquivDetSquareClassHom_surjective`,
     `Spinor.dualProdLeviDetSquareClassHom_surjective`, and
     `Spinor.dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap` record the corresponding
-    quotient and subgroup-kernel statements
+    quotient and subgroup-kernel statements; `Spinor.dualProdLeviSpinImageSubgroup`,
+    `Spinor.dualProdLeviSpinImageSubgroup_normal`, and
+    `Spinor.dualProdLeviSpinImageQuotientEquivSquareClass` now package the first-isomorphism
+    theorem form, identifying the split Levi quotient by that spin-image subgroup with the
+    square-class quotient
   - [x] Kernel of the ambient spin-to-isometry map is `{1, -1}` in finite-dimensional
   nondegenerate rank
   - done on the ambient API by
@@ -413,7 +417,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     split/hyperbolic chosen-model theorem `splitSpinorCoveringKernel_eq_one_or_neg_one`
   - image-classification statements claimed by this artifact are exact on the split line and
     finite-basis split Levi subgroup, including the onto determinant square-class quotient
-    character;
+    character and quotient isomorphism;
     broader orthogonal subgroups and full spinor-norm formulations are intentionally outside the
     submitted theorem surface
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
@@ -434,7 +438,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
 ### 5.1 Paper Writing
 - submission-ready paper package now lives at `paper/` (`main.tex`, `refs.bib`, `README.md`) with
   venue-neutral prose tied to the exact finite-basis split-Levi theorem package and its
-  onto determinant square-class quotient character; broad Bott-periodicity and full
+  onto determinant square-class quotient character / quotient isomorphism; broad Bott-periodicity and full
   all-orthogonal-group image classifications are framed as separate projects rather than
   dependencies of the claimed results
 - [x] Introduction: why spinors matter, why formalization is novel

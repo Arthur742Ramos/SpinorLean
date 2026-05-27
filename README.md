@@ -232,7 +232,9 @@ Implemented so far:
   packaged split-Levi spin image by
   `linearEquivDetSquareClassHom_surjective`,
   `dualProdLeviDetSquareClassHom_surjective` and
-  `dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap`
+  `dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap`; the first-isomorphism-theorem wrapper
+  `dualProdLeviSpinImageQuotientEquivSquareClass` identifies the split Levi subgroup modulo that
+  spin-image subgroup with the square-class quotient
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
   subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
   a nonsquare unit gives a formal non-surjectivity theorem; over algebraically closed fields,
@@ -301,6 +303,6 @@ Explicit scope boundaries for this algebraic submission package:
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
   non-factorization, projective descent, exact split-line iff criterion, exact finite-basis
   split-Levi spin-image iff theorem, and onto split-Levi determinant square-class quotient
-  character
+  character / quotient isomorphism
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

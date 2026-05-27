@@ -1454,6 +1454,66 @@ theorem dualProdLeviDetSquareClassHom_surjective
   simpa using
     (dualProdLeviDetSquareClassHom_apply_equiv (K := K) (W := W) g).trans hg
 
+/-- The finite-basis split-Levi spin image, viewed as a subgroup of the canonical split Levi
+subgroup. The basis data records the finite-basis theorem used below to identify it with the
+kernel of the determinant square-class character. -/
+noncomputable def dualProdLeviSpinImageSubgroup
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (_b : Module.Basis ι K W) (_i : ι) :
+    Subgroup (dualProdLeviSubgroup (K := K) (W := W)) :=
+  Subgroup.comap (dualProdLeviSubgroup (K := K) (W := W)).subtype
+    (MonoidHom.range
+      (spinSpecialOrthogonalRepresentationFiniteDimensional
+        (Q := QuadraticForm.dualProd K W)))
+
+instance dualProdLeviSpinImageSubgroup_normal
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    (dualProdLeviSpinImageSubgroup (K := K) (V := V) b i).Normal := by
+  rw [dualProdLeviSpinImageSubgroup,
+    ← dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap (K := K) (V := V) b i]
+  infer_instance
+
+/-- First-isomorphism-theorem form of the finite-basis split-Levi square-class quotient:
+the canonical split Levi subgroup modulo its spin-image subgroup is the determinant square-class
+quotient. -/
+noncomputable def dualProdLeviSpinImageQuotientEquivSquareClass
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι) :
+    (dualProdLeviSubgroup (K := K) (W := W) ⧸
+        dualProdLeviSpinImageSubgroup (K := K) (V := V) b i) ≃*
+      Kˣ ⧸ MonoidHom.range (powMonoidHom (α := Kˣ) 2) :=
+  (QuotientGroup.quotientMulEquivOfEq
+      (M := dualProdLeviSpinImageSubgroup (K := K) (V := V) b i)
+      (N := MonoidHom.ker (dualProdLeviDetSquareClassHom (K := K) (W := W)))
+      (by
+        rw [dualProdLeviSpinImageSubgroup]
+        exact
+          (dualProdLeviDetSquareClassHom_ker_eq_spin_image_comap
+            (K := K) (V := V) b i).symm)).trans
+    (QuotientGroup.quotientKerEquivOfSurjective
+      (dualProdLeviDetSquareClassHom (K := K) (W := W))
+      (dualProdLeviDetSquareClassHom_surjective (K := K) (b := b) i))
+
+@[simp]
+theorem dualProdLeviSpinImageQuotientEquivSquareClass_mk
+    {W : Submodule K V} [FiniteDimensional K W]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι K W) (i : ι)
+    (x : dualProdLeviSubgroup (K := K) (W := W)) :
+    dualProdLeviSpinImageQuotientEquivSquareClass (K := K) (V := V) b i
+        (QuotientGroup.mk x) =
+      dualProdLeviDetSquareClassHom (K := K) (W := W) x := by
+  dsimp [dualProdLeviSpinImageQuotientEquivSquareClass]
+  change
+    QuotientGroup.kerLift (dualProdLeviDetSquareClassHom (K := K) (W := W))
+        (QuotientGroup.mk x) =
+      dualProdLeviDetSquareClassHom (K := K) (W := W) x
+  rw [QuotientGroup.kerLift_mk]
+
 omit [FiniteDimensional K V] in
 /-- The explicit hyperbolic transvection Clifford unit acts exactly as the corresponding linear
 transvection on the split exterior model. -/
