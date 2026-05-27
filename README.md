@@ -258,7 +258,12 @@ Implemented so far:
   `star (ι v₁ ... ι vₙ) * (ι v₁ ... ι vₙ)` with the scalar product of the signed quadratic
   values, together with the invertible-vector unit and square-class forms
   `cliffordInvertibleVectorProductNormUnit` and
-  `cliffordInvertibleVectorProductSpinorNormClass`; the scalar, unit, and square-class products
+  `cliffordInvertibleVectorProductSpinorNormClass`; the same products are also packaged inside
+  Mathlib's `lipschitzGroup` by `cliffordInvertibleVectorLipschitz`,
+  `cliffordInvertibleVectorProductLipschitz`, and
+  `star_cliffordInvertibleVectorProductLipschitz_mul_self`, with
+  `LipschitzVectorFactorization` carrying a chosen vector decomposition and its induced
+  square-class value; the scalar, unit, and square-class products
   are invariant under list permutation and reversal via
   `cliffordVectorProductNormScalar_perm`,
   `cliffordInvertibleVectorProductNormUnit_perm`, and
@@ -269,8 +274,8 @@ Implemented so far:
   `cliffordInvertibleVectorProductSpinorNormClass_append_append_self_append`, and
   `cliffordInvertibleVectorProductSpinorNormClass_append_append_middle_self_append`, with
   `eq_of_perm` wrappers for lists that first permute into the repeated-pair or repeated-subproduct
-  form; this is a reflection-product substrate, not an independence theorem for arbitrary
-  orthogonal decompositions
+  form; this is a Lipschitz-group chosen-factorization substrate, not an independence theorem
+  for arbitrary orthogonal decompositions
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
   subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
   a nonsquare unit gives a formal non-surjectivity theorem; over algebraically closed fields,
@@ -355,10 +360,10 @@ Explicit scope boundaries for this algebraic submission package:
   non-factorization, projective descent, exact split-line iff criterion, exact finite-basis
   split-Levi spin-image iff theorem, and onto split-Levi determinant square-class quotient
   character / quotient isomorphism with its split-Levi spinor-norm-facing wrappers and the
-  global Clifford-level vector-product norm formula with product-order invariance, repeated-pair
-  square-class cancellation, and duplicated-product/subproduct square-class triviality, including
-  separated repeated subproducts after permutation into the repeated shape
-- a full global orthogonal-group spinor-norm theory beyond the product-level Clifford norm and
-  finite-basis split-Levi square-class APIs
+  global Clifford/Lipschitz vector-product norm formula with product-order invariance,
+  repeated-pair square-class cancellation, and duplicated-product/subproduct square-class
+  triviality, including separated repeated subproducts after permutation into the repeated shape
+- a full global orthogonal-group spinor-norm theory beyond the chosen-factorization
+  Clifford/Lipschitz norm package and finite-basis split-Levi square-class APIs
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.

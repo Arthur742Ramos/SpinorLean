@@ -53,11 +53,12 @@ the onto determinant square-class characters with their kernel theorems in
 linear coordinates and on the canonical split Levi, the resulting quotient
 isomorphisms modulo the corresponding spin-image subgroups to the square-class
 group, local split-Levi spinor-norm-facing wrappers for these same characters,
-the exact split-line image / double-cover criterion, and the Clifford-level
+the exact split-line image / double-cover criterion, and the Clifford/Lipschitz
 vector-product norm formula with its invertible-vector square-class package, product-order
-invariance, repeated-pair square-class cancellation, and duplicated-product/subproduct
-square-class triviality, including separated repeated subproducts after permutation into the
-repeated shape. The theorem-facing real-classification surface now also includes
+invariance, repeated-pair square-class cancellation, duplicated-product/subproduct
+square-class triviality, and chosen-factorization Lipschitz wrapper, including separated
+repeated subproducts after permutation into the repeated shape. The theorem-facing
+real-classification surface now also includes
 `RealClassification.PeriodEightTable` and `RealClassification.periodEightTable`,
 which collect the split families and first-period definite rows, including the explicit
 `Cl(0,5) ≃ Mat₄(ℂ)`, `Cl⁺(0,6) ≃ Mat₄(ℂ)`, `Cl(0,6) ≃ Mat₈(ℝ)`,
@@ -67,8 +68,8 @@ which collect the split families and first-period definite rows, including the e
 `Cl(7,0) ≃ Mat₈(ℂ)`, `Cl⁺(7,0) ≃ Mat₈(ℝ)`,
 `Cl⁺(8,0) ≃ Mat₈(ℝ) × Mat₈(ℝ)`, and `Cl(8,0) ≃ Mat₁₆(ℝ)` rows.
 A recursive arbitrary-signature Bott-periodicity theorem, a full all-orthogonal-group image classification,
-and a global orthogonal-group spinor-norm API beyond this product-level substrate are separate
-projects, not dependencies in the claimed theorem package.
+and a global orthogonal-group spinor-norm API beyond this chosen-factorization
+Clifford/Lipschitz substrate are separate projects, not dependencies in the claimed theorem package.
 
 ## Final preflight
 
