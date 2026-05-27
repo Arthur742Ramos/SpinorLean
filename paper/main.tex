@@ -152,7 +152,8 @@ square class as the nontrivial class of \(-1\), and
 \code{not_lipschitzSpinorNormClassHomTrivialOnLinearKernel_realCl10} jointly rule out
 the unconditional scalar-kernel and kernel-triviality descent APIs; the same
 witness also rules out pulling the global Lipschitz-group square-class hom back
-from any square-class hom on the full linear representation target. The
+from any square-class hom on the full linear representation target, or from an
+isometry target whose representation has the same underlying linear action. The
 scalar-unit calculation
 \code{chosenLipschitzNormUnit_eq_sq_of_coe_eq_algebraMap_unit} and the
 \code{LipschitzLinearKernelScalarUnits} bridge show that a concrete
@@ -176,8 +177,8 @@ explicit chosen-model Levi-lift, and finite-basis split-Levi image corollaries
 become unconditional there.
 The artifact comprises
 $31$ Lean source files totaling
-$26{,}135$ physical lines across the repository, of which $29$ files and
-$26{,}085$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$26{,}165$ physical lines across the repository, of which $29$ files and
+$26{,}115$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
@@ -423,7 +424,7 @@ Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
 \Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
 Build command & \code{lake build} \\
 Lean files under \code{Spinor/} & $29$ \\
-Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $26{,}085$ \\
+Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $26{,}115$ \\
 \code{sorry} occurrences under \code{Spinor/} & $0$
 \end{tabularx}
 \end{center}
@@ -573,10 +574,13 @@ image-level descent, and any image-level square-class hom whose pullback is the
 global Lipschitz-group hom. The strengthened theorem
 \code{not_exists_lipschitzLinearTargetSpinorNormClassHom_comp_lipschitzLinearRepresentation_realCl10}
 also rules out extending this pullback identity to an arbitrary square-class hom
-on the full linear target of \code{lipschitzLinearRepresentation}. A full
-orthogonal-group spinor norm therefore requires a different action, an
-additional quotient/normalization, or extra hypotheses, not just a homomorphism
-on the ambient linear target.
+on the full linear target of \code{lipschitzLinearRepresentation}. Its
+isometry-target analogue,
+\code{not_exists_lipschitzIsometryTargetSpinorNormClassHom_comp_realCl10},
+rules out the same pullback identity for any isometry-target representation
+with that underlying linear action. A full orthogonal-group spinor norm
+therefore requires a different action, an additional quotient/normalization, or
+extra hypotheses, not just a homomorphism on the ambient linear target.
 
 \paragraph{Downstream reuse already present in the repository.}
 The interface is already reused beyond the core covering-map story in the

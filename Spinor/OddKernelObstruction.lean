@@ -10,7 +10,7 @@ import Spinor.RealClassification
   a scalar Clifford unit. Its Lipschitz spinor-norm square class is also the nontrivial
   class of `-1`, so the unconditional kernel-triviality descent API, the image-level descent
   API, any pullback-compatible image-level square-class hom, and any pullback-compatible
-  full-linear-target square-class hom are false for this action.
+  full-linear-target or isometry-target square-class hom are false for this action.
 -/
 
 namespace Spinor
@@ -239,6 +239,35 @@ theorem not_exists_lipschitzLinearTargetSpinorNormClassHom_comp_lipschitzLinearR
   have hnorm :
       lipschitzSpinorNormClassHom Q10 realCl10OddKernelLipschitz = 1 := by
     simpa [MonoidHom.comp_apply, lipschitzLinearRepresentation_apply, hlin] using hpoint.symm
+  exact realCl10OddKernelLipschitz_spinorNormClassHom_ne_one hnorm
+
+/-- There is no square-class hom on an isometry target whose pullback is the global
+Lipschitz-group spinor-norm hom for a representation with the same underlying linear action as
+`lipschitzLinearRepresentation`, already over `Cl(1,0)`. -/
+theorem not_exists_lipschitzIsometryTargetSpinorNormClassHom_comp_realCl10
+    [Invertible (2 : ℝ)] :
+    ¬ ∃ ρ : lipschitzGroup Q10 →* Q10.IsometryEquiv Q10,
+      ∃ ψ : Q10.IsometryEquiv Q10 →*
+          ℝˣ ⧸ MonoidHom.range (powMonoidHom (α := ℝˣ) 2),
+        (∀ x : lipschitzGroup Q10,
+          ((ρ x : Q10.IsometryEquiv Q10) : ℝ ≃ₗ[ℝ] ℝ) =
+            lipschitzLinearRepresentation (Q := Q10) x) ∧
+        ψ.comp ρ = lipschitzSpinorNormClassHom Q10 := by
+  rintro ⟨ρ, ψ, hlinear, hψ⟩
+  have hρ :
+      ρ realCl10OddKernelLipschitz = 1 := by
+    apply QuadraticMap.IsometryEquiv.ext
+    intro r
+    have hlin :
+        ((ρ realCl10OddKernelLipschitz : Q10.IsometryEquiv Q10) : ℝ ≃ₗ[ℝ] ℝ) =
+          1 := by
+      exact (hlinear realCl10OddKernelLipschitz).trans
+        realCl10OddKernelLipschitz_linearRepresentation_eq_one
+    exact LinearEquiv.congr_fun hlin r
+  have hpoint := congrArg (fun φ => φ realCl10OddKernelLipschitz) hψ
+  have hnorm :
+      lipschitzSpinorNormClassHom Q10 realCl10OddKernelLipschitz = 1 := by
+    simpa [MonoidHom.comp_apply, hρ] using hpoint.symm
   exact realCl10OddKernelLipschitz_spinorNormClassHom_ne_one hnorm
 
 end

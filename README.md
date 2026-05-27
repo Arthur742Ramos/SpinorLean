@@ -343,12 +343,14 @@ Implemented so far:
   current untwisted action; the same witness now rules out the image-level lift-independence
   package, the explicit image-level descent package, any image-level square-class hom whose
   pullback along `lipschitzLinearRepresentation.rangeRestrict` is the global Lipschitz-group
-  hom, and any full linear-target square-class hom whose pullback along
-  `lipschitzLinearRepresentation` is that global hom, via
+  hom, any full linear-target square-class hom whose pullback along
+  `lipschitzLinearRepresentation` is that global hom, and any isometry-target
+  square-class hom pulled back along a representation with the same underlying linear action, via
   `not_lipschitzLinearImageSpinorNormLiftIndependent_realCl10`,
   `not_lipschitzLinearImageSpinorNormDescends_realCl10`,
   `not_exists_lipschitzLinearImageSpinorNormClassHom_comp_rangeRestrict_realCl10`, and
-  `not_exists_lipschitzLinearTargetSpinorNormClassHom_comp_lipschitzLinearRepresentation_realCl10`.
+  `not_exists_lipschitzLinearTargetSpinorNormClassHom_comp_lipschitzLinearRepresentation_realCl10`
+  plus `not_exists_lipschitzIsometryTargetSpinorNormClassHom_comp_realCl10`.
   `lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel`
   records the compatibility wrapper with the older two-hypothesis API, and
   `lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel`
