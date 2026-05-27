@@ -848,6 +848,352 @@ noncomputable def realEvenCl05EquivQuaternionMatrix2 :
   simpa [realCl05Form] using
     ((CliffordAlgebra.equivEven realCl04Form).symm.trans realCl04EquivQuaternionMatrix2)
 
+/-- The explicit five-generator matrix used for the full `Cl(0,5) ≃ Mat₄(ℂ)` row. -/
+def realCl05ToComplexMatrix4Mat
+    (v : ((((ℝ × ℝ) × ℝ) × ℝ) × ℝ)) : Matrix (Fin 4) (Fin 4) ℂ :=
+  let a := v.1.1.1.1
+  let b := v.1.1.1.2
+  let c := v.1.1.2
+  let d := v.1.2
+  let e := v.2
+  !![(e : ℂ) * Complex.I, 0, (d : ℂ) + (c : ℂ) * Complex.I,
+      (b : ℂ) + (a : ℂ) * Complex.I;
+     0, (e : ℂ) * Complex.I, -(b : ℂ) + (a : ℂ) * Complex.I,
+      (d : ℂ) - (c : ℂ) * Complex.I;
+     -(d : ℂ) + (c : ℂ) * Complex.I, (b : ℂ) + (a : ℂ) * Complex.I,
+      -(e : ℂ) * Complex.I, 0;
+     -(b : ℂ) + (a : ℂ) * Complex.I, -(d : ℂ) - (c : ℂ) * Complex.I,
+      0, -(e : ℂ) * Complex.I]
+
+set_option linter.unnecessarySeqFocus false in
+theorem realCl05ToComplexMatrix4Mat_smul
+    (a : ℝ) (x : ((((ℝ × ℝ) × ℝ) × ℝ) × ℝ)) :
+    realCl05ToComplexMatrix4Mat (a • x) = a • realCl05ToComplexMatrix4Mat x := by
+  obtain ⟨⟨⟨⟨b, c⟩, d⟩, e⟩, f⟩ := x
+  have hsmul :
+      a • ((((b, c), d), e), f) =
+        ((((a * b, a * c), a * d), a * e), a * f) := by
+    ext <;> simp [smul_eq_mul]
+  rw [hsmul]
+  ext r s <;> fin_cases r <;> fin_cases s <;>
+    simp [realCl05ToComplexMatrix4Mat] <;>
+    ring
+
+set_option linter.unnecessarySeqFocus false in
+/-- The generator map for the explicit full `Cl(0,5) ≃ Mat₄(ℂ)` model. -/
+def realCl05ToComplexMatrix4Lin :
+    ((((ℝ × ℝ) × ℝ) × ℝ) × ℝ) →ₗ[ℝ] Matrix (Fin 4) (Fin 4) ℂ where
+  toFun v := realCl05ToComplexMatrix4Mat v
+  map_add' x y := by
+    obtain ⟨⟨⟨⟨a, b⟩, c⟩, d⟩, e⟩ := x
+    obtain ⟨⟨⟨⟨f, g⟩, h⟩, i⟩, j⟩ := y
+    ext r s <;> fin_cases r <;> fin_cases s <;>
+      simp [realCl05ToComplexMatrix4Mat] <;>
+      ring
+  map_smul' a x := by
+    exact realCl05ToComplexMatrix4Mat_smul a x
+
+set_option linter.unnecessarySeqFocus false in
+set_option maxHeartbeats 8000000 in
+theorem realCl05ToComplexMatrix4Lin_sq
+    (v : ((((ℝ × ℝ) × ℝ) × ℝ) × ℝ)) :
+    realCl05ToComplexMatrix4Lin v * realCl05ToComplexMatrix4Lin v =
+      algebraMap ℝ (Matrix (Fin 4) (Fin 4) ℂ) (realCl05Form v) := by
+  obtain ⟨⟨⟨⟨a, b⟩, c⟩, d⟩, e⟩ := v
+  ext r s <;> fin_cases r <;> fin_cases s <;>
+    simp [realCl05ToComplexMatrix4Lin, realCl05ToComplexMatrix4Mat, realCl05Form,
+      realCl04Form, Matrix.mul_apply, Matrix.algebraMap_matrix_apply] <;>
+    rw [Fin.sum_univ_four] <;>
+    apply Complex.ext <;>
+    simp [Complex.mul_re, Complex.mul_im] <;>
+    ring_nf
+
+/-- The explicit complex `4 × 4` matrix representation of `Cl(0,5)`. -/
+noncomputable def realCl05ToComplexMatrix4 :
+    CliffordAlgebra realCl05Form →ₐ[ℝ] Matrix (Fin 4) (Fin 4) ℂ :=
+  CliffordAlgebra.lift realCl05Form ⟨realCl05ToComplexMatrix4Lin,
+    realCl05ToComplexMatrix4Lin_sq⟩
+
+@[simp]
+theorem realCl05ToComplexMatrix4_ι
+    (v : ((((ℝ × ℝ) × ℝ) × ℝ) × ℝ)) :
+    realCl05ToComplexMatrix4 (CliffordAlgebra.ι realCl05Form v) =
+      realCl05ToComplexMatrix4Mat v := by
+  simpa [realCl05ToComplexMatrix4, realCl05ToComplexMatrix4Lin] using
+    (CliffordAlgebra.lift_ι_apply realCl05ToComplexMatrix4Lin
+      realCl05ToComplexMatrix4Lin_sq v)
+
+set_option linter.unnecessarySeqFocus false in
+set_option maxHeartbeats 30000000 in
+theorem realCl05ToComplexMatrix4_surjective :
+    Function.Surjective realCl05ToComplexMatrix4 := by
+  intro A
+  let e1 : CliffordAlgebra realCl05Form :=
+    CliffordAlgebra.ι realCl05Form (((((1 : ℝ), 0), 0), 0), 0)
+  let e2 : CliffordAlgebra realCl05Form :=
+    CliffordAlgebra.ι realCl05Form (((((0 : ℝ), 1), 0), 0), 0)
+  let e3 : CliffordAlgebra realCl05Form :=
+    CliffordAlgebra.ι realCl05Form (((((0 : ℝ), 0), 1), 0), 0)
+  let e4 : CliffordAlgebra realCl05Form :=
+    CliffordAlgebra.ι realCl05Form (((((0 : ℝ), 0), 0), 1), 0)
+  let e5 : CliffordAlgebra realCl05Form :=
+    CliffordAlgebra.ι realCl05Form (((((0 : ℝ), 0), 0), 0), 1)
+  let omega : CliffordAlgebra realCl05Form := e1 * e2 * e3 * e4 * e5
+  have h12 :
+      realCl05ToComplexMatrix4 (e1 * e2) =
+        !![-Complex.I, 0, 0, 0;
+          0, Complex.I, 0, 0;
+          0, 0, -Complex.I, 0;
+          0, 0, 0, Complex.I] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e1, e2, realCl05ToComplexMatrix4Mat, Matrix.mul_apply, Fin.sum_univ_four]
+  have h13 :
+      realCl05ToComplexMatrix4 (e1 * e3) =
+        !![0, 1, 0, 0;
+          -1, 0, 0, 0;
+          0, 0, 0, 1;
+          0, 0, -1, 0] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e1, e3, realCl05ToComplexMatrix4Mat, Matrix.mul_apply, Fin.sum_univ_four]
+  have h23 :
+      realCl05ToComplexMatrix4 (e2 * e3) =
+        !![0, -Complex.I, 0, 0;
+          -Complex.I, 0, 0, 0;
+          0, 0, 0, -Complex.I;
+          0, 0, -Complex.I, 0] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e2, e3, realCl05ToComplexMatrix4Mat, Matrix.mul_apply, Fin.sum_univ_four]
+  have h14 :
+      realCl05ToComplexMatrix4 (e1 * e4) =
+        !![0, -Complex.I, 0, 0;
+          -Complex.I, 0, 0, 0;
+          0, 0, 0, Complex.I;
+          0, 0, Complex.I, 0] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e1, e4, realCl05ToComplexMatrix4Mat, Matrix.mul_apply, Fin.sum_univ_four]
+  have h24 :
+      realCl05ToComplexMatrix4 (e2 * e4) =
+        !![0, -1, 0, 0;
+          1, 0, 0, 0;
+          0, 0, 0, 1;
+          0, 0, -1, 0] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e2, e4, realCl05ToComplexMatrix4Mat, Matrix.mul_apply, Fin.sum_univ_four]
+  have h34 :
+      realCl05ToComplexMatrix4 (e3 * e4) =
+        !![-Complex.I, 0, 0, 0;
+          0, Complex.I, 0, 0;
+          0, 0, Complex.I, 0;
+          0, 0, 0, -Complex.I] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e3, e4, realCl05ToComplexMatrix4Mat, Matrix.mul_apply, Fin.sum_univ_four]
+  have h1234 :
+      realCl05ToComplexMatrix4 (e1 * e2 * e3 * e4) =
+        !![-1, 0, 0, 0;
+          0, -1, 0, 0;
+          0, 0, 1, 0;
+          0, 0, 0, 1] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e1, e2, e3, e4, realCl05ToComplexMatrix4Mat, Matrix.mul_apply,
+        Fin.sum_univ_four]
+  have h15 :
+      realCl05ToComplexMatrix4 (e1 * e5) =
+        !![0, 0, 0, 1;
+          0, 0, 1, 0;
+          0, -1, 0, 0;
+          -1, 0, 0, 0] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e1, e5, realCl05ToComplexMatrix4Mat, Matrix.mul_apply, Fin.sum_univ_four]
+  have h25 :
+      realCl05ToComplexMatrix4 (e2 * e5) =
+        !![0, 0, 0, -Complex.I;
+          0, 0, Complex.I, 0;
+          0, Complex.I, 0, 0;
+          -Complex.I, 0, 0, 0] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e2, e5, realCl05ToComplexMatrix4Mat, Matrix.mul_apply, Fin.sum_univ_four]
+  have h35 :
+      realCl05ToComplexMatrix4 (e3 * e5) =
+        !![0, 0, 1, 0;
+          0, 0, 0, -1;
+          -1, 0, 0, 0;
+          0, 1, 0, 0] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e3, e5, realCl05ToComplexMatrix4Mat, Matrix.mul_apply, Fin.sum_univ_four]
+  have h1235 :
+      realCl05ToComplexMatrix4 (e1 * e2 * e3 * e5) =
+        !![0, 0, -Complex.I, 0;
+          0, 0, 0, -Complex.I;
+          Complex.I, 0, 0, 0;
+          0, Complex.I, 0, 0] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e1, e2, e3, e5, realCl05ToComplexMatrix4Mat, Matrix.mul_apply,
+        Fin.sum_univ_four]
+  have h45 :
+      realCl05ToComplexMatrix4 (e4 * e5) =
+        !![0, 0, -Complex.I, 0;
+          0, 0, 0, -Complex.I;
+          -Complex.I, 0, 0, 0;
+          0, -Complex.I, 0, 0] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e4, e5, realCl05ToComplexMatrix4Mat, Matrix.mul_apply, Fin.sum_univ_four]
+  have h1245 :
+      realCl05ToComplexMatrix4 (e1 * e2 * e4 * e5) =
+        !![0, 0, -1, 0;
+          0, 0, 0, 1;
+          -1, 0, 0, 0;
+          0, 1, 0, 0] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e1, e2, e4, e5, realCl05ToComplexMatrix4Mat, Matrix.mul_apply,
+        Fin.sum_univ_four]
+  have h1345 :
+      realCl05ToComplexMatrix4 (e1 * e3 * e4 * e5) =
+        !![0, 0, 0, -Complex.I;
+          0, 0, Complex.I, 0;
+          0, -Complex.I, 0, 0;
+          Complex.I, 0, 0, 0] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e1, e3, e4, e5, realCl05ToComplexMatrix4Mat, Matrix.mul_apply,
+        Fin.sum_univ_four]
+  have h2345 :
+      realCl05ToComplexMatrix4 (e2 * e3 * e4 * e5) =
+        !![0, 0, 0, -1;
+          0, 0, -1, 0;
+          0, -1, 0, 0;
+          -1, 0, 0, 0] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [e2, e3, e4, e5, realCl05ToComplexMatrix4Mat, Matrix.mul_apply,
+        Fin.sum_univ_four]
+  have homega :
+      realCl05ToComplexMatrix4 omega =
+        !![-Complex.I, 0, 0, 0;
+          0, -Complex.I, 0, 0;
+          0, 0, -Complex.I, 0;
+          0, 0, 0, -Complex.I] := by
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+      simp [omega, e1, e2, e3, e4, e5, realCl05ToComplexMatrix4Mat, Matrix.mul_apply,
+        Fin.sum_univ_four]
+  refine ⟨
+      (((A 0 0).re + (A 1 1).re + (A 2 2).re + (A 3 3).re) / 4) •
+        (1 : CliffordAlgebra realCl05Form) +
+      - (((A 0 0).im + (A 1 1).im + (A 2 2).im + (A 3 3).im) / 4) •
+        (omega * (1 : CliffordAlgebra realCl05Form)) +
+      ((- (A 0 0).im + (A 1 1).im - (A 2 2).im + (A 3 3).im) / 4) •
+        (e1 * e2) +
+      - (((A 0 0).re - (A 1 1).re + (A 2 2).re - (A 3 3).re) / 4) •
+        (omega * (e1 * e2)) +
+      (((A 0 1).re - (A 1 0).re + (A 2 3).re - (A 3 2).re) / 4) •
+        (e1 * e3) +
+      - (((A 0 1).im - (A 1 0).im + (A 2 3).im - (A 3 2).im) / 4) •
+        (omega * (e1 * e3)) +
+      ((- (A 0 1).im - (A 1 0).im - (A 2 3).im - (A 3 2).im) / 4) •
+        (e2 * e3) +
+      - (((A 0 1).re + (A 1 0).re + (A 2 3).re + (A 3 2).re) / 4) •
+        (omega * (e2 * e3)) +
+      ((- (A 0 1).im - (A 1 0).im + (A 2 3).im + (A 3 2).im) / 4) •
+        (e1 * e4) +
+      - (((A 0 1).re + (A 1 0).re - (A 2 3).re - (A 3 2).re) / 4) •
+        (omega * (e1 * e4)) +
+      ((- (A 0 1).re + (A 1 0).re + (A 2 3).re - (A 3 2).re) / 4) •
+        (e2 * e4) +
+      - ((- (A 0 1).im + (A 1 0).im + (A 2 3).im - (A 3 2).im) / 4) •
+        (omega * (e2 * e4)) +
+      ((- (A 0 0).im + (A 1 1).im + (A 2 2).im - (A 3 3).im) / 4) •
+        (e3 * e4) +
+      - (((A 0 0).re - (A 1 1).re - (A 2 2).re + (A 3 3).re) / 4) •
+        (omega * (e3 * e4)) +
+      ((- (A 0 0).re - (A 1 1).re + (A 2 2).re + (A 3 3).re) / 4) •
+        (e1 * e2 * e3 * e4) +
+      - ((- (A 0 0).im - (A 1 1).im + (A 2 2).im + (A 3 3).im) / 4) •
+        (omega * (e1 * e2 * e3 * e4)) +
+      (((A 0 3).re + (A 1 2).re - (A 2 1).re - (A 3 0).re) / 4) •
+        (e1 * e5) +
+      - (((A 0 3).im + (A 1 2).im - (A 2 1).im - (A 3 0).im) / 4) •
+        (omega * (e1 * e5)) +
+      ((- (A 0 3).im + (A 1 2).im + (A 2 1).im - (A 3 0).im) / 4) •
+        (e2 * e5) +
+      - (((A 0 3).re - (A 1 2).re - (A 2 1).re + (A 3 0).re) / 4) •
+        (omega * (e2 * e5)) +
+      (((A 0 2).re - (A 1 3).re - (A 2 0).re + (A 3 1).re) / 4) •
+        (e3 * e5) +
+      - (((A 0 2).im - (A 1 3).im - (A 2 0).im + (A 3 1).im) / 4) •
+        (omega * (e3 * e5)) +
+      ((- (A 0 2).im - (A 1 3).im + (A 2 0).im + (A 3 1).im) / 4) •
+        (e1 * e2 * e3 * e5) +
+      - (((A 0 2).re + (A 1 3).re - (A 2 0).re - (A 3 1).re) / 4) •
+        (omega * (e1 * e2 * e3 * e5)) +
+      ((- (A 0 2).im - (A 1 3).im - (A 2 0).im - (A 3 1).im) / 4) •
+        (e4 * e5) +
+      - (((A 0 2).re + (A 1 3).re + (A 2 0).re + (A 3 1).re) / 4) •
+        (omega * (e4 * e5)) +
+      ((- (A 0 2).re + (A 1 3).re - (A 2 0).re + (A 3 1).re) / 4) •
+        (e1 * e2 * e4 * e5) +
+      - ((- (A 0 2).im + (A 1 3).im - (A 2 0).im + (A 3 1).im) / 4) •
+        (omega * (e1 * e2 * e4 * e5)) +
+      ((- (A 0 3).im + (A 1 2).im - (A 2 1).im + (A 3 0).im) / 4) •
+        (e1 * e3 * e4 * e5) +
+      - (((A 0 3).re - (A 1 2).re + (A 2 1).re - (A 3 0).re) / 4) •
+        (omega * (e1 * e3 * e4 * e5)) +
+      ((- (A 0 3).re - (A 1 2).re - (A 2 1).re - (A 3 0).re) / 4) •
+        (e2 * e3 * e4 * e5) +
+      - ((- (A 0 3).im - (A 1 2).im - (A 2 1).im - (A 3 0).im) / 4) •
+        (omega * (e2 * e3 * e4 * e5)), ?_⟩
+  ext i j <;> fin_cases i <;> fin_cases j <;>
+    apply Complex.ext <;>
+    simp [homega, h12, h13, h23, h14, h24, h34, h1234, h15, h25, h35, h1235,
+      h45, h1245, h1345, h2345] <;>
+    ring_nf
+
+theorem realCl05Clifford_finrank :
+    Module.finrank ℝ (CliffordAlgebra realCl05Form) = 32 := by
+  letI : Invertible (2 : ℝ) := invertibleOfNonzero (by norm_num)
+  have hfin :
+      Module.finrank ℝ (((((ℝ × ℝ) × ℝ) × ℝ) × ℝ)) = 5 := by
+    rw [Module.finrank_prod, Module.finrank_prod, Module.finrank_prod, Module.finrank_prod]
+    norm_num
+  calc
+    Module.finrank ℝ (CliffordAlgebra realCl05Form) =
+        Module.finrank ℝ (ExteriorAlgebra ℝ (((((ℝ × ℝ) × ℝ) × ℝ) × ℝ))) := by
+      exact LinearEquiv.finrank_eq (CliffordAlgebra.equivExterior realCl05Form)
+    _ = 2 ^ Module.finrank ℝ (((((ℝ × ℝ) × ℝ) × ℝ) × ℝ)) := by
+      exact ExteriorAlgebra.finrank_eq_two_pow (K := ℝ)
+    _ = 32 := by
+      rw [hfin]
+      norm_num
+
+theorem realCl05ComplexMatrix4_finrank :
+    Module.finrank ℝ (Matrix (Fin 4) (Fin 4) ℂ) = 32 := by
+  rw [finrank_real_of_complex]
+  rw [Module.finrank_matrix]
+  norm_num
+
+theorem realCl05ToComplexMatrix4_injective :
+    Function.Injective realCl05ToComplexMatrix4 := by
+  have hcl_succ : Module.finrank ℝ (CliffordAlgebra realCl05Form) = Nat.succ 31 := by
+    simpa using realCl05Clifford_finrank
+  letI : FiniteDimensional ℝ (CliffordAlgebra realCl05Form) :=
+    FiniteDimensional.of_finrank_eq_succ hcl_succ
+  have hdim : Module.finrank ℝ (CliffordAlgebra realCl05Form) =
+      Module.finrank ℝ (Matrix (Fin 4) (Fin 4) ℂ) := by
+    rw [realCl05Clifford_finrank, realCl05ComplexMatrix4_finrank]
+  simpa using
+    ((LinearMap.injective_iff_surjective_of_finrank_eq_finrank
+      (f := realCl05ToComplexMatrix4.toLinearMap) hdim).mpr
+      realCl05ToComplexMatrix4_surjective)
+
+/-- The real Clifford algebra `Cl(0,5)` is the full `4 × 4` complex matrix algebra. -/
+noncomputable def realCl05EquivComplexMatrix4 :
+    CliffordAlgebra realCl05Form ≃ₐ[ℝ] Matrix (Fin 4) (Fin 4) ℂ :=
+  AlgEquiv.ofBijective realCl05ToComplexMatrix4
+    ⟨realCl05ToComplexMatrix4_injective, realCl05ToComplexMatrix4_surjective⟩
+
+@[simp]
+theorem realCl05EquivComplexMatrix4_apply_ι
+    (v : ((((ℝ × ℝ) × ℝ) × ℝ) × ℝ)) :
+    realCl05EquivComplexMatrix4 (CliffordAlgebra.ι realCl05Form v) =
+      realCl05ToComplexMatrix4Mat v := by
+  simp [realCl05EquivComplexMatrix4]
+
 /-- The standard positive real 5-dimensional quadratic form on
 `((((ℝ × ℝ) × ℝ) × ℝ) × ℝ)`. -/
 noncomputable abbrev realCl50Form : QuadraticForm ℝ ((((ℝ × ℝ) × ℝ) × ℝ) × ℝ) :=
@@ -1098,6 +1444,11 @@ noncomputable abbrev Q_0_5 : QuadraticForm ℝ ((((ℝ × ℝ) × ℝ) × ℝ) �
 noncomputable def cl_0_5_even_equivQuaternionMatrix2 :
     CliffordAlgebra.even Q_0_5 ≃ₐ[ℝ] Matrix (Fin 2) (Fin 2) H := by
   simpa [Q_0_5] using realEvenCl05EquivQuaternionMatrix2
+
+/-- Canonical real-classification entry: `Cl(0,5) ≃ Mat₄(ℂ)`. -/
+noncomputable def cl_0_5_equivComplexMatrix4 :
+    CliffordAlgebra Q_0_5 ≃ₐ[ℝ] Matrix (Fin 4) (Fin 4) ℂ := by
+  simpa [Q_0_5] using realCl05EquivComplexMatrix4
 
 /-- Canonical quadratic form for `Cl(4,0)` and its even algebra in the real-classification
 namespace. -/
