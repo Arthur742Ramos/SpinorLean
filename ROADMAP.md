@@ -208,7 +208,9 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   (`Cl⁺(0,4) ≃ ℍ × ℍ`), `Spinor.RealClassification.cl_0_5_even_equivQuaternionMatrix2`
   (`Cl⁺(0,5) ≃ Mat₂(ℍ)`), and
   `Spinor.RealClassification.cl_5_0_even_equivQuaternionMatrix2`
-  (`Cl⁺(5,0) ≃ Mat₂(ℍ)`)
+  (`Cl⁺(5,0) ≃ Mat₂(ℍ)`), and
+  `Spinor.RealClassification.cl_5_0_equivQuaternionMatrix2Prod`
+  (`Cl(5,0) ≃ Mat₂(ℍ) × Mat₂(ℍ)`)
   are now packaged as first-class algebra isomorphisms in the `Spinor.RealClassification`
   namespace, along with the explicit split entries `cl_1_1_equivMatrix2`,
   `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
