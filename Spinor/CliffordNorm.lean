@@ -37,8 +37,12 @@ an orthogonal-group spinor-norm API.
 * `Spinor.exists_cliffordInvertibleVectorProductLipschitz_eq`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_perm`
+* `Spinor.LipschitzVectorFactorization.mul`
+* `Spinor.LipschitzVectorFactorization.normUnit_mul`
+* `Spinor.LipschitzVectorFactorization.spinorNormClass_mul`
 * `Spinor.lipschitzVectorFactorization`
 * `Spinor.chosenLipschitzSpinorNormClass`
+* `Spinor.exists_lipschitzVectorFactorization_mul_chosenSpinorNormClass_eq`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_cons_self_cons`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_self`
 * `Spinor.cliffordInvertibleVectorProductSpinorNormClass_append_append_self_append`
@@ -531,11 +535,50 @@ namespace LipschitzVectorFactorization
 
 variable {Q : QuadraticForm R M}
 
+/-- The empty vector product as a factorization of the identity Lipschitz element. -/
+def one (Q : QuadraticForm R M) :
+    LipschitzVectorFactorization Q (1 : lipschitzGroup Q) where
+  factors := []
+  product_eq := by simp
+
+/-- Concatenating factor lists gives a factorization of the product. -/
+def mul {x y : lipschitzGroup Q}
+    (F : LipschitzVectorFactorization Q x) (G : LipschitzVectorFactorization Q y) :
+    LipschitzVectorFactorization Q (x * y) where
+  factors := F.factors ++ G.factors
+  product_eq := by
+    rw [cliffordInvertibleVectorProductLipschitz_append, F.product_eq, G.product_eq]
+
+/-- The Clifford norm unit attached to a chosen Lipschitz vector factorization. -/
+noncomputable def normUnit {x : lipschitzGroup Q}
+    (F : LipschitzVectorFactorization Q x) : Rˣ :=
+  cliffordInvertibleVectorProductNormUnit Q F.factors
+
+@[simp]
+theorem normUnit_one (Q : QuadraticForm R M) :
+    (one (Q := Q)).normUnit = 1 := rfl
+
+@[simp]
+theorem normUnit_mul {x y : lipschitzGroup Q}
+    (F : LipschitzVectorFactorization Q x) (G : LipschitzVectorFactorization Q y) :
+    (F.mul G).normUnit = F.normUnit * G.normUnit := by
+  simp [mul, normUnit]
+
 /-- The square-class spinor norm attached to a chosen Lipschitz vector factorization. -/
 noncomputable def spinorNormClass {x : lipschitzGroup Q}
     (F : LipschitzVectorFactorization Q x) :
     Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2) :=
   cliffordInvertibleVectorProductSpinorNormClass Q F.factors
+
+@[simp]
+theorem spinorNormClass_one (Q : QuadraticForm R M) :
+    (one (Q := Q)).spinorNormClass = 1 := rfl
+
+@[simp]
+theorem spinorNormClass_mul {x y : lipschitzGroup Q}
+    (F : LipschitzVectorFactorization Q x) (G : LipschitzVectorFactorization Q y) :
+    (F.mul G).spinorNormClass = F.spinorNormClass * G.spinorNormClass := by
+  simp [mul, spinorNormClass]
 
 @[simp]
 theorem spinorNormClass_sq_eq_one {x : lipschitzGroup Q}
@@ -548,8 +591,7 @@ theorem star_mul_self_eq_algebraMap_normUnit {x : lipschitzGroup Q}
     (F : LipschitzVectorFactorization Q x) :
     star (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) *
         (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
-      algebraMap R (CliffordAlgebra Q)
-        (cliffordInvertibleVectorProductNormUnit Q F.factors : R) := by
+      algebraMap R (CliffordAlgebra Q) (F.normUnit : R) := by
   have hx :
       (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
         (((cliffordInvertibleVectorProductLipschitz Q F.factors : lipschitzGroup Q) :
@@ -558,7 +600,8 @@ theorem star_mul_self_eq_algebraMap_normUnit {x : lipschitzGroup Q}
       (fun y : lipschitzGroup Q => (((y : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) :
         CliffordAlgebra Q)) F.product_eq.symm
   rw [hx]
-  exact star_cliffordInvertibleVectorProductLipschitz_mul_self (Q := Q) F.factors
+  simpa [normUnit] using
+    star_cliffordInvertibleVectorProductLipschitz_mul_self (Q := Q) F.factors
 
 end LipschitzVectorFactorization
 
@@ -575,6 +618,22 @@ theorem exists_lipschitzVectorFactorization [Invertible (2 : R)]
     Nonempty (LipschitzVectorFactorization Q x) :=
   ⟨lipschitzVectorFactorization Q x⟩
 
+/-- There is a factorization of the identity whose square-class spinor norm is trivial. -/
+theorem exists_lipschitzVectorFactorization_one_spinorNormClass_eq_one
+    (Q : QuadraticForm R M) :
+    ∃ F : LipschitzVectorFactorization Q (1 : lipschitzGroup Q),
+      F.spinorNormClass = 1 :=
+  ⟨LipschitzVectorFactorization.one (Q := Q), by simp⟩
+
+/-- Given factorizations of two Lipschitz elements, there is a product factorization whose
+square-class spinor norm is the product of the two square classes. -/
+theorem exists_lipschitzVectorFactorization_mul_spinorNormClass_eq
+    {Q : QuadraticForm R M} {x y : lipschitzGroup Q}
+    (F : LipschitzVectorFactorization Q x) (G : LipschitzVectorFactorization Q y) :
+    ∃ H : LipschitzVectorFactorization Q (x * y),
+      H.spinorNormClass = F.spinorNormClass * G.spinorNormClass :=
+  ⟨F.mul G, by simp⟩
+
 /--
 The Clifford norm unit attached to the repository's noncomputable chosen Lipschitz
 vector factorization.
@@ -584,7 +643,7 @@ factorization is asserted.
 -/
 noncomputable def chosenLipschitzNormUnit [Invertible (2 : R)]
     (Q : QuadraticForm R M) (x : lipschitzGroup Q) : Rˣ :=
-  cliffordInvertibleVectorProductNormUnit Q (lipschitzVectorFactorization Q x).factors
+  (lipschitzVectorFactorization Q x).normUnit
 
 /--
 The square-class attached to the repository's noncomputable chosen Lipschitz vector
@@ -597,6 +656,18 @@ noncomputable def chosenLipschitzSpinorNormClass [Invertible (2 : R)]
     (Q : QuadraticForm R M) (x : lipschitzGroup Q) :
     Rˣ ⧸ MonoidHom.range (powMonoidHom (α := Rˣ) 2) :=
   (lipschitzVectorFactorization Q x).spinorNormClass
+
+/-- For any two Lipschitz elements, the chosen square classes can be realized by a
+factorization of their product whose square class is the product of the chosen values. This
+is still a factorization-level statement, not a proof that the repository's noncomputable
+chosen value on `x * y` is multiplicative. -/
+theorem exists_lipschitzVectorFactorization_mul_chosenSpinorNormClass_eq
+    [Invertible (2 : R)] (Q : QuadraticForm R M) (x y : lipschitzGroup Q) :
+    ∃ H : LipschitzVectorFactorization Q (x * y),
+      H.spinorNormClass =
+        chosenLipschitzSpinorNormClass Q x * chosenLipschitzSpinorNormClass Q y := by
+  refine ⟨(lipschitzVectorFactorization Q x).mul (lipschitzVectorFactorization Q y), ?_⟩
+  simp [chosenLipschitzSpinorNormClass]
 
 @[simp]
 theorem chosenLipschitzSpinorNormClass_sq_eq_one [Invertible (2 : R)]

@@ -104,8 +104,10 @@ also proves, under the standard hypothesis that \(2\) is invertible, that every
 Mathlib \code{lipschitzGroup} element has an invertible-vector product
 representative. The noncanonical \code{chosenLipschitzSpinorNormClass} exposes
 the resulting square-class value while keeping it attached to a chosen
-factorization, and \code{lipschitzLinearImageChosenSpinorNormClass} carries the
-same chosen-lift interface to the image of the Lipschitz linear representation;
+factorization; factorization-level identity and product wrappers prove
+multiplicativity for the stored norm units and square classes. The declaration
+\code{lipschitzLinearImageChosenSpinorNormClass} carries the same chosen-lift
+interface to the image of the Lipschitz linear representation;
 we prove invariance of these product-level square classes under
 reordering and reversal of the chosen vector list, cancellation of
 repeated invertible-vector pairs, and triviality of duplicated products,
@@ -122,8 +124,8 @@ explicit chosen-model Levi-lift, and finite-basis split-Levi image corollaries
 become unconditional there.
 The artifact comprises
 $30$ Lean source files totaling
-$24{,}172$ physical lines across the repository, of which $28$ files and
-$24{,}123$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
+$24{,}251$ physical lines across the repository, of which $28$ files and
+$24{,}202$ physical lines lie under \code{Spinor/}, with no \texttt{sorry}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lean 4; Mathlib; Clifford algebras; spinor
@@ -217,11 +219,12 @@ square-scaling lifts, the Levi-projective exterior-action bridge, and the exact
 split-line image criterion, plus a Clifford-level vector-product norm formula
 with its invertible-vector square-class package, factorization-existence
 Lipschitz-group wrapper when \(2\) is invertible, a noncanonical chosen
-Lipschitz square-class wrapper for the selected factorization, a noncanonical
-chosen-lift wrapper on the Lipschitz linear image, product-order invariance,
-repeated-pair square-class cancellation, and duplicated-product square-class
-triviality for products, contiguous subproducts, and separated repeated
-subproducts after permutation into the repeated shape.
+Lipschitz square-class wrapper for the selected factorization, factorization-level
+identity/product wrappers proving multiplication of stored norm units and square
+classes, a noncanonical chosen-lift wrapper on the Lipschitz linear image,
+product-order invariance, repeated-pair square-class cancellation, and
+duplicated-product square-class triviality for products, contiguous subproducts,
+and separated repeated subproducts after permutation into the repeated shape.
 The real-classification surface also includes the theorem-facing
 \code{PeriodEightTable} and \code{periodEightTable} declarations, collecting
 the split families and first-period definite Bott rows through $\Cl(0,8)$,
@@ -340,7 +343,7 @@ Lean toolchain & \code{leanprover/lean4:v4.30.0-rc1} \\
 \Mathlib commit & \code{11873348d8bf19440253d9282cc4e9423432e5ea} \\
 Build command & \code{lake build} \\
 Lean files under \code{Spinor/} & $28$ \\
-Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $24{,}123$ \\
+Physical Lean LOC under \code{Spinor/} (\code{wc -l}) & $24{,}202$ \\
 \code{sorry} occurrences under \code{Spinor/} & $0$
 \end{tabularx}
 \end{center}
@@ -434,7 +437,11 @@ invertible-vector product representative. The noncanonical declarations
 \code{chosenLipschitzNormUnit} and \code{chosenLipschitzSpinorNormClass}
 expose the norm unit and square class attached to the repository's selected
 factorization, together with the corresponding square-triviality and
-Clifford-norm formula. The companion \code{LipschitzImageNorm.lean} module
+Clifford-norm formula. At the stored-factorization level,
+\code{mul} concatenates two vector lists to factor a Lipschitz product, and the
+corresponding \code{normUnit_mul} and \code{spinorNormClass_mul} declarations
+prove the expected product formulas for norm units and square classes. The companion
+\code{LipschitzImageNorm.lean} module
 chooses a Lipschitz lift of an element in the image of
 \code{lipschitzLinearRepresentation} and exposes the same noncanonical norm
 unit and square class at that image level.
@@ -1545,7 +1552,8 @@ the Clifford/Lipschitz norm formula is available globally for Lipschitz
 vector-product factorizations; when \(2\) is invertible, every Mathlib
 \code{lipschitzGroup} element admits at least one such factorization. The
 associated noncanonical chosen square class has order invariance, repeated-pair
-cancellation, and duplicated-product/subproduct triviality, including separated
+cancellation, duplicated-product/subproduct triviality, and factorization-level
+product formulas for concatenated Lipschitz factorizations, including separated
 repeated subproducts after permutation into the repeated shape; the companion
 noncanonical chosen-lift wrapper exposes this data on the Lipschitz linear
 image, but no global orthogonal-group spinor-norm theory is claimed. Over fields with
@@ -1558,9 +1566,9 @@ already visible inside explicit Clifford formulas over a general field. The
 artifact boundary is consequently sharp: broader orthogonal subgroups, full
 global orthogonal-group spinor-norm formulations beyond the factorization-existence
 Clifford/Lipschitz norm and its order-invariant, repeated-pair-stable,
-duplicated-product/subproduct-stable square-class product and noncanonical
-Lipschitz linear-image wrapper, including separated repeated subproducts after
-permutation into the repeated shape, recursive
+duplicated-product/subproduct-stable square-class product, factorization-level
+Lipschitz product wrappers, and noncanonical Lipschitz linear-image wrapper,
+including separated repeated subproducts after permutation into the repeated shape, recursive
 arbitrary-signature Bott-periodic classification beyond the packaged
 \code{periodEightTable} first-period rows, and scheme-theoretic spin-cover
 developments are not used by the stated results and are kept outside this

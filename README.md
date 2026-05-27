@@ -267,7 +267,9 @@ Implemented so far:
   inversion; when `2` is invertible, `exists_cliffordInvertibleVectorProductLipschitz_eq`
   proves that every Mathlib `lipschitzGroup` element has some invertible-vector product
   representative, and `LipschitzVectorFactorization` / `lipschitzVectorFactorization` carry
-  such a chosen vector decomposition and its induced square-class value; the noncanonical
+  such a chosen vector decomposition, its norm unit, and its induced square-class value;
+  factorization-level identity and product wrappers prove that concatenated factorizations
+  multiply both norm units and square classes; the noncanonical
   `chosenLipschitzNormUnit` and `chosenLipschitzSpinorNormClass` expose the resulting chosen
   Lipschitz square-class API without asserting decomposition independence, while
   `LipschitzImageNorm` exposes the corresponding noncanonical chosen-lift API on the image of
@@ -373,7 +375,7 @@ Explicit scope boundaries for this algebraic submission package:
   repeated-pair square-class cancellation, and duplicated-product/subproduct square-class
   triviality, including separated repeated subproducts after permutation into the repeated shape
 - a full global orthogonal-group spinor-norm theory beyond the factorization-existence
-  Clifford/Lipschitz norm package, its noncanonical Lipschitz linear-image wrapper, and
-  finite-basis split-Levi square-class APIs
+  Clifford/Lipschitz norm package, its factorization-level Lipschitz product wrappers,
+  noncanonical Lipschitz linear-image wrapper, and finite-basis split-Levi square-class APIs
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.
