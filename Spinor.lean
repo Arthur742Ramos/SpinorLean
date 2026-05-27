@@ -17,6 +17,7 @@ import Spinor.ComplexClassification
 import Spinor.LowDimensional
 import Spinor.Cl03QuaternionProd
 import Spinor.Cl60QuaternionMatrix
+import Spinor.Cl07RealMatrixProd
 import Spinor.RealClassification
 import Spinor.Presentation
 import Spinor.OddClassification
