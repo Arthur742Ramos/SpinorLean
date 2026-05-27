@@ -35,7 +35,8 @@ abbrev MatH (n : ℕ) : Type :=
 The declarations in this section are not a replacement for the first-period matrix table below.
 They package the general recursive Clifford-algebra steps that are available for every real
 signature: adjoining one negative square identifies a Clifford algebra with an even Clifford
-algebra, and even Clifford algebras are invariant under sign reversal.
+algebra, even Clifford algebras are invariant under sign reversal, and the auxiliary forms
+are transported back to the standard signature coordinates.
 -/
 
 /-- Canonical arbitrary real signature form for the recursive Bott-step interface. -/
@@ -46,6 +47,96 @@ abbrev Q_p_q (p q : ℕ) : QuadraticForm ℝ ((Fin p ⊕ Fin q) → ℝ) :=
 abbrev Q_p_q_oneNeg (p q : ℕ) :
     QuadraticForm ℝ (((Fin p ⊕ Fin q) → ℝ) × ℝ) :=
   CliffordAlgebra.EquivEven.Q' (Q_p_q p q)
+
+/-- Append one real coordinate to a finite tuple. -/
+def finSnocReal {q : ℕ} (f : Fin q → ℝ) (r : ℝ) : Fin (q + 1) → ℝ :=
+  Fin.snoc f r
+
+/-- Coordinate equivalence identifying Mathlib's one-negative-square extension with the
+standard signature form having one additional negative square. -/
+noncomputable def Q_p_q_oneNegLinearEquiv (p q : ℕ) :
+    (((Fin p ⊕ Fin q) → ℝ) × ℝ) ≃ₗ[ℝ] ((Fin p ⊕ Fin (q + 1)) → ℝ) where
+  toFun x := fun
+    | Sum.inl i => x.1 (Sum.inl i)
+    | Sum.inr j => finSnocReal (fun k : Fin q => x.1 (Sum.inr k)) x.2 j
+  invFun y :=
+    (fun
+      | Sum.inl i => y (Sum.inl i)
+      | Sum.inr j => y (Sum.inr (Fin.castSucc j)),
+      y (Sum.inr (Fin.last q)))
+  left_inv x := by
+    rcases x with ⟨f, r⟩
+    apply Prod.ext
+    · funext i
+      cases i with
+      | inl i => rfl
+      | inr j => simp [finSnocReal]
+    · simp [finSnocReal]
+  right_inv y := by
+    funext i
+    cases i with
+    | inl i => rfl
+    | inr j =>
+        cases j using Fin.lastCases <;> simp [finSnocReal]
+  map_add' x y := by
+    funext i
+    cases i with
+    | inl i => rfl
+    | inr j =>
+        cases j using Fin.lastCases <;> simp [finSnocReal]
+  map_smul' c x := by
+    funext i
+    cases i with
+    | inl i => rfl
+    | inr j =>
+        cases j using Fin.lastCases <;> simp [finSnocReal]
+
+/-- Mathlib's one-negative-square extension is the standard `(p,q+1)` signature form. -/
+noncomputable def Q_p_q_oneNegIsometry (p q : ℕ) :
+    (Q_p_q_oneNeg p q).IsometryEquiv (Q_p_q p (q + 1)) where
+  toLinearEquiv := Q_p_q_oneNegLinearEquiv p q
+  map_app' x := by
+    rcases x with ⟨f, r⟩
+    have hsnoc :
+        (∑ x : Fin (q + 1),
+            Fin.snoc (fun k : Fin q => f (Sum.inr k)) r x *
+              Fin.snoc (fun k : Fin q => f (Sum.inr k)) r x) =
+          (∑ x : Fin q, f (Sum.inr x) * f (Sum.inr x)) + r * r := by
+      rw [Fin.sum_univ_castSucc]
+      simp
+    simp [Q_p_q_oneNeg, Q_p_q, Q_p_q_oneNegLinearEquiv, standardSignatureForm,
+      QuadraticMap.weightedSumSquares_apply, finSnocReal, hsnoc, add_comm, add_left_comm]
+
+/-- Coordinate swap identifying the negative of the standard `(p,q)` form with `(q,p)`. -/
+noncomputable def Q_p_q_negLinearEquiv (p q : ℕ) :
+    ((Fin p ⊕ Fin q) → ℝ) ≃ₗ[ℝ] ((Fin q ⊕ Fin p) → ℝ) where
+  toFun f := fun
+    | Sum.inl j => f (Sum.inr j)
+    | Sum.inr i => f (Sum.inl i)
+  invFun f := fun
+    | Sum.inl i => f (Sum.inr i)
+    | Sum.inr j => f (Sum.inl j)
+  left_inv f := by
+    funext i
+    cases i <;> rfl
+  right_inv f := by
+    funext i
+    cases i <;> rfl
+  map_add' f g := by
+    funext i
+    cases i <;> rfl
+  map_smul' c f := by
+    funext i
+    cases i <;> rfl
+
+/-- Sign reversal for the standard `(p,q)` form is isometric to the standard `(q,p)` form. -/
+noncomputable def Q_p_q_negIsometry (p q : ℕ) :
+    (-(Q_p_q p q)).IsometryEquiv (Q_p_q q p) where
+  toLinearEquiv := Q_p_q_negLinearEquiv p q
+  map_app' f := by
+    simp [Q_p_q, Q_p_q_negLinearEquiv, standardSignatureForm,
+      QuadraticMap.weightedSumSquares_apply, Finset.sum_neg_distrib,
+      neg_add_rev, add_comm]
 
 /-- The arbitrary-signature one-negative-step recurrence:
 `Cl(p,q) ≃ Cl⁺(Q(p,q) ⊕ ⟨-1⟩)`. -/
@@ -61,6 +152,22 @@ noncomputable def cl_p_q_even_equiv_even_neg (p q : ℕ) :
       CliffordAlgebra.even (-(Q_p_q p q)) :=
   CliffordAlgebra.evenEquivEvenNeg (Q := Q_p_q p q)
 
+/-- Standard-coordinate one-negative recurrence:
+`Cl(p,q) ≃ Cl⁺(p,q+1)`. -/
+noncomputable def cl_p_q_equiv_even_succ_neg (p q : ℕ) :
+    CliffordAlgebra (Q_p_q p q) ≃ₐ[ℝ]
+      CliffordAlgebra.even (Q_p_q p (q + 1)) :=
+  (cl_p_q_equiv_even_oneNeg p q).trans
+    (evenCliffordEquivOfIsometry (Q_p_q_oneNegIsometry p q))
+
+/-- Standard-coordinate even-Clifford signature swap:
+`Cl⁺(p,q) ≃ Cl⁺(q,p)`. -/
+noncomputable def cl_p_q_even_equiv_even_swap (p q : ℕ) :
+    CliffordAlgebra.even (Q_p_q p q) ≃ₐ[ℝ]
+      CliffordAlgebra.even (Q_p_q q p) :=
+  (cl_p_q_even_equiv_even_neg p q).trans
+    (evenCliffordEquivOfIsometry (Q_p_q_negIsometry p q))
+
 /-- A theorem-facing package for the arbitrary-signature recursive Clifford steps. -/
 structure RecursiveSignatureBottStep where
   cl_p_q_oneNeg :
@@ -69,11 +176,19 @@ structure RecursiveSignatureBottStep where
   cl_p_q_even_neg :
     (p q : ℕ) → CliffordAlgebra.even (Q_p_q p q) ≃ₐ[ℝ]
       CliffordAlgebra.even (-(Q_p_q p q))
+  cl_p_q_succ_neg :
+    (p q : ℕ) → CliffordAlgebra (Q_p_q p q) ≃ₐ[ℝ]
+      CliffordAlgebra.even (Q_p_q p (q + 1))
+  cl_p_q_even_swap :
+    (p q : ℕ) → CliffordAlgebra.even (Q_p_q p q) ≃ₐ[ℝ]
+      CliffordAlgebra.even (Q_p_q q p)
 
 /-- The collected arbitrary-signature recursive Clifford steps. -/
 noncomputable def recursiveSignatureBottStep : RecursiveSignatureBottStep where
   cl_p_q_oneNeg := cl_p_q_equiv_even_oneNeg
   cl_p_q_even_neg := cl_p_q_even_equiv_even_neg
+  cl_p_q_succ_neg := cl_p_q_equiv_even_succ_neg
+  cl_p_q_even_swap := cl_p_q_even_equiv_even_swap
 
 /--
 The formal first-period real Bott table already proved in the component files.

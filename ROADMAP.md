@@ -241,7 +241,10 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     `Spinor.RealClassification.periodEightTable` now collect the split families and definite
     first-period rows into one theorem-facing Bott-table package, while
     `Spinor.RealClassification.recursiveSignatureBottStep` packages the arbitrary-signature
-    one-negative-square and even sign-reversal Clifford recurrences; the remaining
+    one-negative-square and even sign-reversal Clifford recurrences, now including the
+    standard-coordinate steps
+    `cl_p_q_equiv_even_succ_neg : Cl(p,q) ≃ Cl⁺(p,q+1)` and
+    `cl_p_q_even_equiv_even_swap : Cl⁺(p,q) ≃ Cl⁺(q,p)`; the remaining
     arbitrary-signature matrix-target period-eight classification remains a separate
     classification program, not an unchecked dependency of the submitted theorem package
 
@@ -553,7 +556,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   descent-obligation APIs, and direct conditional image-level hom wrappers with
   range-restriction pullback and uniqueness theorems when `2` is invertible, while the remaining
   arbitrary-signature matrix-target Bott-periodicity and full all-orthogonal-group image classifications beyond
-  the exact full-isometry image reduction / determinant obstruction / global orthogonal-group
+  the standard-coordinate recursive Bott steps / exact full-isometry image reduction / determinant obstruction / global orthogonal-group
   spinor-norm theory are framed as separate projects rather than dependencies of the claimed
   results
 - [x] Introduction: why spinors matter, why formalization is novel

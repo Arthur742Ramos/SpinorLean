@@ -418,7 +418,9 @@ Implemented so far:
   with `PeriodEightTable` and `periodEightTable` collecting the split families
   and definite first-period rows into one theorem-facing Bott-table package,
   `recursiveSignatureBottStep` packaging the arbitrary-signature one-negative-square
-  and even sign-reversal Clifford recurrences,
+  and even sign-reversal Clifford recurrences, together with the standard-coordinate
+  recurrences `cl_p_q_equiv_even_succ_neg : Cl(p,q) ≃ₐ[ℝ] Cl⁺(p,q+1)` and
+  `cl_p_q_even_equiv_even_swap : Cl⁺(p,q) ≃ₐ[ℝ] Cl⁺(q,p)`,
   plus the split entries
   `cl_1_1_equivMatrix2`, `cl_1_1_even_equivRealProd`, `cl_2_2_equivMatrix4`, and
   `cl_2_2_even_equivProdMatrix2`, extending the packaged low-signature portion of
@@ -440,7 +442,8 @@ Explicit scope boundaries for this algebraic submission package:
 
 - a full arbitrary-signature matrix-target Bott-periodicity theorem beyond the packaged split
   families, first-period table collected in `RealClassification.periodEightTable`, and the
-  arbitrary-signature recursive one-negative-square / even sign-reversal steps packaged by
+  arbitrary-signature recursive one-negative-square / even sign-reversal / standard-coordinate
+  successor-negative and even signature-swap steps packaged by
   `RealClassification.recursiveSignatureBottStep`
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
   exact full-isometry image reduction to the special-orthogonal spin map, determinant obstruction

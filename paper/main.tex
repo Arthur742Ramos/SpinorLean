@@ -291,8 +291,13 @@ the split families and first-period definite Bott rows through $\Cl(0,8)$,
 $\Cl(8,0)$, and their even companions, together with
 \code{recursiveSignatureBottStep}, which packages the arbitrary-signature
 one-negative-square Clifford recurrence and the even-Clifford sign-reversal
-recurrence. A full arbitrary-signature matrix-target Bott-periodicity theorem
-beyond those recursive steps and the packaged table, full
+recurrence, including the standard-coordinate consequences
+\code{cl\_p\_q\_equiv\_even\_succ\_neg} and
+\code{cl\_p\_q\_even\_equiv\_even\_swap}, i.e.
+\(\Cl(p,q)\simeq\Cl^+(p,q+1)\) and
+\(\Cl^+(p,q)\simeq\Cl^+(q,p)\). A full arbitrary-signature
+matrix-target Bott-periodicity theorem beyond those recursive steps and the
+packaged table, full
 all-orthogonal-group image classification beyond the exact full-target image
 reduction, determinant obstruction and its norm-\(-1\) pin-generator corollary,
 and global orthogonal-group
@@ -625,7 +630,9 @@ rows into the theorem-facing \code{PeriodEightTable} structure and
 \code{periodEightTable} declaration. It also exposes
 \code{recursiveSignatureBottStep}, an arbitrary-signature package of the
 one-negative-square Clifford recurrence and even-Clifford sign-reversal
-recurrence. These supporting rows and recurrences are not the main theorem of
+recurrence, together with the standard-coordinate recurrences
+\(\Cl(p,q)\simeq\Cl^+(p,q+1)\) and
+\(\Cl^+(p,q)\simeq\Cl^+(q,p)\). These supporting rows and recurrences are not the main theorem of
 the present paper, but they show that the chosen-model and orthogonal-action
 APIs are already sufficient for later formal developments connecting the
 split-model infrastructure to classical compact spin identifications.
@@ -1725,7 +1732,8 @@ descent-obligation APIs, and direct
 conditional image-level homs with their range-restriction pullback and uniqueness theorems,
 including separated repeated subproducts after permutation into the repeated shape, the remaining
 arbitrary-signature matrix-target Bott-periodic classification beyond
-\code{recursiveSignatureBottStep} and the packaged \code{periodEightTable}
+\code{recursiveSignatureBottStep} with its standard-coordinate successor-negative and
+even signature-swap recurrences, and the packaged \code{periodEightTable}
 first-period rows, and scheme-theoretic spin-cover
 developments are not used by the stated results and are kept outside this
 algebraic submission package.
