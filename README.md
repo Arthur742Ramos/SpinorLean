@@ -288,7 +288,8 @@ Implemented so far:
   `lipschitzLinearImageSpinorNormClassHomOfDescends_comp_rangeRestrict` and
   `lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel_comp_rangeRestrict`
   prove that the image-level homs compose with `lipschitzLinearRepresentation.rangeRestrict`
-  to the corresponding Lipschitz-group homs. The scalar, unit, and
+  to the corresponding Lipschitz-group homs, and the corresponding
+  `_eq_of_comp_rangeRestrict` theorems prove uniqueness from that pullback. The scalar, unit, and
   square-class products
   are invariant under list permutation and reversal via
   `cliffordVectorProductNormScalar_perm`,

@@ -456,7 +456,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     the missing hypotheses needed to turn that image-level square class into a monoid
     homomorphism, together with pullback theorems showing that the image-level homs compose
     with `Spinor.lipschitzLinearRepresentation.rangeRestrict` to the corresponding
-    Lipschitz-group homs,
+    Lipschitz-group homs and are uniquely determined by that pullback,
     product-order invariance for the scalar, unit, and square-class products, repeated-pair
     square-class cancellation, and duplicated-product/subproduct square-class triviality,
     including separated repeated subproducts after permutation into the repeated shape;
@@ -477,8 +477,8 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
     factorization-level Lipschitz product wrappers, and its noncanonical Lipschitz linear-image
     wrapper / conditional factorization-independence, Lipschitz-group hom,
     kernel-triviality-to-lift-independence, descent-obligation APIs, and direct conditional
-    image-level hom wrapper and its range-restriction pullback theorem, including separated
-    repeated subproducts after permutation into the repeated shape,
+    image-level hom wrapper, range-restriction pullback theorem, and pullback uniqueness
+    theorem, including separated repeated subproducts after permutation into the repeated shape,
     are intentionally outside the submitted theorem surface
 - [x] Package ambient and split-rank non-factorization criteria for the spin representation
   - [x] in the ambient regular model, if `Q` represents `-1` and `-1 ≠ 1`, package
@@ -504,7 +504,7 @@ Target venues: CPP 2027, ITP 2027, or *Advances in Applied Clifford Algebras*.
   product square-class wrappers, and their noncanonical Lipschitz linear-image chosen-lift
   wrappers / conditional factorization-independence, Lipschitz-group hom,
   kernel-triviality-to-lift-independence, descent-obligation APIs, and direct conditional
-  image-level hom wrapper with range-restriction pullback theorem when `2` is invertible, while recursive
+  image-level hom wrapper with range-restriction pullback and uniqueness theorems when `2` is invertible, while recursive
   arbitrary-signature Bott-periodicity and full all-orthogonal-group image classifications /
   global orthogonal-group spinor-norm theory are framed as separate projects rather than
   dependencies of the claimed results
