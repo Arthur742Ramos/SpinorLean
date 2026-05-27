@@ -63,7 +63,8 @@ table beyond the packaged low-signature entries, now including the explicit
 `Cl⁺(6,0) ≃ Mat₄(ℂ)`, `Cl(6,0) ≃ Mat₄(ℍ)`,
 `Cl⁺(0,7) ≃ Mat₈(ℝ)`, `Cl(0,7) ≃ Mat₈(ℝ) × Mat₈(ℝ)`,
 `Cl⁺(0,8) ≃ Mat₈(ℝ) × Mat₈(ℝ)`, `Cl(0,8) ≃ Mat₁₆(ℝ)`,
-`Cl⁺(7,0) ≃ Mat₈(ℝ)`, and `Cl⁺(8,0) ≃ Mat₈(ℝ) × Mat₈(ℝ)` rows, a full
+`Cl(7,0) ≃ Mat₈(ℂ)`, `Cl⁺(7,0) ≃ Mat₈(ℝ)`,
+`Cl⁺(8,0) ≃ Mat₈(ℝ) × Mat₈(ℝ)`, and `Cl(8,0) ≃ Mat₁₆(ℝ)` rows, a full
 all-orthogonal-group image classification,
 and a global orthogonal-group spinor-norm API beyond this product-level substrate are separate
 projects, not dependencies in the claimed theorem package.

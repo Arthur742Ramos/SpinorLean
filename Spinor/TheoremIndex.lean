@@ -243,8 +243,13 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.RealClassification.cl_0_8_equivMatrix16
 #check Spinor.realEvenCl70EquivRealMatrix8
 #check Spinor.RealClassification.cl_7_0_even_equivMatrix8
+#check Spinor.realCl70EquivComplexMatrix8
+#check Spinor.RealClassification.cl_7_0_equivComplexMatrix8
 #check Spinor.realEvenCl80EquivRealMatrix8Prod
 #check Spinor.RealClassification.cl_8_0_even_equivMatrix8Prod
+#check Spinor.realCl80EquivRealMatrix16ComplexBlock
+#check Spinor.realCl80EquivRealMatrix16
+#check Spinor.RealClassification.cl_8_0_equivMatrix16
 #check Spinor.RealClassification.cl_1_1_equivMatrix2
 #check Spinor.RealClassification.cl_1_1_even_equivRealProd
 #check Spinor.RealClassification.cl_2_2_equivMatrix4
