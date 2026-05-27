@@ -1,5 +1,6 @@
 import Spinor.ProdNeg
 import Spinor.OddClassification
+import Spinor.CliffordNorm
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.LinearAlgebra.CliffordAlgebra.Prod
 
@@ -10,7 +11,10 @@ import Mathlib.LinearAlgebra.CliffordAlgebra.Prod
   everything" to "kernel elements are scalar". This file resolves that step in
   finite-dimensional nondegenerate rank by
   passing to the canonical doubled hyperbolic presentation `Q ⊕ (-Q)`,
-  where the chosen-model Clifford action is an endomorphism algebra. It also
+  where the chosen-model Clifford action is an endomorphism algebra. The same
+  scalar-center theorem is reused for even elements in the kernel of the
+  Lipschitz linear representation, giving a scalar-unit bridge and spinor-norm
+  triviality theorem for even Lipschitz kernel elements. The file also
   lifts the resulting kernel statement from the ambient isometry map to the
   `SO(V,Q)`-valued factor, packages the conditional covering-map statement under
   the pair-generator closure hypothesis, and records the exact split-line
@@ -140,6 +144,41 @@ theorem even_eq_algebraMap_of_commute [FiniteDimensional K V] (hQ : Q.Nondegener
   have hscalarOne : scalarRight (1 : CliffordAlgebra (-Q)) = 1 := by
     simpa using hscalarRight_apply (r := 1)
   simpa [hscalarOne] using hsmul
+
+/-- In finite-dimensional nondegenerate rank, an even element in the Lipschitz linear kernel is
+a scalar unit in the Clifford algebra. -/
+theorem exists_unit_scalar_of_lipschitzLinearRepresentation_eq_one_of_mem_even
+    [FiniteDimensional K V] (hQ : Q.Nondegenerate) (x : lipschitzGroup Q)
+    (hx : lipschitzLinearRepresentation (Q := Q) x = 1)
+    (heven : (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) ∈
+      CliffordAlgebra.even Q) :
+    ∃ u : Kˣ,
+      (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) =
+        algebraMap K (CliffordAlgebra Q) (u : K) := by
+  rcases even_eq_algebraMap_of_commute (Q := Q) hQ
+      (ha := heven)
+      (hcomm := commute_of_lipschitzLinearRepresentation_eq_one (Q := Q) x hx) with
+    ⟨r, hr⟩
+  have hr_ne_zero : r ≠ 0 := by
+    intro hr0
+    have hx_zero :
+        (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) = 0 := by
+      rw [hr, hr0]
+      simp
+    exact Units.ne_zero ((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) hx_zero
+  exact ⟨Units.mk0 r hr_ne_zero, by simpa using hr⟩
+
+/-- Even Lipschitz linear-kernel elements have trivial global Lipschitz spinor norm square class. -/
+theorem lipschitzSpinorNormClassHom_eq_one_of_linearRepresentation_eq_one_of_mem_even
+    [FiniteDimensional K V] (hQ : Q.Nondegenerate) (x : lipschitzGroup Q)
+    (hx : lipschitzLinearRepresentation (Q := Q) x = 1)
+    (heven : (((x : lipschitzGroup Q) : (CliffordAlgebra Q)ˣ) : CliffordAlgebra Q) ∈
+      CliffordAlgebra.even Q) :
+    lipschitzSpinorNormClassHom Q x = 1 := by
+  rcases exists_unit_scalar_of_lipschitzLinearRepresentation_eq_one_of_mem_even
+      (Q := Q) hQ x hx heven with
+    ⟨u, hu⟩
+  exact lipschitzSpinorNormClassHom_eq_one_of_coe_eq_algebraMap_unit Q x u hu
 
 /-- In finite-dimensional nondegenerate rank, the ambient spin-to-isometry kernel is exactly the
 scalar elements `±1`. -/

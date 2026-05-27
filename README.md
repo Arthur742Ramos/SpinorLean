@@ -291,6 +291,10 @@ Implemented so far:
   `lipschitzConjAlgEquiv_eq_refl_of_lipschitzLinearRepresentation_eq_one` and
   `commute_of_lipschitzLinearRepresentation_eq_one`, a linear-kernel centrality bridge toward
   that scalar-kernel theorem.
+  `Covering` combines that centrality bridge with the finite-dimensional scalar-center theorem
+  to prove `exists_unit_scalar_of_lipschitzLinearRepresentation_eq_one_of_mem_even` and
+  `lipschitzSpinorNormClassHom_eq_one_of_linearRepresentation_eq_one_of_mem_even`, discharging
+  even Lipschitz linear-kernel elements while leaving the odd-kernel scalarity issue separate.
   `lipschitzLinearImageSpinorNormClassHomOfFactorizationIndependentOfTrivialOnLinearKernel`
   records the compatibility wrapper with the older two-hypothesis API, and
   `lipschitzLinearImageSpinorNormDescends_of_factorizationIndependent_of_trivialOnLinearKernel`
@@ -404,8 +408,8 @@ Explicit scope boundaries for this algebraic submission package:
 - a full global orthogonal-group spinor-norm theory beyond the factorization-existence
   Clifford/Lipschitz norm package, its proved Lipschitz factorization-independence theorem and
   global Lipschitz-group hom, noncanonical Lipschitz linear-image wrapper, linear-kernel
-  centrality bridge, scalar-kernel bridge, remaining kernel-triviality, lift-independence, and
-  descent-obligation APIs and implications, and
+  centrality / even-kernel scalarity bridge, scalar-kernel bridge, remaining odd-kernel
+  scalarity and kernel-triviality, lift-independence, and descent-obligation APIs and implications, and
   finite-basis split-Levi square-class APIs
 
 The library currently has a clean `lake build` and zero `sorry` / `admit`.
