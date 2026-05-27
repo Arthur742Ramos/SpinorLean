@@ -197,7 +197,8 @@ Implemented so far:
   `Cl(4, ℂ) ≃ Mat₄(ℂ)`, `Cl(0,1) ≃ ℂ`, `Cl(0,2) ≃ ℍ`, `Cl(2,0) ≃ Mat₂(ℝ)`,
   `Cl⁺(2,0) ≃ ℂ`, `Cl(3,0) ≃ Mat₂(ℂ)`,
   `Cl⁺(3,0) ≃ ℍ`, `Cl(0,4) ≃ Mat₂(ℍ)`, `Cl(4,0) ≃ Mat₂(ℍ)`,
-  `Cl⁺(4,0) ≃ ℍ × ℍ`, `Cl⁺(0,5) ≃ Mat₂(ℍ)`, `Cl⁺(5,0) ≃ Mat₂(ℍ)`,
+  `Cl⁺(4,0) ≃ ℍ × ℍ`, `Cl⁺(0,5) ≃ Mat₂(ℍ)`, `Cl(0,5) ≃ Mat₄(ℂ)`,
+  `Cl⁺(5,0) ≃ Mat₂(ℍ)`,
   `Cl(5,0) ≃ Mat₂(ℍ) × Mat₂(ℍ)`,
   `Cl(1,1) ≃ Mat₂(ℝ)`,
   `Cl⁺(1,1) ≃ ℝ × ℝ`, `Cl(2,2) ≃ Mat₄(ℝ)`, and
@@ -280,6 +281,7 @@ Implemented so far:
   `cl_0_4_equivQuaternionMatrix2 : Cl(0,4) ≃ₐ[ℝ] Mat₂(ℍ)`,
   `cl_0_4_even_equivQuaternionProd : Cl⁺(0,4) ≃ₐ[ℝ] ℍ × ℍ`,
   `cl_0_5_even_equivQuaternionMatrix2 : Cl⁺(0,5) ≃ₐ[ℝ] Mat₂(ℍ)`,
+  `cl_0_5_equivComplexMatrix4 : Cl(0,5) ≃ₐ[ℝ] Mat₄(ℂ)`,
   `cl_4_0_equivQuaternionMatrix2 : Cl(4,0) ≃ₐ[ℝ] Mat₂(ℍ)`,
   `cl_4_0_even_equivQuaternionProd : Cl⁺(4,0) ≃ₐ[ℝ] ℍ × ℍ`,
   `cl_5_0_even_equivQuaternionMatrix2 : Cl⁺(5,0) ≃ₐ[ℝ] Mat₂(ℍ)`,
@@ -304,8 +306,8 @@ Implemented so far:
 Explicit scope boundaries for this algebraic submission package:
 
 - the full Bott period-8 table beyond the split foundation and packaged low-signature entries
-  through `Cl(0,3)`, `Cl(0,4)`, `Cl(3,0)`, `Cl(4,0)`, and `Cl(5,0)`, selected even
-  positive/negative companions through `Cl⁺(0,5)` and `Cl⁺(5,0)`, and the explicit
+  through `Cl(0,3)`, `Cl(0,4)`, `Cl(0,5)`, `Cl(3,0)`, `Cl(4,0)`, and `Cl(5,0)`,
+  selected even positive/negative companions through `Cl⁺(0,5)` and `Cl⁺(5,0)`, and the explicit
   `Cl(2,2)` / `Cl⁺(2,2)` split entries
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
   non-factorization, projective descent, exact split-line iff criterion, exact finite-basis

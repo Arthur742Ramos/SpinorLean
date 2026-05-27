@@ -175,6 +175,8 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.RealClassification.cl_0_4_even_equivQuaternionProd
 #check Spinor.realEvenCl05EquivQuaternionMatrix2
 #check Spinor.RealClassification.cl_0_5_even_equivQuaternionMatrix2
+#check Spinor.realCl05EquivComplexMatrix4
+#check Spinor.RealClassification.cl_0_5_equivComplexMatrix4
 #check Spinor.realCl40EquivQuaternionMatrix2
 #check Spinor.RealClassification.cl_4_0_equivQuaternionMatrix2
 #check Spinor.realEvenCl40EquivQuaternionProd
