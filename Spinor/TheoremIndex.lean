@@ -309,6 +309,12 @@ this file in the normal `lake build` makes theorem-name drift visible to CI and 
 #check Spinor.complexOddCliffordEquivProdMatrix
 #check Spinor.realSplitCliffordEquivMatrix
 #check Spinor.realSplitEvenCliffordEquivProdMatrix
+#check Spinor.RealClassification.Q_p_q
+#check Spinor.RealClassification.Q_p_q_oneNeg
+#check Spinor.RealClassification.cl_p_q_equiv_even_oneNeg
+#check Spinor.RealClassification.cl_p_q_even_equiv_even_neg
+#check Spinor.RealClassification.RecursiveSignatureBottStep
+#check Spinor.RealClassification.recursiveSignatureBottStep
 #check Spinor.RealClassification.PeriodEightTable
 #check Spinor.RealClassification.periodEightTable
 #check Spinor.RealClassification.periodEightTable.cl_n_n

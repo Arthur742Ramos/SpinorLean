@@ -29,6 +29,52 @@ abbrev MatC (n : ℕ) : Type :=
 abbrev MatH (n : ℕ) : Type :=
   Matrix (Fin n) (Fin n) H
 
+/-!
+## Arbitrary-signature recursive Bott-step interface
+
+The declarations in this section are not a replacement for the first-period matrix table below.
+They package the general recursive Clifford-algebra steps that are available for every real
+signature: adjoining one negative square identifies a Clifford algebra with an even Clifford
+algebra, and even Clifford algebras are invariant under sign reversal.
+-/
+
+/-- Canonical arbitrary real signature form for the recursive Bott-step interface. -/
+abbrev Q_p_q (p q : ℕ) : QuadraticForm ℝ ((Fin p ⊕ Fin q) → ℝ) :=
+  standardSignatureForm p q
+
+/-- The one-negative-square extension used by Mathlib's even-Clifford recursion. -/
+abbrev Q_p_q_oneNeg (p q : ℕ) :
+    QuadraticForm ℝ (((Fin p ⊕ Fin q) → ℝ) × ℝ) :=
+  CliffordAlgebra.EquivEven.Q' (Q_p_q p q)
+
+/-- The arbitrary-signature one-negative-step recurrence:
+`Cl(p,q) ≃ Cl⁺(Q(p,q) ⊕ ⟨-1⟩)`. -/
+noncomputable def cl_p_q_equiv_even_oneNeg (p q : ℕ) :
+    CliffordAlgebra (Q_p_q p q) ≃ₐ[ℝ]
+      CliffordAlgebra.even (Q_p_q_oneNeg p q) :=
+  CliffordAlgebra.equivEven (Q_p_q p q)
+
+/-- The arbitrary-signature even-Clifford sign-reversal recurrence:
+`Cl⁺(p,q) ≃ Cl⁺(-Q(p,q))`. -/
+noncomputable def cl_p_q_even_equiv_even_neg (p q : ℕ) :
+    CliffordAlgebra.even (Q_p_q p q) ≃ₐ[ℝ]
+      CliffordAlgebra.even (-(Q_p_q p q)) :=
+  CliffordAlgebra.evenEquivEvenNeg (Q := Q_p_q p q)
+
+/-- A theorem-facing package for the arbitrary-signature recursive Clifford steps. -/
+structure RecursiveSignatureBottStep where
+  cl_p_q_oneNeg :
+    (p q : ℕ) → CliffordAlgebra (Q_p_q p q) ≃ₐ[ℝ]
+      CliffordAlgebra.even (Q_p_q_oneNeg p q)
+  cl_p_q_even_neg :
+    (p q : ℕ) → CliffordAlgebra.even (Q_p_q p q) ≃ₐ[ℝ]
+      CliffordAlgebra.even (-(Q_p_q p q))
+
+/-- The collected arbitrary-signature recursive Clifford steps. -/
+noncomputable def recursiveSignatureBottStep : RecursiveSignatureBottStep where
+  cl_p_q_oneNeg := cl_p_q_equiv_even_oneNeg
+  cl_p_q_even_neg := cl_p_q_even_equiv_even_neg
+
 /--
 The formal first-period real Bott table already proved in the component files.
 
