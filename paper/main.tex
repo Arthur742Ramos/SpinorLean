@@ -12,7 +12,7 @@
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
 \hypersetup{
-  pdftitle={Formalized Exterior-Model Spinors in Split Rank},
+  pdftitle={Formalized Exterior-Model Spinors in Split Rank: Levi Actions, Non-Descent, and Exact Split-Line/Levi Images},
   pdfauthor={Arthur F. Ramos and David B. Hulak and Ruy J. G. B. de Queiroz},
   pdfsubject={Formalized exterior-model spinors, Clifford algebras, and spin groups},
   pdfkeywords={Clifford algebra, formalized mathematics, Lean, Mathlib, spin group, spinor representation}
@@ -130,7 +130,8 @@ In \Lean/\Mathlib, these statements require transported hyperbolic or Witt data
 and explicit Clifford calculations on the same exterior model. The resulting
 machine-checked theorems include the Levi-action bridge, the exact split-line
 image theorem, the finite-basis square-determinant factorization with its
-explicit Clifford lift, and the finite-basis split-Levi spin-image iff.
+explicit Clifford lift, and the finite-basis split-Levi spin-image
+if-and-only-if criterion.
 
 \paragraph{Contributions.}
 Our main contribution is a reusable interface that transports
@@ -168,6 +169,9 @@ $\iota(v)$ when $Q$ is clear, for the canonical Clifford generator attached to
 the vector $v$. The notation $\rho_S$ denotes the transported Clifford action
 on the chosen exterior model $S=\wedgeW$, and $\ExtMap(g)$ denotes the
 exterior action induced by a linear map $g$ on $W$.
+When a bilinear bracket $\langle\cdot,\cdot\rangle$ is used with a quadratic
+form $Q$, it denotes the associated polar form
+$\langle v,w\rangle=Q(v+w)-Q(v)-Q(w)$.
 We write $\tilde x$ for Clifford conjugation (grade involution followed by
 reversion), so $\tilde v=-v$ for vectors, and the Clifford conjugate of a
 product \(vw\) of orthogonal vectors is \(-vw\). We write $x^\star$ for reversion in the top-pairing
@@ -233,15 +237,17 @@ including \code{CliffordAlgebra}, \code{ExteriorAlgebra}, \code{pinGroup}, and
 \code{spinGroup}~{}\cite{MathlibCommunity2020,Mathlib}. Wieser and Song's Lean
 geometric-algebra formalization~{}\cite{Wieser2022Clifford} and the earlier
 Lean~3 \texttt{lean-ga} library~{}\cite{LeanGA} supplied precursor
-infrastructure for Clifford-style reasoning. The present work builds a
-chosen exterior-model spinor layer over the current \Lean/\Mathlib stack:
+infrastructure for Clifford-style reasoning. Relative to those predecessors, the
+present work supplies a chosen exterior model tied to hyperbolic/Witt data and
+proves field-sensitive spin-image criteria for that transported model. It builds
+a chosen exterior-model spinor layer over the current \Lean/\Mathlib stack:
 first-class hyperbolic/Witt presentations,
 transported exterior-model spin actions, explicit root/torus elements in the
 split model, and image theorems stated directly on the resulting chosen model.
 It combines these transported spinor actions with the Levi-projective theorem,
 the exact split-line image theorem, and the finite-basis square-determinant
-factorization, including its explicit Clifford lift, exact spin-image iff,
-and square-surjective all-Levi corollaries.
+factorization, including its explicit Clifford lift, exact spin-image
+criterion, and square-surjective all-Levi corollaries.
 
 \paragraph{Novelty boundary.} We treat the exterior-model
 realization $\Cl(Q)\simeq\End(\wedgeW)$, the parity split, and the basic
@@ -378,7 +384,9 @@ compact spin identifications. The exact module and theorem names for these rows
 are recorded in \code{THEOREM_INDEX.md}.
 
 \paragraph{Gap relative to existing Mathlib infrastructure.}
-The ambient \Mathlib Clifford/exterior infrastructure is essential, but by
+At the pinned \Mathlib commit
+\texttt{11873348d8bf19440253d9282cc4e9423432e5ea}, the ambient \Mathlib
+Clifford/exterior infrastructure is essential, but by
 itself it does not supply a distinguished exterior-model spinor module attached
 to a chosen maximal isotropic, nor does it transport that chosen model through
 Witt data to theorem-level covering statements. The main mechanized obstacle
@@ -1295,7 +1303,7 @@ conjugation \(\tilde s\) fixed in the standing conventions. Since \(s^\star s=1\
 this adjointness forces the bottom-line scalar and the top exterior coefficient
 of \(\ExtMap(g)\) to multiply to \(1\). But the latter top coefficient is
 \(\det(g)\), so the normalization gives \(\det(g)=c^{-2}\), a square in
-\(K^\times\). This proves the iff. The same square-surjectivity argument then
+\(K^\times\). This proves the converse direction of the criterion. The same square-surjectivity argument then
 removes the determinant-square hypothesis for all finite-basis Levi elements
 with a distinguished basis line. Surjectivity of the square-class character is
 proved by the complementary diagonal calculation: scaling the distinguished
