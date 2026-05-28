@@ -1,0 +1,75 @@
+{
+  "contexts": [
+    {
+      "context": "spin image, while the same top-degree pairing normalization proves the converse determinant-square obstruction. % --- 2. Context ----------------------------------------------------------- \\section{Context} \\label{sec:related} \\paragraph{Mathematical background.} Our treatment follows the classical presentations of Lawson--Michelsohn~\\cite{LawsonMichelsohn1989}, Chevalley~\\cite{Chevalley1996}, Atiyah--Bott--Shapiro~\\cite{AtiyahBottShapiro1964}, and Lounesto~\\cite{Lounesto2001}, with the low-dimensional octonionic and quaternionic incidences drawn from Baez~\\cite{Baez2002}. The underlying ``choose a maximal isotropic and use $\\wedgeW$'' construction is classical;",
+      "keys": [
+        "LawsonMichelsohn1989"
+      ],
+      "line": 226
+    },
+    {
+      "context": "% --- 2. Context ----------------------------------------------------------- \\section{Context} \\label{sec:related} \\paragraph{Mathematical background.} Our treatment follows the classical presentations of Lawson--Michelsohn~\\cite{LawsonMichelsohn1989}, Chevalley~\\cite{Chevalley1996}, Atiyah--Bott--Shapiro~\\cite{AtiyahBottShapiro1964}, and Lounesto~\\cite{Lounesto2001}, with the low-dimensional octonionic and quaternionic incidences drawn from Baez~\\cite{Baez2002}. The underlying ``choose a maximal isotropic and use $\\wedgeW$'' construction is classical;",
+      "keys": [
+        "Chevalley1996"
+      ],
+      "line": 227
+    },
+    {
+      "context": "% --- 2. Context ----------------------------------------------------------- \\section{Context} \\label{sec:related} \\paragraph{Mathematical background.} Our treatment follows the classical presentations of Lawson--Michelsohn~\\cite{LawsonMichelsohn1989}, Chevalley~\\cite{Chevalley1996}, Atiyah--Bott--Shapiro~\\cite{AtiyahBottShapiro1964}, and Lounesto~\\cite{Lounesto2001}, with the low-dimensional octonionic and quaternionic incidences drawn from Baez~\\cite{Baez2002}. The underlying ``choose a maximal isotropic and use $\\wedgeW$'' construction is classical; the point here is to keep the choice data explicit and stable under transport.",
+      "keys": [
+        "AtiyahBottShapiro1964"
+      ],
+      "line": 227
+    },
+    {
+      "context": "\\section{Context} \\label{sec:related} \\paragraph{Mathematical background.} Our treatment follows the classical presentations of Lawson--Michelsohn~\\cite{LawsonMichelsohn1989}, Chevalley~\\cite{Chevalley1996}, Atiyah--Bott--Shapiro~\\cite{AtiyahBottShapiro1964}, and Lounesto~\\cite{Lounesto2001}, with the low-dimensional octonionic and quaternionic incidences drawn from Baez~\\cite{Baez2002}. The underlying ``choose a maximal isotropic and use $\\wedgeW$'' construction is classical; the point here is to keep the choice data explicit and stable under transport.",
+      "keys": [
+        "Lounesto2001"
+      ],
+      "line": 228
+    },
+    {
+      "context": "presentations of Lawson--Michelsohn~\\cite{LawsonMichelsohn1989}, Chevalley~\\cite{Chevalley1996}, Atiyah--Bott--Shapiro~\\cite{AtiyahBottShapiro1964}, and Lounesto~\\cite{Lounesto2001}, with the low-dimensional octonionic and quaternionic incidences drawn from Baez~\\cite{Baez2002}. The underlying ``choose a maximal isotropic and use $\\wedgeW$'' construction is classical; the point here is to keep the choice data explicit and stable under transport. \\paragraph{Formalization context and prior work.} \\Lean itself is described by de Moura and Ullrich~\\cite{deMouraUllrich2021}.",
+      "keys": [
+        "Baez2002"
+      ],
+      "line": 229
+    },
+    {
+      "context": "quaternionic incidences drawn from Baez~\\cite{Baez2002}. The underlying ``choose a maximal isotropic and use $\\wedgeW$'' construction is classical; the point here is to keep the choice data explicit and stable under transport. \\paragraph{Formalization context and prior work.} \\Lean itself is described by de Moura and Ullrich~\\cite{deMouraUllrich2021}. \\Mathlib already provides the ambient Clifford and exterior algebra libraries, including \\code{CliffordAlgebra}, \\code{ExteriorAlgebra}, \\code{pinGroup}, and \\code{spinGroup}~\\cite{MathlibCommunity2020,Mathlib}. Wieser and Song's Lean geometric-algebra formalization~\\cite{Wieser2022Clifford} and the earlier",
+      "keys": [
+        "deMouraUllrich2021"
+      ],
+      "line": 234
+    },
+    {
+      "context": "\\paragraph{Formalization context and prior work.} \\Lean itself is described by de Moura and Ullrich~\\cite{deMouraUllrich2021}. \\Mathlib already provides the ambient Clifford and exterior algebra libraries, including \\code{CliffordAlgebra}, \\code{ExteriorAlgebra}, \\code{pinGroup}, and \\code{spinGroup}~\\cite{MathlibCommunity2020,Mathlib}. Wieser and Song's Lean geometric-algebra formalization~\\cite{Wieser2022Clifford} and the earlier Lean~3 \\texttt{lean-ga} library~\\cite{LeanGA} supplied important precursor infrastructure for Clifford-style reasoning, but not a theorem-level chosen-model spinor package over the current \\Lean/\\Mathlib stack. The package",
+      "keys": [
+        "MathlibCommunity2020",
+        "Mathlib"
+      ],
+      "line": 237
+    },
+    {
+      "context": "\\Mathlib already provides the ambient Clifford and exterior algebra libraries, including \\code{CliffordAlgebra}, \\code{ExteriorAlgebra}, \\code{pinGroup}, and \\code{spinGroup}~\\cite{MathlibCommunity2020,Mathlib}. Wieser and Song's Lean geometric-algebra formalization~\\cite{Wieser2022Clifford} and the earlier Lean~3 \\texttt{lean-ga} library~\\cite{LeanGA} supplied important precursor infrastructure for Clifford-style reasoning, but not a theorem-level chosen-model spinor package over the current \\Lean/\\Mathlib stack. The package developed here adds that layer: first-class hyperbolic/Witt presentations,",
+      "keys": [
+        "Wieser2022Clifford"
+      ],
+      "line": 238
+    },
+    {
+      "context": "including \\code{CliffordAlgebra}, \\code{ExteriorAlgebra}, \\code{pinGroup}, and \\code{spinGroup}~\\cite{MathlibCommunity2020,Mathlib}. Wieser and Song's Lean geometric-algebra formalization~\\cite{Wieser2022Clifford} and the earlier Lean~3 \\texttt{lean-ga} library~\\cite{LeanGA} supplied important precursor infrastructure for Clifford-style reasoning, but not a theorem-level chosen-model spinor package over the current \\Lean/\\Mathlib stack. The package developed here adds that layer: first-class hyperbolic/Witt presentations, transported exterior-model spin actions, explicit root/torus elements in the",
+      "keys": [
+        "LeanGA"
+      ],
+      "line": 239
+    },
+    {
+      "context": "Write the matrix of $g$ in the chosen basis. If \\(n=1\\), the factorization has empty transvection lists and no \\(2\\times2\\) blocks; the determinant-square hypothesis gives exactly the chosen-line square scaling. Assume now that \\(n\\ge2\\). The classical transvection reduction for invertible matrices in dimension at least $2$~\\cite[Ch.~IV]{Artin1957GeometricAlgebra} writes $g$ as basis transvections, a diagonal basis scaling, and basis transvections. Because $\\det(g)$ is a square, the middle diagonal factor has square total determinant. The basis-diagonal square-determinant theorem proved in the formal development therefore splits that middle factor as one chosen-line square scaling together",
+      "keys": [
+        "Artin1957GeometricAlgebra"
+      ],
+      "line": 1253
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+HTTP/2 302 
+date: Thu, 28 May 2026 00:06:14 GMT
+content-type: text/html;charset=utf-8
+location: https://www.cambridge.org/core/product/identifier/9780511526022/type/book
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Thu, 28 May 2026 01:04:11 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=xaVxW9o1I52ASNROpTqyYNvYgqCKEJd7VMvdITBQck5KbujZHxCdFPNeWgnGTMYO3qONLwYS3LpuoPfbJcgNJqvbS7%2FF%2BunL0FiWkIbWJ1hUtQNyBciUlQ0wfh5jH6%2BHRllItos%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a02903262eb2d7e4-FRA
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 301 
+date: Thu, 28 May 2026 00:06:15 GMT
+content-type: text/plain; charset=utf-8
+content-length: 108
+cache-control: private, no-cache, no-store, must-revalidate
+content-security-policy: frame-ancestors 'self'
+content-security-policy: frame-ancestors 'self'
+expires: -1
+location: /core/books/clifford-algebras-and-spinors/8318F7DD5B5DE06B30BC612BB5617021
+pragma: no-cache
+referrer-policy: no-referrer-when-downgrade
+strict-transport-security: max-age=15552000; includeSubDomains
+vary: Accept
+via: 1.1 varnish (Varnish/6.0)
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-frame-options: SAMEORIGIN
+x-served-by: 
+x-varnish: 860259997
+x-xss-protection: 1; mode=block
+cf-cache-status: DYNAMIC
+set-cookie: aca-session=Fe26.2**caf5b625506c3a82172d60046a43e67fe2403d31b32aac389621433875f2dd16*7wXAVSkSMy7_3gzNH0Thbg*Jhs6ONXf5_JV32YXFUGxGekUkwVU_mkX-JVvw0VEAb6SPxh4AVWVtqnhUXRQXE-wzHWwqpG2lKENPzN4w5vMEbqR5GPaDyVzDYnGWYmlHSU**73cc00b4ff03e611708965bcdf4f0fcba4a7038cc00961982df5f69e41917c0e*uuC-xqu8F9NQpqJR138L8Jh-mJ4jf6ySgn_oXMvLOrw; Secure; HttpOnly; SameSite=Lax; Path=/
+set-cookie: session=s%3AZt90rdOxOgPndNzyIWi9SOIcebTy5t9A.b%2FTaI941wnEWV%2FIPyXOw2ZJsCw6w01bm7MRBVlje9dk; Path=/; HttpOnly; Secure
+set-cookie: __cf_bm=vlqOXuTnn2qcCxgQAcNFiS3c1bJ0OukDse262iB2_SI-1779926774.967363-1.0.1.1-rvXjUz7fjf6KZf9qeNzOlVmUgFyHc08IpCyKtqOaEdUXtAngpwruVNqdkZ7GEEc6B7eW83AiwoaTW5NmE3RH6wWZYiWes9wSr.SUImZt5WDBQpfksVV12srwvY.EsBuX; HttpOnly; SameSite=None; Secure; Path=/; Domain=cambridge.org; Expires=Thu, 28 May 2026 00:36:15 GMT
+server: cloudflare
+cf-ray: a02903278d5e240f-FRA
+
+HTTP/2 200 
+date: Thu, 28 May 2026 00:06:15 GMT
+content-type: text/html; charset=utf-8
+cache-control: no-cache, no-store, must-revalidate
+set-cookie: aca-session=Fe26.2**c67bd3158c413e7279e3b3ef3fbed018cba73004e260a45ae4cbf5ddbd0a12ba*jphm2pPR7V1JUXocsZs4gg*L4V_yltk2FmxXur-x95_0MDjVR7AbJTQQNu-0rZkPOLWQoU7IxTv9Mnz3nrX0LGcd8udWmU15Wh3Q3aavN4JqnBIZvelH6ygAtwmEHR-D9g**1101c21a671772eb840117b238a99c311997831c0f2f0ceed325aec42bcc8b79*3_gYNIQGPZtxfKxMFO0Soq5UbFrdM4_O6sd2Pkr17MA; Secure; HttpOnly; SameSite=Lax; Path=/
+set-cookie: session=s%3AGioqVDt_QYS7BDuEzkPZzAcbphTZ8iHW.XVvE0YPQ6C8UxhPLa9%2Fv5qc4tbpVC6ssj870RN6FPeQ; Path=/; HttpOnly; Secure
+set-cookie: __cf_bm=x.Vv8HBoctkjzGaeen5msDyxEnnJby9wb_sXJS8ROwM-1779926775.0686224-1.0.1.1-Dh382Ja1fZkBZ0Idp5DXTpFMVTV4niDfW6HzDnTbo5Vg7FmgHaDvOAKVb8DDFxBVAFRONavSDcDJ0.r5bnrDErDahDLAMzUJf7mMGfI8ii9wPSmYygKIvp2P473pVEgy; HttpOnly; SameSite=None; Secure; Path=/; Domain=cambridge.org; Expires=Thu, 28 May 2026 00:36:15 GMT
+content-security-policy: frame-ancestors 'self'
+content-security-policy: frame-ancestors 'self'
+cf-cache-status: DYNAMIC
+expires: 0
+pragma: no-cache
+referrer-policy: no-referrer-when-downgrade
+strict-transport-security: max-age=15552000; includeSubDomains
+tdm-policy: https://www.cambridge.org/core/tdm/tdm-policy.json
+tdm-reservation: 1
+vary: Accept-Encoding
+via: 1.1 varnish (Varnish/6.0)
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-frame-options: SAMEORIGIN
+x-served-by: 
+x-varnish: 905254564
+x-xss-protection: 1; mode=block
+server: cloudflare
+cf-ray: a02903282e9a240f-FRA
+

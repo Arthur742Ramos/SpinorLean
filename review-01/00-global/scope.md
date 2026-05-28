@@ -55,10 +55,11 @@ for the formatting/AACA package lane. That final evidence-backed run completed
 2,181 required checks and left 25,063 checks missing. The final artifact has no
 scientific-reviewer artifact blockers.
 
-Finally, a full fail-closed check-results ledger was generated. It marks the
-2,181 evidenced formatting/AACA/final-artifact checks as `PASS` and marks every
-remaining unevidenced check as `BLOCKED`. The final scientific-reviewer run with
-that ledger completed all 27,244 required checks with zero missing checks, while
+Finally, a full fail-closed check-results ledger was generated. It marks
+evidenced formatting/AACA/final-artifact, reference/citation, and
+cross-reference checks as `PASS` or documented `WARN`, and marks every remaining
+unevidenced check as `BLOCKED`. The final scientific-reviewer run with that
+ledger completed all 28,512 required checks with zero missing checks, while
 still honestly reporting `NOT_READY`.
 
 ## Evidence inventory

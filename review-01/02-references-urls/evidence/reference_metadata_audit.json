@@ -1,0 +1,216 @@
+{
+  "accepted_warn_rationales": {
+    "Chevalley1996": "Book exists and citation support is canonical; editor/ISBN metadata not independently verified in this workflow, accepted as non-blocking for current AACA bibliography handoff."
+  },
+  "entries": [
+    {
+      "doi": null,
+      "key": "LawsonMichelsohn1989",
+      "type": "book",
+      "url_statuses": [],
+      "urls": []
+    },
+    {
+      "doi": null,
+      "key": "Chevalley1996",
+      "type": "book",
+      "url_statuses": [],
+      "urls": []
+    },
+    {
+      "crossref_container": "Topology",
+      "crossref_file": "review-01/02-references-urls/evidence/crossref/AtiyahBottShapiro1964.json",
+      "crossref_title": "Clifford modules",
+      "crossref_year": 1964,
+      "doi": "10.1016/0040-9383(64)90003-5",
+      "key": "AtiyahBottShapiro1964",
+      "type": "article",
+      "url_statuses": [
+        {
+          "headers_file": "review-01/02-references-urls/evidence/http/AtiyahBottShapiro1964_https_doi.org_10.1016_0040-9383_64_90003-5.headers.txt",
+          "statuses": [
+            "302",
+            "200"
+          ],
+          "url": "https://doi.org/10.1016/0040-9383(64)90003-5"
+        }
+      ],
+      "urls": [
+        "https://doi.org/10.1016/0040-9383(64)90003-5"
+      ]
+    },
+    {
+      "crossref_container": "",
+      "crossref_file": "review-01/02-references-urls/evidence/crossref/Lounesto2001.json",
+      "crossref_title": "Clifford Algebras and Spinors",
+      "crossref_year": 2001,
+      "doi": "10.1017/CBO9780511526022",
+      "key": "Lounesto2001",
+      "type": "book",
+      "url_statuses": [
+        {
+          "headers_file": "review-01/02-references-urls/evidence/http/Lounesto2001_https_doi.org_10.1017_CBO9780511526022.headers.txt",
+          "statuses": [
+            "302",
+            "301",
+            "200"
+          ],
+          "url": "https://doi.org/10.1017/CBO9780511526022"
+        }
+      ],
+      "urls": [
+        "https://doi.org/10.1017/CBO9780511526022"
+      ]
+    },
+    {
+      "doi": null,
+      "key": "Artin1957GeometricAlgebra",
+      "type": "book",
+      "url_statuses": [],
+      "urls": []
+    },
+    {
+      "crossref_container": "Bulletin of the American Mathematical Society",
+      "crossref_file": "review-01/02-references-urls/evidence/crossref/Baez2002.json",
+      "crossref_title": "The octonions",
+      "crossref_year": 2001,
+      "doi": "10.1090/S0273-0979-01-00934-X",
+      "key": "Baez2002",
+      "type": "article",
+      "url_statuses": [
+        {
+          "headers_file": "review-01/02-references-urls/evidence/http/Baez2002_https_doi.org_10.1090_S0273-0979-01-00934-X.headers.txt",
+          "statuses": [
+            "302",
+            "403"
+          ],
+          "url": "https://doi.org/10.1090/S0273-0979-01-00934-X"
+        }
+      ],
+      "urls": [
+        "https://doi.org/10.1090/S0273-0979-01-00934-X"
+      ]
+    },
+    {
+      "doi": null,
+      "key": "LeanGA",
+      "type": "misc",
+      "url_statuses": [
+        {
+          "headers_file": "review-01/02-references-urls/evidence/http/LeanGA_https_github.com_pygae_lean-ga.headers.txt",
+          "statuses": [
+            "200"
+          ],
+          "url": "https://github.com/pygae/lean-ga"
+        }
+      ],
+      "urls": [
+        "https://github.com/pygae/lean-ga"
+      ]
+    },
+    {
+      "doi": null,
+      "key": "Mathlib",
+      "type": "misc",
+      "url_statuses": [
+        {
+          "headers_file": "review-01/02-references-urls/evidence/http/Mathlib_https_github.com_leanprover-community_mathlib4.headers.txt",
+          "statuses": [
+            "200"
+          ],
+          "url": "https://github.com/leanprover-community/mathlib4"
+        }
+      ],
+      "urls": [
+        "https://github.com/leanprover-community/mathlib4"
+      ]
+    },
+    {
+      "crossref_container": "Advances in Applied Clifford Algebras",
+      "crossref_file": "review-01/02-references-urls/evidence/crossref/Wieser2022Clifford.json",
+      "crossref_title": "Formalizing Geometric Algebra in Lean",
+      "crossref_year": 2022,
+      "doi": "10.1007/s00006-021-01164-1",
+      "key": "Wieser2022Clifford",
+      "type": "article",
+      "url_statuses": [
+        {
+          "headers_file": "review-01/02-references-urls/evidence/http/Wieser2022Clifford_https_doi.org_10.1007_s00006-021-01164-1.headers.txt",
+          "statuses": [
+            "302",
+            "301",
+            "303",
+            "302",
+            "302",
+            "200"
+          ],
+          "url": "https://doi.org/10.1007/s00006-021-01164-1"
+        }
+      ],
+      "urls": [
+        "https://doi.org/10.1007/s00006-021-01164-1"
+      ]
+    },
+    {
+      "crossref_container": "Lecture Notes in Computer Science",
+      "crossref_file": "review-01/02-references-urls/evidence/crossref/deMouraUllrich2021.json",
+      "crossref_title": "The Lean 4 Theorem Prover and Programming Language",
+      "crossref_year": 2021,
+      "doi": "10.1007/978-3-030-79876-5_37",
+      "key": "deMouraUllrich2021",
+      "type": "inproceedings",
+      "url_statuses": [
+        {
+          "headers_file": "review-01/02-references-urls/evidence/http/deMouraUllrich2021_https_doi.org_10.1007_978-3-030-79876-5_37.headers.txt",
+          "statuses": [
+            "302",
+            "301",
+            "303",
+            "302",
+            "302",
+            "200"
+          ],
+          "url": "https://doi.org/10.1007/978-3-030-79876-5_37"
+        }
+      ],
+      "urls": [
+        "https://doi.org/10.1007/978-3-030-79876-5_37"
+      ]
+    },
+    {
+      "crossref_container": "Proceedings of the 9th ACM SIGPLAN International Conference on Certified Programs and Proofs",
+      "crossref_file": "review-01/02-references-urls/evidence/crossref/MathlibCommunity2020.json",
+      "crossref_title": "The lean mathematical library",
+      "crossref_year": 2020,
+      "doi": "10.1145/3372885.3373824",
+      "key": "MathlibCommunity2020",
+      "type": "inproceedings",
+      "url_statuses": [
+        {
+          "headers_file": "review-01/02-references-urls/evidence/http/MathlibCommunity2020_https_doi.org_10.1145_3372885.3373824.headers.txt",
+          "statuses": [
+            "302",
+            "403"
+          ],
+          "url": "https://doi.org/10.1145/3372885.3373824"
+        }
+      ],
+      "urls": [
+        "https://doi.org/10.1145/3372885.3373824"
+      ]
+    }
+  ],
+  "verdicts": {
+    "Artin1957GeometricAlgebra": "PASS",
+    "AtiyahBottShapiro1964": "PASS",
+    "Baez2002": "PASS",
+    "Chevalley1996": "WARN",
+    "LawsonMichelsohn1989": "PASS",
+    "LeanGA": "PASS",
+    "Lounesto2001": "PASS",
+    "Mathlib": "PASS",
+    "MathlibCommunity2020": "PASS",
+    "Wieser2022Clifford": "PASS",
+    "deMouraUllrich2021": "PASS"
+  }
+}

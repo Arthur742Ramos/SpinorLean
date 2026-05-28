@@ -14,15 +14,15 @@ The final fail-closed review run is:
 review-01/00-global/scientific-reviewer-run-full-fail-closed.json
 ```
 
-It reports:
+It now reports:
 
 - verdict: `NOT_READY`;
-- total units: 1,543;
-- total required checks: 27,244;
-- completed required checks: 27,244;
+- total units: 1,613;
+- total required checks: 28,512;
+- completed required checks: 28,512;
 - missing required checks: 0;
 - final artifact blockers: none;
-- unit blockers: 1,543 units still fail because non-format gates are BLOCKED.
+- unit blockers: 1,613 units still fail because non-format gates are BLOCKED.
 
 The matching improve run is:
 
@@ -34,7 +34,7 @@ It reports the same `NOT_READY` state.
 
 ## What is genuinely passed
 
-Only checks backed by real local artifacts were marked `PASS`:
+Only checks backed by real local artifacts were marked `PASS` or `WARN`:
 
 - `snapshot_freeze`;
 - `unitization_coverage`;
@@ -42,6 +42,11 @@ Only checks backed by real local artifacts were marked `PASS`:
 - `aaca_birkjour_editorial_manager_audit`;
 - `venue_compliance_audit`;
 - `final_submission_artifact_gate`.
+- `reference_truth_audit`;
+- `citation_support_audit`;
+- `cross_reference_correctness_audit`.
+- `independent_source_verification`;
+- `temporal_claim_verification`.
 
 These are backed by:
 
@@ -51,19 +56,33 @@ These are backed by:
 - a scratch LaTeX build;
 - the final PDF artifact;
 - clean final log and extracted-PDF scans.
+- Crossref/GitHub/Open Library/HTTP reference metadata evidence where available;
+- citation-context support notes;
+- source-label and PDF cross-reference scans.
+- static repository/source facts for non-Lean verifiable claims, including
+  toolchain, Mathlib commit, file counts, line counts, URLs, and timestamps
+  available from metadata sources.
+
+## Final ledger counts
+
+```text
+PASS:    6,926
+WARN:        6
+BLOCKED: 21,580
+TOTAL:   28,512
+```
+
+The WARN results are accepted, documented reference/citation-support limitations,
+not readiness blockers.
 
 ## What remains blocked
 
 The remaining checks were intentionally marked `BLOCKED`, not passed. Examples
 include:
 
-- reference truth;
-- citation support;
 - adversarial model review;
 - proof-assistant reference verification;
-- independent source verification;
 - reviewer work-proof;
-- temporal claim verification;
 - prior-art threat modeling;
 - headline claim provenance;
 - Lean build/proof status;

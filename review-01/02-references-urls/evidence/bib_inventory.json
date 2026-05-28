@@ -1,0 +1,159 @@
+{
+  "entries": [
+    {
+      "fields": {
+        "address": "Princeton, NJ",
+        "author": "Lawson, Jr., H. Blaine and Michelsohn, Marie-Louise",
+        "isbn": "978-0-691-08542-5",
+        "publisher": "Princeton University Press",
+        "series": "Princeton Mathematical Series",
+        "title": "Spin Geometry",
+        "volume": "38",
+        "year": "1989"
+      },
+      "key": "LawsonMichelsohn1989",
+      "type": "book"
+    },
+    {
+      "fields": {
+        "author": "Chevalley, Claude",
+        "note": "Reprint of the 1954 original with a postface by J.-P. Bourguignon",
+        "publisher": "Springer",
+        "series": "Collected Works",
+        "title": "The Algebraic Theory of Spinors and Clifford Algebras",
+        "volume": "2",
+        "year": "1996"
+      },
+      "key": "Chevalley1996",
+      "type": "book"
+    },
+    {
+      "fields": {
+        "author": "Atiyah, Michael F. and Bott, Raoul and Shapiro, Arnold",
+        "doi": "10.1016/0040-9383(64)90003-5",
+        "journal": "Topology",
+        "number": "Suppl. 1",
+        "pages": "3--38",
+        "title": "Clifford Modules",
+        "url": "https://doi.org/10.1016/0040-9383(64)90003-5",
+        "volume": "3",
+        "year": "1964"
+      },
+      "key": "AtiyahBottShapiro1964",
+      "type": "article"
+    },
+    {
+      "fields": {
+        "address": "Cambridge",
+        "author": "Lounesto, Pertti",
+        "doi": "10.1017/CBO9780511526022",
+        "edition": "2nd",
+        "isbn": "978-0-521-80579-5",
+        "publisher": "Cambridge University Press",
+        "series": "London Mathematical Society Lecture Note Series",
+        "title": "Clifford Algebras and Spinors",
+        "url": "https://doi.org/10.1017/CBO9780511526022",
+        "volume": "286",
+        "year": "2001"
+      },
+      "key": "Lounesto2001",
+      "type": "book"
+    },
+    {
+      "fields": {
+        "address": "New York",
+        "author": "Artin, Emil",
+        "note": "Reprinted by Wiley Classics Library, 1988",
+        "publisher": "Interscience Publishers",
+        "title": "Geometric Algebra",
+        "year": "1957"
+      },
+      "key": "Artin1957GeometricAlgebra",
+      "type": "book"
+    },
+    {
+      "fields": {
+        "author": "Baez, John C.",
+        "doi": "10.1090/S0273-0979-01-00934-X",
+        "journal": "Bulletin of the American Mathematical Society",
+        "number": "2",
+        "pages": "145--205",
+        "title": "The Octonions",
+        "url": "https://doi.org/10.1090/S0273-0979-01-00934-X",
+        "volume": "39",
+        "year": "2002"
+      },
+      "key": "Baez2002",
+      "type": "article"
+    },
+    {
+      "fields": {
+        "author": "Wieser, Eric and Song, Utensil",
+        "howpublished": "\\url{https://github.com/pygae/lean-ga",
+        "title": "{lean-ga",
+        "urldate": "2026-05-28",
+        "year": "2020"
+      },
+      "key": "LeanGA",
+      "type": "misc"
+    },
+    {
+      "fields": {
+        "author": "{The Mathlib Community",
+        "howpublished": "\\url{https://github.com/leanprover-community/mathlib4",
+        "title": "{mathlib4",
+        "urldate": "2026-05-28",
+        "year": "2024"
+      },
+      "key": "Mathlib",
+      "type": "misc"
+    },
+    {
+      "fields": {
+        "author": "Wieser, Eric and Song, Utensil",
+        "doi": "10.1007/s00006-021-01164-1",
+        "journal": "Advances in Applied Clifford Algebras",
+        "number": "3",
+        "pages": "Article 28",
+        "title": "Formalizing Geometric Algebra in {Lean",
+        "url": "https://doi.org/10.1007/s00006-021-01164-1",
+        "volume": "32",
+        "year": "2022"
+      },
+      "key": "Wieser2022Clifford",
+      "type": "article"
+    },
+    {
+      "fields": {
+        "address": "Cham",
+        "author": "de Moura, Leonardo and Ullrich, Sebastian",
+        "booktitle": "Automated Deduction -- {CADE",
+        "doi": "10.1007/978-3-030-79876-5_37",
+        "editor": "Platzer, Andr{\\'e",
+        "pages": "625--635",
+        "publisher": "Springer",
+        "series": "Lecture Notes in Computer Science",
+        "title": "The {Lean",
+        "url": "https://doi.org/10.1007/978-3-030-79876-5_37",
+        "volume": "12699",
+        "year": "2021"
+      },
+      "key": "deMouraUllrich2021",
+      "type": "inproceedings"
+    },
+    {
+      "fields": {
+        "author": "{The Mathlib Community",
+        "booktitle": "Proceedings of the 9th {ACM",
+        "doi": "10.1145/3372885.3373824",
+        "pages": "367--381",
+        "publisher": "ACM",
+        "title": "The {Lean",
+        "url": "https://doi.org/10.1145/3372885.3373824",
+        "year": "2020"
+      },
+      "key": "MathlibCommunity2020",
+      "type": "inproceedings"
+    }
+  ]
+}

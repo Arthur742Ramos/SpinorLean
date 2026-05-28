@@ -90,241 +90,213 @@ For additional information on amsmath, use the `?' option.
 Non-PDF special ignored!
 <special> papersize=15.5cm,23.5cm
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/
-dvips/cm-super/cm-super-t1.enc}] [2]
+dvips/cm-super/cm-super-t1.enc}] [2] [3]
 
-LaTeX Warning: Citation `LawsonMichelsohn1989' on page 3 undefined on input lin
-e 207.
-
-
-LaTeX Warning: Citation `Chevalley1996' on page 3 undefined on input line 208.
+LaTeX Warning: Citation `LawsonMichelsohn1989' on page 4 undefined on input lin
+e 226.
 
 
-LaTeX Warning: Citation `AtiyahBottShapiro1964' on page 3 undefined on input li
-ne 208.
+LaTeX Warning: Citation `Chevalley1996' on page 4 undefined on input line 227.
 
 
-LaTeX Warning: Citation `Lounesto2001' on page 3 undefined on input line 209.
+LaTeX Warning: Citation `AtiyahBottShapiro1964' on page 4 undefined on input li
+ne 227.
 
 
-LaTeX Warning: Citation `Baez2002' on page 3 undefined on input line 210.
+LaTeX Warning: Citation `Lounesto2001' on page 4 undefined on input line 228.
 
-[3] (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
 
-LaTeX Warning: Citation `Mathlib' on page 4 undefined on input line 217.
+LaTeX Warning: Citation `Baez2002' on page 4 undefined on input line 229.
 
+
+LaTeX Warning: Citation `deMouraUllrich2021' on page 4 undefined on input line 
+234.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
 
 LaTeX Warning: Citation `MathlibCommunity2020' on page 4 undefined on input lin
-e 217.
+e 237.
+
+
+LaTeX Warning: Citation `Mathlib' on page 4 undefined on input line 237.
 
 
 LaTeX Warning: Citation `Wieser2022Clifford' on page 4 undefined on input line 
-218.
+238.
 
 
-LaTeX Warning: Citation `LeanGA' on page 4 undefined on input line 219.
+LaTeX Warning: Citation `LeanGA' on page 4 undefined on input line 239.
 
 
-LaTeX Warning: Reference `thm:levi-projective-exterior' on page 4 undefined on 
-input line 260.
+LaTeX Warning: Reference `sec:results' on page 4 undefined on input line 271.
 
 
-LaTeX Warning: Reference `prop:split-line-square' on page 4 undefined on input 
-line 263.
-
-
-LaTeX Warning: Reference `thm:square-det-levi' on page 4 undefined on input lin
-e 266.
+LaTeX Warning: Reference `sec:highlights' on page 4 undefined on input line 274
+.
 
 [4]
 
-LaTeX Warning: Reference `prop:transvection-unit' on page 5 undefined on input 
-line 272.
+LaTeX Warning: Reference `sec:results' on page 5 undefined on input line 295.
 
 
-LaTeX Warning: Reference `prop:chosen-line-square' on page 5 undefined on input
- line 273.
-
-
-LaTeX Warning: Reference `cor:internal-clifford-torus' on page 5 undefined on i
-nput line 276.
-
-
-LaTeX Warning: Reference `cor:torus-transvection' on page 5 undefined on input 
-line 278.
-
-
-LaTeX Warning: Reference `cor:one-line-semidirect' on page 5 undefined on input
- line 279.
-
-
-LaTeX Warning: Reference `thm:kernel-nonfactor-split-line' on page 5 undefined 
-on input line 281.
-
-
-LaTeX Warning: Reference `prop:projective-descent' on page 5 undefined on input
- line 282.
-
-
-LaTeX Warning: Reference `sec:results' on page 5 undefined on input line 308.
-
-
-LaTeX Warning: Reference `sec:highlights' on page 5 undefined on input line 309
+LaTeX Warning: Reference `sec:highlights' on page 5 undefined on input line 296
 .
 
 [5] [6]
 
-LaTeX Warning: Reference `sec:results' on page 7 undefined on input line 434.
+LaTeX Warning: Reference `sec:results' on page 7 undefined on input line 421.
 
 [7] [8]
 
-LaTeX Warning: Reference `sec:highlights' on page 9 undefined on input line 529
+LaTeX Warning: Reference `sec:highlights' on page 9 undefined on input line 514
 .
 
 
 LaTeX Warning: Reference `thm:matrix-units-split' on page 9 undefined on input 
-line 530.
+line 515.
 
 
 LaTeX Warning: Reference `cor:even-half-spin' on page 9 undefined on input line
- 531.
+ 516.
 
 
 LaTeX Warning: Reference `prop:transport-split' on page 9 undefined on input li
-ne 532.
+ne 517.
 
 [9]
 
-LaTeX Warning: Reference `sec:highlights' on page 10 undefined on input line 59
-3.
+LaTeX Warning: Reference `sec:highlights' on page 10 undefined on input line 57
+8.
 
 
 LaTeX Warning: Reference `prop:kernel-from-matrix' on page 10 undefined on inpu
-t line 594.
+t line 579.
 
 
 LaTeX Warning: Reference `prop:nonfactorization' on page 10 undefined on input 
-line 595.
+line 580.
 
 
 LaTeX Warning: Reference `prop:projective-descent' on page 10 undefined on inpu
-t line 596.
+t line 581.
 
 
 LaTeX Warning: Reference `prop:split-line-square' on page 10 undefined on input
- line 597.
+ line 582.
 
 
 LaTeX Warning: Reference `prop:split-line-square' on page 10 undefined on input
- line 599.
+ line 584.
 
-[10] [11]
+[10]
 
-LaTeX Warning: Reference `thm:chosen-spinor-package' on page 12 undefined on in
-put line 692.
-
-
-LaTeX Warning: Reference `thm:kernel-nonfactor-split-line' on page 12 undefined
- on input line 693.
+LaTeX Warning: Reference `thm:chosen-spinor-package' on page 11 undefined on in
+put line 678.
 
 
-LaTeX Warning: Reference `thm:levi-projective-exterior' on page 12 undefined on
- input line 694.
+LaTeX Warning: Reference `thm:kernel-nonfactor-split-line' on page 11 undefined
+ on input line 679.
 
 
-LaTeX Warning: Reference `thm:square-det-levi' on page 12 undefined on input li
-ne 695.
+LaTeX Warning: Reference `thm:levi-projective-exterior' on page 11 undefined on
+ input line 680.
 
 
-LaTeX Warning: Reference `sec:results' on page 12 undefined on input line 706.
+LaTeX Warning: Reference `thm:square-det-levi' on page 11 undefined on input li
+ne 681.
 
-[12] [13]
+
+LaTeX Warning: Reference `sec:results' on page 11 undefined on input line 692.
+
+[11] [12] [13]
 
 LaTeX Warning: Reference `thm:matrix-units-split' on page 14 undefined on input
- line 883.
+ line 869.
 
 
 LaTeX Warning: Reference `cor:even-half-spin' on page 14 undefined on input lin
-e 884.
+e 870.
 
-[14] [15] [16]
+[14] [15]
+
+LaTeX Warning: Reference `prop:transvection-unit' on page 16 undefined on input
+ line 1038.
+
+[16]
+
+LaTeX Warning: Reference `prop:chosen-line-square' on page 17 undefined on inpu
+t line 1101.
+
 
 LaTeX Warning: Reference `prop:transvection-unit' on page 17 undefined on input
- line 1052.
+ line 1103.
+
+
+LaTeX Warning: Reference `prop:transvection-unit' on page 17 undefined on input
+ line 1112.
+
+
+LaTeX Warning: Reference `prop:chosen-line-square' on page 17 undefined on inpu
+t line 1112.
 
 [17]
 
 LaTeX Warning: Reference `prop:chosen-line-square' on page 18 undefined on inpu
-t line 1115.
-
-
-LaTeX Warning: Reference `prop:transvection-unit' on page 18 undefined on input
- line 1117.
-
-
-LaTeX Warning: Reference `prop:transvection-unit' on page 18 undefined on input
- line 1126.
+t line 1146.
 
 
 LaTeX Warning: Reference `prop:chosen-line-square' on page 18 undefined on inpu
-t line 1126.
+t line 1156.
 
 
-LaTeX Warning: Reference `prop:chosen-line-square' on page 18 undefined on inpu
-t line 1160.
+LaTeX Warning: Reference `cor:torus-transvection' on page 18 undefined on input
+ line 1207.
 
 
-LaTeX Warning: Reference `prop:chosen-line-square' on page 18 undefined on inpu
-t line 1170.
+LaTeX Warning: Reference `sec:results' on page 18 undefined on input line 1213.
+
+
+
+LaTeX Warning: Reference `thm:levi-projective-exterior' on page 18 undefined on
+ input line 1215.
 
 [18]
 
-LaTeX Warning: Reference `cor:torus-transvection' on page 19 undefined on input
- line 1221.
+LaTeX Warning: Reference `sec:arch' on page 19 undefined on input line 1227.
 
 
-LaTeX Warning: Reference `sec:results' on page 19 undefined on input line 1227.
+LaTeX Warning: Reference `sec:results' on page 19 undefined on input line 1246.
 
 
 
-LaTeX Warning: Reference `thm:levi-projective-exterior' on page 19 undefined on
- input line 1229.
+LaTeX Warning: Reference `thm:square-det-levi' on page 19 undefined on input li
+ne 1248.
 
 
-LaTeX Warning: Reference `sec:arch' on page 19 undefined on input line 1241.
+LaTeX Warning: Citation `Artin1957GeometricAlgebra' on page 19 undefined on inp
+ut line 1253.
 
 
-LaTeX Warning: Reference `sec:results' on page 19 undefined on input line 1260.
-
+LaTeX Warning: Reference `prop:transvection-unit' on page 19 undefined on input
+ line 1263.
 
 [19]
 
-LaTeX Warning: Reference `thm:square-det-levi' on page 20 undefined on input li
-ne 1262.
-
-
-LaTeX Warning: Citation `Artin1957GeometricAlgebra' on page 20 undefined on inp
-ut line 1265.
-
-
 LaTeX Warning: Reference `prop:transvection-unit' on page 20 undefined on input
- line 1275.
+ line 1320.
+
+
+LaTeX Warning: Reference `cor:torus-transvection' on page 20 undefined on input
+ line 1325.
 
 [20]
 
-LaTeX Warning: Reference `prop:transvection-unit' on page 21 undefined on input
- line 1331.
-
-
-LaTeX Warning: Reference `cor:torus-transvection' on page 21 undefined on input
- line 1336.
-
-
 LaTeX Warning: Reference `prop:chosen-line-square' on page 21 undefined on inpu
-t line 1384.
+t line 1374.
 
-[21] [22]
+[21]
 No file main.bbl.
-[23] (./main.aux)
+[22] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -337,32 +309,32 @@ Package rerunfilecheck Warning: File `main.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
  )</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/
-share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/
-texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-r9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
-></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/
-share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/t
-exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1
-/public/cm-super/sfcc0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfc
-c1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrb0900.pfb></usr/shar
-e/texmf/fonts/type1/public/cm-super/sfrb1000.pfb></usr/share/texmf/fonts/type1/
-public/cm-super/sfrb1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrb
-1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0900.pfb></usr/share
-/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/type1/p
-ublic/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1
-000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt0900.pfb></usr/share/
-texmf/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on main.pdf (23 pages, 533586 bytes).
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/typ
+e1/public/cm-super/sfcc0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/s
+fcc1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrb0900.pfb></usr/sh
+are/texmf/fonts/type1/public/cm-super/sfrb1000.pfb></usr/share/texmf/fonts/type
+1/public/cm-super/sfrb1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sf
+rb1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0900.pfb></usr/sha
+re/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/type1
+/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sft
+i1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt0800.pfb></usr/shar
+e/texmf/fonts/type1/public/cm-super/sftt0900.pfb></usr/share/texmf/fonts/type1/
+public/cm-super/sftt1000.pfb>
+Output written on main.pdf (22 pages, 553954 bytes).
 Transcript written on main.log.
 Latexmk: Missing bbl file 'main.bbl' in following:
  No file main.bbl.
@@ -479,45 +451,49 @@ For additional information on amsmath, use the `?' option.
 Non-PDF special ignored!
 <special> papersize=15.5cm,23.5cm
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/
-dvips/cm-super/cm-super-t1.enc}] [2]
+dvips/cm-super/cm-super-t1.enc}] [2] [3]
 
-LaTeX Warning: Citation `LawsonMichelsohn1989' on page 3 undefined on input lin
-e 207.
-
-
-LaTeX Warning: Citation `Chevalley1996' on page 3 undefined on input line 208.
+LaTeX Warning: Citation `LawsonMichelsohn1989' on page 4 undefined on input lin
+e 226.
 
 
-LaTeX Warning: Citation `AtiyahBottShapiro1964' on page 3 undefined on input li
-ne 208.
+LaTeX Warning: Citation `Chevalley1996' on page 4 undefined on input line 227.
 
 
-LaTeX Warning: Citation `Lounesto2001' on page 3 undefined on input line 209.
+LaTeX Warning: Citation `AtiyahBottShapiro1964' on page 4 undefined on input li
+ne 227.
 
 
-LaTeX Warning: Citation `Baez2002' on page 3 undefined on input line 210.
+LaTeX Warning: Citation `Lounesto2001' on page 4 undefined on input line 228.
 
-[3] (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
 
-LaTeX Warning: Citation `Mathlib' on page 4 undefined on input line 217.
+LaTeX Warning: Citation `Baez2002' on page 4 undefined on input line 229.
 
+
+LaTeX Warning: Citation `deMouraUllrich2021' on page 4 undefined on input line 
+234.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
 
 LaTeX Warning: Citation `MathlibCommunity2020' on page 4 undefined on input lin
-e 217.
+e 237.
+
+
+LaTeX Warning: Citation `Mathlib' on page 4 undefined on input line 237.
 
 
 LaTeX Warning: Citation `Wieser2022Clifford' on page 4 undefined on input line 
-218.
+238.
 
 
-LaTeX Warning: Citation `LeanGA' on page 4 undefined on input line 219.
+LaTeX Warning: Citation `LeanGA' on page 4 undefined on input line 239.
 
-[4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15] [16] [17] [18] [19]
+[4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15] [16] [17] [18]
 
-LaTeX Warning: Citation `Artin1957GeometricAlgebra' on page 20 undefined on inp
-ut line 1265.
+LaTeX Warning: Citation `Artin1957GeometricAlgebra' on page 19 undefined on inp
+ut line 1253.
 
-[20] [21] [22] (./main.bbl [23]) [24] (./main.aux)
+[19] [20] [21] (./main.bbl [22]) [23] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -530,33 +506,33 @@ Package rerunfilecheck Warning: File `main.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
  )</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/
-share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/
-texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-r9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
-></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/
-share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/t
-exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1
-/public/cm-super/sfcc0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfc
-c1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrb0900.pfb></usr/shar
-e/texmf/fonts/type1/public/cm-super/sfrb1000.pfb></usr/share/texmf/fonts/type1/
-public/cm-super/sfrb1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrb
-1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0900.pfb></usr/share
-/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/type1/p
-ublic/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti0
-900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1000.pfb></usr/share/
-texmf/fonts/type1/public/cm-super/sftt0900.pfb></usr/share/texmf/fonts/type1/pu
-blic/cm-super/sftt1000.pfb>
-Output written on main.pdf (24 pages, 563575 bytes).
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/typ
+e1/public/cm-super/sfcc0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/s
+fcc1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrb0900.pfb></usr/sh
+are/texmf/fonts/type1/public/cm-super/sfrb1000.pfb></usr/share/texmf/fonts/type
+1/public/cm-super/sfrb1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sf
+rb1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0900.pfb></usr/sha
+re/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/type1
+/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sft
+i0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1000.pfb></usr/shar
+e/texmf/fonts/type1/public/cm-super/sftt0800.pfb></usr/share/texmf/fonts/type1/
+public/cm-super/sftt0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt
+1000.pfb>
+Output written on main.pdf (23 pages, 585537 bytes).
 Transcript written on main.log.
 Latexmk: Getting log file 'main.log'
 Latexmk: Examining 'main.fls'
@@ -672,39 +648,40 @@ Non-PDF special ignored!
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/
 dvips/cm-super/cm-super-t1.enc}] [2] [3]
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd) [4] [5] [6] [7]
-[8] [9] [10] [11] [12] [13] [14] [15] [16] [17] [18] [19] [20] [21] [22]
-(./main.bbl [23]) [24] (./main.aux) )</usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/amsfonts/cmextra/cmex9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pf
-b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
-/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/t
-exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-sy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam
-10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm1
-0.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc0900.pfb></usr/share/te
-xmf/fonts/type1/public/cm-super/sfcc1000.pfb></usr/share/texmf/fonts/type1/publ
-ic/cm-super/sfrb0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrb1000
-.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrb1200.pfb></usr/share/tex
-mf/fonts/type1/public/cm-super/sfrb1728.pfb></usr/share/texmf/fonts/type1/publi
-c/cm-super/sfrm0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.
-pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texm
-f/fonts/type1/public/cm-super/sfti0900.pfb></usr/share/texmf/fonts/type1/public
-/cm-super/sfti1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt0900.p
-fb></usr/share/texmf/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on main.pdf (24 pages, 563721 bytes).
+[8] [9] [10] [11] [12] [13] [14] [15] [16] [17] [18] [19] [20] [21] (./main.bbl
+[22]) [23] (./main.aux) )</usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi
+5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></us
+r/share/texmf/fonts/type1/public/cm-super/sfcc0900.pfb></usr/share/texmf/fonts/
+type1/public/cm-super/sfcc1000.pfb></usr/share/texmf/fonts/type1/public/cm-supe
+r/sfrb0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrb1000.pfb></usr
+/share/texmf/fonts/type1/public/cm-super/sfrb1200.pfb></usr/share/texmf/fonts/t
+ype1/public/cm-super/sfrb1728.pfb></usr/share/texmf/fonts/type1/public/cm-super
+/sfrm0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/
+share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/ty
+pe1/public/cm-super/sfti0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/
+sfti1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt0800.pfb></usr/s
+hare/texmf/fonts/type1/public/cm-super/sftt0900.pfb></usr/share/texmf/fonts/typ
+e1/public/cm-super/sftt1000.pfb>
+Output written on main.pdf (23 pages, 585801 bytes).
 Transcript written on main.log.
 Latexmk: Getting log file 'main.log'
 Latexmk: Examining 'main.fls'
 Latexmk: Examining 'main.log'
+Latexmk: Found input bbl file 'main.bbl'
 Latexmk: Found input bbl file 'main.bbl'
 Latexmk: Log file says output to 'main.pdf'
 Latexmk: Found bibliography file(s):

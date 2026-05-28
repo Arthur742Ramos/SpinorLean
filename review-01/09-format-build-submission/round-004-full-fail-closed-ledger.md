@@ -16,9 +16,13 @@ review-01/check-results/aaca-full-fail-closed-check-results.jsonl
 It contains one structured result for every required unit/check pair in the
 final scientific-reviewer run:
 
-- 2,181 `PASS` results backed by real formatting/AACA/final-artifact evidence;
-- 25,063 `BLOCKED` results for checks not executed with real evidence;
-- 27,244 total results.
+- 6,926 `PASS` results backed by real formatting/AACA/final-artifact,
+  reference/citation, cross-reference, independent-source, and temporal
+  metadata evidence;
+- 6 accepted `WARN` results for documented reference/citation-support
+  limitations;
+- 21,580 `BLOCKED` results for checks not executed with real evidence;
+- 28,512 total results.
 
 This is intentionally fail-closed. It prevents missing checks from being hidden
 while also avoiding fabricated passes.
@@ -28,10 +32,10 @@ while also avoiding fabricated passes.
 `scientific-reviewer review manuscript` with this full ledger reports:
 
 - verdict: `NOT_READY`;
-- completed required checks: 27,244;
+- completed required checks: 28,512;
 - missing required checks: 0;
 - final artifact blockers: none;
-- remaining blockers: 1,543 units have one or more `BLOCKED` check statuses.
+- remaining blockers: 1,613 units have one or more `BLOCKED` check statuses.
 
 `scientific-reviewer improve manuscript` with the same ledger reports the same
 state.

@@ -1,0 +1,209 @@
+{
+  "instructions": [
+    {
+      "line": 117,
+      "path": "paper/main.tex",
+      "text": "presentation, because that is the object with the classical spin dimension and"
+    },
+    {
+      "line": 211,
+      "path": "paper/main.tex",
+      "text": "``choose a maximal isotropic and use $\\bigwedge W$'' construction is classical;"
+    },
+    {
+      "line": 299,
+      "path": "paper/main.tex",
+      "text": "Build command & \\code{lake build} \\\\"
+    },
+    {
+      "line": 312,
+      "path": "paper/main.tex",
+      "text": "normal build catches theorem-name drift. The reproducible artifact path is:"
+    },
+    {
+      "line": 313,
+      "path": "paper/main.tex",
+      "text": "use the pinned \\code{lean-toolchain} and \\code{lake-manifest.json}, optionally"
+    },
+    {
+      "line": 314,
+      "path": "paper/main.tex",
+      "text": "fetch cached dependencies with \\code{lake exe cache get}, run \\code{lake build},"
+    },
+    {
+      "line": 315,
+      "path": "paper/main.tex",
+      "text": "and run the proof-hole audit in \\code{scripts/verify.sh} or"
+    },
+    {
+      "line": 316,
+      "path": "paper/main.tex",
+      "text": "\\code{scripts/verify.ps1}. The paper source itself builds from"
+    },
+    {
+      "line": 386,
+      "path": "paper/main.tex",
+      "text": "\\paragraph{Downstream reuse already present in the repository.}"
+    },
+    {
+      "line": 407,
+      "path": "paper/main.tex",
+      "text": "\\code{spinGroup}/\\code{pinGroup} API alone, because their content is about a"
+    },
+    {
+      "line": 535,
+      "path": "paper/main.tex",
+      "text": "state the result here because the later covering and image theorems are all"
+    },
+    {
+      "line": 598,
+      "path": "paper/main.tex",
+      "text": "clause is exact because every element of $\\SO(\\dualProd_K K)$ is a reciprocal"
+    },
+    {
+      "line": 643,
+      "path": "paper/main.tex",
+      "text": "In particular, because each canonical $2\\times2$ block is itself a product of"
+    },
+    {
+      "line": 795,
+      "path": "paper/main.tex",
+      "text": "Because $(J\\setminus I)\\cap(I\\setminus J)=\\varnothing$, none of these steps"
+    },
+    {
+      "line": 878,
+      "path": "paper/main.tex",
+      "text": "Because $\\phi_e$ is an algebra isomorphism, the transported wedge/contraction"
+    },
+    {
+      "line": 1018,
+      "path": "paper/main.tex",
+      "text": "Write $n=\\iota(a)\\iota(b)$. Because $Q(a)=Q(b)=0$ and"
+    },
+    {
+      "line": 1077,
+      "path": "paper/main.tex",
+      "text": "Because $f(w)=1$,"
+    },
+    {
+      "line": 1176,
+      "path": "paper/main.tex",
+      "text": "Because $\\iota$ is $K$-linear and scalars are central in the Clifford algebra,"
+    },
+    {
+      "line": 1210,
+      "path": "paper/main.tex",
+      "text": "Because $\\eta(w)=0$, the scalar $d(w)$ is unchanged on the dual side, and"
+    },
+    {
+      "line": 1211,
+      "path": "paper/main.tex",
+      "text": "$\\delta(u-\\eta(u)w)=\\delta(u)$ because $\\delta(w)=0$. Therefore"
+    },
+    {
+      "line": 1230,
+      "path": "paper/main.tex",
+      "text": "Let $v=\\rho_S(s)1\\in S$. For any $d\\in W^*$, because $s$ projects to"
+    },
+    {
+      "line": 1252,
+      "path": "paper/main.tex",
+      "text": "Because both $\\rho_S(s)$ and $\\bigwedge g$ are invertible, necessarily"
+    },
+    {
+      "line": 1355,
+      "path": "paper/main.tex",
+      "text": "Because the even part is spanned by $pq$ and $qp$, every even element has the"
+    },
+    {
+      "line": 1376,
+      "path": "paper/main.tex",
+      "text": "because $pqp=p$, $qpp=0$, $pqq=0$, and $qpq=q$. Therefore"
+    },
+    {
+      "line": 1403,
+      "path": "paper/main.tex",
+      "text": "We use the classical exterior-model construction only as a foundation"
+    },
+    {
+      "line": 10,
+      "path": "paper/README.md",
+      "text": "- `refs.bib` \u2014 bibliography (BibTeX, `alpha` style)."
+    },
+    {
+      "line": 13,
+      "path": "paper/README.md",
+      "text": "## Building"
+    },
+    {
+      "line": 18,
+      "path": "paper/README.md",
+      "text": "pdflatex main"
+    },
+    {
+      "line": 19,
+      "path": "paper/README.md",
+      "text": "bibtex   main"
+    },
+    {
+      "line": 20,
+      "path": "paper/README.md",
+      "text": "pdflatex main"
+    },
+    {
+      "line": 21,
+      "path": "paper/README.md",
+      "text": "pdflatex main"
+    },
+    {
+      "line": 24,
+      "path": "paper/README.md",
+      "text": "or with `latexmk`:"
+    },
+    {
+      "line": 27,
+      "path": "paper/README.md",
+      "text": "latexmk -pdf main.tex"
+    },
+    {
+      "line": 48,
+      "path": "paper/README.md",
+      "text": "The formal result boundary is explicit: the submitted theorem package covers the"
+    },
+    {
+      "line": 73,
+      "path": "paper/README.md",
+      "text": "Use these commands before submission or artifact upload:"
+    },
+    {
+      "line": 76,
+      "path": "paper/README.md",
+      "text": "lake exe cache get"
+    },
+    {
+      "line": 78,
+      "path": "paper/README.md",
+      "text": "cd paper && latexmk -pdf main.tex"
+    },
+    {
+      "line": 84,
+      "path": "paper/README.md",
+      "text": "lake exe cache get"
+    },
+    {
+      "line": 87,
+      "path": "paper/README.md",
+      "text": "latexmk -pdf main.tex"
+    },
+    {
+      "line": 90,
+      "path": "paper/README.md",
+      "text": "The verification scripts run `lake build` before checking for forbidden"
+    },
+    {
+      "line": 91,
+      "path": "paper/README.md",
+      "text": "proof-hole tokens, so the preflight does not list a separate build step."
+    }
+  ]
+}

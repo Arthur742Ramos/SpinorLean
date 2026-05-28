@@ -1,8 +1,8 @@
 {
   "accepted_edits": [],
-  "after_manuscript_hash": "edcf027a9d7a0429acd04367136f4cb473dccddfaed65e6e41c744e2b1a0bef0",
+  "after_manuscript_hash": "419c76311457877f9c547a0ba7331ed4a5536a373cc7dd1fb4d5e63620a03d02",
   "enforcement_note": "This scaffold does not accept edits unless each edit is tied to an original unit_id, reason, changed text, affected checks, and revalidation result.",
-  "original_manuscript_hash": "edcf027a9d7a0429acd04367136f4cb473dccddfaed65e6e41c744e2b1a0bef0",
+  "original_manuscript_hash": "419c76311457877f9c547a0ba7331ed4a5536a373cc7dd1fb4d5e63620a03d02",
   "status": "NO_EDITS_ACCEPTED",
   "workflow": "improve"
 }

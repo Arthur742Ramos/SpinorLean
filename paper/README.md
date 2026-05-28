@@ -1,13 +1,15 @@
 # SpinorLean — Accompanying Paper
 
 This directory holds the LaTeX sources of the academic paper accompanying the
-SpinorLean formalization (the first formalization of spinor representations
-from Clifford algebras in Lean 4 / Mathlib).
+SpinorLean formalization. The manuscript presents a chosen-model spinor package
+over Lean 4 / Mathlib and is being prepared for AACA-style review.
 
 ## Files
 
-- `main.tex` — the submission-ready article source grounded in the repository.
-- `refs.bib` — bibliography (BibTeX, `alpha` style).
+- `main.tex` — article source grounded in the repository.
+- `refs.bib` — bibliography (BibTeX, `spmpsci` style).
+- `birkjour.cls`, `spmpsci.bst`, `cite.sty` — AACA/Birkhauser support files.
+- `THIRD_PARTY_NOTICES.md` — provenance for the AACA support files.
 - `../THEOREM_INDEX.md` — reader-facing map from paper theorem labels to Lean declarations.
 
 ## Building
@@ -39,11 +41,13 @@ Per `ROADMAP.md` §5.3, the intended submission targets are:
 
 ## Status
 
-This is a **submission-ready manuscript and artifact package for the exact
-finite-basis split-Levi theorem package**. The paper contains the introduction,
-related-work context, architecture, results, proof highlights, precise formal
-result boundary, keywords/MSC metadata, reproducibility instructions, and
-companion theorem index tied to the current Lean files and theorem names.
+This is an **AACA-formatted manuscript source package under active
+scientific-reviewer audit**. The paper contains the introduction, related-work
+context, architecture, results, proof highlights, precise formal result
+boundary, keywords/MSC metadata, reproducibility instructions, and companion
+theorem index tied to the current Lean files and theorem names. Full
+publication readiness still depends on the remaining scientific-reviewer gates,
+including Lean build/proof verification and adversarial review.
 
 The formal result boundary is explicit: the submitted theorem package covers the
 chosen-model spinor construction, split-rank kernel/non-descent,

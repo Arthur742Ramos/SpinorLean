@@ -38,26 +38,33 @@ Lawson Jr., H.B., Michelsohn, M.L.: Spin Geometry, \emph{Princeton Mathematical
 \bibitem{Lounesto2001}
 Lounesto, P.: Clifford Algebras and Spinors, \emph{London Mathematical Society
   Lecture Note Series}, vol. 286, 2nd edn.
-\newblock Cambridge University Press, Cambridge (2001)
+\newblock Cambridge University Press, Cambridge (2001).
+\newblock \doi{10.1017/CBO9780511526022}.
+\newblock \urlprefix\url{https://doi.org/10.1017/CBO9780511526022}
+
+\bibitem{deMouraUllrich2021}
+de~Moura, L., Ullrich, S.: The {Lean} 4 theorem prover and programming
+  language.
+\newblock In: A.~Platzer, G.~Sutcliffe (eds.) Automated Deduction -- {CADE} 28,
+  \emph{Lecture Notes in Computer Science}, vol. 12699, pp. 625--635. Springer,
+  Cham (2021).
+\newblock \doi{10.1007/978-3-030-79876-5_37}.
+\newblock \urlprefix\url{https://doi.org/10.1007/978-3-030-79876-5_37}
 
 \bibitem{MathlibCommunity2020}
 {The Mathlib Community}: The {Lean} mathematical library.
 \newblock In: Proceedings of the 9th {ACM} {SIGPLAN} International Conference
   on Certified Programs and Proofs, pp. 367--381. ACM (2020).
 \newblock \doi{10.1145/3372885.3373824}.
-\newblock \urlprefix\url{https://doi.org/10.1145/3372885.3373824}.
-\newblock Common scholarly reference for the mathlib ecosystem
+\newblock \urlprefix\url{https://doi.org/10.1145/3372885.3373824}
 
 \bibitem{Mathlib}
 {The Mathlib Community}: {mathlib4}: The math library of {Lean} 4.
-\newblock \url{https://github.com/leanprover-community/mathlib4} (2024).
-\newblock Includes {\tt LinearAlgebra.CliffordAlgebra}, {\tt
-  LinearAlgebra.ExteriorAlgebra}, {\tt spinGroup}, and {\tt pinGroup}
+\newblock \url{https://github.com/leanprover-community/mathlib4} (2024)
 
 \bibitem{LeanGA}
 Wieser, E., Song, U.: {lean-ga}: Geometric algebra in {Lean}.
-\newblock \url{https://github.com/pygae/lean-ga} (2020).
-\newblock Lean library formalizing geometric algebra; Lean~3 era
+\newblock \url{https://github.com/pygae/lean-ga} (2020)
 
 \bibitem{Wieser2022Clifford}
 Wieser, E., Song, U.: Formalizing geometric algebra in {Lean}.
