@@ -1,0 +1,17 @@
+url: https://link.springer.com/journal/6/submission-guidelines
+fetched_at_utc: 2026-05-28T14:56:48Z
+backend: direct local curl fetch of a known primary-source URL
+request_parameters: GET https://link.springer.com/journal/6/submission-guidelines; user-agent "SpinorLean scientific-reviewer-v2 audit (contact: dbhulak@gmail.com)"; output saved to review-01/00-global/evidence/link.springer.com-journal-6-submission-guidelines.html
+raw_response_artifact_path: review-01/00-global/evidence/link.springer.com-journal-6-submission-guidelines.html
+extracted_text_artifact_path: review-01/00-global/evidence/link.springer.com-journal-6-submission-guidelines.html.text
+raw_url: https://link.springer.com/journal/6/submission-guidelines
+raw_title: Submission guidelines | Advances in Applied Clifford Algebras | Springer Nature Link
+http_status: 200
+api_status: n/a
+snippet: "Instructions for Authors Manuscript Submission  Manuscript Submission Submission of a manuscript implies: that the work described has not been published ..."
+error: none
+raw_html_sha256: 8cd08d97a921df3c0554f26c3a7382a6ef85fae36e962aedda392f0d60473820
+extracted_text_sha256: b7e1ee67860982e3ded1e9c8c92244e9fe4a053572246a2de14b2b1bcb62427b
+classification: clean
+llm_summary_used: no; no LLM-generated answer, summary, ai_overview, or similar field was used as evidence
+user_agent: SpinorLean scientific-reviewer-v2 audit (contact: dbhulak@gmail.com)
