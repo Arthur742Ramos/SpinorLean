@@ -1,0 +1,2590 @@
+{
+  "accepted_warn_rationale": "Accepted WARN: definition and convention presentation was statically inventoried with no local formatting blocker; mathematical pedagogy remains a reviewer-judgment limitation.",
+  "check_id": "definition_presentation_audit",
+  "covered_units": [
+    {
+      "unit_id": "section/65a8f5708432eb8aec2c",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/0be74dd0290d8b17df3d",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/4b0ee0222adfa576ad57",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/ad864231315e7a71bd5b",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/cef13e3f38a267293141",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/b18967fcdc8c9612526f",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/54e6ae0da02facf00d15",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/06295c075f0cfda6933b",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/2b2d7f50e1aa67b6978f",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/e158d2860b3429508458",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/72130e1fc0598d663ea0",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/74d784c7bb418f6ccc86",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/c769bf1848d055d399dc",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/c4ed7e59368b8ab037aa",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/21ea7927ffbf9ab1bce0",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/874d0e9b497d13fab9c4",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/916b1d68e55da74d8c45",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/98a58b4e595fb965e714",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/0db7baf7ebae87be5ced",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/3db9d01ba9278f171f38",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/40662bac956494589116",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/3fa3e20b96af9fc2bceb",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/9998d8b79d3d4fe591b8",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/94e2077e68d1df5e3018",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/4d9455066de11a2c2d4d",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/a1a6940aeed7fa8d7996",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/9006bec455d771157422",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/d833f7c003a9963378c2",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/2852baee54817cee388b",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/06315e87329cd3dad498",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/d5382bb351bb93dece5a",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/b32c60b7754adb5b6d34",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/ce8e6fc4275a88e12ac0",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "formula-equation/e1fb4b9ce1b3fa57c377",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7b2beea1f3df02945a18",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2b699479aefd5881ebca",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/acf3c7fd3dd5e5357d81",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/66a9edc816f63b83146d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9f5028f45890d3bb79d2",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/93ef0b7d596d6800af65",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9cd8032331a5b47143f0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a289445b015280860c5f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f532bfe5316b6d1ad938",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/034aa7de96367b3ca75d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0f5d53e2a5c6d2d71f14",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/de73a4769a54a4f9970f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/13e2f588f0f5398a3bf1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/10fc21da3ac5a2475e80",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6a0c6abc8611a9d3e7f1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fac69747e8869393ed9a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2ddd02163753db7fcf8e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/72f4b68783e22834507d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e4454ba2a100524a0e42",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/127c8b96746f2530d6ba",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fbf8775671e7ddf1e0ac",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ff314e4957c450eddb2d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b1021acf753fa8121d49",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ad540087fb5801c89fb0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0672c6b78356f4a38223",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9bf8eff307cdcb94a950",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/319556f330856e802c3e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/62462a5c6d109cf058dd",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/cb5e470fa0916e078fdf",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a17c976904490861014f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/da08db2ef5221f8d2502",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/83cdae7d2eacb93596e1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0d4a93823fb8c2b07882",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/70e9777995c904b87562",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3703f086961aae0bbd0a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9848a4cb8ac4a3afc1fa",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/af331166915023796cb3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/225d7940021dd3e80a45",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3b76d52f6687aa3b8848",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c2349d315e4e418a9950",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/407aa99cec1cd53da8cd",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/499c39a62d9a0966d7f1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/dc98ea919f98d7e7c21b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fb0e2de46d1952dde5ef",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/997606ef155e8ca6392b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4874a253047441e52ed9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1f6aa57ec92ecb945305",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/637cdfe525e6e0f90744",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/15d2f4861186da4a3bce",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5b4a280185938a24a5d9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/cb9a98a48c7fdae3a310",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/d9975cc23cc39ca2028a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9d56abc6c9718ea454e5",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f18e5fc1fd3c4d3f9000",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/07001a303e524038ca73",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/731e59c1e677cbc6d672",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/653021c558697327d6fa",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9ec9301295b4e39b30d8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/90f41075f17ea92b07d0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/803c4c351622483bfe21",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1f9277e215c64c4947df",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7c4392ae8435c02ef94a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3b5da5898d7f382ee430",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4b2b797d2d878e5439be",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1d30e1d5b2f6ab5db3ae",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e46434e09bd36da584c1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a5b287218b9a133d56da",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/14150baac87e279a07bd",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0c9a74b52ee8111b35e0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/d021a38ce9b1b64bf88b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8f86a79e74a7f9c979df",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/18d73b1b93730c9bf725",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4f252a14b73962d6c4b3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ef3e72a521c80c06f260",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1cff6f460578d7a9a2b1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e7fa42b7aba4947b0551",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a8a8476cfd6ffa8a71ec",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/80f025b463d3fd4777cc",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7c2b2dc3992f8489b6b4",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/93cccc0458c7931dd24b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0fb8b919379e3bdb2cb8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1cda611bed86601c147a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e62adfeab089a88af1e9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3dc60bdd0b4a342435c3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/04279b67e2c6bf843a45",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/cef3189d07b20c150e83",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fab39623725918a439bb",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a15e163e240117063c77",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/21ecb418a6b32576ed20",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6821ca47c28e7b604527",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/143c0f517d9a49ee0b23",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3b0ca3dc24821da8e494",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8bab803a31b510c8d3c6",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/833560103b0a288c2ae3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6a06de6c7bf485669cc4",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3d69e659ab6a9dd40209",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8e00e1cbdd02d7b1037e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a8b629ab6f49f54613c7",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a7a54281593a3e096821",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b77d12c9bf8840eb4011",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/cfaab91b9f5ee7043ee8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/718eae139ec9c2384c5f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/cf287f920a9c0479938b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1af0133ed259b9a41812",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/44074352a5942117bb03",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/d6bd45c8784b05c7c55a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/58328609622e640fcb43",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/15479ba56ca895d54f0a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6753b839cc61f3e13cf2",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9b23f81b68059b812671",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7e4913a1fafdf561443d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4ca3c163ea88ed9d8b20",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/880e762ab01dca54a141",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6a013c0c6b2a362fbaff",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e46846fb32ae8c75048f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5aceb74d04173d0fe59e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6e168f2ed7991703a8dc",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f910cc09081b29d14621",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/012410e6664ee5f19901",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e4750729b192822f2271",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/af1c2f2db685f2cf7efe",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/870eafd3c1d525ca92e0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/096f6fd5ab776da51ae8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c02d3aed07eca543f691",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b2fcc66683ac4b2f2fc8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/db25e8b725c1975c6803",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/39504a4d8a658d2c9f92",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7cb4307cceffe92567ae",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c7643df934fd6ad2b74d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7117fcc3255f7cc6c157",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/414aef5f16058a3410e4",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7196e85ccce4d581ac0c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f777cad8742e92f3078a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2ac1ab092fffdf39b2c6",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bd0cb7b6faaee0488190",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/dd82e2f748a2acf56bdd",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/789493f9728c71245487",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5e5ccbe2379b9693d40b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/390996c2be1b900121d6",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1bdd2dc85532ecaab403",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ce464cacdfc721c2ec85",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/65a320cd4f26145d2741",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0af89edae758e32b7e16",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/92e46664ffc7c68eff23",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/84480cafe3b84737e485",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/46e7ebad47ec90050585",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/59cf140a454bbf8792c0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4c2ffc4d5ad5c74d7168",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9b177d65a875e47c0204",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e7c000e6f8e6d1025d72",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c71dc8144867495ed518",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8e88c149d7dff99f0c07",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/d9ce8fed8a40b8525a45",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ea065b01c70f0016a5b1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2786b1ebe8f4e2455baf",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4ab7171535667501f08e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1abf28e6ac50365ae420",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9c7526cb18a57d680168",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/799796f480fb85a72e0d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6df7848a95ed5446bbd9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b287dbbd3f259d5a84d9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/eab8784c187e3d7f1752",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1b38a605c57841d13502",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/58c08507ac7db8ec9bbf",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/047ad6004e6858affcec",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/07926b4ad8dd66c5a7bd",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c5abbcde366747d3cf4c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ae11fde24f6770ad14ad",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/83e5ed4edfae52256fc9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0e80b84add4dedeb97f9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0af01ad76dba6a8971df",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/12bd1b095f89fd94af4d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/48021f0b724de1ef88de",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/54b5088d57ca15198501",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8d2cd328558e14894515",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/023eb3f49cb7a5555e1e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4ec910fed25686985e16",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5b3e459df26a02c606b6",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/d1628a28b52214855492",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ffcbafbc3915d972d99f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c54d9054a0cde36ac150",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/d5efdc5937826f09133f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3bfea597f5e241247eff",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4389d793e81ebd58f56a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/257cc297ad802876a48f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1091b93205db063ebda9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6615659d3fdd44469c2e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/cfe2ee7e9e2adb0d076b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/cba22722580f05ebb309",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/d10dc1fef7f02e49c22f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/424433d5233bcf93eaf8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2ef0d14b853fce92ebf4",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e64dc4204c76f3909aca",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/654a2968945cd040e490",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/88ebe9563006ac6a741b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5b301e60c09cd457cc0c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/14254e00f340111ff371",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/62d9558b88cb12070a91",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c8e22259a90992234ad4",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/cc6ec818010adbc78565",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1fb4652c8bd1bd2f1189",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bd8cd9c858c7aef27080",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/aac833e7d02e13694bc0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bac8be4f9f35519f0826",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bc707ce4132c7087796e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/367042f7cf751358247c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f6128b3fa530175e0514",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bc33a3c9f5b8439c61b6",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a5791e5780e34cbd371c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/645538f5419bd960191e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8cd52f60392d4b5b0c28",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2a7bbf938e1a4e3e595a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4405d90fd5bd3d58de11",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4f2508c802e0de9ed883",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/db6016caf67d864d8d35",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/896d08b0a52201be57f2",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4c10d3a45d025c59a147",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/253b3f6e657bebd3b836",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8418d576d3590e24d9a5",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e9cd932b36011e87d139",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fd7443c3314a4c8e24ed",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ec8e3332c32c1a91c7dc",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9cf9b8201cc5a3fe23eb",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e09baf6055bf774c4cd1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4957d0d593ee1211367e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/69cd26e6db8dba1a0194",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/75812a77c0a5e6b68eb3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/04767ab28ea2f07450d3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/133cee665c815c5c1530",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6b29c007459647d87093",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1dcdf7b6709312e54711",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/78fe20c11e65ada2ba0d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e36fb696207ea0b8aabf",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/498955b2362746713033",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9ed59855f46a1425f466",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/90f9a1ad45496b4ebf93",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3fac60236a239b556e95",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/cfd084794bc42005a3bb",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/adb34fd1e66f69f31a12",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bbcab55fb179f08a060e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/dfbe8953cb152fdc1c34",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2c87bd92f4053fa2ce5a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bbc2b601b4c05dd3fc55",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9eea903d321a7ce3dad2",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bd2783bac94b11b5f0d8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5c802b584935a1eb4e3a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4b13c585cb85505fe4b5",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/dd39e1f81311b73a2992",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/12ffa1dd152993abc17b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/588a705bc450f5a267c3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9d609581e4f76afbce83",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/254642d6d14e2e738f00",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9dd143d4317af9fc96d1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/aa2c5cc1ecf2db1ad2ea",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/346754b81bd9d15bd73d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bc500423883cd708c4f1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e4971c82245fa39f4db6",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a459247cddb712160e59",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8c66b7c6a9499260717c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/377e3d3054f3fab1fec1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/726a4d7f2166dfa03277",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/611a421f34d358e2d74b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e8638a314d38a764195b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1b100e1ebe4508ff2e00",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f84fcf8817ee438c03c4",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7da96db17302b1c61eeb",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b7aab395a6fb44742ede",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/26647e49797326ec2376",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/92e155aaabef999f7bfd",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bd83a5d7f97ae9fcd27c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bc545c5da5ce3fd69ac8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5c9710be4a40a78ef0bb",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5bb8f4b9e478c3c88faa",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/12ef49c4e4458c572ca8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fd4af90664ed80f0956d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/baf712e81ee22b134da3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8412110d5f3d043219c9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ee16cfe128278c75b5f9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0c01173d1ec150f352cd",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/15e85cff1f63ddf9c223",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f89cfb92d6ab912a5be5",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/84055132bf93498ede2a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/80bde7ea9ebe9a30a82a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/68a2a240b05161c563f3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/71f521e7aa551e65e791",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1e0f4da0593c97358907",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/acc166a517dab5af02a1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e4d75e4f96c520d38eed",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3186e5d84a4d9de427c0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/117f845c1a0444054420",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0f6903df63dc9b3312a1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/38fc7e6c1e515fdef303",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/13be5180e2a4f56fda37",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7d8179773a9541dd666a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7761746c75e32e156336",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2ade7e2af43a79569228",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/960fff35cf41f4bbcf52",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e4d79b8e9d367398e830",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1712726523b2f2d11bba",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9a71cc4c47635b6e5a9a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/de12e9eccb78b4c32cc8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/32598048f3eecd70d523",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8efe17c03b4fb8b684b1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6df0d0faff54a57c94e9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e6524d53d18f856f285c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2435d2f87f681a4f9e58",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6a139fa7ae3280072ca4",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/dfccb05778b450778a6e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bc03af89ec2b49d2f2d8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a4f0216dff6f559b1d5d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/58ff5fadd0aa25a81e18",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a838b88af21d3b54a9b7",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/818d07e75c4e4baf0405",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ab2932a2eda0da80bae0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b726abc80955bd80875d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c48e86e2c7fed802ed21",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a0ba893dc7e7cbb7cd28",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9d5cbc4a23d9d36b274c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f8e60ea2892b9418fc9a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ae1ae30e78669bafc8d3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e696fe394d9f76624add",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/853dfba4898d7715c2e8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/82c29486771302db0a15",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b704b7a42879b85cb992",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/93e52793012eb77cc750",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fa80a11fd9710768d324",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a831bd7e2c865b5b193c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6ebb47e736857f6b6f61",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/340166b5a1be90212286",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8312df3370af85fa00e9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3d98f2f1c8de2ddcac0c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1d0377b04427602bb085",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/459df8a2fce7f9c77ffd",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/756f56189926d5e2642e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1e20ba363cb6fa600e6b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/dac3063d4acd3ab9a452",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4345964b0e60d3e175a3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fe5f6a02c53c99f95da2",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/abbeacb71f67e80fd23d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1a5bbcd12f3924bc0e03",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7fa06bc04cfa04f657bc",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ead8baac86d7801eb0ce",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/37934473a85c4cb8104a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/253d3826598655ad9d81",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e11b8951d43e76b0a14e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6c6e4c7c0cec9e12cab0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/11d1dadd04db356d386b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/50ee26a9bf3c35e1abcc",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4149ddf1170fae615d18",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/d44d98d90cf06d969a67",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/10a406372598752e073e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/be83ae1ce969af3114be",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/02e38a90fed2e61dc0a0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1d1b7bd44876ba1bcad0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0ddd765cd836e0339022",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fff4ba6164bf35559522",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e6ab13b4059e4c02b7a3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2b91b4bcc646fec4da3a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fa6d5abda6e14c1adab8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/af3095a73ce272b5507e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3b70f12ee3708c5521b1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c179684a1a2b65c7b2de",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f256baf0acca86e33070",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b7e4fcfbf811e6a483e3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/cde3afce0c1a183c8179",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e2788846b4668dc050a0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/faffa5551d743b6d2108",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ece4a870a98877b30ac3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/af88de58189db6f78d06",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/006e2b976d25cc689833",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f8a5a52aa7817cf03145",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b655e6d433c7687cfe87",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7fbc5db7584356e0c7df",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c29c307e2f97c19517b8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/801b885d4b921a188428",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/070bc02786bd5b08ca0e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/41c1e4e0e42c8f97385f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f7652f7e3746b97c29a0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/380bec8b24c858d3868b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4c0e9458712dfe58edd3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b87d0806bf3adce36718",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c3b5bc2ddd82ba233182",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ba8535d77b741ddee8e0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5bea61776208b9c0a2b6",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c7653b7eb9e3b05578fe",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/adfde94466cc0258f244",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4da9fbb9f0ae52ac5cae",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/56eece9423ff19cfb6ea",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f6d01876f2f694db607c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/309194a6bccda270dc08",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/d33c72a9042d83f6c75d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/89a7b4fcbe1beee8d049",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7fa85ff501dcd8715309",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/62f7b22924f6af85405a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/283c12fb54a0ec63cd8a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b4115df09cc3cc837f53",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6a9232d7bad6311d418a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bd822c64f5406982c264",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/75693a80c711fff71a58",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8296034a154f013e0e6e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e6915ee40d2a37e7532c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/516722bb1af4d1963a55",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/beae7d1679e2de409a85",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6f7f803d1c756f934b11",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f32138be46fcdd014dae",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ba4dc510ec6e7d10922c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1799d26b6b863043f386",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/86fd88aa161fe0e325ff",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6e9fb09188b89696e505",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1de8560368c983fd45a9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f479f54c70e69bfb6a37",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8b9251b5426bba554f10",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/104cfebcb34bcc07a470",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2197bb5162917aa00a98",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/88e62b80583a8b3249d3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a54d076639b8146487bf",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0a5a7b6196eded304f82",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/bccdfed9d6505da78299",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/54d5bb2f04f944df5a27",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fb3d887c41d162311d16",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ebfd8a1bc0fc77f0e2f5",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ad9e32b692e317621aad",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/43e2836bf47c839aba5b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9fa33ca945d7032c6097",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9cd102a82f88a153f905",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5e71aef568ca7f017700",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0407ee798b4b2938eca3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3bec1bdecd5a41c36320",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a9a861770b852be07b7d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0a0bf8fd5e5d233154b6",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/dd6d33f008a4c533cf29",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/68f3c0b14c9a3b748036",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ae0dda8f2a68d764b95e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7ceb535a19b1b639721e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f40110e99a3a9b58185f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6b32bd75d3fe6067b2db",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7f00f58d545ab8364e8f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4fbd5fc5c9597ac710bb",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6d388179ebc3a4e436a0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5895f3954e9db20b3d99",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/042967cc5b871b2ebbf6",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6e74fa11d5be3c4e74e7",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9b8f78d5f7cffed49786",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ca6efa909fa40d7c49a7",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a3ca92329c16200e69e3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/57e10130a2ad5240ca3d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/039dfd72d583418f060d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/68b46acb8713764b6fb3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ce22b4cdd4634985b9ef",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4095f72cc63d9a13ebc7",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/12cf8b5c69e5b268c5e9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ead54d1f459553c3791e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/122fd714248bf42efa6a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/822f021cbbe797e403b0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b71ad4b86a860bfbe7a9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/62e3db2a5eb00675b5de",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e97e0235332f1c5f6cac",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/d0724eec3bf78aa3df9a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a772cd6a003b2d59c75e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5482df1a6fc4dbf838a9",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/be08b113817ba539e800",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/de35a13e14276c98febb",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ccafe23d651f830dbdd5",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e32c7ae8517a54c9cd74",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6553a27127b731d0a030",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b0718f50cbc73561f67c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ae3c47fc2e01ea1d92c7",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0ab522f8a675e79f9a6f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7028a627588bf578e901",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c6e3384146e9b0a6af02",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e50eea362d5fead9d9ff",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6c164e1268df4e41bb8b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b4aa5c66d6f1e5727dd5",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/59539ed0bf4f7df98f3d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c525366239d84b5cd4a2",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/dd25676adfa53cd6f918",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/156e764bc052bdb2f5a3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/17f92e033e59ac67e683",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/eb8faa70d17266fa4f1a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/406b25c4dd804db3f66f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3d34e8af47497051cd72",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/abf2d473f3d81e2708d3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5cecf6dc3f51f13cfd09",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/1d7d747755e72cac47ae",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/463004475d91e8ee9147",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/330abbde72f71b1cdc77",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/56d91e1f03e2569dd1c5",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/719efd2fb5a66320fcdc",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3f185defa5dca2934fa6",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c52e9989c6ef42e03957",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f47d2243135ab6d83114",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e30ac54378af6db14c0b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ca7c77b070575c8c50d1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fd2531b70a8604fd01b5",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f7058664369598cb1925",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/66d517c48275bace4d22",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a00ec8cea456baef9fe6",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f69472ccd849de870d72",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2a96c760ae1df4fa8d03",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/54f462274c205130ac10",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9a37b769a9bf0dda9b5d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/94400e9d4a5b74b25081",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/09b365282858b0eed2f7",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7b405f6b20f99ea9fad4",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/752dc127ac1ea390fd83",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/98e1d7b8443730aa9ea5",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7b4af7993c34603e3085",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8ced10d057007ee7176a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2712be67138090e71b12",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/dbcd2c09eb43fcddd44a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9d36488f626a74f559b1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/97023a4e3f44ec22e546",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5140508c57b251bd3c31",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/aae8f8044dd96cebee13",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/07437967647870571e2f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8d2ece28af32a7a11504",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8f656ea55e807868a7a7",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3b82f309d3a9e672a5be",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4d9c86b6a849d65f665e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9f222eff578f36b1f843",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8a7daca9d56efe14f740",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/974d05d5bf9f7f6b8e09",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e2fad323534e606c09df",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2da53ea03c74b7e1b87e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3ac389833b4aa0675ce8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/918561e2bd02a995e3d8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b4bef047b1ce2767ae60",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a1c4cbb7e617420c3fc1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/162f6ceb3d58f3cd5f6e",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/07926447796821d09796",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/88042311cdf995833958",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7322e48803c42a7b961d",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5430720e612e9c39d820",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/45bf769d4578eb299384",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/27a4eac2d6c5937f9fd5",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/27eaeddb772abc2a4502",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/44aba37d718f3633cb60",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/665384d2504df7c3a708",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b1825bb3615a6ed9163a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/96326dd3bf35aacb24b8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9c98c0876d0ecbf22479",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c4f1aefa95604cd9c3d3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/dea126d6c2755f176707",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fefd50d1d857947e9983",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f67c37020e6959aa2d9f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/28c3cd5f153524312310",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3b2ab41b2bea142da8d0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f0e981193b5c1c9796b0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ec1b0153b51f2557d6da",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7bf8bd649adce1875d06",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e7a104366fcdf2aa5ee8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2d2ca57cb39627154f4f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/d37505c60952c9ac1472",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/046bc6c7f5b03167d592",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2f567f1bd608fb659278",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/54a782a9296d6c48f5b4",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/20bb3bcb661d3d21292c",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/5c091802b81d433448f6",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7efc932fee61159a6962",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/e84d335789015591f5cd",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fcd7a05a49bc9af48c86",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c39551f5ac87002907e5",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f72ad1700ffa9b0c12b1",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/fd0c9243bff81cd52c9f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3b4a7bbb06919b806b1b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0ba5e81a9d37a6293190",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/50033a4add5eec948d01",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/cdba4701666e72fc8005",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3137c19dc8dc6d4f4c36",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8570ec03bb11ce108623",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/552e2d758cfbd048fc69",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/75c02ba1e119cefa3d5a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f65809d032b3e3155659",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8ab1baa3f3323b50c963",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a34fb6560eb09c0ff276",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/7a7ba15b3afced5c4754",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/edd61b63b6e5b1e1bf61",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f24c0959237ca36d6074",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/3923cfdc59256de95d90",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b68baf2446c3f55a018a",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2219930faa3443598937",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/454cb58b8d8a11dec382",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b276f790e0f2deb3c056",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c43189d03c67a74cedc4",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a2a481902f17235512fd",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2d4d331199b27ecef287",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9c870280cd37902c47e6",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6f4194689afd5358d0c2",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6eb46e5d543f3b1b7913",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/2ea81fa9dbf7f0ddef88",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/a96784cb036aa5fadeba",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c29f3aa68aac49af5e12",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/19810310e9130af78e14",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/342fe04b79d21142c867",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/b197f1215edcf07bccbc",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/17cce494373874a8d8dd",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/722729923f7475e4a49b",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/0af93b7d774843f86599",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/9fbd6106a300c26514d8",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/c67fb0cb1a09365494f0",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/dec8f8dfb19934083223",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/68092c1da25e21481a3f",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/f556908b9ba7c9f0b138",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/6d723d8f90ee0d1aa869",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8003ce3e881d7327e1d3",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/8c00aa1fc5b9617a7448",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/4f8c3c01df5fac78ab32",
+      "unit_type": "formula/equation"
+    },
+    {
+      "unit_id": "formula-equation/ca4139bd182a95f2d0d2",
+      "unit_type": "formula/equation"
+    }
+  ],
+  "findings": [
+    "Definition environments, standing conventions, and artifact architecture paragraphs are present before detailed result statements."
+  ],
+  "generated_at": "2026-05-28T02:25:59Z",
+  "inputs": {
+    "canonical_check_results": "review-01/check-results/aaca-full-fail-closed-check-results.jsonl",
+    "manuscript": "paper/main.tex",
+    "static_record": "review-01/05-math-formal-artifacts/evidence/static_artifact_facts.json",
+    "venue_profile": "review-01/00-global/aaca-venue-profile.yaml"
+  },
+  "status_supported_for_canonical_rows": "WARN",
+  "unit_count": 642,
+  "unit_type_counts": {
+    "formula/equation": 609,
+    "section": 33
+  }
+}

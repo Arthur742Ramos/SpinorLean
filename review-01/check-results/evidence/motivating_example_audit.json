@@ -1,0 +1,158 @@
+{
+  "accepted_warn_rationale": "Accepted WARN: the split-line motivating example is identified and linked to result statements; external pedagogical adequacy remains a reviewer judgment.",
+  "check_id": "motivating_example_audit",
+  "covered_units": [
+    {
+      "unit_id": "document/8982741fe9acb8332cdb",
+      "unit_type": "document"
+    },
+    {
+      "unit_id": "section/65a8f5708432eb8aec2c",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/0be74dd0290d8b17df3d",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/4b0ee0222adfa576ad57",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/ad864231315e7a71bd5b",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/cef13e3f38a267293141",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/b18967fcdc8c9612526f",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/54e6ae0da02facf00d15",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/06295c075f0cfda6933b",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/2b2d7f50e1aa67b6978f",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/e158d2860b3429508458",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/72130e1fc0598d663ea0",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/74d784c7bb418f6ccc86",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/c769bf1848d055d399dc",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/c4ed7e59368b8ab037aa",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/21ea7927ffbf9ab1bce0",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/874d0e9b497d13fab9c4",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/916b1d68e55da74d8c45",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/98a58b4e595fb965e714",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/0db7baf7ebae87be5ced",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/3db9d01ba9278f171f38",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/40662bac956494589116",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/3fa3e20b96af9fc2bceb",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/9998d8b79d3d4fe591b8",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/94e2077e68d1df5e3018",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/4d9455066de11a2c2d4d",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/a1a6940aeed7fa8d7996",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/9006bec455d771157422",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/d833f7c003a9963378c2",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/2852baee54817cee388b",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/06315e87329cd3dad498",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/d5382bb351bb93dece5a",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/b32c60b7754adb5b6d34",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/ce8e6fc4275a88e12ac0",
+      "unit_type": "section"
+    }
+  ],
+  "findings": [
+    "The split-line motivating/test case is stated at lines 211-219 and linked to exact image theorem rows."
+  ],
+  "generated_at": "2026-05-28T02:25:59Z",
+  "inputs": {
+    "canonical_check_results": "review-01/check-results/aaca-full-fail-closed-check-results.jsonl",
+    "manuscript": "paper/main.tex",
+    "static_record": "review-01/05-math-formal-artifacts/evidence/static_artifact_facts.json",
+    "venue_profile": "review-01/00-global/aaca-venue-profile.yaml"
+  },
+  "status_supported_for_canonical_rows": "WARN",
+  "unit_count": 34,
+  "unit_type_counts": {
+    "document": 1,
+    "section": 33
+  }
+}

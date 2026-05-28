@@ -1,0 +1,142 @@
+{
+  "accepted_warn_rationale": null,
+  "check_id": "final_provenance_gate",
+  "covered_units": [
+    {
+      "source_location": "review-01/scientific-reviewer-review-full-fail-closed/snapshots/manuscript-4eb92f8e2c5b.tex:1-1574",
+      "unit_id": "document/8982741fe9acb8332cdb",
+      "unit_type": "document"
+    }
+  ],
+  "current_manuscript_hash": "4eb92f8e2c5b69aa00559e0cbd04fd3ae275079f40e1525529a7a98c70947a69",
+  "final_files": [
+    {
+      "current_hash": "c0c9761cf43d3c675e282fe5082277fe397d1cb9139d8d29ec30267d2ff2d6ae",
+      "currentness_status": "final-current",
+      "path": "/home/david/repos/SpinorLean/paper/main.tex",
+      "role": "active manuscript source"
+    },
+    {
+      "current_hash": "2af90923f65d3ac1cd18032f579051ea5fd8c9b68beb4c500134f87bb16fafce",
+      "currentness_status": "final-current",
+      "path": "/home/david/repos/SpinorLean/review-01/final-artifacts/spinorlean-aaca.pdf",
+      "role": "final submission artifact PDF"
+    },
+    {
+      "current_hash": "549ac4fa6a659772d8d0e30811a39b412f08b4ddc54969f816817486f1fb408e",
+      "currentness_status": "final-current",
+      "path": "source-bundle/spinorlean-aaca-source.zip",
+      "role": "final source bundle archive"
+    }
+  ],
+  "findings": [
+    "Final PDF, active manuscript source, and source-bundle archive are recorded with current hashes.",
+    "The source bundle uses normal archive member names and includes main.tex, refs.bib, birkjour.cls, bibliography style, local citation style, theorem index, Lean manifest/toolchain, scripts, and Spinor Lean files."
+  ],
+  "generated_at": "2026-05-28T02:25:59Z",
+  "historical_files": [],
+  "inputs": {
+    "canonical_check_results": "review-01/check-results/aaca-full-fail-closed-check-results.jsonl",
+    "manuscript": "paper/main.tex",
+    "static_snapshot": "review-01/05-math-formal-artifacts/evidence/static_artifact_facts.json",
+    "venue_profile": "review-01/00-global/aaca-venue-profile.yaml"
+  },
+  "missing_updates": [],
+  "raw_source_sha256": "c0c9761cf43d3c675e282fe5082277fe397d1cb9139d8d29ec30267d2ff2d6ae",
+  "source_bundle_members": [
+    "README.md",
+    "Spinor.lean",
+    "Spinor/Basic.lean",
+    "Spinor/Chiral.lean",
+    "Spinor/Cl03QuaternionProd.lean",
+    "Spinor/Cl07RealMatrixProd.lean",
+    "Spinor/Cl08RealMatrix.lean",
+    "Spinor/Cl60QuaternionMatrix.lean",
+    "Spinor/Cl78PositiveEven.lean",
+    "Spinor/CliffordAction.lean",
+    "Spinor/CliffordNorm.lean",
+    "Spinor/ComplexClassification.lean",
+    "Spinor/Covering.lean",
+    "Spinor/ExteriorModel.lean",
+    "Spinor/HyperbolicAction.lean",
+    "Spinor/Inventory.lean",
+    "Spinor/Isotropic.lean",
+    "Spinor/LowDimensional.lean",
+    "Spinor/Mathlib.lean",
+    "Spinor/Notation.lean",
+    "Spinor/OddClassification.lean",
+    "Spinor/OrthogonalAction.lean",
+    "Spinor/Presentation.lean",
+    "Spinor/ProdNeg.lean",
+    "Spinor/RealClassification.lean",
+    "Spinor/SpinRep.lean",
+    "Spinor/TheoremIndex.lean",
+    "Spinor/WittDecomp.lean",
+    "THEOREM_INDEX.md",
+    "birkjour.cls",
+    "cite.sty",
+    "lake-manifest.json",
+    "lean-toolchain",
+    "main.tex",
+    "paper/README.md",
+    "paper/THIRD_PARTY_NOTICES.md",
+    "refs.bib",
+    "scripts/verify.ps1",
+    "scripts/verify.sh",
+    "spmpsci.bst"
+  ],
+  "source_bundle_normalized_members": [
+    "README.md",
+    "Spinor.lean",
+    "Spinor/Basic.lean",
+    "Spinor/Chiral.lean",
+    "Spinor/Cl03QuaternionProd.lean",
+    "Spinor/Cl07RealMatrixProd.lean",
+    "Spinor/Cl08RealMatrix.lean",
+    "Spinor/Cl60QuaternionMatrix.lean",
+    "Spinor/Cl78PositiveEven.lean",
+    "Spinor/CliffordAction.lean",
+    "Spinor/CliffordNorm.lean",
+    "Spinor/ComplexClassification.lean",
+    "Spinor/Covering.lean",
+    "Spinor/ExteriorModel.lean",
+    "Spinor/HyperbolicAction.lean",
+    "Spinor/Inventory.lean",
+    "Spinor/Isotropic.lean",
+    "Spinor/LowDimensional.lean",
+    "Spinor/Mathlib.lean",
+    "Spinor/Notation.lean",
+    "Spinor/OddClassification.lean",
+    "Spinor/OrthogonalAction.lean",
+    "Spinor/Presentation.lean",
+    "Spinor/ProdNeg.lean",
+    "Spinor/RealClassification.lean",
+    "Spinor/SpinRep.lean",
+    "Spinor/TheoremIndex.lean",
+    "Spinor/WittDecomp.lean",
+    "THEOREM_INDEX.md",
+    "birkjour.cls",
+    "cite.sty",
+    "lake-manifest.json",
+    "lean-toolchain",
+    "main.tex",
+    "paper/README.md",
+    "paper/THIRD_PARTY_NOTICES.md",
+    "refs.bib",
+    "scripts/verify.ps1",
+    "scripts/verify.sh",
+    "spmpsci.bst"
+  ],
+  "source_to_artifact": {
+    "artifact_hash": "2af90923f65d3ac1cd18032f579051ea5fd8c9b68beb4c500134f87bb16fafce",
+    "artifact_path": "/home/david/repos/SpinorLean/review-01/final-artifacts/spinorlean-aaca.pdf",
+    "currentness_status": "final-current",
+    "source_hash": "c0c9761cf43d3c675e282fe5082277fe397d1cb9139d8d29ec30267d2ff2d6ae",
+    "source_path": "/home/david/repos/SpinorLean/paper/main.tex"
+  },
+  "status_supported_for_canonical_rows": "PASS",
+  "unit_count": 1,
+  "unit_type_counts": {
+    "document": 1
+  }
+}

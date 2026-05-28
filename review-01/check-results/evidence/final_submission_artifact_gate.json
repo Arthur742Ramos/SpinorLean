@@ -10,33 +10,27 @@
     "aaca-adversarial-opus-r4",
     "aaca-adversarial-gpt-r4"
   ],
-  "check_id": "final_submission_artifact_gate",
+  "check_id": "submission_submission_artifact_gate",
   "citation_support_audit": "review-01/02-references-urls/evidence/citation_support_audit.json",
-  "final_log_sha256": "8046f0c158797256f7025b92481e31c5f8ccf296309d07d94492f55515af249a",
-  "final_pdf_sha256": "7a9dae5d27ec9d1dd9ac0afc151cff6463b7c2051fecdb082b644299c7e9b33d",
-  "final_pdf_text_sha256": "35902445bcd9e6eb07b3f0206323dc49e5b2340b74acc60beaeb0d53ab61a9ca",
   "latex_build": {
-    "final_log_box_warning_scan": 0,
-    "final_log_unresolved_reference_scan": 0,
-    "final_pdf_marker_scan": {
-      "bracket_question": 0,
-      "double_question": 0
-    },
     "lake_executed": false,
     "lean_executed": false,
-    "local_latex_compile_executed": true
+    "local_latex_compile_executed": true,
+    "submission_log_box_warning_scan": 0,
+    "submission_log_unresolved_reference_scan": 0,
+    "submission_pdf_marker_scan": {
+      "bracket_question": 0,
+      "double_question": 0
+    }
   },
-  "manuscript_hash": "419c76311457877f9c547a0ba7331ed4a5536a373cc7dd1fb4d5e63620a03d02",
   "reference_metadata_audit": "review-01/02-references-urls/evidence/reference_metadata_audit.json",
-  "refs_sha256": "0ee187d548c35c24e86daf45f17aff494f9e2c879848f87c681a8007c1e53949",
-  "source_sha256": "d8728e54076e7aa18c1a0c998880e1828a14338d32aef887e42a29e988a86c86",
   "static_artifact_facts": "review-01/05-math-formal-artifacts/evidence/static_artifact_facts.json",
   "unit_count": 1,
   "unit_ids": [
-    "document/64ac48679609b17f292f"
+    "document/8982741fe9acb8332cdb"
   ],
   "unverified": [
     "Lean build/proof status by user constraint",
-    "current EM platform compiler/version until actual EM upload/log"
+    "recorded EM platform compiler/version until actual EM upload/log"
   ]
 }

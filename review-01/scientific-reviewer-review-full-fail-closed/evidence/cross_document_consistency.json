@@ -1,0 +1,3938 @@
+{
+  "accepted_warn_rationale": null,
+  "check_id": "cross_document_consistency",
+  "covered_units": [
+    {
+      "unit_id": "document/8982741fe9acb8332cdb",
+      "unit_type": "document"
+    },
+    {
+      "unit_id": "section/65a8f5708432eb8aec2c",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/0be74dd0290d8b17df3d",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/4b0ee0222adfa576ad57",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/ad864231315e7a71bd5b",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/cef13e3f38a267293141",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/b18967fcdc8c9612526f",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/54e6ae0da02facf00d15",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/06295c075f0cfda6933b",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/2b2d7f50e1aa67b6978f",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/e158d2860b3429508458",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/72130e1fc0598d663ea0",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/74d784c7bb418f6ccc86",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/c769bf1848d055d399dc",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/c4ed7e59368b8ab037aa",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/21ea7927ffbf9ab1bce0",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/874d0e9b497d13fab9c4",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/916b1d68e55da74d8c45",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/98a58b4e595fb965e714",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/0db7baf7ebae87be5ced",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/3db9d01ba9278f171f38",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/40662bac956494589116",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/3fa3e20b96af9fc2bceb",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/9998d8b79d3d4fe591b8",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/94e2077e68d1df5e3018",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/4d9455066de11a2c2d4d",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/a1a6940aeed7fa8d7996",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/9006bec455d771157422",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/d833f7c003a9963378c2",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/2852baee54817cee388b",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/06315e87329cd3dad498",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/d5382bb351bb93dece5a",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/b32c60b7754adb5b6d34",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/ce8e6fc4275a88e12ac0",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "paragraph/6b87f2587b9b77f0c78a",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ff6bf126260705076a62",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/623dc6beb71e4a79800e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/fe846d0d4d34999b09dd",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9b909735f3957252dc70",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f9fe94fd97457bd17f5a",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/b9d2798c19afe9a8e79c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/cebe8e5fc32dcd24f714",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/108e449217f8b95cf61d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/59f5cdbec7316e4db37f",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/94c5513f08fd1dd2d2e8",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c8393ab829614228e675",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c1777b2f12fba56e1251",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/310c7ef9d7d288c5a94c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/18abde85dcd126f1d67c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/91ceafbd2ec80f477831",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/d18b5e5aa2148195847e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/c3d6012b4436f6978c78",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/f8aa8ebd00fa46a2c9cd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/176aab6d86275ceb8e83",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/7af220491c6ad97f9588",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b27c80d1e87bd07efc39",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d59c41d63e02ece589bb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/8045e2f819b2e47e5780",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/016383f74d9f2bb4aac3",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/3d4c1eef022d2ca1e5e0",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/e7a5ef22fe34323ffca8",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/c923b3b810ae126160f8",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/60cef3bbba9f42b28e1c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/bfd6404c30f6da0a7bf7",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/aae6736abba40be71fd6",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/498e6ab1a297495223e0",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/a1563ddbe332d069790f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/a4efef1b1dc933b93faa",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/31b281b669c45a0c8f71",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/8d5b0ed5c48771924a7c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/5060c04041cc1e71704f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/d0f6e827c8fb75e1e1d4",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/c21db9c7e1289cd433fa",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/56b9d3ece175c2f1fa12",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/4d8ab966ddaa84c41969",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/6bf4b013912ea2a5db9f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/ac8309420c99ebc4cb0a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/ca883bda77480ba24ab6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/fda4215dc74a596c7831",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/684f0646de93e387e1cc",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/4d23e65487f4dd56e9df",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/88a2e556c83956a2735f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/5739f5a37b3fbb3be397",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/4e904a9be56a43b53126",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/4cbfc4bd097b5b15e2ec",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/528b1779885a452b88ac",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/5d7eebca4f6695186450",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c2e25eecee7cdca5dd25",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b4466d7ae28547d094d7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cac6110d95fdff886691",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/030a0c1b6ce60ca79e1c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/603212606c6c7bbffce9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/2fbfd183bcb67c4446eb",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/0104c2340c68a804f1eb",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/6d7267ae4dc043ed0082",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/c6461202fc05528de884",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/803b5483a396d9f5c0e6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/a4803b6ac91e6184071c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/40169fd2627e5337c04e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/c26f722c40b1b9ca550b",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/20727cf445feb66ebfde",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d73324b5d900d6ca3d8b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/2cbc49e70f1cbcbfcaf1",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/08f3fedc3a18958a3b9a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/9b93ece251b2215d91ec",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/eb519ba145057ed788fa",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/bdf77802840ffd049b26",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/b6dec6feb639e10ab793",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ce2bad8c16eee96a99e3",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/28db731daa528c9a4db2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/2af7d35ce856be5e8bdb",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/50f21684427538af8947",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b819dce4618d1350b42d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/cda824025f6cfefcb974",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/bdfea7436ce381ebbef6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/6773779b77e18c30975a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/8a07651c0ca5ccf58a7d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/8c2f94ca506f5ad0359d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4e4946b2ea4d96934e1f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/b998d2a5772e9cdefcf1",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/556ece27decf60ea0343",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/69a6b117dc711de49e66",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/11d7be84ea37acba17cb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8ec0c1a9baddcb5f546e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/b0137578c90bfe8a0726",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/3b6c7d98fa7b8d87da48",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/13c81d4bb69fc7b4d0c9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/b6681b747f6de1b6e5c5",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/0525fc4998e6787e1f69",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/14d37353b35ece1ca132",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/193f28259d31cd43a22f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3e22659b0c0f91688c1d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/81bd6b4482730b4851e1",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/e2daad3a802f77968996",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/773ce836a30943873255",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/85b5000da49773b37c27",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/8ac39c897d6750b72c44",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/2214d73d3788e733ca5e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c1a00322a435dc2bbad9",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/28c988b97041e798a1f4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b36e05391f8aa314d4c2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/1116758ccef9d8ced7a4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ba1d0026b99e3d8361b2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2fc1aba6ac7679e82071",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/abc0202a20951c6cdf9b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/dc8516a24064c531615b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/08e145142c1a02decba0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d1894de3d31884b23cb1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/adbba9c8f4a4ee08512f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c37fb5973d92073c89ae",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f2fbbee5b1dab944030b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9e2072b28be8e6f7a23f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/874fe16f9a046dca8a8f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/847619cb98d8a8ca957b",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/da0a5e84e307809dfd7e",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/710bb1322ab5bbd32a08",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/8a17cabb704d151cb3e7",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/cea92ee7c5206cba489d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/8ab9e3dc95c048d46fa3",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/453d14dc3340200de6f9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/730fe668994848747465",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/6ee4e5e6cceb0467a357",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/5148c6325a87701bfe0d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/070c7f589548eb7568a3",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/e1dea31c465450692d2b",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/e50ee1df7d54ab0b62a0",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/d3918ce306c1955c463c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/c319a8e2293114dcc3d7",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/3e9ccebb5f57b9810a96",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/20d08c243fc46ac66f53",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/64d54cc4895b67ba7240",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c047225ff6ebe8d56aa1",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/9995339dcd4bf523a82f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3941fbcdaebe80a96e87",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4617424b4efbf1d85ad2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/df4e1f61b5d4f4241a41",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a6c9a8e9f83fd320ad07",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/00b1fa7b453e9c7d66d9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/4bc1beeab2c73c2287f1",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/afde75286259211999c4",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/98b44a0e12d7c03c630e",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/c96c6dcbe2f270dc1fa1",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/eff5d7ff6c36b26afd69",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f31cde2caea4ed15e910",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/569f9720c51634017b67",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/013d5230cd9d367857c1",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/15c23bccb20b27f1e28c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/fffc1168edc8957e01da",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/27ffe4e37b7e8da5b7a2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9f857fc60ca5bd82b116",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f698ce2b021646604832",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/f74aed7d721a73d9cb35",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/e0e21edf6dab4d9940ec",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/e805c629a77895f0bae9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/96d0f422c44735fa457d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b175dc36794e012bf524",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/e7ea0232e5dda019f2da",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/c80d83d258a11ca99d52",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/51dbcc8bfd99c4897906",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c2d76612c9edb97e5779",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/fd12029b4730a2a246a3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/b46b29dc8c29e9f0edd2",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/4c944fdd138ab20f118d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/18a81903c1e9c4e5ac1d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/93dae1aba3e330cf6153",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/de70a8a3bc461449f503",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/904f2f62fecf72cd82d4",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0d54e5546158a3be8864",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/01497651486deb71ace8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8863906fc4ef0e9786ea",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/bbe05d49fb345f12a35b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/fa81a2297acc3a6a7557",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/5f6ca73fa12e91759b16",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/dd3cd0ecde187a03f774",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/a2c9159becf845c050d6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/7cc98f797a04b524eace",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/7dacba4d114164632935",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/899249040b71712e0658",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/64034397dd1f6baecdf8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/dcf0c77c15a999e08571",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/6bb1885ebbd508a3e6b5",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/d253343520276fc2674a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/0d2cf5caa99aa39d3fcc",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/382135ae8527943d9230",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/41cbf3f5c6b9302ecfc0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/15cb9c9eee2bf95a02f8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/6ecb2b5a37e42a311adb",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/a3c71a0a12454e4bb55d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/1d1c98280cc280f93e3d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/4cbef6ea39f32f026b32",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/e14b6837b56a7f319476",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4161b1ceb13c55d036ad",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/98337da08443e2744d22",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/ff11288479be1140c6ac",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/c2ddd4df48afc67e91c8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/7e7504ff369714c6d792",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/aee01e6a9bfda23bf64e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/e114a78886ab751c786e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/6b80e67a44e33d5f0bc9",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/1c49a0c4bd8b87ad6262",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/bd914e7b1686da0b061c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a90b587475502639fd8e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/1062fa40272e0d169f7f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/31d6cb6c13b195fb873a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/0f7901dac4733efc87c2",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/14a67870eff0058810ce",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/e9241851e0b3e4808896",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/25ca5414507daa1657af",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/d14cda584e7394280a6d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/e891c9a848c3d56a7987",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/0691211f6e20bd9af613",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/de543adf26c47cba4833",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e9e5c97e42e60d4f0c1c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c73d940c50a1fa5b75e5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/a64b26f56c14a42cf85d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/cd6ff3276ede6bf0290b",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/cb428c635cbd91bcc0fb",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/9905229b4f5c66d8ed45",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/a98ea3e8fe239739d685",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/4fc2ab3a7e5318746a70",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/88e3728c1d22fcc8f132",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/238e8adb0d1332e58a7c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/eb21835e9a7a2334b0e0",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/a3e5255a22414706fb92",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/acdea9d1e803b8558a90",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/90edf623dd38dbba3517",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/f54169aa0bded68fa5cf",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/57a21c5626643f1af575",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/f980f19ad60ee5b0d887",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/2c3c73843a603d720bd2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/5c6fde7a26963945af00",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/9cd1865c55ce8a75de72",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/8493db1857bdceb3d527",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/a95870fe2c16a3550eb2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/a7ee12ebcba5c9603896",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/09ed161607f5dde11cfd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/24a5e1a6b0092ddd3225",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/43cfa80b1f57e3ba43de",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/9c37d71878d9281a4daa",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/63bf990d0a4f4ca4edc5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/bbad63737fb2412c02c7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/61ffdc580e257256d971",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/03527a6c5a095a75f9fa",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/5585ea18e720803bc096",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/ed3cba086092088d6c51",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/74a0ab8de65b6127cd4a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/2b5de19481b0fe45c3bf",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/4ac676d5d0bc98704aeb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/336f93d54874376004d3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a8f25bde0eac55e16273",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2bf1afebe0aa257fe21d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/0a7e044e6f071732696a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/380225085b5ec990ba2e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/bda3dd2327eaa29afce3",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/c44e76fad1a0edbb51f3",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/eed6f48bdc38aa1955de",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/1776eb28548af228d348",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/a652bd7529aecab6214b",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/01d9f30af5a68b54c8d7",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9e36d738ca50baf9adca",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0b4694960a6284957c0c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/66e74e4df92251b55e70",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c3bd1b5cb3d38d7985bc",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8e416358881ca4002d8d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/7ad666a3ae0817aa928f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/4ecbd9f834e6e7d4f17d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/d1e1b346bf7c01ea1b27",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/f1d6e2abbb8e2002544c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/7499e9ce2245b6c0e06a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/79bf063a31285bc9ec12",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/fd311cc366f05b351cad",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8365e72e4929a3a14ff5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/ffc07a429ad351169f04",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/2be15b230d13ea78dd5f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/5d4760ac08ad73450bc8",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/6cf9bb92bc303ab97343",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/2c7f19f1ee4944aef5c3",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/dd06bbaf9a29b0e6d9c8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/18569c6083d92d6cf196",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/1fd8dd419f5a5e6d7735",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/a6ea533cd97a1f4e6510",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/1682d1509ec0aeee343e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a466f766ceae4b4e0da9",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ebc2c8ce288e33cabfed",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/351fff9bd26a8caafb3d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/8c8a7c6301893905e464",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/8acc0a0293eea47f1341",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/2da3bb5e4e856ed5b5c6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/645509ff058d58a6c2d3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a87ac29f08c875b51bbf",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/94accfb04ca8cf856979",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/8da34b164c2a008f9064",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/cdbeab75eadd0303c9bb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d185befda01a267eec70",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/0eea69d05653a7eefbfa",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/14d5c0068b619b832363",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/590914f567bd272ab744",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8d81ad6a85eb0e147793",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e97f5fcabe68016a0a4e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/8baf58282a584bf65d75",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/572de4c02e3c9080e4f5",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/bc0f57347ead9c58c318",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/c5a06ee2d7bc401e3610",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3f22fc0ce8dd7a94c029",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a7771e1db3d3426b0ca5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/0e6c159b40009cd8c202",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f03c8ae48eb9ebe5736f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/52b3ab129241979e3f1f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/8595464b992b2d520eaa",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/b2439c265b8762857070",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/ad47d266433c057964c3",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/31dd6a997e0b1029e1ae",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/961f3ec58a186ef166e6",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/e7655ae552e64db82112",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/248980e203a01692d5c0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/60f027f24deb9a4a50fc",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/12ba75b930905796aac1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/cecf6d51ffc1d2169d75",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/576d954bc841364ebc3b",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/60da827bcafa8cc7ecf9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/538e7ea1ccda98491021",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/17610482b0c24ab28e58",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/76ce3f505956904d6980",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/0f754f1de42b96e4b0b9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/1f613cb5fb1c6e16cd73",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/149847c8deba47899833",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/4dfefad99c5f21ad65cb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/0f450da5f1a05cc8cb6d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/fe0b723bfde6f788c621",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/13442fabd260066098f0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e8b32fc1380cac0e60eb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ff77d0fc7554f445eb16",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/c0fdabcee529d6fcbdcd",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/8419c30bdbab65d86b1a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/54e382009d9a432846cf",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/95f2104f60dbf470bc89",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/2563ec9baa531cc85222",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a212f1c1d23904405c98",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/af101338bf4973fe8bfd",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/15b2be7d60aeb88ffb86",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f2abb2ff312c602737c3",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/45a04096b84bedd92a1f",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/75f882cb385f794722aa",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/890e1ad98ce7de99ce81",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/fd784d2d3ea7d251e8c5",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/4a9a39cb197c7e66f344",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/76a2f348ce9a4e0fd618",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/dba8a0a68951e81edbac",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4264342cb8f642717b40",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cdb3e6cf41b236f5f1c5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/6c6b55e5a7adfaa75fbc",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/92dbeafa244c9342d329",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/09d459fe13566e00f78d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/ae8372a2de50d183fc62",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/b932a9739cb0cec6c963",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/6c140fb6807f6a307ac5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/393a8fe234a9ad9c734d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/bb56f3f9a450cb5a8fdc",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/0333d49bd86e10dcdd69",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/d2f552adcce22ac5183a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/b585716bfa5dd0f82230",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9746dcd96d4c4c636bce",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/7d9498a874d634695668",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/cb707675859bf50c76ac",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/a9fcd4154ed1d36d3630",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/101fdcc9f630cbb8bfd8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/8dfca29bdb026a18c121",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/7cdd8f2409d25f694a91",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/d2bebbde3c2b3f38e0bd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/354b78745ef596364d23",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/b27a711de23bbb245f72",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/de5b7c38aae1da912d05",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/93d801c2008ea7b33221",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/27f3fabd96ef35e49510",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/014cc778326ad7688f3e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/3cc8be7d440c9f4dc9cb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9aa459a24ac05b70996d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/1be6b40171c2a4202afb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4d29a20fc0e72ff12ac3",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/98e9d3f4afc43c206137",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/2b7936dd6df63cba8b86",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ae63b7394783ccb6f4bd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ce3d07769b34222c63bb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4be894886313b7a319ab",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a68d09266713ae5caa41",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d31ae420c1eda9cbff71",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/dedaa96e2b8b2d4c6f87",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/98c83126563642156e02",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/0b80a698c8f6803e1989",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/42b619f09d31b1556590",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/145cec311e95d2f9329d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/6ef03eb12508fce3d36f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/9a12bcf5087700d3cfd4",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/766fb5ef4c1a3eda18c9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/8b1d41a6df562c66f7f2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/78b25d8cee2cee77d8bc",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/a8d4e364873d93f3ab66",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/54143d4c65d4982058c4",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/8951f57a97b46e21352a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9022efe7d61338d681d7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/21844976baf65e1b4802",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/3842f4621eafc8a383fd",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/cc33d6169d7737091daf",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c36a0e9d70fcec801122",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4b3cc2610d82d9adf3e4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2ee6ae1ba4483d565326",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/69bd690a3cf36b40ba15",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/eb1141eed915ce33c262",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/ec9a8aa86c66c7c5f322",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/53f07a100265a0aa9da9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/7a2be17c7ef17a0f1fe8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2499d6925c15dff583d1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/967ed7467263922c739d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4d2c67569594fc81b202",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a505abeea263c75fe61e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/909ea8c878f85d05443d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/6e9da7dd54dbc2477c6e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/fafe9abbedd0c6fac5aa",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/4a0753ccf99422cc70bc",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/1327b787e9d87460ac00",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/1dd8fd67cf2a2573f59b",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/834d4394f6299418da8f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/cb6fe78b2cfe49ee5ddb",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/cf2b6134c14a7f7b7ab6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/9e8ba8b8da67a03fab28",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/e940ee35d51542a88a6a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/948cb4283c84a9750afd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2c00a93074b2d6542c53",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/dd127a7d8270f3f8e542",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/de7c816c077273378625",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/986c5a1c0b43af7cf5ca",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/558db2b1b9ab264a1263",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/45f0317705cb880e3a95",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/a0b90f903b9be87f4680",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/d13e87aeee07604fc5b6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/7ec4d1c1aeff1d8469a5",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/fb4fd67da05e47bdbe8f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/fc7b9465ab1ae9c1cf2b",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/c7ef7e14090a15a8ad0f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/88f213a902796f5cb1b7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/d879474a524af5bfcb22",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/c206cbcab96d5d1344a6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/eec0a6e3c8dd4549a361",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d44fd84886eebb2e9051",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/58a007fe82958d071ea3",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/7d4a098c193f55ebc61f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/0bea4be0290c64e3779e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a727110575c5fa8864cc",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9d4fd58419c7259baea0",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a98f5f066d95f36b1d79",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/376e267670b291893e92",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a22091ee400a1e2b5736",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c3f46c4e085b1254c53a",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4e8f2163239bb6ff0395",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/6018d69ae5607a8b2262",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/807ca52cd4dc7ba9d3a5",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/eff1c10be546deebea18",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/2366c167bb9e51471b25",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/60f5f1ab627e98dc9fe5",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/5827a385da26f5f2db24",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/3cb3aec5a2910ef3de13",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/bf15149644f1cda6071e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/652b29d24aafc79030fe",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/7a387503fde1662c9589",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/bc29597dfefb21e475a4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/86b2012ad1ea0116adc9",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/f507a67efd4b89d4f893",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/930c9de66b7897331e47",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/c8dc5d28d226b997c772",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4cc5635c35a0f59c83a5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f150e863b7680a279c63",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/a54e98c584bccb2dc75c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/6d6a18ba94b50debfa78",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/c1f51e97102b3170bbca",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/746dab4c5b84d6dfa8ba",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/c079692984f8fbc1bdaa",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/3519a0776bb87dfba70b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/6c24bd8ea7d71c16a472",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e88ac474446e9c5c0a5c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/595f0b7b187111caf58e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/341eba50b3588adc49b9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/57b11cb424ae5926627c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/f344dda9ffb36085e177",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/922957ce11e1d3b816cb",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/290ce07e0d138d653bab",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c07af2fbf3f39891aab9",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4c1f3bd5516a102e3050",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3be0d113c87666b322c0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f5c65978b995fb3d3d72",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/dc6408b5080b6a3e709d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/178cc3d1139162ef6d89",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/11ce70dde256d48a62c7",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/96a0b7d3595059eee623",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/ecefa08f2f1d0b69ab5f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/5e612c5ef8477820de2a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9f94be65c9a238144cde",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/bf43e11e0c2520540b1b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/bd6256930617344d59fb",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/556b5031686e1208b472",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/fae1b892fe0220ff4aa0",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/b5ee9ef965cd7c1f03ee",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b2fac55b6521b25c32de",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/391b05ba31d8964e1072",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b2ed5ead4c2629685499",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cbca69160f155a8ae07f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/683a8cda642f9cc2e709",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4785566a6b08cc5d0887",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/a4dc513a06f356d63249",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/221dd75dad1251924bb5",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/1450c34110639b5e55ef",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/7c39e5f8746cbb631753",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/5e8a0eb31b0fcdf6ce69",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/92ecdd1996318fac5ec7",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/09afbffbc52c9bc733d3",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/4a387d21c213996ba196",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/51260e1de5a229a52888",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/7be07b78a6dd837a392b",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/1ae7ccf01c366e123b32",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/43b0039ee0f023dff898",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cd2afc8a34d7f9b3a2a2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a9e9e4fccb24803fafc7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/795d9066778e2ed2ac8e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/80740da0afd280a49563",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/7f3748d5319ab501aa53",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/495fabc3cc6e242a8044",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/0be4e92e52af2ce4fe69",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/48ecb17cbd31431c7af2",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/acc29bc554aa3648a507",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/8ac9d2e890648dbe828c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c19b936287fd4b1ebbc3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/af30fcfb9a6a72c4fca3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a34009317e97aaae45a7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/bfee9b4717668e289afc",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/3f6d528a8c41e6415d45",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/b15d1e594bd358eef8e0",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/043984375edd181d87dd",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/5a5de9986ed65deb16a4",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/5284a446d27098e846f6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/e1f242199ac5dadf59fb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/613ba2c29433592e9e3e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/d57e90b99ea7c13c4ebe",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/36917603e4449235ac9c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/4866d2f4fbb4f04009ea",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/47fae83e8857ba79baf7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/6979f71607cf4c701788",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/3391c08ae596ded59bca",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/9d6b5afdc2c3b49f0083",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/7752bdecda598dac992d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/50799b4faec7ee501982",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8265d6c7db3548528fb8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/04d7e740863717646a36",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/ca019a895a0eccf4ebe2",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/40a86bf081f39653ff6b",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/038c421c9a71e070c76e",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/f5260d24d3379680d6bb",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/dc976a7fab693f8afd92",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/da9b0b4ad95d85224f67",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/924e39453bc4fdd7f31d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4a613feeadcb92025e48",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/62a20105f69b5e16d0f4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/0bea0b60e6bca456b228",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/0147a46c6a80d8ac1802",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/6e9e30c330015033a59e",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/1a5edc1c50df26f78f84",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/c6dfec6e8a4f584e111c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/0eae92a8dccf2239bcb4",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/c8737815b5461248200e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c67b6b30d29cd7cb914a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a6cb6ec08812212b93b1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c800cd44b60fcfaa4526",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/b933c2ab3586ee88c02d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/521e94cdef5d03bd40e5",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/3711c08cac88b1b64499",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/8748f2a61d1e762f7f7a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/6d5e4a1c7cd2fc4df22c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0723bbdcddbb9699cfc2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/8a59504188f5d7b19d36",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/6e5501eb3611491b7308",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/18466e17a22b330543ae",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/648243e7b65ee97b8313",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/544bf15928c17df6fbff",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f437c65636db2bea0d27",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/319f01db88b2feaad35b",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/39e728377961b2571b17",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/9bfd4c4387ded55b2ac4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/13b60c1fa7e58e4ebd40",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/5ecd27e0edc1abdb29fe",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/df2f0c4b14251a9a1fea",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/b449149d63ff6ce1d8d0",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/ca90a4b65ac2afd7848a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/8ce095afd647a01bd19f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/80c7b3c2a4b2fba759c6",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/bd4a66b03fafc0cee1b4",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/88ba6b1c467793f97c40",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/d15dc8c39c8c34c8e31c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/bc21f7e6162f434d37cd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/56bb28731f03b58a3bbf",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/da06af311e19e3d98a41",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ca076c79b7a7bb9d251d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8e868b6d3e59730d9a82",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/085848c8c896cb8cb31f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/1a3185232906272c9d99",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/588b466fbe9c8c7d07d5",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/6f254a8fbb15dcf64df8",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/1a22600540473a268042",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/4428a3dcaa33b501ebac",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/d511b794a7a4967f4f5d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/63c0116e84289626f46e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a2fc30eec816c6624ab2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/7236bec0f64388cfb1b5",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/17f68095cd59ff18fa82",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/422f4993a5291582590b",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/fcf72b1a6d022c71675d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9c1aae500ed0baac1604",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8cdbe85ca1b49610ba1e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f3b2a913c7de441f700f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ee11e04b94191c228216",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/5f721a6de8861cefe860",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/eea19730b1e29cc5cacb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/320f06664bdcd65f682c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/403a5e1437035592ecd1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/826e0ae592ce1a148196",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/ba13ee812fe5df2d2315",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/10155b74cd7138c74bc6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/d4d8db098e4343521709",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/19ae2ac5308144a4d5e0",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/a7cc2e86a9453ca31259",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/dc9899afcba484ffd09d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/5ccae73bdf2922b60b23",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/f67d26f965f874fb898e",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/c8e63ac43802d8b98de5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/50ac76b3c0f6411c227b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c61ef91fb0bcab9bbabc",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/62d5ee3fcecddaced092",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/9f08f398e2f8a1259e4d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/80603d1feacffcb35bd9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/8d5c719fea81196fbf23",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/d92459ee1477e0005f88",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/4b8bb0de83e528868a23",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b142b4820798836a4785",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ee312fc532608fe06918",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/79fcd3cb309ad2eb0910",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/403db993913db9c482bb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/9d9e08bd82f85072f984",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/ea08e3cb6e3ffc872fb1",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/8050469d840d98bcf934",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/c63eafb1c2f3f14ff20d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/a9c3886f900d8cfae2d6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/54b21cbb8798c35d2e3a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f55bbf9ffd5cd1f6d51e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/6777d342a0a497c98bd4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/5c2bd192efbfb6e93ea9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/f0f2770d7473642fade4",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/9d40e17b89593b92f080",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/860ed86c5c9561fe7592",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/64ba36a2f460e9bada93",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a5b57aadd44421948052",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a98935e23fa37c4c73a1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/198290ba477cf09167d8",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/e2770488d95600c33431",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/ba24d6da6c15118b8e66",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/4ee1f080288f9cbc986a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/cb781263003ddb557ae4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/53c0bed191ab7ec951df",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/ba134b7997d7505cb57a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/8841c334843de62420ae",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/7a74fada6ba0b677c4e6",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/de767805c0327dee5dc4",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c7a9c9f131b6d7e10d97",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ec3fe1f9b98b699a44e4",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/85e634ed93846d2eec67",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/92e1e49c0ff1accbcf84",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c062c8ef6b28136ff92d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/cede588a4711e2128dc2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/bfdfafc83da2edb44599",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0a73e01f769e6eadf040",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f78fc746105c3d488a63",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f3cd28a5965443ae391f",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/3f73d76d7499744269dd",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/44b4e1c5f9a87a25a629",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/de58d16188c76fc02ad4",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0d153cb2812b4425bc67",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f30090c153b575d48442",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/d71e23792a7f9b3b6010",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/143f1c6e5e07f9db9a2d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/12944c1c4e31e0a162d3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/1089badc616e4032e6f8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/817c6271d39f6ce22fe9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/5266681b4f2ea322304e",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/eee7f7ec7c842d201b53",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/761516a710606cab186b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9bed8f73235a8f95ba74",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/21908a53ba2fd3b13550",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/9a918084a5de9a8bce07",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/7087d37e9bd8b756981a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/2e1cf3fb049a73f50b1e",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/3f5f3b2f19fa448a946a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/91dc4646dc28205cdc74",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4f7a4a58a5f20ca44747",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/beaca6742e9b5bbca66a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/b1785818947d700e5eba",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/1e3ba2ee1b2f5a1e703c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/0bb542debba0d55dd6cb",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/723e1e220394e66b7ebe",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/0fe1f1d69becec921ea9",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/a257a6bf515a9ccb23ee",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/1d8473a1458678ed7929",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/16b354e67d6613632c2a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/10dc550a4d111c5ed3df",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/675da77d41a2d75b4f43",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/891f8d04cc04368a460b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2597ee58b5ee714faf0d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/12f756902b400ad5c4bb",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/fee1a5118b43f963a5ef",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/17928afcdb11239c2963",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/4dee20d5e21c61bfa322",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/72847f80b53292b6acdc",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/717cd0bccc9a652babd4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/68cafaaa92c2f9a0302f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/92cc6deb4f903445331e",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/642fcfc31fcd6924363f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/7edc6b68af4a61fb7ee1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c8d7cf2f1a0831ad7fe3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/175e1cff142d70256829",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/648c646831c6aeef8f67",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/15776e30d689bb0ea7f4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/004803c65fb76f431119",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/65a8174cbd9e3693fce9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/aaf95f369aac9bc284e1",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/812bac826b5b92d2f160",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a2934400f5462d720d8e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c186686bec9755dc5096",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/323728acde5b369af342",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/0cc95b3adb2789bfb6d2",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/aff3061d00765ec9c108",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/274daa0ec2f2ce712d67",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cef819c79e14941f0e55",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/9aadd904acd8b4466e26",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/148ba366624d23c3b9a6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/a81721110130e08b7413",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/88275755ec16909775b3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/325da60366f6dc9d6e6d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/1a57587a32e7fc220f8e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/647a7bd7fa1708ea4c88",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/3ecf19c3b522fafe89b1",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/52b83b5615a74f6dc943",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/619e75302d981f6d76a1",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/566ef53c8fac1ebd5523",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cab61601b6e66e145d6f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/38840103d226f5adc0f1",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/a02719b83ee6f53e216d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/3ee23006b55ada2dbd69",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a7cf502971f583e13e73",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/1467dbfdb498bcb562b6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/edfd5d4ec8a9bc298fff",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/992f60bb5a2459cefcf2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e3077b7556284013e827",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c11325ec31ad62c3ea36",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/5fe726041426bd647b2a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/480e14e2778eaec6a31a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/169c6739cbdf864feae6",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/2c7c3ac68661d2d2c986",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/76986e8a8765cedcacb8",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/a015160899a61fdf3da1",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/053853747f99d9a68d6d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/b6a844bd8baf8d462ef9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/46f6015dd84e2b132c48",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/ecdc805430fc185b029d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f95045d1254d31ba94a5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4e9c2b0bf10aa6515f69",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/0c0888718649e604d37c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/821ec6b687b16015f687",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/b5d286a6baaa4cec825e",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/36917559a1a9594ebabf",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/f20c325f285656e65539",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/f1144c5b6fd5ccd66a8a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a9367323564c77ac7e1e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cbd6e712b13f72936c40",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/352bdecabd52df5141b7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/14e00bc7d05b5878c06c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/9e8ef105581ea6bbaeb6",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/fe90fc5d97db7012f296",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/601cc031fa595b929c7c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/ca9dd17c3f67f6aac41c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/efa76a4061dd96454b7e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/390b3f588e848234c1f3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/813ee2177624721a363b",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/2dc9e914d416f15821c9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/e8937b58a6670d5db77c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/19ff691ea13bb546872d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/92b263454afdb1f64647",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/6ad2e91f41b0df4b4637",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c4ec327eca565d2242f7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/317c67d5f9ba39e73062",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/45d3ec71cbd1ccf03238",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/960dd919a23c4cc30536",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/aa6e25fda11e72cd5908",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e7fb2548d70456273103",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f7a555b36a20de0facaa",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/2302658f29fd7f640082",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/bccc02b2bdb6483be778",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/8d089470da60b6961814",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/c39a7e224d7d0440f91d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/1807e75cc6804240f47a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/0b64bac84a5c5bfbadd5",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/8757e2c8d9100b5a2636",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/fb77f71fb4f8a0747f69",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/5f08d90bf01d7af64b69",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/0c38f150291cc4223244",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/2f843f8a64ba54c7e513",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ddf03ac690202db97426",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ed9f5338a128648d64b2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/46f05b599ddeccd9fc57",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/e1f7c7e4d093b3fbdf63",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/1ff11086f9da95df79dd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9788f0e15e120326e811",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/b507752345501c307854",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/401ed07c13b45ccd3004",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/4c280dee6e6851e3abeb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/357924bbc31db660f382",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/82f8d036a92c2ffa8ec9",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/6bb18ebd35e28a0213bd",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/e83df8ef8cc6cd3f79ed",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/cffc9975d67a1619749d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/f641c2e86e72d90b3a6f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e9ecc67f6da9c2ba8f51",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3658ecef892c371cc453",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b9ce63168af4255bec25",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/75f1aa587e9a5b371768",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/1289e79e9e00691088fd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/deb818c0061fa2a48844",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/9b68c88edebe2cbcb645",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/b9784742de328a9a9cc0",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/e9e1155c19c9d81a709d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/aa4f9f31cc023d61a8ac",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/a8a4ea5ea12ebec9beb9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/2d665f96f6ff22c06a19",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/d49e043c9854b359c657",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/665aaed31d5f879abb57",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/09bb831edfe2d7cd290d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/41c8c671e88454737591",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/5441266db1016e07f646",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/f5955983cc2351b57133",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d34e1d7e013e72bab606",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/d57bd10460ad8f765d11",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/33808088ee9033bf0a1a",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/a67edec959a187f435a2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/506d9a006fc9a4a3a176",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/5b4f574262b0717084b2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/10c8a2e3d27cc23bf415",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/18e2864f21b29795bbed",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/db9b6b09ee99f1cc5ee2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/fe8cd2a97b95ff9a4b04",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/a84d61a5889b02d70ecc",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e310d375f57f84bfe1d6",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b87fe182c89d048eb778",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/3b09951ee200702d099c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/f71a527962524e0fc7e7",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/4599f008dee530e2c57e",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/9aaf2908a255b7d70d17",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/78555deb390b35125345",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c1114c0536d2dfdb611f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c653bb07f4933b64e668",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/017a7fa0388bdef8203e",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/919e9545f1397b802ee9",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/0885a19be26013a85851",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/8dd442e915867bd90678",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/b9601399573c03b93e47",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/880a94ae117e3f26eccf",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2d3daff3ed52a07f2966",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/98c253d7873653f23390",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/b66e6730675bd844e617",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/79a521d55b8e39c8f70b",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/15afa69bbed3cac2a93f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/e603a2b10400ed4619ec",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/c2e784f83a746e8a50e9",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/986f207cbc3b176f96ac",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/aad5e3a319563ef57963",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/4da1c1c7cd15fda6a4cb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/c8016de507597de2c0ac",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/bccc54b1176decccf8ee",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/d6a40a71601aadb2b2ec",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/7cd45697d84b4fa75d8c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/5a33bad6fbf7ee32a4a2",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/2f8ab3aa0d993d563b78",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/fe8d5f8a20fe1dae906a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/037381356d62243a4d50",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "paragraph/b1e6fad7ceb8975e55e5",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/da12fefc369e32a95207",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/333635bbd8a5a859c993",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/79e71a057eb2ce49dadb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/fe075999b374e517f6dd",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/fff788ae30889f72cce3",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/38166643103705169643",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ced994d20e63835bfeba",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/e085dc1dc0b2d4e3c711",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/8946666ba4226d910de9",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4b920b41d3a169ed73f1",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/32d985937babca3fe83c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/6cecc7151ba9b00df88a",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/00e678d4787e4bfa4784",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3d6d8cb00eeda5535ba7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9639ef007483e51ce7f0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3f6004e9d4434f9fa283",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/cf155045da2e54103eee",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/aaf8162245564887b04c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/26804c928c4d4cef1498",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/36edc6aaa094e68f73d2",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/9a73e64cf954f3ec03a0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9a1f45f620786cf278ad",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/1c56fb372033243aea79",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/3c855fd5938d45f5b022",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/b59912ae99993cc41833",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/7a2991c27cf067368708",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/3694ebfcf929783832cc",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/64c7a5876318a217302c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/b6b22b57c9e832e836ae",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d1a0933a13bcada136b3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/95e540147f2608d380e5",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "claim/4eb435222a8705d4ebde",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/7ae640ddb2b93fe0af9e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/024a291caa0f03fc4e6d",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/2cbf77f7981ddeb14f7d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/a1cc4a27099b6f606e3f",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/339a6c4feabd6c743f46",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/2c2037f55c1bda45267c",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/e44f71c84ccd05303ba1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/af6d63e5f10b5f681850",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/2b1d1b43163971fde499",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/f5e44c0e59ce3ef2e632",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/704516f9add4412ceb7d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/b841276c4b1667503502",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/3c0e97545c8b94b0f865",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/cca989bab198745319ef",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/167cf235babb3b043281",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/99564d149650813c7baa",
+      "unit_type": "claim"
+    },
+    {
+      "unit_id": "sentence/d56cf2407af998f05fcc",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "claim/d7bbf78cd077e14ccf71",
+      "unit_type": "claim"
+    }
+  ],
+  "findings": [
+    "Paper artifact table numeric claims match recorded static source facts.",
+    "All cited bibliography keys resolve to refs.bib entries; no missing label references were found."
+  ],
+  "generated_at": "2026-05-28T02:25:59Z",
+  "inputs": {
+    "canonical_check_results": "review-01/check-results/aaca-full-fail-closed-check-results.jsonl",
+    "manuscript": "paper/main.tex",
+    "static_record": "review-01/05-math-formal-artifacts/evidence/static_artifact_facts.json",
+    "venue_profile": "review-01/00-global/aaca-venue-profile.yaml"
+  },
+  "status_supported_for_canonical_rows": "PASS",
+  "unit_count": 978,
+  "unit_type_counts": {
+    "claim": 400,
+    "document": 1,
+    "paragraph": 144,
+    "section": 33,
+    "sentence": 400
+  }
+}

@@ -1,0 +1,2198 @@
+{
+  "accepted_warn_rationale": "Accepted WARN: local citation and overlap-sensitive source inventory is present, but no external plagiarism service was available in this workflow.",
+  "check_id": "plagiarism_overlap_audit",
+  "covered_units": [
+    {
+      "unit_id": "paragraph/6b87f2587b9b77f0c78a",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ff6bf126260705076a62",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/623dc6beb71e4a79800e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/fe846d0d4d34999b09dd",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9b909735f3957252dc70",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f9fe94fd97457bd17f5a",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/b9d2798c19afe9a8e79c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/cebe8e5fc32dcd24f714",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/108e449217f8b95cf61d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/59f5cdbec7316e4db37f",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/94c5513f08fd1dd2d2e8",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c8393ab829614228e675",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c1777b2f12fba56e1251",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/310c7ef9d7d288c5a94c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/18abde85dcd126f1d67c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/91ceafbd2ec80f477831",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/d18b5e5aa2148195847e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f8aa8ebd00fa46a2c9cd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/176aab6d86275ceb8e83",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/7af220491c6ad97f9588",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b27c80d1e87bd07efc39",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d59c41d63e02ece589bb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/60cef3bbba9f42b28e1c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/aae6736abba40be71fd6",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a1563ddbe332d069790f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/31b281b669c45a0c8f71",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/5060c04041cc1e71704f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c21db9c7e1289cd433fa",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4d8ab966ddaa84c41969",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ac8309420c99ebc4cb0a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/fda4215dc74a596c7831",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4d23e65487f4dd56e9df",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/5739f5a37b3fbb3be397",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4cbfc4bd097b5b15e2ec",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/528b1779885a452b88ac",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/5d7eebca4f6695186450",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c2e25eecee7cdca5dd25",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b4466d7ae28547d094d7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cac6110d95fdff886691",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/030a0c1b6ce60ca79e1c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/40169fd2627e5337c04e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/20727cf445feb66ebfde",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d73324b5d900d6ca3d8b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/9b93ece251b2215d91ec",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/eb519ba145057ed788fa",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/bdf77802840ffd049b26",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/b6dec6feb639e10ab793",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ce2bad8c16eee96a99e3",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/28db731daa528c9a4db2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/50f21684427538af8947",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b819dce4618d1350b42d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/6773779b77e18c30975a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8c2f94ca506f5ad0359d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4e4946b2ea4d96934e1f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/69a6b117dc711de49e66",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/11d7be84ea37acba17cb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8ec0c1a9baddcb5f546e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/b6681b747f6de1b6e5c5",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/0525fc4998e6787e1f69",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/14d37353b35ece1ca132",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/193f28259d31cd43a22f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3e22659b0c0f91688c1d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/8ac39c897d6750b72c44",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/2214d73d3788e733ca5e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c1a00322a435dc2bbad9",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/28c988b97041e798a1f4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b36e05391f8aa314d4c2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/1116758ccef9d8ced7a4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ba1d0026b99e3d8361b2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2fc1aba6ac7679e82071",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/abc0202a20951c6cdf9b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/dc8516a24064c531615b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/08e145142c1a02decba0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d1894de3d31884b23cb1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/adbba9c8f4a4ee08512f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c37fb5973d92073c89ae",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f2fbbee5b1dab944030b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9e2072b28be8e6f7a23f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/c319a8e2293114dcc3d7",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/3e9ccebb5f57b9810a96",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/20d08c243fc46ac66f53",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/64d54cc4895b67ba7240",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c047225ff6ebe8d56aa1",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/9995339dcd4bf523a82f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3941fbcdaebe80a96e87",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4617424b4efbf1d85ad2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/df4e1f61b5d4f4241a41",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a6c9a8e9f83fd320ad07",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/eff5d7ff6c36b26afd69",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f31cde2caea4ed15e910",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/15c23bccb20b27f1e28c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/27ffe4e37b7e8da5b7a2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9f857fc60ca5bd82b116",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f698ce2b021646604832",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/96d0f422c44735fa457d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b175dc36794e012bf524",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/51dbcc8bfd99c4897906",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c2d76612c9edb97e5779",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/fd12029b4730a2a246a3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4c944fdd138ab20f118d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/18a81903c1e9c4e5ac1d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/904f2f62fecf72cd82d4",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0d54e5546158a3be8864",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/01497651486deb71ace8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8863906fc4ef0e9786ea",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/bbe05d49fb345f12a35b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/fa81a2297acc3a6a7557",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/7dacba4d114164632935",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/899249040b71712e0658",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/64034397dd1f6baecdf8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/0d2cf5caa99aa39d3fcc",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/382135ae8527943d9230",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/41cbf3f5c6b9302ecfc0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/15cb9c9eee2bf95a02f8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/1d1c98280cc280f93e3d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/e14b6837b56a7f319476",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4161b1ceb13c55d036ad",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/98337da08443e2744d22",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c2ddd4df48afc67e91c8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/aee01e6a9bfda23bf64e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/e114a78886ab751c786e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/6b80e67a44e33d5f0bc9",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/1c49a0c4bd8b87ad6262",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/bd914e7b1686da0b061c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a90b587475502639fd8e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/1062fa40272e0d169f7f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/31d6cb6c13b195fb873a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d14cda584e7394280a6d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/0691211f6e20bd9af613",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/de543adf26c47cba4833",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e9e5c97e42e60d4f0c1c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c73d940c50a1fa5b75e5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a98ea3e8fe239739d685",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/88e3728c1d22fcc8f132",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/238e8adb0d1332e58a7c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/a3e5255a22414706fb92",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/acdea9d1e803b8558a90",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/90edf623dd38dbba3517",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/f980f19ad60ee5b0d887",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/2c3c73843a603d720bd2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/5c6fde7a26963945af00",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/a95870fe2c16a3550eb2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/a7ee12ebcba5c9603896",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/09ed161607f5dde11cfd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/9c37d71878d9281a4daa",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/63bf990d0a4f4ca4edc5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/bbad63737fb2412c02c7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/61ffdc580e257256d971",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/03527a6c5a095a75f9fa",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/4ac676d5d0bc98704aeb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/336f93d54874376004d3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a8f25bde0eac55e16273",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2bf1afebe0aa257fe21d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/0a7e044e6f071732696a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/380225085b5ec990ba2e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/01d9f30af5a68b54c8d7",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9e36d738ca50baf9adca",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0b4694960a6284957c0c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/66e74e4df92251b55e70",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c3bd1b5cb3d38d7985bc",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8e416358881ca4002d8d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f1d6e2abbb8e2002544c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/7499e9ce2245b6c0e06a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/79bf063a31285bc9ec12",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/fd311cc366f05b351cad",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8365e72e4929a3a14ff5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/dd06bbaf9a29b0e6d9c8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/18569c6083d92d6cf196",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/1682d1509ec0aeee343e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a466f766ceae4b4e0da9",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ebc2c8ce288e33cabfed",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/351fff9bd26a8caafb3d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/8c8a7c6301893905e464",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/8acc0a0293eea47f1341",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/645509ff058d58a6c2d3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a87ac29f08c875b51bbf",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cdbeab75eadd0303c9bb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d185befda01a267eec70",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/590914f567bd272ab744",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8d81ad6a85eb0e147793",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e97f5fcabe68016a0a4e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c5a06ee2d7bc401e3610",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3f22fc0ce8dd7a94c029",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a7771e1db3d3426b0ca5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/0e6c159b40009cd8c202",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f03c8ae48eb9ebe5736f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/961f3ec58a186ef166e6",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/e7655ae552e64db82112",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/248980e203a01692d5c0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/60f027f24deb9a4a50fc",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/12ba75b930905796aac1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/538e7ea1ccda98491021",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/17610482b0c24ab28e58",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/1f613cb5fb1c6e16cd73",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/149847c8deba47899833",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/4dfefad99c5f21ad65cb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/fe0b723bfde6f788c621",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/13442fabd260066098f0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e8b32fc1380cac0e60eb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ff77d0fc7554f445eb16",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/2563ec9baa531cc85222",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a212f1c1d23904405c98",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/af101338bf4973fe8bfd",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/15b2be7d60aeb88ffb86",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f2abb2ff312c602737c3",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/45a04096b84bedd92a1f",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/75f882cb385f794722aa",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/890e1ad98ce7de99ce81",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/76a2f348ce9a4e0fd618",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/dba8a0a68951e81edbac",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4264342cb8f642717b40",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cdb3e6cf41b236f5f1c5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b932a9739cb0cec6c963",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/6c140fb6807f6a307ac5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/393a8fe234a9ad9c734d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b585716bfa5dd0f82230",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9746dcd96d4c4c636bce",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a9fcd4154ed1d36d3630",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/101fdcc9f630cbb8bfd8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d2bebbde3c2b3f38e0bd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/354b78745ef596364d23",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/93d801c2008ea7b33221",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/27f3fabd96ef35e49510",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/014cc778326ad7688f3e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/3cc8be7d440c9f4dc9cb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9aa459a24ac05b70996d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/1be6b40171c2a4202afb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4d29a20fc0e72ff12ac3",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/98e9d3f4afc43c206137",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/2b7936dd6df63cba8b86",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ae63b7394783ccb6f4bd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ce3d07769b34222c63bb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4be894886313b7a319ab",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a68d09266713ae5caa41",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d31ae420c1eda9cbff71",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/dedaa96e2b8b2d4c6f87",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8b1d41a6df562c66f7f2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/78b25d8cee2cee77d8bc",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8951f57a97b46e21352a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9022efe7d61338d681d7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cc33d6169d7737091daf",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c36a0e9d70fcec801122",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4b3cc2610d82d9adf3e4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2ee6ae1ba4483d565326",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/7a2be17c7ef17a0f1fe8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2499d6925c15dff583d1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/967ed7467263922c739d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4d2c67569594fc81b202",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a505abeea263c75fe61e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/909ea8c878f85d05443d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/6e9da7dd54dbc2477c6e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/fafe9abbedd0c6fac5aa",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/948cb4283c84a9750afd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2c00a93074b2d6542c53",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/dd127a7d8270f3f8e542",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/de7c816c077273378625",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/986c5a1c0b43af7cf5ca",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/558db2b1b9ab264a1263",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c7ef7e14090a15a8ad0f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/88f213a902796f5cb1b7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/eec0a6e3c8dd4549a361",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d44fd84886eebb2e9051",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/0bea4be0290c64e3779e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a727110575c5fa8864cc",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9d4fd58419c7259baea0",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a98f5f066d95f36b1d79",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/376e267670b291893e92",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a22091ee400a1e2b5736",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c3f46c4e085b1254c53a",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4e8f2163239bb6ff0395",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/6018d69ae5607a8b2262",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/807ca52cd4dc7ba9d3a5",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/eff1c10be546deebea18",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/2366c167bb9e51471b25",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/60f5f1ab627e98dc9fe5",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/5827a385da26f5f2db24",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/3cb3aec5a2910ef3de13",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/bf15149644f1cda6071e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/652b29d24aafc79030fe",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/bc29597dfefb21e475a4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/86b2012ad1ea0116adc9",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c8dc5d28d226b997c772",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4cc5635c35a0f59c83a5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f150e863b7680a279c63",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/746dab4c5b84d6dfa8ba",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3519a0776bb87dfba70b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/6c24bd8ea7d71c16a472",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e88ac474446e9c5c0a5c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/595f0b7b187111caf58e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/290ce07e0d138d653bab",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c07af2fbf3f39891aab9",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4c1f3bd5516a102e3050",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3be0d113c87666b322c0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f5c65978b995fb3d3d72",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/5e612c5ef8477820de2a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9f94be65c9a238144cde",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/bf43e11e0c2520540b1b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b5ee9ef965cd7c1f03ee",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b2fac55b6521b25c32de",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/391b05ba31d8964e1072",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b2ed5ead4c2629685499",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cbca69160f155a8ae07f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/683a8cda642f9cc2e709",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4785566a6b08cc5d0887",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4a387d21c213996ba196",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/51260e1de5a229a52888",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/43b0039ee0f023dff898",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cd2afc8a34d7f9b3a2a2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a9e9e4fccb24803fafc7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/795d9066778e2ed2ac8e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/80740da0afd280a49563",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8ac9d2e890648dbe828c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c19b936287fd4b1ebbc3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/af30fcfb9a6a72c4fca3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a34009317e97aaae45a7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/bfee9b4717668e289afc",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e1f242199ac5dadf59fb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/613ba2c29433592e9e3e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4866d2f4fbb4f04009ea",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/47fae83e8857ba79baf7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9d6b5afdc2c3b49f0083",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/7752bdecda598dac992d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/50799b4faec7ee501982",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8265d6c7db3548528fb8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/04d7e740863717646a36",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/da9b0b4ad95d85224f67",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/924e39453bc4fdd7f31d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4a613feeadcb92025e48",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/62a20105f69b5e16d0f4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/0bea0b60e6bca456b228",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c8737815b5461248200e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c67b6b30d29cd7cb914a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a6cb6ec08812212b93b1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c800cd44b60fcfaa4526",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/6d5e4a1c7cd2fc4df22c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0723bbdcddbb9699cfc2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/8a59504188f5d7b19d36",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/6e5501eb3611491b7308",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/18466e17a22b330543ae",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/648243e7b65ee97b8313",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/544bf15928c17df6fbff",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f437c65636db2bea0d27",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/319f01db88b2feaad35b",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/39e728377961b2571b17",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/9bfd4c4387ded55b2ac4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/13b60c1fa7e58e4ebd40",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/5ecd27e0edc1abdb29fe",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8ce095afd647a01bd19f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/80c7b3c2a4b2fba759c6",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d15dc8c39c8c34c8e31c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/bc21f7e6162f434d37cd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/56bb28731f03b58a3bbf",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/da06af311e19e3d98a41",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ca076c79b7a7bb9d251d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8e868b6d3e59730d9a82",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d511b794a7a4967f4f5d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/63c0116e84289626f46e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a2fc30eec816c6624ab2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/fcf72b1a6d022c71675d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9c1aae500ed0baac1604",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/8cdbe85ca1b49610ba1e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f3b2a913c7de441f700f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ee11e04b94191c228216",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/5f721a6de8861cefe860",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/eea19730b1e29cc5cacb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/320f06664bdcd65f682c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/403a5e1437035592ecd1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c8e63ac43802d8b98de5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/50ac76b3c0f6411c227b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c61ef91fb0bcab9bbabc",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/62d5ee3fcecddaced092",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4b8bb0de83e528868a23",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b142b4820798836a4785",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ee312fc532608fe06918",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/79fcd3cb309ad2eb0910",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/403db993913db9c482bb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/54b21cbb8798c35d2e3a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f55bbf9ffd5cd1f6d51e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/6777d342a0a497c98bd4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/860ed86c5c9561fe7592",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/64ba36a2f460e9bada93",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a5b57aadd44421948052",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a98935e23fa37c4c73a1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cb781263003ddb557ae4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/53c0bed191ab7ec951df",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/7a74fada6ba0b677c4e6",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/de767805c0327dee5dc4",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c7a9c9f131b6d7e10d97",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ec3fe1f9b98b699a44e4",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/85e634ed93846d2eec67",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/92e1e49c0ff1accbcf84",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c062c8ef6b28136ff92d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/cede588a4711e2128dc2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/bfdfafc83da2edb44599",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0a73e01f769e6eadf040",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f78fc746105c3d488a63",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f3cd28a5965443ae391f",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/3f73d76d7499744269dd",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/44b4e1c5f9a87a25a629",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/de58d16188c76fc02ad4",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0d153cb2812b4425bc67",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f30090c153b575d48442",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/d71e23792a7f9b3b6010",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/143f1c6e5e07f9db9a2d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/12944c1c4e31e0a162d3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/1089badc616e4032e6f8",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/eee7f7ec7c842d201b53",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/761516a710606cab186b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9bed8f73235a8f95ba74",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/21908a53ba2fd3b13550",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/91dc4646dc28205cdc74",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4f7a4a58a5f20ca44747",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/1e3ba2ee1b2f5a1e703c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/723e1e220394e66b7ebe",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/0fe1f1d69becec921ea9",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/16b354e67d6613632c2a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/10dc550a4d111c5ed3df",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/675da77d41a2d75b4f43",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/891f8d04cc04368a460b",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2597ee58b5ee714faf0d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/717cd0bccc9a652babd4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/68cafaaa92c2f9a0302f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/7edc6b68af4a61fb7ee1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c8d7cf2f1a0831ad7fe3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/15776e30d689bb0ea7f4",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/004803c65fb76f431119",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/812bac826b5b92d2f160",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a2934400f5462d720d8e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c186686bec9755dc5096",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/274daa0ec2f2ce712d67",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cef819c79e14941f0e55",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a81721110130e08b7413",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/88275755ec16909775b3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/325da60366f6dc9d6e6d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/1a57587a32e7fc220f8e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/566ef53c8fac1ebd5523",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cab61601b6e66e145d6f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3ee23006b55ada2dbd69",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a7cf502971f583e13e73",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/992f60bb5a2459cefcf2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e3077b7556284013e827",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c11325ec31ad62c3ea36",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/5fe726041426bd647b2a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/480e14e2778eaec6a31a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/169c6739cbdf864feae6",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ecdc805430fc185b029d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f95045d1254d31ba94a5",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4e9c2b0bf10aa6515f69",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/0c0888718649e604d37c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f1144c5b6fd5ccd66a8a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a9367323564c77ac7e1e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/cbd6e712b13f72936c40",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/352bdecabd52df5141b7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/ca9dd17c3f67f6aac41c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/efa76a4061dd96454b7e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/390b3f588e848234c1f3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/19ff691ea13bb546872d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/92b263454afdb1f64647",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/6ad2e91f41b0df4b4637",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c4ec327eca565d2242f7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/317c67d5f9ba39e73062",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/45d3ec71cbd1ccf03238",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/960dd919a23c4cc30536",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/aa6e25fda11e72cd5908",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e7fb2548d70456273103",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f7a555b36a20de0facaa",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/2f843f8a64ba54c7e513",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ddf03ac690202db97426",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ed9f5338a128648d64b2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/46f05b599ddeccd9fc57",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/e1f7c7e4d093b3fbdf63",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/1ff11086f9da95df79dd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9788f0e15e120326e811",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/4c280dee6e6851e3abeb",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/357924bbc31db660f382",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/82f8d036a92c2ffa8ec9",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f641c2e86e72d90b3a6f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e9ecc67f6da9c2ba8f51",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3658ecef892c371cc453",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b9ce63168af4255bec25",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/75f1aa587e9a5b371768",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/1289e79e9e00691088fd",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/deb818c0061fa2a48844",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/665aaed31d5f879abb57",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/09bb831edfe2d7cd290d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/f5955983cc2351b57133",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d34e1d7e013e72bab606",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/a67edec959a187f435a2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/506d9a006fc9a4a3a176",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/5b4f574262b0717084b2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/10c8a2e3d27cc23bf415",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/18e2864f21b29795bbed",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/db9b6b09ee99f1cc5ee2",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/a84d61a5889b02d70ecc",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e310d375f57f84bfe1d6",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b87fe182c89d048eb778",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9aaf2908a255b7d70d17",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/78555deb390b35125345",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c1114c0536d2dfdb611f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/c653bb07f4933b64e668",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b9601399573c03b93e47",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/880a94ae117e3f26eccf",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2d3daff3ed52a07f2966",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/15afa69bbed3cac2a93f",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/c2e784f83a746e8a50e9",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/986f207cbc3b176f96ac",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/4da1c1c7cd15fda6a4cb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/c8016de507597de2c0ac",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/d6a40a71601aadb2b2ec",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/7cd45697d84b4fa75d8c",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/2f8ab3aa0d993d563b78",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/fe8d5f8a20fe1dae906a",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "paragraph/b1e6fad7ceb8975e55e5",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/da12fefc369e32a95207",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/333635bbd8a5a859c993",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/79e71a057eb2ce49dadb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/fe075999b374e517f6dd",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/fff788ae30889f72cce3",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/38166643103705169643",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ced994d20e63835bfeba",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/e085dc1dc0b2d4e3c711",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/8946666ba4226d910de9",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4b920b41d3a169ed73f1",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/32d985937babca3fe83c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/6cecc7151ba9b00df88a",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "sentence/00e678d4787e4bfa4784",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3d6d8cb00eeda5535ba7",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9639ef007483e51ce7f0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3f6004e9d4434f9fa283",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9a73e64cf954f3ec03a0",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/9a1f45f620786cf278ad",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b59912ae99993cc41833",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/7a2991c27cf067368708",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/b6b22b57c9e832e836ae",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d1a0933a13bcada136b3",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/7ae640ddb2b93fe0af9e",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2cbf77f7981ddeb14f7d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/339a6c4feabd6c743f46",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/e44f71c84ccd05303ba1",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/2b1d1b43163971fde499",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/704516f9add4412ceb7d",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/3c0e97545c8b94b0f865",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/167cf235babb3b043281",
+      "unit_type": "sentence"
+    },
+    {
+      "unit_id": "sentence/d56cf2407af998f05fcc",
+      "unit_type": "sentence"
+    }
+  ],
+  "findings": [
+    "Local bibliography/quote/source inventory is present; no external plagiarism-service result is claimed."
+  ],
+  "generated_at": "2026-05-28T02:25:59Z",
+  "inputs": {
+    "canonical_check_results": "review-01/check-results/aaca-full-fail-closed-check-results.jsonl",
+    "manuscript": "paper/main.tex",
+    "static_record": "review-01/05-math-formal-artifacts/evidence/static_artifact_facts.json",
+    "venue_profile": "review-01/00-global/aaca-venue-profile.yaml"
+  },
+  "status_supported_for_canonical_rows": "WARN",
+  "unit_count": 544,
+  "unit_type_counts": {
+    "paragraph": 144,
+    "sentence": 400
+  }
+}

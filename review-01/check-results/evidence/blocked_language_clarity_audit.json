@@ -6,9 +6,8 @@
     "lean_build_forbidden": true,
     "lean_verification_not_run": true
   },
-  "manuscript_hash": "2c19578adae68acb268d0a570eb0fe0391df0c12e41891535a64867f60390f35",
   "next_required_action": "Run this check with real evidence before claiming publication readiness.",
-  "reason": "This check was not executed with real evidence in the current workflow; it remains fail-closed rather than a fabricated pass.",
+  "reason": "This check was not executed with real evidence in the recorded workflow; it remains fail-closed rather than a fabricated pass.",
   "status": "BLOCKED",
   "unit_count": 539,
   "unit_ids": [

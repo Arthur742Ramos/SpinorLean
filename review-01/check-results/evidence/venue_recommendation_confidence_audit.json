@@ -1,0 +1,42 @@
+{
+  "accepted_warn_rationale": "Accepted WARN: recommendation confidence is based on generated reviewer outputs and disclosed limitations; submission editorial judgment remains external to the local workflow.",
+  "check_id": "venue_recommendation_confidence_audit",
+  "covered_units": [
+    {
+      "unit_id": "document/8982741fe9acb8332cdb",
+      "unit_type": "document"
+    },
+    {
+      "unit_id": "venue-compliance-requirement/2dd6d6d8a32e6c2e24cb",
+      "unit_type": "venue/compliance requirement"
+    },
+    {
+      "unit_id": "venue-compliance-requirement/aa9efd4dbf98b78dd18b",
+      "unit_type": "venue/compliance requirement"
+    },
+    {
+      "unit_id": "venue-compliance-requirement/c461ecd1b8b66c6a0b88",
+      "unit_type": "venue/compliance requirement"
+    },
+    {
+      "unit_id": "venue-compliance-requirement/47f9171f826d9e54c4d7",
+      "unit_type": "venue/compliance requirement"
+    }
+  ],
+  "findings": [
+    "Recommendation confidence is tied to generated reviewer artifacts and this submission status ledger."
+  ],
+  "generated_at": "2026-05-28T02:25:59Z",
+  "inputs": {
+    "canonical_check_results": "review-01/check-results/aaca-full-fail-closed-check-results.jsonl",
+    "manuscript": "paper/main.tex",
+    "static_record": "review-01/05-math-formal-artifacts/evidence/static_artifact_facts.json",
+    "venue_profile": "review-01/00-global/aaca-venue-profile.yaml"
+  },
+  "status_supported_for_canonical_rows": "WARN",
+  "unit_count": 5,
+  "unit_type_counts": {
+    "document": 1,
+    "venue/compliance requirement": 4
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "accepted_warn_rationale": "Accepted WARN: all non-Lean runnable gates are evidence-backed PASS/WARN, with Lean execution and external-confirmation limitations explicitly disclosed.",
+  "check_id": "submission_readiness_gate",
+  "covered_units": [
+    {
+      "unit_id": "document/8982741fe9acb8332cdb",
+      "unit_type": "document"
+    }
+  ],
+  "findings": [
+    "The reviewer ledger has check coverage for every required unit; residual limitations are explicit WARN categories."
+  ],
+  "generated_at": "2026-05-28T02:25:59Z",
+  "inputs": {
+    "canonical_check_results": "review-01/check-results/aaca-full-fail-closed-check-results.jsonl",
+    "manuscript": "paper/main.tex",
+    "static_record": "review-01/05-math-formal-artifacts/evidence/static_artifact_facts.json",
+    "venue_profile": "review-01/00-global/aaca-venue-profile.yaml"
+  },
+  "status_supported_for_canonical_rows": "WARN",
+  "unit_count": 1,
+  "unit_type_counts": {
+    "document": 1
+  }
+}

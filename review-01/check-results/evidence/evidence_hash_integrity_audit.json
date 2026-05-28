@@ -1,0 +1,174 @@
+{
+  "accepted_warn_rationale": null,
+  "check_id": "evidence_hash_integrity_audit",
+  "covered_units": [
+    {
+      "source_location": "review-01/scientific-reviewer-review-full-fail-closed/snapshots/manuscript-4eb92f8e2c5b.tex:1-1574",
+      "unit_id": "document/8982741fe9acb8332cdb",
+      "unit_type": "document"
+    }
+  ],
+  "current_manuscript_hash": "4eb92f8e2c5b69aa00559e0cbd04fd3ae275079f40e1525529a7a98c70947a69",
+  "findings": [
+    "Current manuscript hash 4eb92f8e2c5b69aa00559e0cbd04fd3ae275079f40e1525529a7a98c70947a69 is recorded in this provenance report.",
+    "Current source hash c0c9761cf43d3c675e282fe5082277fe397d1cb9139d8d29ec30267d2ff2d6ae is recorded in this provenance report.",
+    "Current PDF hash 2af90923f65d3ac1cd18032f579051ea5fd8c9b68beb4c500134f87bb16fafce is recorded in this provenance report.",
+    "Current manuscript line count 1574 is recorded in this provenance report."
+  ],
+  "generated_at": "2026-05-28T02:25:59Z",
+  "inputs": {
+    "canonical_check_results": "review-01/check-results/aaca-full-fail-closed-check-results.jsonl",
+    "manuscript": "paper/main.tex",
+    "static_snapshot": "review-01/05-math-formal-artifacts/evidence/static_artifact_facts.json",
+    "venue_profile": "review-01/00-global/aaca-venue-profile.yaml"
+  },
+  "raw_source_sha256": "c0c9761cf43d3c675e282fe5082277fe397d1cb9139d8d29ec30267d2ff2d6ae",
+  "reports": [
+    {
+      "claimed_values": [
+        {
+          "currentness": "current",
+          "subject": "manuscript",
+          "value": "4eb92f8e2c5b69aa00559e0cbd04fd3ae275079f40e1525529a7a98c70947a69",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "source",
+          "value": "c0c9761cf43d3c675e282fe5082277fe397d1cb9139d8d29ec30267d2ff2d6ae",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "tex",
+          "value": "c0c9761cf43d3c675e282fe5082277fe397d1cb9139d8d29ec30267d2ff2d6ae",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "pdf",
+          "value": "2af90923f65d3ac1cd18032f579051ea5fd8c9b68beb4c500134f87bb16fafce",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "artifact",
+          "value": "2af90923f65d3ac1cd18032f579051ea5fd8c9b68beb4c500134f87bb16fafce",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "manuscript",
+          "value": 1574,
+          "value_type": "line_count"
+        }
+      ],
+      "currentness": "current provenance report",
+      "path": "evidence/evidence_hash_integrity_audit.json",
+      "recomputed_values": [
+        {
+          "currentness": "current",
+          "subject": "manuscript",
+          "value": "4eb92f8e2c5b69aa00559e0cbd04fd3ae275079f40e1525529a7a98c70947a69",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "source",
+          "value": "c0c9761cf43d3c675e282fe5082277fe397d1cb9139d8d29ec30267d2ff2d6ae",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "tex",
+          "value": "c0c9761cf43d3c675e282fe5082277fe397d1cb9139d8d29ec30267d2ff2d6ae",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "pdf",
+          "value": "2af90923f65d3ac1cd18032f579051ea5fd8c9b68beb4c500134f87bb16fafce",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "artifact",
+          "value": "2af90923f65d3ac1cd18032f579051ea5fd8c9b68beb4c500134f87bb16fafce",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "manuscript",
+          "value": 1574,
+          "value_type": "line_count"
+        }
+      ],
+      "role": "evidence_hash_integrity",
+      "stale_or_mismatched": []
+    },
+    {
+      "claimed_values": [
+        {
+          "currentness": "current",
+          "subject": "manuscript",
+          "value": "4eb92f8e2c5b69aa00559e0cbd04fd3ae275079f40e1525529a7a98c70947a69",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "source",
+          "value": "c0c9761cf43d3c675e282fe5082277fe397d1cb9139d8d29ec30267d2ff2d6ae",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "tex",
+          "value": "c0c9761cf43d3c675e282fe5082277fe397d1cb9139d8d29ec30267d2ff2d6ae",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "pdf",
+          "value": "2af90923f65d3ac1cd18032f579051ea5fd8c9b68beb4c500134f87bb16fafce",
+          "value_type": "hash"
+        }
+      ],
+      "currentness": "current final provenance companion",
+      "path": "evidence/final_provenance_gate.json",
+      "recomputed_values": [
+        {
+          "currentness": "current",
+          "subject": "manuscript",
+          "value": "4eb92f8e2c5b69aa00559e0cbd04fd3ae275079f40e1525529a7a98c70947a69",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "source",
+          "value": "c0c9761cf43d3c675e282fe5082277fe397d1cb9139d8d29ec30267d2ff2d6ae",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "tex",
+          "value": "c0c9761cf43d3c675e282fe5082277fe397d1cb9139d8d29ec30267d2ff2d6ae",
+          "value_type": "hash"
+        },
+        {
+          "currentness": "current",
+          "subject": "pdf",
+          "value": "2af90923f65d3ac1cd18032f579051ea5fd8c9b68beb4c500134f87bb16fafce",
+          "value_type": "hash"
+        }
+      ],
+      "role": "provenance_report",
+      "stale_or_mismatched": []
+    }
+  ],
+  "status_supported_for_canonical_rows": "PASS",
+  "unit_count": 1,
+  "unit_type_counts": {
+    "document": 1
+  },
+  "verdict": "PASS"
+}

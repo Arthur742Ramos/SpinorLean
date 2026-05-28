@@ -1,0 +1,759 @@
+{
+  "accepted_warn_rationale": "Accepted WARN: proof-engineering lessons are grounded in named source modules and theorem-index anchors; proof checking remains in the Lean-execution lane.",
+  "check_id": "proof_engineering_lesson_value_audit",
+  "covered_units": [
+    {
+      "unit_id": "document/8982741fe9acb8332cdb",
+      "unit_type": "document"
+    },
+    {
+      "unit_id": "section/65a8f5708432eb8aec2c",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/0be74dd0290d8b17df3d",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/4b0ee0222adfa576ad57",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/ad864231315e7a71bd5b",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/cef13e3f38a267293141",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/b18967fcdc8c9612526f",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/54e6ae0da02facf00d15",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/06295c075f0cfda6933b",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/2b2d7f50e1aa67b6978f",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/e158d2860b3429508458",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/72130e1fc0598d663ea0",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/74d784c7bb418f6ccc86",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/c769bf1848d055d399dc",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/c4ed7e59368b8ab037aa",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/21ea7927ffbf9ab1bce0",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/874d0e9b497d13fab9c4",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/916b1d68e55da74d8c45",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/98a58b4e595fb965e714",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/0db7baf7ebae87be5ced",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/3db9d01ba9278f171f38",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/40662bac956494589116",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/3fa3e20b96af9fc2bceb",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/9998d8b79d3d4fe591b8",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/94e2077e68d1df5e3018",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/4d9455066de11a2c2d4d",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/a1a6940aeed7fa8d7996",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/9006bec455d771157422",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/d833f7c003a9963378c2",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/2852baee54817cee388b",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/06315e87329cd3dad498",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/d5382bb351bb93dece5a",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/b32c60b7754adb5b6d34",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "section/ce8e6fc4275a88e12ac0",
+      "unit_type": "section"
+    },
+    {
+      "unit_id": "paragraph/6b87f2587b9b77f0c78a",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ff6bf126260705076a62",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/623dc6beb71e4a79800e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/fe846d0d4d34999b09dd",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9b909735f3957252dc70",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f9fe94fd97457bd17f5a",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/b9d2798c19afe9a8e79c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/cebe8e5fc32dcd24f714",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/108e449217f8b95cf61d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/59f5cdbec7316e4db37f",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/94c5513f08fd1dd2d2e8",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c8393ab829614228e675",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c1777b2f12fba56e1251",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/310c7ef9d7d288c5a94c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/18abde85dcd126f1d67c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/91ceafbd2ec80f477831",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9b93ece251b2215d91ec",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/eb519ba145057ed788fa",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/bdf77802840ffd049b26",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/b6dec6feb639e10ab793",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ce2bad8c16eee96a99e3",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/b6681b747f6de1b6e5c5",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/8ac39c897d6750b72c44",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c319a8e2293114dcc3d7",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/3e9ccebb5f57b9810a96",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/20d08c243fc46ac66f53",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/64d54cc4895b67ba7240",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c047225ff6ebe8d56aa1",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/51dbcc8bfd99c4897906",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c2d76612c9edb97e5779",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/904f2f62fecf72cd82d4",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0d54e5546158a3be8864",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0d2cf5caa99aa39d3fcc",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/382135ae8527943d9230",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/e14b6837b56a7f319476",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4161b1ceb13c55d036ad",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/aee01e6a9bfda23bf64e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/e114a78886ab751c786e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/6b80e67a44e33d5f0bc9",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/1c49a0c4bd8b87ad6262",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/88e3728c1d22fcc8f132",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a3e5255a22414706fb92",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f980f19ad60ee5b0d887",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a95870fe2c16a3550eb2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9c37d71878d9281a4daa",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4ac676d5d0bc98704aeb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/01d9f30af5a68b54c8d7",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9e36d738ca50baf9adca",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0b4694960a6284957c0c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/1682d1509ec0aeee343e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a466f766ceae4b4e0da9",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ebc2c8ce288e33cabfed",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/351fff9bd26a8caafb3d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/8c8a7c6301893905e464",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/961f3ec58a186ef166e6",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/e7655ae552e64db82112",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/1f613cb5fb1c6e16cd73",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/149847c8deba47899833",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/2563ec9baa531cc85222",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a212f1c1d23904405c98",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/af101338bf4973fe8bfd",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/15b2be7d60aeb88ffb86",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f2abb2ff312c602737c3",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/45a04096b84bedd92a1f",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/93d801c2008ea7b33221",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/27f3fabd96ef35e49510",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/014cc778326ad7688f3e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/3cc8be7d440c9f4dc9cb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9aa459a24ac05b70996d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/1be6b40171c2a4202afb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4d29a20fc0e72ff12ac3",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/98e9d3f4afc43c206137",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0bea4be0290c64e3779e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a727110575c5fa8864cc",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/9d4fd58419c7259baea0",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a98f5f066d95f36b1d79",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/376e267670b291893e92",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a22091ee400a1e2b5736",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c3f46c4e085b1254c53a",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4e8f2163239bb6ff0395",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/6018d69ae5607a8b2262",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/807ca52cd4dc7ba9d3a5",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/eff1c10be546deebea18",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/2366c167bb9e51471b25",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/60f5f1ab627e98dc9fe5",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/5827a385da26f5f2db24",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/3cb3aec5a2910ef3de13",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/bf15149644f1cda6071e",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/6d5e4a1c7cd2fc4df22c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0723bbdcddbb9699cfc2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/8a59504188f5d7b19d36",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/6e5501eb3611491b7308",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/18466e17a22b330543ae",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/648243e7b65ee97b8313",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/544bf15928c17df6fbff",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f437c65636db2bea0d27",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/319f01db88b2feaad35b",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/39e728377961b2571b17",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/7a74fada6ba0b677c4e6",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/de767805c0327dee5dc4",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c7a9c9f131b6d7e10d97",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ec3fe1f9b98b699a44e4",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/85e634ed93846d2eec67",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/92e1e49c0ff1accbcf84",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c062c8ef6b28136ff92d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/cede588a4711e2128dc2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/bfdfafc83da2edb44599",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0a73e01f769e6eadf040",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f78fc746105c3d488a63",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f3cd28a5965443ae391f",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/3f73d76d7499744269dd",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/44b4e1c5f9a87a25a629",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/de58d16188c76fc02ad4",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/0d153cb2812b4425bc67",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/f30090c153b575d48442",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/d71e23792a7f9b3b6010",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/143f1c6e5e07f9db9a2d",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/2f843f8a64ba54c7e513",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ddf03ac690202db97426",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ed9f5338a128648d64b2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/46f05b599ddeccd9fc57",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/e1f7c7e4d093b3fbdf63",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/a67edec959a187f435a2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/506d9a006fc9a4a3a176",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/5b4f574262b0717084b2",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/10c8a2e3d27cc23bf415",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/18e2864f21b29795bbed",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/c2e784f83a746e8a50e9",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4da1c1c7cd15fda6a4cb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/d6a40a71601aadb2b2ec",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/2f8ab3aa0d993d563b78",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/b1e6fad7ceb8975e55e5",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/da12fefc369e32a95207",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/333635bbd8a5a859c993",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/79e71a057eb2ce49dadb",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/fe075999b374e517f6dd",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/fff788ae30889f72cce3",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/38166643103705169643",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/ced994d20e63835bfeba",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/e085dc1dc0b2d4e3c711",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/8946666ba4226d910de9",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/4b920b41d3a169ed73f1",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/32d985937babca3fe83c",
+      "unit_type": "paragraph"
+    },
+    {
+      "unit_id": "paragraph/6cecc7151ba9b00df88a",
+      "unit_type": "paragraph"
+    }
+  ],
+  "findings": [
+    "Lessons are anchored to named modules and theorem-index rows rather than generic proof-style claims."
+  ],
+  "generated_at": "2026-05-28T02:25:59Z",
+  "inputs": {
+    "canonical_check_results": "review-01/check-results/aaca-full-fail-closed-check-results.jsonl",
+    "manuscript": "paper/main.tex",
+    "static_record": "review-01/05-math-formal-artifacts/evidence/static_artifact_facts.json",
+    "venue_profile": "review-01/00-global/aaca-venue-profile.yaml"
+  },
+  "lessons": [
+    {
+      "adequate": true,
+      "artifact_anchor": "THEOREM_INDEX.md chosen spinor package row; Spinor.Presentation and Spinor.ExteriorModel modules",
+      "lesson": "Keep hyperbolic/Witt presentations as first-class data so the chosen spinor model and transported actions remain stable across covering/image arguments.",
+      "location": "paper/main.tex:318-330; Spinor/Presentation.lean",
+      "structural_value": "Reusable API boundary: downstream proofs import the chosen-model object rather than reopening basis-level constructions."
+    },
+    {
+      "adequate": true,
+      "artifact_anchor": "THEOREM_INDEX.md rows for transvection unit, chosen-line square, square-det Levi",
+      "lesson": "Separate explicit root/torus Clifford-unit constructions from the abstract spin-to-isometry interface.",
+      "location": "paper/main.tex:306-316; Spinor/OrthogonalAction.lean",
+      "structural_value": "Makes field-sensitive image and square-class obstruction statements theorem-level and inspectable."
+    },
+    {
+      "adequate": true,
+      "artifact_anchor": "Spinor.lean imports Spinor.TheoremIndex; THEOREM_INDEX.md verification surface",
+      "lesson": "A theorem-index module imported by Spinor.lean is a drift detector for paper-facing declarations.",
+      "location": "THEOREM_INDEX.md:26-37; Spinor/TheoremIndex.lean",
+      "structural_value": "Build catches renamed or removed declarations supporting the manuscript theorem surface."
+    }
+  ],
+  "status_supported_for_canonical_rows": "WARN",
+  "unit_count": 178,
+  "unit_type_counts": {
+    "document": 1,
+    "paragraph": 144,
+    "section": 33
+  },
+  "weak_lessons": []
+}

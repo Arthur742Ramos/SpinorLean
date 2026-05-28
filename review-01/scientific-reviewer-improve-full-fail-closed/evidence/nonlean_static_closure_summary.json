@@ -1,0 +1,51 @@
+{
+  "evidence_files_written": [
+    "evidence/adversarial_model_review.json",
+    "evidence/artifact_inventory_exhaustiveness.json",
+    "evidence/artifact_script_scope_audit.json",
+    "evidence/author_metadata_correctness_audit.json",
+    "evidence/claim_density_coverage_audit.json",
+    "evidence/claim_strength_word_audit.json",
+    "evidence/completeness_vs_correctness_audit.json",
+    "evidence/contribution_hierarchy_audit.json",
+    "evidence/cross_document_consistency.json",
+    "evidence/define_before_use_enforcement.json",
+    "evidence/definition_presentation_audit.json",
+    "evidence/edit_regression_detection.json",
+    "evidence/evidence_hash_integrity_audit.json",
+    "evidence/factual_hallucination_audit.json",
+    "evidence/submission_provenance_gate.json",
+    "evidence/submission_readiness_gate.json",
+    "evidence/headline_claim_provenance_ledger.json",
+    "evidence/imperative_instruction_testing.json",
+    "evidence/inter_round_fix_verification.json",
+    "evidence/mathematical_equivalence_direction_audit.json",
+    "evidence/mathematical_formula_audit.json",
+    "evidence/methodology_reproducibility_gate.json",
+    "evidence/motivating_example_audit.json",
+    "evidence/plagiarism_overlap_audit.json",
+    "evidence/prior_art_threat_model_audit.json",
+    "evidence/proof_assistant_reference_verification.json",
+    "evidence/proof_engineering_lesson_value_audit.json",
+    "evidence/reviewer_work_proof.json",
+    "evidence/scope_limitations_future_work_audit.json",
+    "evidence/venue_audience_positioning_audit.json",
+    "evidence/venue_exemplar_audit.json",
+    "evidence/venue_recommendation_confidence_audit.json"
+  ],
+  "generated_at": "2026-05-28T02:25:59Z",
+  "ledger_status_counts_after_update": {
+    "BLOCKED": 1,
+    "PASS": 11681,
+    "WARN": 16830
+  },
+  "left_for_submission_convergence_rows": 1,
+  "source_bundle": {
+    "copied_to": [
+      "review-01/scientific-reviewer-review-full-fail-closed/source-bundle/spinorlean-aaca-source.zip",
+      "review-01/scientific-reviewer-improve-full-fail-closed/source-bundle/spinorlean-aaca-source.zip"
+    ],
+    "path": "review-01/check-results/evidence/source-bundle/spinorlean-aaca-source.zip"
+  },
+  "updated_blocked_rows_excluding_strategic_convergence": 21579
+}
