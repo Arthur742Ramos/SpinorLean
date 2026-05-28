@@ -240,7 +240,7 @@ Implemented so far:
   `splitCliffordAction_eq_units_smul_exteriorMap_of_spinSpecialOrthogonalRepresentation_eq`, and
   packages explicit transvection Clifford units, chosen-line square-scaling lifts, and the
   square-determinant Levi factorization/lift, determinant-square necessity theorem, and exact
-  finite-basis split-Levi spin-image iff API used by the paper; the same theorem surface now
+  finite-basis split-Levi spin-image criterion used by the paper; the same theorem surface now
   exposes the determinant square-class homomorphisms
   `linearEquivDetSquareClassHom` and `dualProdLeviDetSquareClassHom`; both are surjective onto
   the square-class quotient once a basis line is chosen, and their kernels are exactly the
@@ -353,8 +353,8 @@ Explicit scope boundaries for this algebraic paper:
   through `Cl⁺(0,8)` and `Cl⁺(8,0)`, and the explicit `Cl(2,2)` / `Cl⁺(2,2)`
   split entries
 - a full all-orthogonal-group image classification beyond the packaged split-rank kernel,
-  non-factorization, projective descent, exact split-line iff criterion, exact finite-basis
-  split-Levi spin-image iff theorem, and onto split-Levi determinant square-class quotient
+  non-factorization, projective descent, exact split-line criterion, exact finite-basis
+  split-Levi spin-image theorem, and onto split-Levi determinant square-class quotient
   character / quotient isomorphism with its split-Levi spinor-norm-facing wrappers and the
   global Clifford-level vector-product norm formula with product-order invariance, repeated-pair
   square-class cancellation, and duplicated-product/subproduct square-class triviality, including

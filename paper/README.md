@@ -38,7 +38,7 @@ instructions, and a pointer to the companion theorem index.
 The formal result boundary is explicit: the manuscript covers the
 chosen exterior-model spinor construction, split-rank kernel/non-descent,
 Levi-projective action, square-determinant Levi lifts, the determinant-square
-necessity theorem, the exact finite-basis split-Levi spin-image iff criterion,
+necessity theorem, the exact finite-basis split-Levi spin-image criterion,
 the onto determinant square-class characters with their kernel theorems in
 linear coordinates and on the canonical split Levi, the resulting quotient
 isomorphisms modulo the corresponding spin-image subgroups to the square-class
