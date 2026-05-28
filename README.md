@@ -1,12 +1,15 @@
 # SpinorLean
 
-First-ever formalization of spinor representations from Clifford algebras in Lean 4 / Mathlib.
+A Lean 4 / Mathlib formalization of exterior-model spinor representations from Clifford algebras.
 
 ## What This Is
 
-The **spinor representation** is one of the most important constructions in mathematics and physics — it's how the Spin group acts on "square roots of geometry." Despite Clifford algebras and Spin groups already existing in Mathlib, nobody has formalized the actual spinor module that connects them.
+The project develops a chosen exterior-model spinor layer connecting Mathlib's
+Clifford-algebra and spin-group infrastructure.
 
-This project fills that gap.
+It packages hyperbolic and split-Witt presentation data, transported Clifford
+and spin actions, and the field-sensitive image theorems used in the
+accompanying paper.
 
 ## Structure
 
@@ -40,7 +43,7 @@ SpinorLean/
 │   ├── Cl78PositiveEven.lean -- Positive Cl⁺(7,0) and Cl⁺(8,0) even Bott entries
 │   ├── TheoremIndex.lean -- Machine-checked paper theorem surface
 │   └── OddClassification.lean -- Classification pieces over the odd split form
-├── paper/                  -- Submission-ready paper sources (main.tex, refs.bib, README.md)
+├── paper/                  -- Paper sources (main.tex, refs.bib, README.md)
 ├── scripts/                -- Reproducibility/verification scripts
 ├── ROADMAP.md
 ├── AGENTS.md
@@ -113,7 +116,7 @@ Implemented so far:
   layer as `Spinor.WittPresentation.ofIsCompl` and `Spinor.WittPresentation.canonical`
 - the hyperbolic factor sitting inside the orthogonal complement of the residual term is now exposed
   as `HyperbolicPresentation.wittFactorOfIsCompl` and `HyperbolicPresentation.canonicalWittFactor`,
-  so the existing chosen-model Clifford/spin APIs apply directly to that factor too
+  so the existing chosen exterior-model Clifford/spin APIs apply directly to that factor too
 - when the split isometry is given specifically as `Q ≃ dualProd K Q.wittSubspace`, the canonical
   Witt model now uses that same first-class presentation API and inherits the corresponding
   Clifford/spin module and action structures directly
@@ -127,7 +130,7 @@ Implemented so far:
   maximal totally isotropic
 - the doubled canonical split presentation is also exposed as a reusable
   `HyperbolicPresentation (Q ⊕ (-Q))`
-- this yields a canonical chosen-model Clifford action, canonical module and spin-group action
+- this yields a canonical chosen exterior-model Clifford action, canonical module and spin-group action
   structures, spin representation, and even/odd half-spin spaces for `Q ⊕ (-Q)`, with
   dimensions `2 ^ dim(V)` and `2 ^ (dim(V) - 1)` in positive rank
 - in that explicit hyperbolic case, the chosen Witt model now satisfies the expected dimension
@@ -144,14 +147,14 @@ Implemented so far:
   reusable non-factorization criterion for the covering-map story whenever a nontrivial scalar spin
   element is available; in particular, if `Q` represents `-1` and `-1 ≠ 1`, the spin
   representation provably cannot factor through the ambient isometry representation, and this is now
-  packaged on the canonical chosen-model API as a positive split-rank non-factorization theorem
+  packaged on the canonical chosen exterior-model API as a positive split-rank non-factorization theorem
 - any kernel element is now proved to act trivially on the whole Clifford algebra by conjugation,
   hence to commute with every Clifford element
 - over domains, the scalar part of the kernel is exactly `±1`, and in the finite-dimensional
-  hyperbolic/split setting the chosen-model equivalence `Cl(Q) ≃ End(⋀W)` now forces every kernel
-  element to be scalar; hence on the canonical split-rank chosen-model API the ambient
+  hyperbolic/split setting the chosen exterior-model equivalence `Cl(Q) ≃ End(⋀W)` now forces every kernel
+  element to be scalar; hence on the canonical split-rank exterior-model API the ambient
   spin-to-isometry kernel is proved to be exactly `{1, -1}`
-- in positive split rank, the full chosen-model spin representation and the nonzero half-spin
+- in positive split rank, the full chosen exterior-model spin representation and the nonzero half-spin
   representations are now proved not to factor through the ambient isometry representation, while
   their induced projective actions are packaged as image-subgroup actions on submodules
 - the split-line spin image is now identified exactly with the square-scaling subgroup in
@@ -163,7 +166,7 @@ Implemented so far:
   explicit even/odd exterior summands `⋀^even W` and `⋀^odd W`
 - in the split model, `splitCliffordAction : Cl(W* × W, dualProd) → End(⋀W)` is now proved
   surjective and injective by explicit basis projectors / matrix units
-- through `HyperbolicPresentation`, `wittPresentation`, and `splitWittPresentation`, a chosen-model
+- through `HyperbolicPresentation`, `wittPresentation`, and `splitWittPresentation`, a chosen exterior-model
   positive/negative chiral API on `⋀W` identified with those even/odd summands, carrying the
   corresponding even-Clifford and restricted spin representations, and inheriting the transported
   simplicity / inequivalence statements under those positive/negative names
@@ -171,21 +174,21 @@ Implemented so far:
   top-level aliases `splitSpinorModule`, `positiveHalfSpinorModule`, and `negativeHalfSpinorModule`,
   together with their canonical Clifford / spin actions and the corresponding simplicity /
   inequivalence results
-- through those same presentation APIs, the transported chosen-model Clifford action on `⋀W` is
+- through those same presentation APIs, the transported chosen exterior-model Clifford action on `⋀W` is
   now proved faithful in the explicit hyperbolic, Witt, and split-Witt settings
-- in the explicit hyperbolic case, that chosen-model Clifford action is now packaged as an algebra
+- in the explicit hyperbolic case, that chosen exterior-model Clifford action is now packaged as an algebra
   equivalence `Cl(Q) ≃ End(⋀W)` and hence as a concrete matrix-algebra model; the same
   endomorphism-algebra equivalence is exposed through the Witt and split-Witt presentation APIs
 - in split rank, the canonical Witt-model Clifford algebra is now packaged as a full matrix algebra
   `Cl(Q) ≃ Mat_(2^(dim V / 2))(K)` through `splitWittCliffordEquivMatrix`
 - in the split model, the full Clifford module `⋀W` is now simple, and that simplicity is
-  transported to the explicit hyperbolic, Witt, and split-Witt chosen-model presentations
+  transported to the explicit hyperbolic, Witt, and split-Witt chosen exterior-model presentations
 - in the split model, the chosen even half `⋀^even W` is simple under the even Clifford algebra,
   and in positive split rank the same is true for `⋀^odd W`; this half-spin simplicity is also
-  transported to the explicit hyperbolic, Witt, and split-Witt chosen-model presentations
+  transported to the explicit hyperbolic, Witt, and split-Witt chosen exterior-model presentations
 - the chosen even and odd halves are now also proved inequivalent as modules over the even
   Clifford algebra in the split model, and that inequivalence is transported to the explicit
-  hyperbolic, Witt, and split-Witt chosen-model presentations
+  hyperbolic, Witt, and split-Witt chosen exterior-model presentations
 - the even Clifford algebra itself is now packaged on those chosen half-spin modules as
   `Cl⁺(Q) ≃ End(⋀^even W) × End(⋀^odd W)` in the explicit hyperbolic case, with Witt and
   split-Witt wrappers and, in positive split rank, a concrete product-of-matrices form of size
@@ -276,7 +279,7 @@ Implemented so far:
   `units_square_surjective_of_isAlgClosed` specializes this to full split-line double-cover and
   finite-basis split-Levi lift/image corollaries
 
-- the ambient chiral identification is now closed: the canonical chosen-model positive and
+- the ambient chiral identification is now closed: the canonical chosen exterior-model positive and
   negative half-spin modules are, by construction, the ambient `positiveChiral` /
   `negativeChiral` submodules of the zero-form regular spinor module on `Q.wittSubspace`; see
   `Spinor.Presentation.positiveHalfSpinorModule_eq_ambient_positiveChiral`,
@@ -337,12 +340,11 @@ Implemented so far:
   `unitaryQuaternionToSpinGroupRealCl04Diagonal`, and the full anti-diagonal constructor
   `unitaryQuaternionToSpinGroupRealCl04Antidiagonal` (Phase 4.2)
 - `Spinor.TheoremIndex` is a machine-checked paper theorem surface: it imports and `#check`s the
-  declarations cited by `THEOREM_INDEX.md`, so theorem-name drift is caught by `lake build`
-- `paper/` now contains submission-ready sources (`main.tex`, `refs.bib`, `README.md`) grounded
-  in the formalized theorem package, with target venues recorded for CPP 2027 / ITP 2027 /
-  *Advances in Applied Clifford Algebras* (Phase 5.1)
+  declarations cited by `THEOREM_INDEX.md`, so stale theorem names are caught by `lake build`
+- `paper/` now contains manuscript sources (`main.tex`, `refs.bib`, `README.md`) grounded
+  in the formalized theorems (Phase 5.1)
 
-Explicit scope boundaries for this algebraic submission package:
+Explicit scope boundaries for this algebraic paper:
 
 - the full Bott period-8 table beyond the split foundation and packaged low-signature entries
   through `Cl(0,3)`, `Cl(0,4)`, `Cl(0,5)`, `Cl(0,6)`, `Cl(0,7)`, `Cl(0,8)`,
@@ -360,4 +362,4 @@ Explicit scope boundaries for this algebraic submission package:
 - a full global orthogonal-group spinor-norm theory beyond the product-level Clifford norm and
   finite-basis split-Levi square-class APIs
 
-The library currently has a clean `lake build` and zero `sorry` / `admit`.
+Use `bash scripts/verify.sh` to check the current Lean build and proof-hole audit.
