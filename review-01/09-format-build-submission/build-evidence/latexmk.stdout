@@ -334,7 +334,7 @@ re/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/type1
 i1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt0800.pfb></usr/shar
 e/texmf/fonts/type1/public/cm-super/sftt0900.pfb></usr/share/texmf/fonts/type1/
 public/cm-super/sftt1000.pfb>
-Output written on main.pdf (22 pages, 553954 bytes).
+Output written on main.pdf (22 pages, 553653 bytes).
 Transcript written on main.log.
 Latexmk: Missing bbl file 'main.bbl' in following:
  No file main.bbl.
@@ -532,7 +532,7 @@ i0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1000.pfb></usr/shar
 e/texmf/fonts/type1/public/cm-super/sftt0800.pfb></usr/share/texmf/fonts/type1/
 public/cm-super/sftt0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt
 1000.pfb>
-Output written on main.pdf (23 pages, 585537 bytes).
+Output written on main.pdf (23 pages, 585221 bytes).
 Transcript written on main.log.
 Latexmk: Getting log file 'main.log'
 Latexmk: Examining 'main.fls'
@@ -676,7 +676,7 @@ pe1/public/cm-super/sfti0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/
 sfti1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt0800.pfb></usr/s
 hare/texmf/fonts/type1/public/cm-super/sftt0900.pfb></usr/share/texmf/fonts/typ
 e1/public/cm-super/sftt1000.pfb>
-Output written on main.pdf (23 pages, 585801 bytes).
+Output written on main.pdf (23 pages, 585516 bytes).
 Transcript written on main.log.
 Latexmk: Getting log file 'main.log'
 Latexmk: Examining 'main.fls'

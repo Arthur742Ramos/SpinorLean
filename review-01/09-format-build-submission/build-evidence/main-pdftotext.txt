@@ -1063,11 +1063,6 @@ Data availability. No datasets were generated or analysed during the current
 study.
 Code availability. The formal verification source code supporting the results of this article is available at https://github.com/Arthur742Ramos/
 SpinorLean.
-Author contributions. Arthur F. Ramos developed the formalization and
-contributed to the mathematical presentation. David B. Hulak contributed to
-manuscript preparation, review, and submission packaging. Ruy J. G. B. de
-Queiroz contributed to supervision, mathematical context, and manuscript
-review. All authors read and approved the manuscript.
 
 References
 [1] Artin, E.: Geometric Algebra. Interscience Publishers, New York (1957).
@@ -1081,15 +1076,15 @@ https://doi.org/10.1090/S0273-0979-01-00934-X
 [4] Chevalley, C.: The Algebraic Theory of Spinors and Clifford Algebras,
 Collected Works, vol. 2. Springer (1996). Reprint of the 1954 original with a
 postface by J.-P. Bourguignon
+[5] Lawson Jr., H.B., Michelsohn, M.L.: Spin Geometry, Princeton Mathematical
+Series, vol. 38. Princeton University Press, Princeton, NJ (1989)
+[6] Lounesto, P.: Clifford Algebras and Spinors, London Mathematical Society
+Lecture Note Series, vol. 286, 2nd edn. Cambridge University Press, Cambridge
 
 Formalized exterior-model spinors in split rank
 
 23
 
-[5] Lawson Jr., H.B., Michelsohn, M.L.: Spin Geometry, Princeton Mathematical
-Series, vol. 38. Princeton University Press, Princeton, NJ (1989)
-[6] Lounesto, P.: Clifford Algebras and Spinors, London Mathematical Society
-Lecture Note Series, vol. 286, 2nd edn. Cambridge University Press, Cambridge
 (2001). DOI 10.1017/CBO9780511526022. URL
 https://doi.org/10.1017/CBO9780511526022
 [7] de Moura, L., Ullrich, S.: The Lean 4 theorem prover and programming
