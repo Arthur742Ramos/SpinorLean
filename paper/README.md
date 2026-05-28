@@ -1,13 +1,15 @@
 # SpinorLean — Accompanying Paper
 
 This directory holds the LaTeX sources of the academic paper accompanying the
-SpinorLean formalization (the first formalization of spinor representations
-from Clifford algebras in Lean 4 / Mathlib).
+SpinorLean formalization. The manuscript presents a chosen exterior-model
+spinor construction over Lean 4 / Mathlib.
 
 ## Files
 
-- `main.tex` — the submission-ready article source grounded in the repository.
-- `refs.bib` — bibliography (BibTeX, `alpha` style).
+- `main.tex` — article source grounded in the repository.
+- `refs.bib` — bibliography (BibTeX, `spmpsci` style).
+- `birkjour.cls`, `spmpsci.bst`, `cite.sty` — AACA/Birkhauser support files.
+- `THIRD_PARTY_NOTICES.md` — provenance for the AACA support files.
 - `../THEOREM_INDEX.md` — reader-facing map from paper theorem labels to Lean declarations.
 
 ## Building
@@ -27,34 +29,22 @@ or with `latexmk`:
 latexmk -pdf main.tex
 ```
 
-## Candidate Venues
-
-Per `ROADMAP.md` §5.3, the intended submission targets are:
-
-1. **CPP 2027** — Certified Programs and Proofs (deadline ≈ Sep 2026).
-2. **ITP 2027** — Interactive Theorem Proving.
-3. **Advances in Applied Clifford Algebras** — journal, no fixed deadline,
-   a natural fit for the algebraic content.
-4. *Journal of Automated Reasoning* (tertiary).
-
 ## Status
 
-This is a **submission-ready manuscript and artifact package for the exact
-finite-basis split-Levi theorem package**. The paper contains the introduction,
-related-work context, architecture, results, proof highlights, precise formal
-result boundary, keywords/MSC metadata, reproducibility instructions, and
-companion theorem index tied to the current Lean files and theorem names.
+This directory contains the AACA-formatted manuscript source directory for the
+SpinorLean paper: article source, bibliography, support files, reproducibility
+instructions, and a pointer to the companion theorem index.
 
-The formal result boundary is explicit: the submitted theorem package covers the
-chosen-model spinor construction, split-rank kernel/non-descent,
+The formal result boundary is explicit: the manuscript covers the
+chosen exterior-model spinor construction, split-rank kernel/non-descent,
 Levi-projective action, square-determinant Levi lifts, the determinant-square
-necessity theorem, the exact finite-basis split-Levi spin-image iff criterion,
+necessity theorem, the exact finite-basis split-Levi spin-image criterion,
 the onto determinant square-class characters with their kernel theorems in
 linear coordinates and on the canonical split Levi, the resulting quotient
 isomorphisms modulo the corresponding spin-image subgroups to the square-class
 group, local split-Levi spinor-norm-facing wrappers for these same characters,
 the exact split-line image / double-cover criterion, and the Clifford-level
-vector-product norm formula with its invertible-vector square-class package, product-order
+vector-product norm formula with its invertible-vector square-class invariants, product-order
 invariance, repeated-pair square-class cancellation, and duplicated-product/subproduct
 square-class triviality, including separated repeated subproducts after permutation into the
 repeated shape. The full Bott-period-8
@@ -65,8 +55,7 @@ table beyond the packaged low-signature entries, now including the explicit
 `Cl⁺(0,8) ≃ Mat₈(ℝ) × Mat₈(ℝ)`, `Cl(0,8) ≃ Mat₁₆(ℝ)`,
 `Cl⁺(7,0) ≃ Mat₈(ℝ)`, and `Cl⁺(8,0) ≃ Mat₈(ℝ) × Mat₈(ℝ)` rows, a full
 all-orthogonal-group image classification,
-and a global orthogonal-group spinor-norm API beyond this product-level substrate are separate
-projects, not dependencies in the claimed theorem package.
+and a global orthogonal-group spinor-norm API beyond this product-level substrate are separate projects, not dependencies of the results stated in the manuscript.
 
 ## Final preflight
 
