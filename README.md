@@ -274,7 +274,7 @@ Implemented so far:
   form; this is a reflection-product substrate, not an independence theorem for arbitrary
   orthogonal decompositions
 - the split hyperbolic line is now theorem-complete: the spin image is exactly the square-scaling
-  subgroup, the spin map onto `SO(1,1)` is surjective iff the square map on `Kˣ` is surjective, and
+  subgroup, the spin map onto `SO(1,1)` is surjective if and only if the square map on `Kˣ` is surjective, and
   a nonsquare unit gives a formal non-surjectivity theorem; over algebraically closed fields,
   `units_square_surjective_of_isAlgClosed` specializes this to full split-line double-cover and
   finite-basis split-Levi lift/image corollaries
