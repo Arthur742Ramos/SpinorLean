@@ -2,25 +2,25 @@
 
 - Document: 04-factual-independent-verification status
 - Current state: OPEN
-- Did the bots find blockers? yes. Headline factual/proof claims are seeded but not all independently verified.
-- Did the bots find other valid feedback? yes. Artifact locator and static numerical claims have current local evidence.
-- What changed because of this? Created the category dashboard.
-- What remains unresolved? Round-001 v2 factual verification and Lean-build-dependent rows.
-- Can this category/global review close now? no, because mandatory reports are absent and headline ledger rows remain blocked.
+- Did the bots find blockers? yes. Round 001 found that headline proof/formalization claims cannot be independently verified without a current Lean build.
+- Did the bots find other valid feedback? yes. Static artifact facts are locally supported but remain weaker than build evidence.
+- What changed because of this? Round 001 reports and reconciliation now separate static evidence from build-backed factual verification.
+- What remains unresolved? Current `lake build` or equivalent CI evidence for theorem/proof claims.
+- Can this category/global review close now? no, because headline proof claims remain unverified by build.
 
 | ID | Kind | Plain-English finding | Where it was found | Fix or disposition | How the fix/disposition was verified |
 | --- | --- | --- | --- | --- | --- |
-| C04-001 | blocker | Proof/theorem factual claims need current build/formal verification evidence. | `paper/main.tex:181-198`, headline ledger | Mark as blocked until round review and Lean build evidence. | Static scans do not replace `lake build`. |
+| C04-001 | blocker | Proof/theorem factual claims need current build/formal verification evidence. | `paper/main.tex`, headline ledger | Remains active. | Static scans do not replace a successful Lean build. |
+| C04-002 | valid-feedback | Static artifact facts are useful limited evidence. | Static scans and report summaries | Preserved as supporting evidence only. | Reconciliation 001 records the limitation. |
 
 category state: OPEN
-latest round number: 0
-active blockers: round-001 reports not yet run; headline proof/build rows blocked on Lean build
-fixed blockers: none
+latest round number: 1
+active blockers: current Lean build or equivalent CI evidence missing for proof/formalization claims
+fixed blockers: round-001 reports produced
 rejected findings relevant to the category: none
 optional preferences: none
-latest GPT status: not run
-latest Opus status: not run
-latest adversarial status: not run
-next required action: run round-001 factual verification reviewers
-stop-condition checklist: latest GPT no blockers: no; latest Opus no blockers: no; adversarial objections resolved: no; prior blockers fixed/rejected: no; headline ledger current: no, blocked on Lean-build rows
-
+latest GPT status: `review-01/04-factual-independent-verification/round-001-gpt.md` OPEN
+latest Opus status: `review-01/04-factual-independent-verification/round-001-opus.md` OPEN
+latest adversarial status: `review-01/04-factual-independent-verification/round-001-adversarial.md` OPEN
+next required action: obtain current Lean build evidence or mark proof claims explicitly build-blocked
+stop-condition checklist: latest GPT no blockers: no; latest Opus no blockers: no; adversarial objections resolved: no; prior blockers fixed/rejected: no; headline ledger current: no, build-dependent rows blocked
