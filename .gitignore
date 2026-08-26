@@ -2,6 +2,7 @@
 /lake-packages
 /.lake
 /.copilot-validation
+/.cache
 
 # LaTeX build artifacts
 /paper/*.aux

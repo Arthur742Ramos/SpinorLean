@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-lake build
+lake build Spinor Challenge Solution
 
 $leanFiles = @(
     Get-ChildItem -Path "Spinor" -Recurse -Filter "*.lean"

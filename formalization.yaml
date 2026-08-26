@@ -1,0 +1,174 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Exterior-model spinors in split rank"
+  description: >-
+    Formalizes an exterior-model spinor construction for a field K in which 2
+    is invertible, using an explicit hyperbolic presentation and the Clifford
+    conjugation action on the ambient quadratic space.  The development
+    proves field-sensitive covering and image results: the positive split-rank
+    spin-to-isometry kernel is {1,-1}, the spin action therefore descends only
+    projectively, the split-line image is exactly the square-scaling subgroup,
+    and a finite-dimensional split Levi element associated to g lies in the
+    ambient spin image exactly when det(g) is a square unit.  The repository
+    also packages the chosen exterior model, half-spin pieces, explicit
+    transvection and square-scaling Clifford lifts, square-class quotient
+    characters, vector-product norm identities, and selected complex and real
+    low-dimensional Clifford classifications.
+  authors:
+    - "Arthur F. Ramos"
+    - "David B. Hulak"
+    - "Ruy J. G. B. de Queiroz"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Arthur F. Ramos"
+
+classification:
+  arxiv: ["math.RA"]
+  msc2020: ["15A66", "11E81", "20G15"]
+
+sources:
+  - title: "Exterior-Model Spinors in Split Rank: Exact Levi Images and Square-Determinant Obstructions"
+    authors:
+      - "Arthur F. Ramos"
+      - "David B. Hulak"
+      - "Ruy J. G. B. de Queiroz"
+    id: "arXiv:2604.26155"
+    type: "paper"
+    location: "https://arxiv.org/abs/2604.26155"
+    relationship: "formalizes"
+    note: >-
+      The selected Palomar statement is the finite-basis exact split-Levi
+      spin-image criterion developed in the companion paper.  The Challenge
+      presents the equivalent ambient-isometry formulation, while the full
+      project also formalizes the exterior-model, split-line, projective, and
+      quotient results described in the paper.
+    license: "unknown"
+  - title: "Spin Geometry"
+    authors:
+      - "H. Blaine Lawson"
+      - "Marie-Louise Michelsohn"
+    id: "ISBN 978-0-691-08542-0"
+    type: "book"
+    location: "https://press.princeton.edu/books/hardcover/9780691085420/spin-geometry"
+    relationship: "background"
+    note: >-
+      Background for the classical spinor and spin-representation setting;
+      this source is not claimed as the source of the field-sensitive Lean
+      image theorem.
+    license: "unknown"
+  - title: "The Algebraic Theory of Spinors and Clifford Algebras"
+    authors:
+      - "Claude Chevalley"
+    id: "ISBN 978-3-540-57013-0"
+    type: "book"
+    location: "https://link.springer.com/book/10.1007/978-3-642-97820-8"
+    relationship: "background"
+    note: "Classical background for Clifford algebras and spinors."
+    license: "unknown"
+  - title: "Clifford Modules"
+    authors:
+      - "Michael F. Atiyah"
+      - "Raoul Bott"
+      - "Arnold Shapiro"
+    id: "doi:10.1007/BF02395037"
+    type: "paper"
+    location: "https://doi.org/10.1007/BF02395037"
+    relationship: "background"
+    note: "Classical background for Clifford-module periodicity."
+    license: "unknown"
+related_formalizations:
+  - id: "https://doi.org/10.1007/s00006-021-01164-1"
+    relationship: "builds-on"
+    note: >-
+      The Lean geometric-algebra formalization supplies relevant Mathlib
+      Clifford-algebra infrastructure.  SpinorLean is a separate substantive
+      development that adds the chosen exterior spinor model, transported
+      actions, and field-sensitive split image theorems.
+
+status:
+  scope: >-
+    The selected Challenge theorem is stated for a field K with invertible 2,
+    a finite-dimensional K-module V, a finite-dimensional submodule W with a
+    finite basis, and a linear automorphism g of W.  It identifies membership
+    of the hyperbolic transport of g in the ambient spin-isometry range with
+    the existence of a square-unit determinant.  The basis and a selected
+    basis vector are explicit proof data for the constructive direction.  The
+    repository additionally contains the full chosen exterior-model,
+    half-spin, kernel, projective, split-line, square-class, norm, and selected
+    low-dimensional classification APIs documented in README.md and
+    THEOREM_INDEX.md.  It does not claim a full all-orthogonal-group image
+    classification, a global spinor-norm theorem for arbitrary orthogonal
+    decompositions, spinor bundles, Dirac operators, or a scheme-theoretic
+    construction.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["GPT-5 Codex"]
+      framework: "Lean 4, Lake, and Mathlib"
+      tool_setup: >-
+        AI-assisted repository preparation and proof review, with the
+        substantive Lean proof development retained in Spinor/ and the
+        Palomar Challenge/Solution boundary checked separately.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "subscription-based"
+        hardware: "local machine and GitHub Actions"
+        prompting_notes: "Repository-scoped implementation, audit, and verification."
+  spend_usd: "subscription-based"
+  notes: >-
+    The formalization was developed against the pinned Lean and Mathlib
+    revisions.  The final preparation is checked by the Lean kernel, the
+    repository no-hole scan, and the pinned Comparator workflow with NanoDa
+    replay.  No human peer review is claimed by this metadata.
+
+fidelity:
+  divergences: >-
+    The public arXiv v1 record states the split-Levi criterion in the paper's
+    special-orthogonal formulation and advertises a rank-at-least-three
+    version.  The current repository proves an equivalent ambient-isometry
+    range formulation and exposes a more general finite-basis theorem; the
+    Challenge records the current theorem's actual hypotheses rather than
+    silently importing the older paper restriction.  The Palomar entry covers
+    this selected theorem, not every theorem listed in the repository or
+    paper.  Standard exterior-model and low-dimensional classification facts
+    are identified as classical background; no novelty or priority claim is
+    made here.
+
+review:
+  status: "self-assessed"
+  reviewers:
+    - "none"
+  notes: >-
+    The Challenge was written as a Mathlib-only, statement-facing capsule and
+    the Solution connects it to the existing SpinorLean proof.  The repository
+    is checked with the full Lean build, proof-hole scan, source-size and
+    metadata audits, and the pinned Comparator/NanoDa workflow.  No independent
+    human peer review is claimed.
+
+alignment:
+  namespace: "Palomar"
+  statements:
+    - source: "Square-determinant Levi factorization and exact spin-image criterion (Theorem thm:square-det-levi)"
+      lean: "Palomar.splitLevi_mem_spin_isometry_range_iff_det_square"
+      module: "Challenge.lean and Solution.lean"
+      status: "adapted"
+      note: >-
+        The compared declaration is the equivalent ambient-isometry statement:
+        the hyperbolic isometry induced by g lies in the spin-isometry range
+        exactly when det(g) is a square unit.  The proof is instantiated from
+        Spinor's special-orthogonal range theorem, with the subtype coercions
+        made explicit in Solution.lean.
+
+acknowledgements: >-
+  Mathlib contributors for the Clifford-algebra, exterior-algebra,
+  quadratic-form, determinant, and spin-group infrastructure; the authors of
+  the cited classical sources; the earlier Lean geometric-algebra
+  formalization; and the Palomar Registry project for the Challenge/Solution,
+  Comparator, and independent-kernel verification workflow.  The paper source
+  tree contains separate third-party notices for its publication assets.

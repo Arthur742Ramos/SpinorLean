@@ -71,6 +71,34 @@ On Windows PowerShell, use `.\scripts\verify.ps1`.
 `THEOREM_INDEX.md` maps the paper's theorem-facing statements to the exact Lean declarations used
 to support them.
 
+## Palomar Registry
+
+This repository contains a [Palomar Registry](https://submit.palomar-registry.org/) submission
+surface for one research-facing result: the finite-dimensional split-Levi criterion
+`Palomar.splitLevi_mem_spin_isometry_range_iff_det_square`. It states that the hyperbolic
+isometry induced by `g : W ≃ₗ[K] W` lies in the ambient spin-isometry range exactly when
+`LinearEquiv.det g` is a square unit.
+
+The submission boundary is deliberately explicit:
+
+- `Challenge.lean` is a small Mathlib-only statement capsule. It duplicates the ambient
+  Clifford-conjugation action needed to state the result without importing SpinorLean source.
+- `Solution.lean` repeats that statement surface and supplies the proof by connecting it to the
+  existing `Spinor.HyperbolicAction` theorem.
+- `comparator.json` selects the single compared declaration and permits only Palomar's standard
+  three axioms.
+- `formalization.yaml` records provenance, classifications, authorship, automation, review status,
+  scope, and the known difference between the paper's rank-restricted formulation and the current
+  finite-basis repository theorem.
+
+`PALOMAR.md` gives the mathematical alignment and the exact commit-level submission checklist.
+Run `bash scripts/verify-palomar.sh` for the repository/package audit. On Linux,
+`bash scripts/verify-comparator.sh` also runs the pinned Comparator, Lean4Export, NanoDa, and
+Landrun toolchain. macOS lacks Landlock; for a local proof replay only, use
+`PALOMAR_ALLOW_UNSANDBOXED_LOCAL=1 bash scripts/verify-comparator.sh`. The GitHub Actions workflow
+always uses the real Landrun sandbox. Registration itself is not performed by this repository;
+Palomar requires a public GitHub commit SHA and an explicit submission through the form.
+
 ## References
 
 - Lawson, Michelson — *Spin Geometry* (Princeton, 1989)

@@ -12,3 +12,9 @@ require mathlib from git
 
 @[default_target]
 lean_lib «Spinor» where
+
+lean_lib «Challenge» where
+  roots := #[`Challenge]
+
+lean_lib «Solution» where
+  roots := #[`Solution]
