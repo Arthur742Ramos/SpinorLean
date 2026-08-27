@@ -8,7 +8,7 @@ package «spinor-lean» where
 
 require mathlib from git
   "https://github.com/leanprover-community/mathlib4.git" @
-    "11873348d8bf19440253d9282cc4e9423432e5ea"
+    "f23306121184717ace04f3ac514be974e3224c8b"
 
 @[default_target]
 lean_lib «Spinor» where

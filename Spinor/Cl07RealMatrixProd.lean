@@ -217,7 +217,8 @@ theorem realCl07ToRealMatrix8BlockProd_surjective :
     realCl07ToRealMatrix8BlockProd_seventhGenerator, hx, hy]
   have hWY : realCl06VolumeBlock * Y = D := by
     dsimp [Y]
-    rw [← mul_assoc, mul_neg, realCl06VolumeBlock_sq, neg_neg, one_mul]
+    rw [← mul_assoc, mul_neg, realCl06VolumeBlock_sq]
+    simpa only [neg_mul, neg_one_mul, one_mul] using (neg_neg D)
   have hnegWY : -realCl06VolumeBlock * Y = -D := by
     rw [neg_mul, hWY]
   ext i j u v <;> fin_cases i <;> fin_cases j <;> fin_cases u <;> fin_cases v <;>

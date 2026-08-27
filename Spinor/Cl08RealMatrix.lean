@@ -280,9 +280,11 @@ theorem realCl08ToRealMatrix16Block_surjective :
     realCl08ToRealMatrix16Block_realCl07IntoCl08 y,
     realCl08ToRealMatrix16Block_eighthGenerator, hx, hy]
   have h10 : realCl06VolumeBlock * (-realCl06VolumeBlock * A 1 0) = A 1 0 := by
-    rw [← mul_assoc, mul_neg, realCl06VolumeBlock_sq, neg_neg, one_mul]
+    rw [← mul_assoc, mul_neg, realCl06VolumeBlock_sq]
+    simpa only [neg_mul, neg_one_mul, one_mul] using (neg_neg (A 1 0))
   have h01 : realCl06VolumeBlock * (-realCl06VolumeBlock * A 0 1) = A 0 1 := by
-    rw [← mul_assoc, mul_neg, realCl06VolumeBlock_sq, neg_neg, one_mul]
+    rw [← mul_assoc, mul_neg, realCl06VolumeBlock_sq]
+    simpa only [neg_mul, neg_one_mul, one_mul] using (neg_neg (A 0 1))
   apply Matrix.ext
   intro i j
   fin_cases i <;> fin_cases j
